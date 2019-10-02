@@ -1,0 +1,225 @@
+
+@import (reference) "../theme";
+@import (reference) "../base";
+
+
+div.qui-form-field {
+    padding: 0.25em 0;
+    white-space: nowrap;
+    transition: height @transition-duration ease, opacity @transition-duration ease;
+    position: relative;
+}
+
+div.qui-form-field:FIRST-CHILD {
+    padding-top: 0;
+}
+
+div.qui-form-field:LAST-CHILD {
+    padding-bottom: 0;
+}
+
+div.qui-form-field.hidden {
+    opacity: 0;
+}
+
+div.qui-form-field.separator:NOT(:FIRST-CHILD) {
+    border-top: 0.0625em solid @border-color;
+    margin-top: 0.5em;
+    padding-top: 0.75em;
+}
+
+form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line) {
+    white-space: normal;
+}
+
+
+    /* warning & error */
+
+div.qui-form-field-warning {
+    color: @warning-color;
+}
+
+div.qui-form-field-error {
+    color: @error-color;
+}
+
+div.qui-form-field-warning,
+div.qui-form-field-error {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    white-space: normal;
+    text-align: right;
+    transition: opacity @transition-duration ease,
+                max-height @transition-duration ease;
+}
+
+div.qui-form-field.has-warning.warning-visible > div.qui-form-field-warning,
+div.qui-form-field.has-error.error-visible > div.qui-form-field-error {
+    max-height: 5em;
+    padding-bottom: 0.5em;
+    opacity: 1;
+}
+
+span.qui-form-field-warning-text,
+span.qui-form-field-error-text {
+    padding: 0.5em 0;
+    text-align: left;
+}
+
+div.qui-form-field-warning-label,
+div.qui-form-field-error-label {
+    display: inline-flex;
+    position: relative;
+    background: @border-color;
+    border-radius: 1em;
+    border-bottom-right-radius: 0;
+    padding: 0 0.5em;
+    align-items: center;
+}
+
+
+    /* description */
+
+div.qui-form-field-description {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    white-space: normal;
+    color: @info-color;
+    text-align: right;
+    transition: opacity @transition-duration ease,
+                max-height @transition-duration ease;
+}
+
+div.qui-form-field.description-visible > div.qui-form-field-description {
+    max-height: 5em;
+    padding-bottom: 0.5em;
+    opacity: 1;
+}
+
+span.qui-form-field-description-icon {
+    display: inline-block;
+    background-image: url('@{qui_img_path}/qui-icons.svg');
+    background-size: 80em;
+    background-position: @info-icon-x-offset @info-icon-y-offset;
+    transform: scale(0.75);
+    width: 2em;
+    height: 2em;
+    flex: none;
+}
+
+span.qui-form-field-description-text {
+    padding: 0.5em 0;
+    text-align: left;
+}
+
+div.qui-form-field-description-label {
+    display: inline-flex;
+    position: relative;
+    background: @border-color;
+    border-radius: 1em;
+    border-bottom-right-radius: 0;
+    padding-right: 0.5em;
+    align-items: center;
+}
+
+div.qui-form-field.auto-width {
+    width: 100%;
+    padding-right: 0;
+}
+
+
+/* label & value */
+
+div.qui-form-field-label {
+    display: inline-block;
+    width: 50%;
+    padding-right: 0.5em;
+    white-space: normal;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+div.qui-form-field.required > div.qui-form-field-label {
+}
+
+div.qui-form-field.has-description > div.qui-form-field-label {
+    color: @interactive-color;
+    cursor: pointer;
+    transition: color @transition-duration ease;
+    .noselect();
+}
+
+div.qui-form-field.has-description > div.qui-form-field-label:ACTIVE {
+    color: @interactive-active-color;
+}
+
+div.qui-form-field-value {
+    display: inline-block;
+    width: 50%;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+div.qui-form-field.side-icon-visible > div.qui-form-field-value {
+    padding-right: 2em;
+    margin-right: -1.5em;  /* makes place for the side icon */
+}
+
+div.qui-form-field-value > * {
+    box-sizing: border-box;    
+}
+
+form.qui-form.fields-alignment-center > div.qui-form-body > div.qui-form-field > div.qui-form-field-label {
+    text-align: right;
+}
+
+form.qui-form.fields-alignment-sides > div.qui-form-body > div.qui-form-field > div.qui-form-field-label {
+    text-align: left;
+}
+
+form.qui-form.fields-alignment-center > div.qui-form-body > div.qui-form-field > div.qui-form-field-value {
+    text-align: left;
+}
+
+form.qui-form.fields-alignment-sides > div.qui-form-body > div.qui-form-field > div.qui-form-field-value {
+    text-align: right;
+}
+
+form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line) > div.qui-form-field-label,
+form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line) > div.qui-form-field-value {
+    width: 100%;
+}
+
+div.qui-form-field.auto-width > div.qui-form-field-label,
+div.qui-form-field.auto-width > div.qui-form-field-value {
+    width: auto;
+}
+
+
+    /* unit */
+
+span.qui-form-field-unit {
+    font-size: 75%;
+    color: fade(@foreground-color, 75%);
+}
+
+
+    /* side icon */
+
+div.qui-form-field-side-icon {
+    display: none;
+    vertical-align: middle;
+    width: 1.5em;
+    height: 1.5em;
+    background: transparent;
+}
+
+div.qui-form-field-side-icon.progress {
+    animation: spin 1s linear infinite;
+}
+
+div.qui-form-field.side-icon-visible > div.qui-form-field-value + div.qui-form-field-side-icon {
+    display: inline-block;
+}

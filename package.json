@@ -1,0 +1,70 @@
+{
+  "_from": "@qtoggle/qui",
+  "_id": "@qtoggle/qui@1.0.0-b4",
+  "_inBundle": false,
+  "_integrity": "sha512-nL95T2i3GhW5mIJQ9lVBFftxhSjVzTJtD43+6xtbaT1knfSoO+S2EXMPrNdczeoPmziKer12ehvFqKG9n8SYtA==",
+  "_location": "/@qtoggle/qui",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@qtoggle/qui",
+    "name": "@qtoggle/qui",
+    "escapedName": "@qtoggle%2fqui",
+    "scope": "@qtoggle",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@qtoggle/qui/-/qui-1.0.0-b4.tgz",
+  "_shasum": "ce118034c85f89ac75406c7b5b39b7417a3773e8",
+  "_spec": "@qtoggle/qui",
+  "_where": "/media/data/downloads/npm-test",
+  "author": {
+    "name": "Calin Crisan",
+    "email": "ccrisan@gmail.com"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "jquery": "*",
+    "jquery-mousewheel": "*",
+    "jquery-ui-dist": "*",
+    "js-logger": "*",
+    "pepjs": "*"
+  },
+  "deprecated": false,
+  "description": "A JavaScript UI library with batteries included.",
+  "devDependencies": {
+    "css-loader": "*",
+    "eslint": "*",
+    "expose-loader": "*",
+    "file-loader": "*",
+    "glob": "*",
+    "jaguarjs-jsdoc": "*",
+    "jsdoc": "*",
+    "jsdoc-export-default-interop": "*",
+    "jsdoc-typeof-plugin": "*",
+    "less": "*",
+    "less-loader": "*",
+    "mini-css-extract-plugin": "*",
+    "optimize-css-assets-webpack-plugin": "*",
+    "string-replace-loader": "*",
+    "terser-webpack-plugin": "*",
+    "webpack": "*",
+    "webpack-cli": "*",
+    "webpack-fix-style-only-entries": "*",
+    "webpack-inject-plugin": "*",
+    "webpack-shell-plugin": "*"
+  },
+  "keywords": [],
+  "license": "Apache-2.0",
+  "name": "@qtoggle/qui",
+  "scripts": {
+    "postinstall": "scripts/postinstall.sh"
+  },
+  "version": "1.0.0-b4"
+}

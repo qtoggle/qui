@@ -1,0 +1,189 @@
+
+@import (reference) "theme";
+
+
+/* toast message */
+
+div.qui-toast-message-container {
+    position: absolute;
+    transition: height @transition-duration ease,
+                background @transition-duration ease,
+                color @transition-duration ease,
+                top @transition-duration ease,
+                margin @transition-duration ease,
+                opacity @transition-duration linear;
+    top: -0.0625em;
+    left: 0;
+    right: 0;
+    height: 3em;
+    z-index: 10;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: @background-color;
+    border-bottom: 0.0625em solid @border-color;
+    border-top: 0.0625em solid transparent;
+}
+
+body.toast-message-visible > div.qui-toast-message-container {
+    top: 3.0625em;
+    z-index: 11;
+    box-shadow: 0 0.3125em 0.5em -0.3125em @bar-shadow-color;
+}
+
+body.no-top-bar > div.qui-toast-message-container {
+    top: -3.125em;
+}
+
+body.no-top-bar.toast-message-visible > div.qui-toast-message-container {
+    top: 0;
+}
+
+body.small-screen > div.qui-toast-message-container {
+    line-height: 3em;
+}
+
+body.global-glass-visible.toast-message-visible > div.qui-toast-message-container {
+    top: 0;
+    z-index: 1001;
+    filter: none;
+}
+
+div.qui-toast-message-container.info {
+    color: @info-color;
+}
+
+div.qui-toast-message-container.warning {
+    color: @warning-color;
+}
+
+div.qui-toast-message-container.error {
+    color: @error-color;
+}
+
+div.qui-toast-message-icon {
+    float: left;
+    width: 2em;
+    height: 2em;
+    margin: 0.5em;
+    background-image: url('@{qui_img_path}/qui-icons.svg');
+    background-size: 80em;
+    vertical-align: middle;
+}
+
+div.qui-toast-message-container.info > div.qui-toast-message-icon {
+    background-position: @info-icon-x-offset @info-icon-y-offset;
+    display: inline-block;
+}
+
+div.qui-toast-message-container.warning > div.qui-toast-message-icon {
+    background-position: @exclam-icon-x-offset @warning-icon-y-offset;
+    display: inline-block;
+}
+
+div.qui-toast-message-container.error > div.qui-toast-message-icon {
+    background-position: @exclam-icon-x-offset @error-icon-y-offset;
+    display: inline-block;
+}
+
+div.qui-toast-message {
+    display: flex;
+    margin: 0 3em;
+    height: 3em;
+    overflow: auto;
+    align-items: center; // TODO replace with "safe center" as soon as this becomes supported by major browsers
+    text-align: left;
+}
+
+body.small-screen > div.qui-toast-message-container.multiline > div.qui-toast-message {
+    white-space: normal;
+    line-height: 1.45em;
+}
+
+span.qui-toast-message {
+    font-size: 0.9em;
+    line-height: 1em;
+}
+
+div.qui-toast-message-close-button {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    float: right;
+    width: 1.5em;
+    height: 1.5em;
+    margin: 0.75em;
+}
+
+div.qui-toast-message-container.closeable > div.qui-toast-message > div.qui-toast-message-close-button {
+    display: inline-block;
+}
+
+
+/* message label */
+
+span.qui-message-label {
+    display: inline-block;
+    white-space: nowrap;
+    border-radius: 1em;
+    padding: 0.2em 0.5em;
+    margin: 0.125em;
+    max-width: 14em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+div.qui-toast-message-container.info span.qui-message-label {
+    background: @info-color;
+    color: @background-color;
+}
+
+div.qui-toast-message-container.warning span.qui-message-label {
+    background: @warning-color;
+    color: @background-color;
+}
+
+div.qui-toast-message-container.error span.qui-message-label {
+    background: @error-color;
+    color: @background-color;
+}
+
+div.qui-message-form-body span.qui-message-label {
+    background: @foreground-color;
+    color: @background-color;
+    font-weight: normal;
+}
+
+div.qui-breadcrumb span.qui-message-label {
+    background: @interactive-color;
+    color: @background-color;
+}
+
+
+/* message forms */
+
+div.qui-message-form-body {
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+div.qui-message-form-label {
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: bold;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.4em;
+    flex: auto;
+}
+
+div.qui-message-form-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 2em;
+    height: 2em;
+    min-width: 2em;
+    margin: 0.5em;
+}

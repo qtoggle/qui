@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+    <head>
+        <title>{% block title %}{{ pretty_name }}{% endblock %}</title>
+
+        <link rel="manifest">
+        <link rel="icon" href="{{ static_url }}/img/launcher-icon-32.png">
+        <link rel="apple-touch-icon" href="{{ static_url }}/img/launcher-icon-32.png">
+
+        {% block _meta %}
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+            <meta name="mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="theme-color" content="{{ theme_color }}">
+            <meta name="apple-mobile-web-app-status-bar-style" content="{{ theme_color }}">
+        {% endblock %}
+        {% block meta %}{% endblock %}
+
+        {% block _style %}
+            <style>html {background: {{ background_color }};}</style>
+            {% if debug %}
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/base.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/main-ui.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/icons.css" />
+
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/check-button.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/choice-buttons.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/color-combo.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/combo.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/common-buttons.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/labels.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/progress-disc.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/slider.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/text-input.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/updown.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/widgets.css" />
+
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/messages.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/global-glass.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/structured-view.css" />
+
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/pages/breadcrumbs.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/pages/common-pages.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/pages/page.css" />
+
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/forms/common-fields.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/forms/common-forms.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/forms/form.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/forms/form-button.css" />
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/forms/form-field.css" />
+
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/lists.css" />
+
+                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/theme.css" />
+            {% endif %}
+        {% endblock %}
+        {% block style %}{% endblock %}
+
+        <noscript>This application requires JavaScript!</noscript>
+
+        {% block script %}
+            <script type="module"
+                    src="{{ static_url }}{% if debug %}/js/index.js{% else %}/{{ name }}-bundle.js{% endif %}"
+                    data-debug="{{ debug }}"
+                    data-theme-name="{{ theme }}"
+                    data-navigation-base-prefix="{{ navigation_base_prefix }}"></script>
+        {% endblock %}
+    </head>
+    <body></body>
+</html>

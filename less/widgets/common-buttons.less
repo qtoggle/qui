@@ -1,0 +1,70 @@
+
+@import (reference) "../base";
+@import (reference) "../theme";
+
+
+.qui-base-button {
+    transition: background @transition-duration ease,
+                color @transition-duration ease,
+                opacity @transition-duration ease,
+                border @transition-duration ease;
+    box-sizing: border-box;
+    cursor: pointer;
+    .noselect;
+}
+
+.qui-base-button.disabled {
+    cursor: default;
+}
+
+.qui-colored-button {
+    color: @foreground-active-color;
+    background: @interactive-color;
+}
+
+.qui-colored-button.active {
+    background: @interactive-active-color;
+}
+
+.qui-interactive-button {
+    color: @foreground-active-color;
+    background: @interactive-color;
+}
+
+.qui-interactive-button.active {
+    background: @interactive-active-color;
+}
+
+.qui-highlight-button {
+    color: @foreground-active-color;
+    background: @highlight-color;
+}
+
+.qui-highlight-button.active {
+    background: @highlight-active-color;
+}
+
+.qui-danger-button {
+    color: @foreground-active-color;
+    background: @danger-color;
+}
+
+.qui-danger-button.active {
+    background: @danger-active-color;
+}
+
+.qui-colored-button.disabled,
+.qui-interactive-button.disabled,
+.qui-highlight-button.disabled,
+.qui-danger-button.disabled {
+    background: @disabled-color;
+    color: @disabled-foreground-color;
+}
+
+.qui-push-button {
+    display: inline-block;
+    line-height: 1.9em;
+    border-radius: 0.2em;
+    min-width: 6em;
+    text-align: center;
+}

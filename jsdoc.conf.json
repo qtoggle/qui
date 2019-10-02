@@ -1,0 +1,21 @@
+{
+    "plugins": [
+        "node_modules/jsdoc-export-default-interop/dist/index",
+        "node_modules/jsdoc-typeof-plugin",
+        "plugins/markdown"
+    ],
+    "source": {
+        "include": ["js"],
+        "excludePattern": "js/lib"
+    },
+    "sourceType": "module",
+    "templates": {
+        "cleverLinks": true,
+        "applicationName": "QUI"
+    },
+    "opts": {
+        "destination": "docs",
+        "recurse": true,
+        "template": "node_modules/jaguarjs-jsdoc"
+    }
+}

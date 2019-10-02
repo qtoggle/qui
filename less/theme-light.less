@@ -1,0 +1,122 @@
+
+@import (reference) "stock-icons";
+
+
+/* base colors */
+
+@darkgray-color: #444444;
+@gray-color: #888888;
+@lightgray-color: #dedede;
+@white-color: #ffffff;
+@blue-color: #62abea;
+@magenta-color: #cb90de;
+@red-color: #ff7c7c;
+@orange-color: #ffab7a;
+@yellow-color: #f7e66d;
+@green-color: #1ecd97;
+@cyan-color: #70cbd4;
+
+@darkgray-active-color: hsv(hsvhue(@darkgray-color),
+                            hsvsaturation(@darkgray-color),
+                            hsvvalue(@darkgray-color) * 0.8);
+
+@gray-active-color: hsv(hsvhue(@gray-color),
+                        hsvsaturation(@gray-color),
+                        hsvvalue(@gray-color) * 0.8);
+
+@lightgray-active-color: hsv(hsvhue(@lightgray-color),
+                             hsvsaturation(@lightgray-color),
+                             hsvvalue(@lightgray-color) * 0.8);
+
+@white-active-color: hsv(hsvhue(@white-color),
+                         hsvsaturation(@white-color),
+                         hsvvalue(@white-color) * 0.8);
+
+@blue-active-color: hsv(hsvhue(@blue-color),
+                        hsvsaturation(@blue-color),
+                        hsvvalue(@blue-color) * 0.8);
+
+@magenta-active-color: hsv(hsvhue(@magenta-color),
+                           hsvsaturation(@magenta-color),
+                           hsvvalue(@magenta-color) * 0.8);
+
+@red-active-color: hsv(hsvhue(@red-color),
+                       hsvsaturation(@red-color),
+                       hsvvalue(@red-color) * 0.8);
+
+@orange-active-color: hsv(hsvhue(@orange-color),
+                          hsvsaturation(@orange-color),
+                          hsvvalue(@orange-color) * 0.8);
+
+@yellow-active-color: hsv(hsvhue(@yellow-color),
+                          hsvsaturation(@yellow-color),
+                          hsvvalue(@yellow-color) * 0.8);
+
+@green-active-color: hsv(hsvhue(@green-color),
+                         hsvsaturation(@green-color),
+                         hsvvalue(@green-color) * 0.8);
+
+@cyan-active-color: hsv(hsvhue(@cyan-color),
+                        hsvsaturation(@cyan-color),
+                        hsvvalue(@cyan-color) * 0.8);
+
+
+/* common UI elements colors */
+
+@background-root-color: #ececec;
+@background-color: @white-color;
+@foreground-color: @gray-color;
+@border-color: #e6e6e6;
+@disabled-color: @lightgray-color;
+@disabled-foreground-color: @gray-color;
+
+@background-active-color: @background-root-color;
+@foreground-active-color: @white-color;
+
+@interactive-color: @blue-color;
+@interactive-active-color: @blue-active-color;
+
+@highlight-color: @orange-color;
+@highlight-active-color: @orange-active-color;
+
+@danger-color: @red-color;
+@danger-active-color: @red-active-color;
+
+
+@selection-color: @interactive-color;
+@focus-color: @interactive-color;
+@focus-active-color: @interactive-active-color;
+
+@floating-background-color: @background-color;
+@floating-shadow-color: rgba(0, 0, 0, 0.1);
+@bar-shadow-color: rgba(0, 0, 0, 0.2);
+@thick-shadow-color: rgba(0, 0, 0, 0.3);
+
+
+/* message colors */
+
+@info-color: @foreground-color;
+@warning-color: @highlight-color;
+@error-color: @danger-color;
+@warning-active-color: @highlight-active-color;
+@error-active-color: @danger-active-color;
+
+
+/* icon colors */
+
+@background-icon-y-offset: @white-icon-y-offset;
+@foreground-icon-y-offset: @gray-icon-y-offset;
+@disabled-icon-y-offset: @lightgray-icon-y-offset;
+@interactive-icon-y-offset: @blue-icon-y-offset;
+@highlight-icon-y-offset: @orange-icon-y-offset;
+@danger-icon-y-offset: @red-icon-y-offset;
+@info-icon-y-offset: @gray-icon-y-offset;
+@warning-icon-y-offset: @orange-icon-y-offset;
+@error-icon-y-offset: @red-icon-y-offset;
+
+
+/* misc */
+
+@transition-duration: 0.2s;
+@glass-opacity: 75%;
+@modal-background-brightness: 90%;

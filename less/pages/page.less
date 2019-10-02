@@ -1,0 +1,65 @@
+
+@import (reference) "../theme";
+
+
+div.qui-page {
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    overflow: auto;
+    opacity: 0;
+    border-right: solid @border-color 0.0625em;
+    background: @background-color;
+    transition: opacity @transition-duration ease-out,
+                width @transition-duration ease,
+                left @transition-duration ease;
+}
+
+div.qui-page.attached {
+    left: -100%;
+}
+
+div.qui-page.visible {
+    opacity: 1;
+    z-index: 1;
+}
+
+body.small-screen > div.qui-main-container > div.qui-pages-container > div.qui-page.visible,
+body.small-screen > div.qui-global-glass > div.qui-global-glass-container > div.qui-page.visible {
+    width: 100% !important;
+    left: 0 !important;
+}
+
+div.qui-page.current {
+    z-index: 9;
+}
+
+body:NOT(.small-screen) > div.qui-main-container > div.qui-pages-container > div.qui-page.column {
+    width: 25%;
+}
+
+body.small-screen > div.qui-main-container > div.qui-pages-container > div.qui-page.visible,
+body.small-screen > div.qui-global-glass > div.qui-global-glass-container > div.qui-page.visible,
+div.qui-pages-container.full > div.qui-page {
+    border-right: 0;  /* Remove right border if last page extends to cover the entire container */
+}
+
+div.qui-page.transparent,
+div.qui-page.modal {
+    background: transparent;
+}
+
+div.qui-page.modal {
+    /* Prevent horizontal moving effect for modal pages */
+    left: 0 !important;
+}
+
+body.small-screen > div.qui-global-glass > div.qui-global-glass-container > div.qui-page.modal {
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

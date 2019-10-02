@@ -1,0 +1,37 @@
+
+@import (reference) "../base";
+@import (reference) "../theme";
+
+
+div.qui-combo-item.selected > div.qui-color-combo-entry,
+div.qui-combo-container:FOCUS > div.qui-combo-button > span.combo-label > div.qui-color-combo-entry {
+    border-color: @background-color;
+}
+
+div.qui-color-combo-entry-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.qui-color-combo-entry-color {
+    width: 1em;
+    height: 1em;
+    box-sizing: border-box;
+    border-radius: 0.1em;
+    border: 0.0625em solid @foreground-color;
+    display: inline-block;
+    vertical-align: middle;
+    transition: border-color @transition-duration linear;
+    position: relative;
+    margin: 0.375em;
+}
+
+span.qui-color-combo-entry-text {
+    position: relative;
+    font-size: 0.9em;
+    vertical-align: middle;
+}
+
+body.small-screen div.qui-combo-item > div.qui-color-combo-entry-label > div.qui-color-combo-entry-color {
+    margin: 0.75em;
+}

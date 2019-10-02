@@ -1,0 +1,341 @@
+
+@import (reference) "theme";
+
+
+/* main container */
+
+div.qui-main-container {
+    background: @background-root-color;
+    position: absolute;
+    top: 3.0625em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: top @transition-duration ease,
+                margin @transition-duration ease,
+                opacity @transition-duration linear,
+                filter @transition-duration linear;
+    overflow: hidden;
+}
+
+div.qui-main-container-glass {
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    transition: background @transition-duration ease;
+}
+
+div.qui-main-container-glass.visible {
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    background: fade(@background-color, @glass-opacity);
+}
+
+div.qui-pages-container {
+    height: 100%;
+}
+
+
+/* top bar */
+
+div.qui-top-bar {
+    position: absolute;
+    z-index: 14;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: @background-color;
+    height: 3em;
+    transition: top @transition-duration ease,
+                box-shadow @transition-duration ease;
+    white-space: nowrap;
+    border-color: @border-color;
+    border-style: solid;
+    border-bottom-width: 0.0625em;
+    overflow: hidden;
+}
+
+body.small-screen > div.qui-top-bar {
+    background: @interactive-color;
+    border-color: @top-border-color;
+}
+
+body.content-scrolled > div.qui-top-bar,
+body.menu-bar-open > div.qui-top-bar,
+body.options-bar-open > div.qui-top-bar {
+    box-shadow: 0 0.3125em 0.5em -0.3125em @bar-shadow-color;
+}
+
+body.content-scrolled.toast-message-visible > div.qui-top-bar {
+    box-shadow: none;
+}
+
+div.qui-top-bar div.qui-icon-decoration {
+    border-color: @background-color !important;
+}
+
+body.small-screen > div.qui-top-bar div.qui-icon-decoration {
+    border-color: @white-color !important;
+}
+
+div.qui-top-button {
+    float: right;
+    display: inline-block;
+    background: @background-color;
+    height: 3em;
+    width: 3em;
+    border-left-width: 0.0625em;
+    border-style: solid;
+    border-color: @border-color;
+}
+
+body.small-screen > div.qui-top-bar > div.qui-top-button {
+    background: @interactive-color;
+    border-color: @top-border-color;
+}
+
+div.qui-top-button > .qui-icon {
+    width: 2em;
+    height: 2em;
+    margin: 0.5em;
+}
+
+div.qui-top-button.active,
+div.qui-top-button.selected {
+    background: @background-active-color;
+    border-color: @border-color;
+}
+
+body.small-screen > div.qui-top-bar > div.qui-top-button.active,
+body.small-screen > div.qui-top-bar > div.qui-top-button.selected {
+    background: @top-border-color;
+    border-color: @top-border-color;
+}
+
+div.qui-menu-button {
+    float: left;
+    position: relative;
+    overflow: hidden;
+    border-left-width: 0;
+    border-right-width: 0.0625em;
+    left: 0;
+    transition: left @transition-duration ease,
+                margin-right @transition-duration ease,
+                background @transition-duration ease;
+}
+
+div.qui-menu-button.hidden {
+    left: -3em;
+    margin-right: -3em;
+}
+
+div.qui-menu-button > div.qui-icon {
+    transition: transform @transition-duration ease;
+}
+
+div.qui-menu-button.active > div.qui-icon,
+div.qui-menu-button.selected > div.qui-icon {
+    transform: rotate(90deg);
+}
+
+div.qui-options-button {
+    transition: width @transition-duration ease,
+                background @transition-duration ease;
+}
+
+div.qui-options-button.hidden {
+    width: 0;
+    border: 0;
+}
+
+div.qui-options-button > div.qui-icon {
+    transition: transform @transition-duration ease;
+}
+
+div.qui-options-button.active > div.qui-icon,
+div.qui-options-button.selected > div.qui-icon {
+    transform: rotate(90deg);
+}
+
+div.qui-status-indicator.progress > div.qui-icon > div {
+    animation: spin 1s linear infinite;
+}
+
+div.qui-top-bar > div.qui-top-bar-title-container {
+    display: inline-block;
+    max-width: 55%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 3em;
+    line-height: 3em;
+    padding-left: 1em;
+    color: @foreground-color;
+    font-weight: bold;
+}
+
+body.small-screen > div.qui-top-bar > div.qui-top-bar-title-container {
+    background: @interactive-color;
+    color: @white-color;
+}
+
+body:NOT(.small-screen) > div.qui-top-bar > div.qui-top-bar-title-container {
+    display: none;
+}
+
+
+/* menu bar */
+
+div.qui-menu-bar {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: -15em;
+    top: 3.0625em;
+    bottom: 0;
+    width: 15em;
+    box-sizing: border-box;
+    background: @background-color;
+    transition: left @transition-duration ease,
+                box-shadow @transition-duration ease,
+                opacity @transition-duration ease;
+    z-index: 16;
+    opacity: 1;
+    touch-action: none;
+    overflow: auto;
+}
+
+body.menu-bar-open:NOT(.no-top-bar) > div.qui-menu-bar {
+    left: 0;
+    opacity: 1;
+    box-shadow: 0 0.3em 0.5em @bar-shadow-color;
+}
+
+body.menu-bar-open > div.qui-main-container,
+body.menu-bar-open > div.qui-toast-message-container {
+    filter: brightness(@modal-background-brightness);
+}
+
+div.qui-menu-bar-button {
+    position: relative;
+    width: 100%;
+    height: 3em;
+    font-weight: bold;
+    box-sizing: border-box;
+    background: @background-color;
+    color: @interactive-color;
+    border-style: solid;
+    border-color: @border-color;
+    border-bottom-width: 0.0625em;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+div.qui-menu-bar-button.active {
+    background: @background-active-color;
+}
+
+div.qui-menu-bar-button.selected {
+    background: @interactive-color;
+    color: @background-color;
+}
+
+div.qui-menu-bar-button.active.selected {
+    background: @top-border-color;
+    color: @background-color;
+}
+
+div.qui-menu-bar-button > .qui-icon {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    margin: 0.5em;
+    vertical-align: middle;
+}
+
+div.qui-menu-bar-button > .label {
+    vertical-align: middle;
+}
+
+body.menu-bar-open > div.qui-main-container > div.qui-main-container-glass,
+body.options-bar-open > div.qui-main-container > div.qui-main-container-glass {
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+}
+
+
+/* options bar */
+
+div.qui-options-bar {
+    position: absolute;
+    overflow: auto;
+    opacity: 0;
+    right: -50em;
+    top: 3.0625em;
+    bottom: 0;
+    width: 20%;
+    box-sizing: border-box;
+    background: @background-color;
+    border-color: @border-color;
+    border-style: solid;
+    border-left-width: 0.0625em;
+    transition: right @transition-duration ease,
+                box-shadow @transition-duration ease,
+                opacity @transition-duration ease;
+    z-index: 15;
+    touch-action: none;
+}
+
+body.small-screen > div.qui-options-bar {
+    border-left: 0;
+    right: -15em;
+    width: 15em;
+}
+
+body.options-bar-open:NOT(.no-top-bar) > div.qui-options-bar {
+    right: 0;
+    opacity: 1;
+    box-shadow: 0 0.3em 0.5em @bar-shadow-color;
+}
+
+div.qui-options-bar > div.options-bar-container {
+    transition: opacity @transition-duration ease;
+    opacity: 1;
+}
+
+div.qui-options-bar.updating > div.options-bar-container {
+    opacity: 0;
+}
+
+body.options-bar-open > div.qui-main-container,
+body.options-bar-open > div.qui-toast-message-container {
+    filter: brightness(@modal-background-brightness);
+}
+
+
+/* full screen */
+
+body.no-top-bar > div.qui-top-bar {
+    top: -3em;
+    border-bottom-width: 0;
+}
+
+body.no-top-bar > div.qui-main-container {
+    top: 0;
+}
+
+body.no-top-bar.menu-bar-open > div.qui-main-container,
+body.no-top-bar.menu-bar-open > div.qui-toast-message-container {
+    margin-left: 0;
+}
+
+body.no-top-bar.options-bar-open > div.qui-main-container,
+body.no-top-bar.options-bar-open > div.qui-toast-message-container {
+    margin-right: 0;
+}

@@ -1,0 +1,196 @@
+
+@import (reference) "theme";
+
+
+/* view itself */
+
+.qui-structured-view {
+    position: relative;
+    margin: auto;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+
+/* top */
+
+div.qui-structured-view-top {
+    height: 2em;
+    background: @background-color;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    border-style: solid;
+    border-color: @border-color;
+    border-bottom-width: 0.0625em;
+    position: relative;
+    box-sizing: content-box;
+}
+
+.qui-structured-view.topless > div.qui-structured-view-top {
+    display: none;
+}
+
+body:NOT(.small-screen) .qui-structured-view.no-large-screen-top:NOT(.minimizable) >  div.qui-structured-view-top {
+    display: none;
+}
+
+.qui-structured-view.iconless > div.qui-structured-view-top {
+    padding-left: 0.3em;
+    line-height: 2em;
+}
+
+.qui-structured-view.large-top > div.qui-structured-view-top {
+    height: 3em;
+}
+
+.qui-structured-view.iconless.large-top > div.qui-structured-view-top {
+    padding-left: 0.5em;
+    line-height: 3em;
+}
+
+.qui-structured-view.minimizable > div.qui-structured-view-top {
+    color: @interactive-color;
+}
+
+.qui-structured-view.minimizable > div.qui-structured-view-top.active {
+    background: @background-color;
+    color: @interactive-active-color;
+}
+
+.qui-structured-view.minimizable > div.qui-structured-view-top.selected,
+.qui-structured-view.minimizable > div.qui-structured-view-top.active {
+    background-color: @interactive-color;
+    color: @white-color;
+}
+
+body.small-screen > div.qui-main-container > div.qui-pages-container > div.qui-page > .qui-structured-view > div.qui-structured-view-top {
+    display: none;  /* replaced by top bar title */
+}
+
+
+/* title, icon & other top bar stuff */
+
+span.qui-structured-view-title {
+    vertical-align: middle;
+}
+
+.qui-structured-view.large-top > div.qui-structured-view-top > span.qui-structured-view-title {
+    font-weight: bold;
+}
+
+div.qui-structured-view-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 2em;
+    height: 2em;
+}
+
+.qui-structured-view.large-top > div.qui-structured-view-top > div.qui-structured-view-icon {
+    margin: 0.5em;
+}
+
+.qui-structured-view.iconless > div.qui-structured-view-top > div.qui-structured-view-icon {
+    display: none;
+}
+
+div.qui-structured-view-icon > div {
+    transform: scale(0.75);
+}
+
+.qui-structured-view.large-top > div.qui-structured-view-top > div.qui-structured-view-icon > div {
+    transform: none;
+}
+
+div.qui-structured-view-minimize-button {
+    width: 2em;
+    height: 2em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    background: @background-color;
+    box-sizing: content-box;
+}
+
+div.qui-structured-view-minimize-button.active {
+    background: @background-color;
+}
+
+.qui-structured-view.large-top > div.qui-structured-view-top > div.qui-structured-view-minimize-button {
+    width: 3em;
+    height: 3em;
+}
+
+div.qui-structured-view-top > div.qui-structured-view-minimize-button > div {
+    margin: 0.25em;
+    transition: all @transition-duration ease;
+    transform: rotate(180deg);
+}
+
+.qui-structured-view.large-top > div.qui-structured-view-top > div.qui-structured-view-minimize-button > div {
+    margin: 0.5em;
+}
+
+.qui-structured-view.minimizable > div.qui-structured-view-top > div.qui-structured-view-minimize-button {
+    background: transparent;
+}
+
+.qui-structured-view.minimized > div.qui-structured-view-top > div.qui-structured-view-minimize-button > div {
+    transform: rotate(0deg);
+}
+
+
+/* close button */
+
+div.qui-structured-view-close-button {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    background: @background-color;
+    box-sizing: content-box;
+}
+
+div.qui-structured-view-close-button.active {
+    background: @background-color;
+}
+
+div.qui-structured-view-top > div.qui-structured-view-close-button > div {
+    margin: 0.25em;
+}
+
+.qui-structured-view.large-top > div.qui-structured-view-top > div.qui-structured-view-close-button {
+    width: 3em;
+    height: 3em;
+}
+
+.qui-structured-view.large-top > div.qui-structured-view-top > div.qui-structured-view-close-button > div {
+    margin: 0.5em;
+}
+
+
+/* body */
+
+div.qui-structured-view-body {
+    transition: max-height @transition-duration ease,
+                padding @transition-duration ease;
+    overflow: hidden;
+}
+
+.qui-structured-view.minimized > div.qui-structured-view-body {
+    max-height: 0 !important;
+    border: 0;
+    padding: 0;
+}
+
+
+/* bottom */
+
+.qui-structured-view.minimized > div.qui-structured-view-bottom {
+    display: none !important;
+}

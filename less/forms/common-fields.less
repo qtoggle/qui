@@ -1,0 +1,115 @@
+
+@import (reference) "../theme";
+
+
+/* Fields based on input entries */
+
+div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=text],
+div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=password],
+div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=number],
+div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=tel],
+div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=email] {
+    border-color: @error-color;
+}
+
+div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=text]:FOCUS,
+div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=password]:FOCUS,
+div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=number]:FOCUS,
+div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=tel]:FOCUS,
+div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=email]:FOCUS {
+    background: @error-color;
+}
+
+
+div.qui-form-field-value > div.text-input > input,
+div.qui-form-field-value > div.text-input > textarea {
+    width: 100%;
+}
+
+
+/* Check field */
+
+div.qui-form-field.has-error > div.qui-form-field-value > div.qui-check-button:NOT(.readonly):NOT(.disabled) {
+    border-color: @error-color;
+}
+
+div.qui-form-field.has-error > div.qui-form-field-value >
+        div.qui-check-button.on:NOT(.active):NOT(.readonly):NOT(.disabled) {
+
+    background: @error-color;
+}
+
+div.qui-form-field.has-error > div.qui-form-field-value > div.qui-check-button.on.active:NOT(.readonly):NOT(.disabled) {
+    background: @error-active-color;
+}
+
+div.qui-form-body > div.qui-form-field.jquery-ui-checkbutton.auto-width {
+    /* Position the check field label and value on the same line */
+
+    & {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+    }
+
+    & > div.qui-form-field-description,
+    & > div.qui-form-field-warning,
+    & > div.qui-form-field-error {
+        grid-column-start: 1;
+        grid-column-end: 4;
+    }
+
+    & > div.qui-form-field-label {
+        align-self: center;
+    }
+}
+
+
+/* Combo */
+
+div.qui-form-field.has-error > div.qui-form-field-value > div.qui-combo-container:NOT(.disabled) >
+        div.qui-combo-button {
+
+    border-color: @error-color;
+}
+
+div.qui-form-field.has-error > div.qui-form-field-value > div.qui-combo-container:NOT(.disabled) >
+        div.qui-combo-button.active {
+
+    border-color: @error-active-color;
+    background: @error-active-color;
+}
+
+div.qui-form-field.has-error > div.qui-form-field-value > div.qui-combo-container:FOCUS > div.qui-combo-button,
+div.qui-form-field.has-error > div.qui-form-field-value > div.qui-combo-container > div.qui-combo-button.open {
+    background: @error-color;
+    border-color: @error-color;
+}
+
+div.qui-form-field.has-error > div.qui-form-field-value > div.qui-combo-container:NOT(:FOCUS) >
+        div.qui-combo-button:NOT(.active):NOT(.open) > span.qui-combo-arrow-separator {
+
+    border-color: @error-color;
+}
+
+div.qui-form-field.has-error > div.qui-form-field-value > div.qui-combo-container:NOT(:FOCUS) >
+        div.qui-combo-button:NOT(.active):NOT(.open) > span.qui-combo-arrow {
+
+    border-top-color: @error-color;
+}
+
+
+/* Push button */
+
+div.qui-form-field-value > div.form-push-button {
+    padding: 0 0.5em;
+    line-height: 2.5em;
+}
+
+
+/* Labels */
+
+div.qui-form-field-value > div.qui-labels-container.chevrons {
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: auto;
+}

@@ -1,0 +1,60 @@
+
+@import (reference) "theme";
+
+
+div.qui-global-glass {
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: opacity @transition-duration ease;
+    opacity: 0;
+    background: fade(@background-root-color, 85%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div.qui-global-glass.hidden {
+    display: none;
+    width: 0;
+    height: 0;
+    right: auto;
+    bottom: auto;
+}
+
+body.global-glass-visible > div.qui-global-glass {
+    opacity: 1;
+}
+
+div.qui-global-glass-container.hidden {
+    display: none;
+}
+
+div.qui-global-glass-container.visible {
+    display: block;
+}
+
+/* Hide all but last children */
+div.qui-global-glass-container > :NOT(:LAST-CHILD) {
+    opacity: 0 !important;
+}
+
+/* Ensure sticky children are at the top of the stack */
+div.qui-global-glass-container > .sticky {
+    z-index: 1000 !important;
+}
+
+body.global-glass-visible {
+
+    div.qui-top-bar,
+    div.qui-toast-message-container,
+    div.qui-main-container,
+    div.qui-menu-bar,
+    div.qui-options-bar {
+        filter: blur(0.2em);
+    }
+
+}

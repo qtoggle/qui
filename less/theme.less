@@ -1,0 +1,380 @@
+
+@import (reference) "theme-@{qui_theme}";
+
+
+/* intermediate theme variables */
+
+@top-border-color: mix(@interactive-color, @interactive-active-color, 50%);
+
+
+/* following rules are used only to obtain
+ * these variable names in js code */
+
+
+/* base colors */
+
+br.-theme-darkgray-color {
+    color: @darkgray-color;
+}
+
+br.-theme-gray-color {
+    color: @gray-color;
+}
+
+br.-theme-lightgray-color {
+    color: @lightgray-color;
+}
+
+br.-theme-white-color {
+    color: @white-color;
+}
+
+br.-theme-blue-color {
+    color: @blue-color;
+}
+
+br.-theme-magenta-color {
+    color: @magenta-color;
+}
+
+br.-theme-red-color {
+    color: @red-color;
+}
+
+br.-theme-orange-color {
+    color: @orange-color;
+}
+
+br.-theme-yellow-color {
+    color: @yellow-color;
+}
+
+br.-theme-green-color {
+    color: @green-color;
+}
+
+br.-theme-cyan-color {
+    color: @cyan-color;
+}
+
+
+br.-theme-darkgray-active-color {
+    color: @darkgray-active-color;
+}
+
+br.-theme-gray-active-color {
+    color: @gray-active-color;
+}
+
+br.-theme-lightgray-active-color {
+    color: @lightgray-active-color;
+}
+
+br.-theme-white-active-color {
+    color: @white-active-color;
+}
+
+br.-theme-blue-active-color {
+    color: @blue-active-color;
+}
+
+br.-theme-magenta-active-color {
+    color: @magenta-active-color;
+}
+
+br.-theme-red-active-color {
+    color: @red-active-color;
+}
+
+br.-theme-orange-active-color {
+    color: @orange-active-color;
+}
+
+br.-theme-yellow-active-color {
+    color: @yellow-active-color;
+}
+
+br.-theme-green-active-color {
+    color: @green-active-color;
+}
+
+br.-theme-cyan-active-color {
+    color: @cyan-active-color;
+}
+
+
+/* common UI elements colors */
+
+br.-theme-background-root-color {
+    color: @background-root-color;
+}
+
+br.-theme-background-color {
+    color: @background-color;
+}
+
+br.-theme-foreground-color {
+    color: @foreground-color;
+}
+
+br.-theme-border-color {
+    color: @border-color;
+}
+
+br.-theme-disabled-color {
+    color: @disabled-color;
+}
+
+br.-theme-disabled-foreground-color {
+    color: @disabled-foreground-color;
+}
+
+br.-theme-background-active-color {
+    color: @background-active-color;
+}
+
+br.-theme-foreground-active-color {
+    color: @foreground-active-color;
+}
+
+br.-theme-interactive-color {
+    color: @interactive-color;
+}
+
+br.-theme-interactive-active-color {
+    color: @interactive-active-color;
+}
+
+br.-theme-highlight-color {
+    color: @highlight-color;
+}
+
+br.-theme-highlight-active-color {
+    color: @highlight-active-color;
+}
+
+br.-theme-danger-color {
+    color: @danger-color;
+}
+
+br.-theme-danger-active-color {
+    color: @danger-active-color;
+}
+
+br.-theme-warning-color {
+    color: @warning-color;
+}
+
+br.-theme-info-color {
+    color: @info-color;
+}
+
+br.-theme-error-color {
+    color: @error-color;
+}
+
+br.-theme-selection-color {
+    color: @selection-color;
+}
+
+br.-theme-focus-color {
+    color: @focus-color;
+}
+
+br.-theme-focus-active-color {
+    color: @focus-active-color;
+}
+
+br.-theme-floating-shadow-color {
+    color: @floating-shadow-color;
+}
+
+br.-theme-bar-shadow-color {
+    color: @bar-shadow-color;
+}
+
+br.-theme-thick-shadow-color {
+    color: @thick-shadow-color;
+}
+
+
+/* icon colors */
+
+br.-theme-darkgray-icon-y-offset {
+    margin-left: @darkgray-icon-y-offset;
+}
+
+br.-theme-gray-icon-y-offset {
+    margin-left: @gray-icon-y-offset;
+}
+
+br.-theme-lightgray-icon-y-offset {
+    margin-left: @lightgray-icon-y-offset;
+}
+
+br.-theme-white-icon-y-offset {
+    margin-left: @white-icon-y-offset;
+}
+
+br.-theme-blue-icon-y-offset {
+    margin-left: @blue-icon-y-offset;
+}
+
+br.-theme-magenta-icon-y-offset {
+    margin-left: @magenta-icon-y-offset;
+}
+
+br.-theme-red-icon-y-offset {
+    margin-left: @red-icon-y-offset;
+}
+
+br.-theme-orange-icon-y-offset {
+    margin-left: @orange-icon-y-offset;
+}
+
+br.-theme-yellow-icon-y-offset {
+    margin-left: @yellow-icon-y-offset;
+}
+
+br.-theme-green-icon-y-offset {
+    margin-left: @green-icon-y-offset;
+}
+
+br.-theme-cyan-icon-y-offset {
+    margin-left: @cyan-icon-y-offset;
+}
+
+
+br.-theme-background-icon-y-offset {
+    margin-left: @background-icon-y-offset;
+}
+
+br.-theme-foreground-icon-y-offset {
+    margin-left: @foreground-icon-y-offset;
+}
+
+br.-theme-disabled-icon-y-offset {
+    margin-left: @disabled-icon-y-offset;
+}
+
+br.-theme-interactive-icon-y-offset {
+    margin-left: @interactive-icon-y-offset;
+}
+
+br.-theme-highlight-icon-y-offset {
+    margin-left: @highlight-icon-y-offset;
+}
+
+br.-theme-danger-icon-y-offset {
+    margin-left: @danger-icon-y-offset;
+}
+
+br.-theme-info-icon-y-offset {
+    margin-left: @info-icon-y-offset;
+}
+
+br.-theme-warning-icon-y-offset {
+    margin-left: @warning-icon-y-offset;
+}
+
+br.-theme-error-icon-y-offset {
+    margin-left: @error-icon-y-offset;
+}
+
+
+/* icon offsets */
+
+br.-theme-plus-icon-x-offset {
+    margin-left: @plus-icon-x-offset;
+}
+    
+br.-theme-minus-icon-x-offset {
+    margin-left: @minus-icon-x-offset;
+}
+    
+br.-theme-close-icon-x-offset {
+    margin-left: @close-icon-x-offset;
+}
+    
+br.-theme-fat-arrow-icon-x-offset {
+    margin-left: @fat-arrow-icon-x-offset;
+}
+    
+br.-theme-slim-arrow-icon-x-offset {
+    margin-left: @slim-arrow-icon-x-offset;
+}
+    
+br.-theme-info-icon-x-offset {
+    margin-left: @info-icon-x-offset;
+}
+    
+br.-theme-qmark-icon-x-offset {
+    margin-left: @qmark-icon-x-offset;
+}
+    
+br.-theme-exclam-icon-x-offset {
+    margin-left: @exclam-icon-x-offset;
+}
+    
+br.-theme-check-icon-x-offset {
+    margin-left: @check-icon-x-offset;
+}
+    
+br.-theme-wrench-icon-x-offset {
+    margin-left: @wrench-icon-x-offset;
+}
+    
+br.-theme-sliders-icon-x-offset {
+    margin-left: @sliders-icon-x-offset;
+}
+    
+br.-theme-key-icon-x-offset {
+    margin-left: @key-icon-x-offset;
+}
+    
+br.-theme-user-icon-x-offset {
+    margin-left: @user-icon-x-offset;
+}
+    
+br.-theme-sync-icon-x-offset {
+    margin-left: @sync-icon-x-offset;
+}
+
+br.-theme-magnifier-icon-x-offset {
+    margin-left: @magnifier-icon-x-offset;
+}
+
+br.-theme-menu-icon-x-offset {
+    margin-left: @menu-icon-x-offset;
+}
+    
+br.-theme-options-icon-x-offset {
+    margin-left: @options-icon-x-offset;
+}
+
+br.-theme-full-screen-icon-x-offset {
+    margin-left: @full-screen-icon-x-offset;
+}
+    
+br.-theme-duplicate-icon-x-offset {
+    margin-left: @duplicate-icon-x-offset;
+}
+
+br.-theme-envelope-icon-x-offset {
+    margin-left: @envelope-icon-x-offset;
+}
+
+
+/* misc */
+
+br.-theme-transition-duration {
+    transition-duration: @transition-duration;
+}
+
+br.-theme-glass-opacity {
+    margin-left: @glass-opacity;
+}
+
+br.-theme-modal-background-brightness {
+    margin-left: @modal-background-brightness;
+}

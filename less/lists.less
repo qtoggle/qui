@@ -1,0 +1,147 @@
+
+@import (reference) "theme";
+
+
+/* list main div */
+
+div.qui-list {
+    background: @background-color;
+}
+
+
+/* list progress */
+
+div.qui-list-progress-widget {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    margin-left: -2em;
+    z-index: 1001;
+    transform: scale(0);
+    transition: transform @transition-duration ease;
+    cursor: progress;
+}
+
+div.qui-list-progress-widget.visible {
+    transform: scale(1);
+}
+
+div.qui-list-glass {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: opacity @transition-duration ease;
+    opacity: 0;
+    background: @background-color;
+    cursor: progress;
+    text-align: center;
+    padding-top: 40%;
+}
+
+div.qui-list-glass.visible {
+    opacity: 0.9;
+    z-index: 1000;
+}
+
+div.list-glass-icon {
+    display: inline-block;
+    width: 4em;
+    height: 4em;
+}
+
+div.qui-list-glass.visible div.list-glass-icon {
+    animation: spin 1s linear infinite;
+}
+
+
+/* list items */
+
+.qui-list-child {
+    display: block;
+    height: 3em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+    border-bottom: 0.0625em solid @border-color;
+    background: @background-color;
+    color: @interactive-color;
+}
+
+.qui-list-child.active {
+    background: @background-active-color;
+}
+
+.qui-list-child.selected {
+    background: @interactive-color;
+    color: @background-color;
+}
+
+.qui-list-child.active.selected {
+    background: @interactive-active-color;
+    color: @background-color;
+}
+
+.qui-list-child > .qui-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 2em;
+    height: 2em;
+    margin: 0.5em;
+}
+
+.qui-list-child > .label {
+    vertical-align: middle;
+}
+
+.qui-list-child.item {
+    transition: height @transition-duration ease,
+                background @transition-duration ease,
+                color @transition-duration ease,
+                opacity @transition-duration ease;
+}
+
+.qui-list-child.item.hidden {
+    height: 0;
+    border: 0;
+}
+
+
+/* list search */
+
+.qui-list-child.search > div.qui-list-search-wrapper {
+    position: relative;
+}
+
+.qui-list-child.search > div.qui-list-search-wrapper > input[type=text] {
+    width: 100%;
+    box-sizing: border-box;
+    height: 3em;
+    padding: 0.5em 2.75em 0.5em 0.5em;
+    border: 0;
+    border-radius: 0;
+}
+
+.qui-list-child.search > div.qui-list-search-wrapper > div.qui-icon {
+    cursor:  pointer;
+    width: 2em;
+    height: 2em;
+    margin: 0.5em;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+
+/* list add */
+
+.qui-list-child.add {
+    text-align: center;
+}
+
+.qui-list-child.add > .qui-icon {
+    margin-top: 0.5em;
+}

@@ -1,0 +1,288 @@
+
+@import (reference) "../base";
+@import (reference) "../theme";
+
+
+input[type=text],
+input[type=password],
+input[type=number],
+input[type=tel],
+input[type=email],
+textarea {
+    border: 0.0625em solid @interactive-color;
+    border-radius: 0.2em;
+    padding: 0.25em;
+    background: @background-color;
+    color: @foreground-color;
+    resize: none;
+    transition: background @transition-duration linear,
+                color @transition-duration linear,
+                border-color @transition-duration linear;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: 1.15em;
+    box-sizing: border-box;
+}
+
+input[type=text],
+input[type=password],
+input[type=number],
+input[type=tel],
+input[type=email] {
+    height: 1.75em;
+}
+
+input[type=text]:FOCUS,
+input[type=password]:FOCUS,
+input[type=number]:FOCUS,
+input[type=tel]:FOCUS,
+input[type=email]:FOCUS,
+textarea:FOCUS {
+    background: @focus-color;
+    border-color: @focus-color;
+    color: @foreground-active-color;
+}
+
+input[type=text][readonly],
+input[type=password][readonly],
+input[type=number][readonly],
+input[type=tel][readonly],
+input[type=email][readonly],
+textarea[readonly] {
+    color: @foreground-color;
+    border-color: @disabled-color;
+    background: transparent;
+}
+
+input[type=text][disabled],
+input[type=password][disabled],
+input[type=number][disabled],
+input[type=tel][disabled],
+input[type=email][disabled],
+textarea[disabled] {
+    .noselect;
+    border-color: @disabled-color;
+    color: @disabled-foreground-color;
+}
+
+input[type=text]::selection {
+    background: fade(@foreground-active-color, 99%);
+    color: @focus-color;
+}
+
+input[type=password]::selection {
+    background: fade(@foreground-active-color, 99%);
+    color: @focus-color;
+}
+
+input[type=number]::selection {
+    background: fade(@foreground-active-color, 99%);
+    color: @focus-color;
+}
+
+input[type=tel]::selection {
+    background: fade(@foreground-active-color, 99%);
+    color: @focus-color;
+}
+
+input[type=email]::selection {
+    background: fade(@foreground-active-color, 99%);
+    color: @focus-color;
+}
+
+textarea::selection {
+    background: fade(@foreground-active-color, 99%);
+    color: @focus-color;
+} 
+
+input[type=text]::-moz-selection {
+    background: @foreground-active-color;
+    color: @focus-color;
+}
+
+input[type=password]::-moz-selection {
+    background: @foreground-active-color;
+    color: @focus-color;
+}
+
+input[type=number]::-moz-selection {
+    background: @foreground-active-color;
+    color: @focus-color;
+}
+
+input[type=tel]::-moz-selection {
+    background: @foreground-active-color;
+    color: @focus-color;
+}
+
+input[type=email]::-moz-selection {
+    background: @foreground-active-color;
+    color: @focus-color;
+}
+
+textarea::-moz-selection {
+    background: @foreground-active-color;
+    color: @focus-color;
+}
+
+
+input[type=text][readonly]::selection {
+    background: fade(@interactive-color, 99%);
+    color: @background-color;
+}
+
+input[type=password][readonly]::selection {
+    background: fade(@interactive-color, 99%);
+    color: @background-color;
+}
+
+input[type=number][readonly]::selection {
+    background: fade(@interactive-color, 99%);
+    color: @background-color;
+}
+
+input[type=tel][readonly]::selection {
+    background: fade(@interactive-color, 99%);
+    color: @background-color;
+}
+
+input[type=email][readonly]::selection {
+    background: fade(@interactive-color, 99%);
+    color: @background-color;
+}
+
+textarea[readonly]::selection {
+    background: fade(@interactive-color, 99%);
+    color: @background-color;
+} 
+
+input[type=text][readonly]::-moz-selection {
+    background: @interactive-color;
+    color: @background-color;
+}
+
+input[type=password][readonly]::-moz-selection {
+    background: @interactive-color;
+    color: @background-color;
+}
+
+input[type=number][readonly]::-moz-selection {
+    background: @interactive-color;
+    color: @background-color;
+}
+
+input[type=tel][readonly]::-moz-selection {
+    background: @interactive-color;
+    color: @background-color;
+}
+
+input[type=email][readonly]::-moz-selection {
+    background: @interactive-color;
+    color: @background-color;
+}
+
+textarea[readonly]::-moz-selection {
+    background: @interactive-color;
+    color: @background-color;
+}
+
+input[type=text]::input-placeholder,
+input[type=password]::input-placeholder,
+input[type=number]::input-placeholder,
+input[type=tel]::input-placeholder,
+input[type=email]::input-placeholder,
+textarea::input-placeholder {
+    color: @disabled-color;
+}
+
+input[type=text]::-webkit-input-placeholder,
+input[type=password]::-webkit-input-placeholder,
+input[type=number]::-webkit-input-placeholder,
+input[type=tel]::-webkit-input-placeholder,
+input[type=email]::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+    color: @disabled-color;
+}
+
+input[type=text]::-moz-input-placeholder,
+input[type=password]::-moz-input-placeholder,
+input[type=number]::-moz-input-placeholder,
+input[type=tel]::-moz-input-placeholder,
+input[type=email]::-moz-input-placeholder,
+textarea::-moz-input-placeholder {
+    color: @disabled-color;
+}
+
+input[type=text]:-ms-input-placeholder,
+input[type=password]:-ms-input-placeholder,
+input[type=number]:-ms-input-placeholder,
+input[type=tel]:-ms-input-placeholder,
+input[type=email]:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+    color: @disabled-color;
+}
+
+input[type=text]:FOCUS::input-placeholder,
+input[type=password]:FOCUS::input-placeholder,
+input[type=number]:FOCUS::input-placeholder,
+input[type=tel]:FOCUS::input-placeholder,
+input[type=email]:FOCUS::input-placeholder,
+textarea:FOCUS::input-placeholder {
+    color: transparent;
+}
+
+input[type=text]:FOCUS::-webkit-input-placeholder,
+input[type=password]:FOCUS::-webkit-input-placeholder,
+input[type=number]:FOCUS::-webkit-input-placeholder,
+input[type=tel]:FOCUS::-webkit-input-placeholder,
+input[type=email]:FOCUS::-webkit-input-placeholder,
+textarea:FOCUS::-webkit-input-placeholder {
+    color: transparent;
+}
+
+input[type=text]:FOCUS::-moz-input-placeholder,
+input[type=password]:FOCUS::-moz-input-placeholder,
+input[type=number]:FOCUS::-moz-input-placeholder,
+input[type=tel]:FOCUS::-moz-input-placeholder,
+input[type=email]:FOCUS::-moz-input-placeholder,
+textarea:FOCUS::-moz-input-placeholder {
+    color: transparent;
+}
+
+input[type=text]:FOCUS:-ms-input-placeholder,
+input[type=password]:FOCUS:-ms-input-placeholder,
+input[type=number]:FOCUS:-ms-input-placeholder,
+input[type=tel]:FOCUS:-ms-input-placeholder,
+input[type=email]:FOCUS:-ms-input-placeholder,
+textarea:FOCUS:-ms-input-placeholder {
+    color: transparent;
+}
+
+input:-webkit-autofill {
+    box-shadow: 0 0 0 100em @background-color inset;
+    -webkit-text-fill-color: @interactive-color;
+    transition: box-shadow @transition-duration linear,
+                -webkit-text-fill-color @transition-duration linear;
+}
+
+input:-webkit-autofill:FOCUS {
+    color: red;
+    box-shadow: 0 0 0 100em @focus-color inset;
+    -webkit-text-fill-color: @foreground-active-color;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+div.qui-password-input-clear-icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: top;
+    position: relative;
+    top: 0.375em;
+    right: 1.4em;
+    cursor: pointer;
+}

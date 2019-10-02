@@ -1,0 +1,70 @@
+
+@import (reference) "../base";
+@import (reference) "../theme";
+
+
+div.qui-check-button {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    padding: 0.125em;
+    border-radius: 0.2em;
+    border: 0.0625em solid @interactive-color;
+    line-height: 1.2em !important;
+    text-align: center;
+    overflow: hidden;
+    background: @background-color;
+    color: @foreground-active-color;
+}
+
+div.qui-check-button:FOCUS {
+    border-color: @focus-color;
+}
+
+div.qui-check-button.active:FOCUS {
+    background: @focus-active-color;
+    border-color: @focus-active-color;
+}
+
+div.qui-check-button.on:NOT(.active) {
+    background: @interactive-color;
+}
+
+div.qui-check-button.on.active:FOCUS {
+    background: @focus-active-color;
+    border-color: @focus-active-color;
+}
+
+div.qui-check-button.on:NOT(.active):FOCUS {
+    background: @focus-color;
+}
+
+div.qui-check-button.on::BEFORE {
+    content: '\2713';
+    font-size: 1.4em;
+    cursor: pointer;
+}
+
+div.qui-check-button.readonly,
+div.qui-check-button.readonly.on,
+div.qui-check-button.readonly:FOCUS,
+div.qui-check-button.readonly.on:FOCUS {
+    color: @foreground-color;
+    border-color: @disabled-color;
+    background: transparent;
+    cursor: default;
+}
+
+div.qui-check-button.disabled,
+div.qui-check-button.disabled.on {
+    color: @disabled-foreground-color;
+    border-color: @disabled-color;
+    background: @background-color;
+    cursor: default;
+}
+
+div.qui-check-button.readonly::BEFORE,
+div.qui-check-button.disabled::BEFORE {
+    cursor: default;
+}
+

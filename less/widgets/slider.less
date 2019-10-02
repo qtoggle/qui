@@ -1,0 +1,75 @@
+
+@import (reference) "../base";
+@import (reference) "../theme";
+
+
+div.qui-slider {
+    padding: 0.5em 0.5em 0.5em;
+    overflow: hidden;
+    .noselect;
+}
+
+div.qui-slider-labels {
+    position: relative;
+    white-space: nowrap;
+    height: 1.5em;
+    margin: 0 0.5em;
+}
+
+span.qui-slider-label {
+    width: 30%;
+    text-align: center;
+    position: absolute;
+    font-size: 0.85em;
+}
+
+div.qui-slider.disabled span.qui-slider-label {
+    color: @disabled-foreground-color;
+}
+
+
+div.qui-slider-bar-container {
+    padding: 0 0.5em;
+}
+
+div.qui-slider-bar {
+    position: relative;
+    height: 0.5em;
+    border: 0.0625em solid @interactive-color;
+    border-radius: 0.2em;
+    transition: border-color @transition-duration linear;
+}
+
+div.qui-slider.disabled div.qui-slider-bar {
+    border-color: @disabled-color;
+}
+
+div.qui-slider:FOCUS div.qui-slider-bar {
+    border-color: @focus-color;
+}
+
+div.qui-slider-cursor {
+    position: absolute;
+    left: 0;
+    top: -0.5em;
+    width: 1.5em;
+    height: 1.5em;
+    margin-left: -0.75em;
+    cursor: pointer;
+    border-width: 0;
+    border-radius: 0.2em; 
+    background: @interactive-color;
+}
+
+div.qui-slider:FOCUS div.qui-slider-cursor {
+    background: @focus-color;
+}
+
+div.qui-slider:FOCUS div.qui-slider-cursor.active {
+    background: @focus-active-color;
+}
+
+div.qui-slider.disabled div.qui-slider-cursor {
+    background: @disabled-color;
+    cursor: default;
+}

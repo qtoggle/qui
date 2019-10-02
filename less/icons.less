@@ -1,0 +1,144 @@
+
+@import (reference) "theme";
+
+
+.qui-icon {
+    display: inline-block;
+    position: relative;
+}
+
+.qui-icon > div.qui-icon-normal,
+.qui-icon > div.qui-icon-active,
+.qui-icon > div.qui-icon-focused,
+.qui-icon > div.qui-icon-selected {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: opacity @transition-duration ease-in;
+    z-index: 1;
+    opacity: 0;
+}
+
+.qui-icon > div.qui-icon-hidden {
+    transition: opacity @transition-duration ease-in !important;
+    opacity: 0 !important;
+}
+
+.qui-icon > div.qui-icon-decoration {
+    display: inline-block;
+    position: absolute;
+    z-index: 10;
+    width: 0.75em;
+    height: 0.75em;
+    border: 0.0625em solid;
+    border-radius: 1em;
+    transition: all @transition-duration ease;
+    right: -0.125em;
+    bottom: -0.125em;
+}
+
+._icon_visible() {
+    opacity: 1;
+    z-index: 5;
+    transition: opacity @transition-duration ease-out;
+}
+
+
+    /* normal state */
+
+:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected) {
+    & > & + .qui-icon.top-normal:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected) > div.qui-icon-normal,
+    & > & + .qui-icon.top-active:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected) > div.qui-icon-normal,
+    & > & + .qui-icon.top-focused:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected) > div.qui-icon-normal,
+    & > & + .qui-icon.top-selected:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected) > div.qui-icon-normal,
+
+    & > .qui-icon.top-normal:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected):FIRST-CHILD > div.qui-icon-normal,
+    & > .qui-icon.top-active:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected):FIRST-CHILD > div.qui-icon-normal,
+    & > .qui-icon.top-focused:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected):FIRST-CHILD > div.qui-icon-normal,
+    & > .qui-icon.top-selected:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected):FIRST-CHILD > div.qui-icon-normal,
+
+    & + .qui-icon.top-normal:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected) > div.qui-icon-normal,
+    & + .qui-icon.top-active:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected) > div.qui-icon-normal,
+    & + .qui-icon.top-focused:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected) > div.qui-icon-normal,
+    & + .qui-icon.top-selected:NOT(.active):NOT(:FOCUS):NOT(.focused):NOT(.selected) > div.qui-icon-normal {
+        ._icon_visible();
+    }
+}
+
+
+    /* active state */
+
+.qui-icon.top-normal.active   > div.qui-icon-normal,
+.qui-icon.top-active.active   > div.qui-icon-active,
+.qui-icon.top-focused.active  > div.qui-icon-active,
+.qui-icon.top-selected.active > div.qui-icon-active {
+    ._icon_visible();
+}
+
+.active {
+    & > .qui-icon.top-normal   > div.qui-icon-normal,
+    & > .qui-icon.top-active   > div.qui-icon-active,
+    & > .qui-icon.top-focused  > div.qui-icon-active,
+    & > .qui-icon.top-selected > div.qui-icon-active,
+
+    & + .qui-icon.top-normal   > div.qui-icon-normal,
+    & + .qui-icon.top-active   > div.qui-icon-active,
+    & + .qui-icon.top-focused  > div.qui-icon-active,
+    & + .qui-icon.top-selected > div.qui-icon-active {
+        ._icon_visible();
+    }
+}
+
+
+    /* focused state */
+
+.qui-icon.top-normal:FOCUS     > div.qui-icon-normal,
+.qui-icon.top-normal.focused   > div.qui-icon-normal,
+.qui-icon.top-active:FOCUS     > div.qui-icon-active,
+.qui-icon.top-active.focused   > div.qui-icon-active,
+.qui-icon.top-focused:FOCUS    > div.qui-icon-focused,
+.qui-icon.top-focused.focused  > div.qui-icon-focused,
+.qui-icon.top-selected:FOCUS   > div.qui-icon-focused,
+.qui-icon.top-selected.focused > div.qui-icon-focused {
+    ._icon_visible();
+}
+
+:FOCUS, .focused {
+    & > .qui-icon.top-normal   > div.qui-icon-normal,
+    & > .qui-icon.top-active   > div.qui-icon-active,
+    & > .qui-icon.top-focused  > div.qui-icon-focused,
+    & > .qui-icon.top-selected > div.qui-icon-focused,
+
+    & + .qui-icon.top-normal   > div.qui-icon-normal,
+    & + .qui-icon.top-active   > div.qui-icon-active,
+    & + .qui-icon.top-focused  > div.qui-icon-focused,
+    & + .qui-icon.top-selected > div.qui-icon-focused {
+        ._icon_visible();
+    }
+}
+
+
+    /* selected state  */
+
+.qui-icon.top-normal.selected   > div.qui-icon-normal,
+.qui-icon.top-active.selected   > div.qui-icon-active,
+.qui-icon.top-focused.selected  > div.qui-icon-focused,
+.qui-icon.top-selected.selected > div.qui-icon-selected {
+    ._icon_visible();
+}
+
+.selected {
+    & > .qui-icon.top-normal   > div.qui-icon-normal,
+    & > .qui-icon.top-active   > div.qui-icon-active,
+    & > .qui-icon.top-focused  > div.qui-icon-focused,
+    & > .qui-icon.top-selected > div.qui-icon-selected,
+
+    & + .qui-icon.top-normal   > div.qui-icon-normal,
+    & + .qui-icon.top-active   > div.qui-icon-active,
+    & + .qui-icon.top-focused  > div.qui-icon-focused,
+    & + .qui-icon.top-selected > div.qui-icon-selected {
+        ._icon_visible();
+    }
+}

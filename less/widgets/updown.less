@@ -1,0 +1,74 @@
+
+@import (reference) "../base";
+@import (reference) "../theme";
+
+
+div.qui-updown-container {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+div.qui-updown-container:FOCUS > div.qui-base-button.qui-updown {
+    background: @focus-color;
+}
+ 
+div.qui-updown-container > input.qui-updown {
+    width: 100%;
+    height: 1.75em;
+    box-sizing: border-box;
+    border-color: @interactive-color;
+}
+
+div.qui-updown-container:FOCUS > input.qui-updown {
+    border-color: @focus-color;
+    color: @foreground-color;
+}
+
+div.qui-updown-container.readonly > input.qui-updown {
+    color: @foreground-color;
+    border-color: @disabled-color;
+    background: transparent;
+}
+
+div.qui-updown-container.disabled > input.qui-updown {
+    border-color: @disabled-color;
+    color: @disabled-foreground-color;
+}
+
+div.qui-updown-container > div.qui-base-button.qui-updown {
+    display: inline-block;
+    width: 1.75em;
+    height: 1.75em;
+    line-height: 1.75em;
+    vertical-align: top;
+    text-align: center;
+    border-width: 0;
+    color: @foreground-active-color;
+}
+
+div.qui-updown-container.readonly > div.qui-base-button.qui-updown,
+div.qui-updown-container.disabled > div.qui-base-button.qui-updown {
+    display: none;
+}
+
+div.qui-updown-container > div.qui-base-button.qui-updown.active {
+    background: @focus-active-color;
+}
+
+div.qui-updown-container > div.qui-base-button.qui-updown.down {
+    margin-left: -3.5625em;
+    border-radius: 0;
+}
+
+div.qui-updown-container > div.qui-base-button.qui-updown.down:AFTER {
+    content: '\2013';
+}
+
+div.qui-updown-container > div.qui-base-button.qui-updown.up {
+    border-radius: 0 0.2em 0.2em 0;
+    margin-left: 0.0625em;
+}
+
+div.qui-updown-container > div.qui-base-button.qui-updown.up:AFTER {
+    content: '+';
+}

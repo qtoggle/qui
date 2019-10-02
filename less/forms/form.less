@@ -1,0 +1,181 @@
+
+@import (reference) "../theme";
+
+
+/* form main div */
+
+form.qui-form {
+    width: 40em;
+}
+
+form.qui-form.compact {
+    width: 20em;
+}
+
+div.qui-page > form.qui-form {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    box-shadow: 0 0 0.35em 0 @floating-shadow-color;
+    transition: margin-top @transition-duration ease;
+    border-radius: 0.2em;
+}
+
+body:NOT(.small-screen) div.qui-page.modal > form.qui-form {
+    margin-top: 5em;
+}
+
+body.small-screen div.qui-page.modal > form.qui-form {
+    width: 90% !important;
+}
+
+div.qui-page.modal > form.qui-form {
+    border-radius: 0.2em;
+}
+
+div.qui-page.column > form.qui-form {
+    box-shadow: none;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+body.small-screen div.qui-pages-container > div.qui-page > form.qui-form {
+    width: 100% !important;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-radius: 0;
+    border-width: 0;
+    box-shadow: none;
+}
+
+
+/* form body */
+
+div.qui-form-body {
+    background: @background-color;
+    border-color: @border-color;
+    border-style: solid;
+    border-bottom-width: 0.0625em;
+    padding: 1.5em 0.5em;
+}
+
+form.qui-form.topless > div.qui-form-body {
+    padding-top: 0.5em;
+}
+
+form.qui-form.buttonless > div.qui-form-body {
+    padding-bottom: 0.5em;
+    border-bottom: 0;
+}
+
+form.qui-form.compact > div.qui-form-body {
+    padding: 0.5em;
+}
+
+form.qui-form.compact.minimized > div.qui-form-body {
+    padding: 0;
+}
+
+form.qui-form.no-background > div.qui-form-body {
+    background: transparent;
+}
+
+
+/* form bottom */
+
+div.qui-form-bottom {
+    background: @background-color;
+    text-align: right;
+    padding: 0.5em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min-content, 0));
+    grid-gap: 0.5em;
+    justify-content: right;
+}
+
+div.qui-form-bottom:empty {
+    height: 0;
+    padding: 0;
+}
+
+
+/* progress */
+
+div.qui-form-progress-widget.qui-progress-disc-container {
+    position: absolute;
+    left: 50%;
+    top: 4em;
+    margin-left: -2em;
+    z-index: 1001;
+    transform: scale(0);
+    transition: transform @transition-duration ease;
+    cursor: progress;
+}
+
+div.qui-form-progress-widget.qui-progress-disc-container.visible {
+    transform: scale(1);
+}
+
+div.qui-form-glass {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: opacity @transition-duration ease;
+    opacity: 0;
+    background: @background-color;
+    cursor: progress;
+}
+
+div.qui-form-glass.visible {
+    opacity: 0.9;
+    z-index: 1000;
+
+}
+
+
+/* error */
+
+div.qui-form-error {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    white-space: normal;
+    color: @error-color;
+    transition: opacity @transition-duration ease,
+                max-height @transition-duration ease;
+}
+
+form.qui-form.has-error > div.qui-form-body > div.qui-form-error {
+    max-height: 5em;
+    padding-bottom: 0.5em;
+    opacity: 1;
+}
+
+div.qui-form-error-label {
+    display: grid;
+    position: relative;
+    background: @border-color;
+    border-radius: 1em;
+    padding-right: 0.5em;
+    align-items: center;
+    grid-template-columns: 1fr 100fr;
+}
+
+span.qui-form-error-icon {
+    display: inline-block;
+    background-image: url('@{qui_img_path}/qui-icons.svg');
+    background-size: 80em;
+    background-position: @exclam-icon-x-offset @error-icon-y-offset;
+    transform: scale(0.75);
+    width: 2em;
+    height: 2em;
+    vertical-align: middle;
+}
+
+span.qui-form-error-text {
+    padding: 0.5em 0;
+    text-align: left;
+    vertical-align: middle;
+}

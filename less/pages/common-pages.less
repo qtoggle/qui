@@ -1,0 +1,36 @@
+
+@import (reference) "../theme";
+
+
+/* modal progress page */
+
+div.qui-modal-progress-page-container {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+div.qui-modal-progress-page-panel {
+    background: @background-color;
+    box-shadow: 0 0 0.35em 0 @floating-shadow-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em;
+    border-radius: 0.2em;
+}
+
+div.qui-modal-progress-page-message {
+    font-size: 0.9em;
+    margin-left: 0.5em;
+    text-align: center;
+}
+
+div.qui-modal-progress-page-message.empty {
+    display: none;
+}
+
+body.small-screen div.qui-modal-progress-page-message {
+    max-width: 12em;
+}
