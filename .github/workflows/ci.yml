@@ -23,4 +23,4 @@ jobs:
           BASE_BRANCH: dev
           BRANCH: gh-pages
           FOLDER: docs
-          BUILD_SCRIPT: npm install && npx rm -rf docs/* && npx jsdoc -c jsdoc.conf.json
+          BUILD_SCRIPT: npm install && rm -rf docs/* js/lib/* && npx jsdoc -c jsdoc.conf.json

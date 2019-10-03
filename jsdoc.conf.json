@@ -6,7 +6,7 @@
     ],
     "source": {
         "include": ["js"],
-        "excludePattern": "js/lib"
+        "excludePattern": "js/lib/"
     },
     "sourceType": "module",
     "templates": {
