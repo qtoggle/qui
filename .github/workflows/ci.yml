@@ -11,5 +11,16 @@ jobs:
       - uses: actions/setup-node@v1.1.0
         with:
           node-version: '10.x'
-      - run: echo "this will fail" && false
-#      - run: npx eslint js
+      - run: npx eslint js
+  jsdoc:
+    name: Publish JSDoc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: JamesIves/github-pages-deploy-action@master
+        env:
+          ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
+          BASE_BRANCH: dev
+          BRANCH: gh-pages
+          FOLDER: docs
+          BUILD_SCRIPT: npm install && npx rm -rf docs/* && npx jsdoc -c jsdoc.conf.json
