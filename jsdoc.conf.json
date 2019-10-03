@@ -14,7 +14,7 @@
         "applicationName": "QUI"
     },
     "opts": {
-        "destination": "docs",
+        "destination": "docs/jsdoc",
         "recurse": true,
         "template": "node_modules/jaguarjs-jsdoc"
     }

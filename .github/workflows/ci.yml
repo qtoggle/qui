@@ -13,7 +13,7 @@ jobs:
           node-version: '10.x'
       - run: npx eslint js
   jsdoc:
-    name: Publish JSDoc
+    name: Publish Docs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
