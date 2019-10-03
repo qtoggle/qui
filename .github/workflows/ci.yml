@@ -10,5 +10,6 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v1.1.0
         with:
-          node-version: '12.x'
-      - run: npx eslint js
+          node-version: '10.x'
+      - run: echo "this will fail" && false
+#      - run: npx eslint js
