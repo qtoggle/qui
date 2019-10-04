@@ -1,6 +1,9 @@
-name: CI
+name: Publish
 
-on: push
+on:
+  push:
+    tags:
+      - version-*
 
 jobs:
   lint:
@@ -15,12 +18,24 @@ jobs:
   jsdoc:
     name: Publish Docs
     runs-on: ubuntu-latest
+    needs: lint
     steps:
       - uses: actions/checkout@master
       - uses: JamesIves/github-pages-deploy-action@master
         env:
           ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
-          BASE_BRANCH: dev
+          BASE_BRANCH: master
           BRANCH: gh-pages
           FOLDER: docs
           BUILD_SCRIPT: npm install && rm -rf docs/* js/lib/* && npx jsdoc -c jsdoc.conf.json
+  publish:
+    name: Publish to NPM
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+      - jsdoc
+    steps:
+      - uses: actions/checkout@master
+      - run: npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
