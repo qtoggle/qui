@@ -1,9 +1,7 @@
 name: Code Quality
 
-on:
-  push:
-    branches:
-      - dev
+on: push
+
 jobs:
   lint:
     name: ESLint
