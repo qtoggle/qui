@@ -3,11 +3,7 @@ name: Code Quality
 on:
   push:
     branches:
-      - master
       - dev
-      - 'feature-*'
-      - 'improvement-*'
-      - 'fix-*'
 jobs:
   lint:
     name: ESLint
