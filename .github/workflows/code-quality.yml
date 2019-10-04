@@ -5,9 +5,9 @@ on:
     branches:
       - master
       - dev
-      - 'feature-*'
-      - 'improvement-*'
-      - 'fix-*'
+      - feature-*
+      - improvement-*
+      - fix-*
 jobs:
   lint:
     name: ESLint
