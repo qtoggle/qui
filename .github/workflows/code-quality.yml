@@ -2,9 +2,12 @@ name: Code Quality
 
 on:
   push:
-    tags-ignore:
-      - *
-
+    branches:
+      - master
+      - dev
+      - feature-*
+      - improvement-*
+      - fix-*
 jobs:
   lint:
     name: ESLint
