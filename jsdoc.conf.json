@@ -6,7 +6,7 @@
     ],
     "source": {
         "include": ["js"],
-        "excludePattern": "js/lib"
+        "excludePattern": "js/lib/"
     },
     "sourceType": "module",
     "templates": {
@@ -14,7 +14,7 @@
         "applicationName": "QUI"
     },
     "opts": {
-        "destination": "docs",
+        "destination": "docs/jsdoc",
         "recurse": true,
         "template": "node_modules/jaguarjs-jsdoc"
     }

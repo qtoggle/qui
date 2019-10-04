@@ -1,6 +1,9 @@
 import {AssertionError} from '$qui/base/errors.js'
 
 
+const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
+
+
 /**
  * An asynchronous implementation of condition variables based on promises. Due to the fact that promises cannot be
  * easily extended, this class actually wraps a promise.

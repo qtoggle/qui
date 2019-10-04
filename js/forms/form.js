@@ -8,8 +8,11 @@ import * as ObjectUtils      from '$qui/utils/object.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
 import * as Window           from '$qui/window.js'
 
-import FormField                                      from './form-field.js'
 import {STATE_APPLIED, ValidationError, ErrorMapping} from './forms.js'
+import FormField                                      from './form-field.js'
+
+
+const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
 
 
 /**
