@@ -136,7 +136,7 @@ function initConfig() {
     ObjectUtils.forEach(mainAppScript.dataset, (n, v) => Config.set(n, v))
 
     /* Find the URL to the QUI index */
-    let urls = error.stack.match(new RegExp(URL.VALID_REGEX.source.slice(1, -1), 'gi'))
+    let urls = error.stack.match(/http.*?\.js/gi)
     if (!urls || !urls.length) {
         throw new Error('Cannot find QUI index script: no script URLs found in stack')
     }
