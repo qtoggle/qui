@@ -1,7 +1,7 @@
 {
   "name": "@qtoggle/qui",
   "description": "A JavaScript UI library with batteries included.",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0-beta.8",
   "author": {
     "name": "Calin Crisan",
     "email": "ccrisan@gmail.com"

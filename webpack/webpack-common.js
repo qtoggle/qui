@@ -174,7 +174,8 @@ function makeStaticCopyRule(regex, staticDir, searchReplace = []) {
 
 function makeLauncherIconsCmd(appFullPath, distFullPath) {
     let cmds = [
-        `test -f ${appFullPath}/${IMG_DIR}/${LAUNCHER_ICON_SRC_NAME} || exit 0`
+        `test -f ${appFullPath}/${IMG_DIR}/${LAUNCHER_ICON_SRC_NAME} || exit 0`,
+        `mkdir -p ${path.resolve(distFullPath, IMG_DIR)}`
     ]
 
     let srcFullPath = path.resolve(appFullPath, IMG_DIR, LAUNCHER_ICON_SRC_NAME)
@@ -244,6 +245,9 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
     entries[`${appName}-bundle-${theme}`] = cssRequirements
     if (!cssOnly && isProduction) {
         entries[mainEntryName] = mainRequirements
+    }
+
+    if (cssOnly && isProduction) {
         shellCommands.push(makeLauncherIconsCmd(appFullPath, distFullPath))
     }
 
