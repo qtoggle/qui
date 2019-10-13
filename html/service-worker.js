@@ -54,11 +54,6 @@ function shouldCacheResponse(response) {
             response.type === 'basic')
 }
 
-self.addEventListener('install', function (event) {
-    /* Activate worker immediately */
-    self.skipWaiting()
-})
-
 self.addEventListener('activate', function (event) {
     /* Become available to all pages */
     self.clients.claim().then(function () {
@@ -72,7 +67,7 @@ self.addEventListener('activate', function (event) {
 
 self.addEventListener('fetch', function (event) {
     if (!shouldCacheRequest(event.request)) {
-        return event.respondWith(fetch(event.request))
+        return
     }
 
     event.respondWith(
@@ -81,9 +76,7 @@ self.addEventListener('fetch', function (event) {
                 return response
             }
 
-            let fetchRequest = event.request.clone()
-
-            return fetch(fetchRequest).then(function (response) {
+            return fetch(event.request.clone()).then(function (response) {
                 if (!shouldCacheResponse(response)) {
                     return response
                 }
@@ -91,10 +84,10 @@ self.addEventListener('fetch', function (event) {
                 let responseToCache = response.clone()
 
                 caches.open(CACHE_NAME).then(function (cache) {
-                    cache.put(event.request, responseToCache)
+                    cache.put(event.request.clone(), responseToCache)
                 })
 
-                return response
+                return response.clone()
             })
         })
     )
@@ -108,6 +101,9 @@ self.addEventListener('message', function (message) {
 
             logInfo('clearing cache')
             caches.delete(CACHE_NAME)
+
+            logInfo('skipping waiting')
+            self.skipWaiting()
             break
 
         default:

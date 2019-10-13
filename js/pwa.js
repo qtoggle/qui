@@ -21,14 +21,12 @@ const logger = Logger.get('qui.pwa')
 
 let manifestURL /* undefined, by default */
 let serviceWorker = null
-let pendingServiceWorker = null
+let serviceWorkerUpdateCalled = false /* duplicate call protection */
 
 /**
- * Emitted when a service worker controlling this client becomes ready. Handlers are called with the following
- * parameters:
+ * Emitted when a service worker becomes active and starts controlling this client. Handlers are called with the
+ * following parameters:
  *  * `serviceWorker`, the controlling service worker
- *  * `oldServiceWorker`, the previously controlling service worker, which can be `null`, if the client has just
- *  installed the first service worker for this app's scope
  * @type {qui.base.Signal}
  */
 export const serviceWorkerReadySignal = new Signal()
@@ -43,42 +41,34 @@ export const serviceWorkerReadySignal = new Signal()
 export const serviceWorkerMessageSignal = new Signal()
 
 
-function handleServiceWorkerReady(sw) {
-    /* We need to protect against double call, since handleServiceWorkerReady() may have two calling sources */
-    if (sw === serviceWorker) {
+function handleServiceWorkerUpdate(sw, updateHandler) {
+    if (serviceWorkerUpdateCalled) {
         return
     }
 
-    logger.info('service worker ready')
-    serviceWorkerReadySignal.emit(sw, serviceWorker)
-    serviceWorker = sw
-}
-
-function handleServiceWorkerUpdate(sw) {
-    /* We need to protect against double call, since handleServiceWorkerUpdate() may have two calling sources */
-    if (sw === pendingServiceWorker) {
-        return
-    }
-
-    pendingServiceWorker = sw
+    serviceWorkerUpdateCalled = true
 
     logger.info('service worker updated')
-    provisionServiceWorker(sw)
 
-    if (sw.state === 'activated') {
-        if (serviceWorker !== sw) {
-            handleServiceWorkerReady(sw)
+    if (updateHandler) {
+        let result = updateHandler(sw)
+        if (result) {
+            if (result.then) { /* A promise */
+                result.then(function () {
+                    provisionServiceWorker(sw)
+                }).catch(() => {})
+            }
+            else { /* Assuming a true value */
+                provisionServiceWorker(sw)
+            }
         }
     }
-    else {
-        sw.addEventListener('statechange', function () {
-            if (sw.state === 'activated') {
-                if (serviceWorker !== sw) {
-                    handleServiceWorkerReady(sw)
-                }
-            }
-        })
-    }
+}
+
+function handleServiceWorkerReady(sw) {
+    logger.info('service worker is ready')
+    serviceWorker = sw
+    serviceWorkerReadySignal.emit(serviceWorker)
 }
 
 function provisionServiceWorker(sw) {
@@ -101,9 +91,11 @@ function handleServiceWorkerMessage(message) {
  * Enable the service worker functionality.
  * @param {String} [url] URL at which the service worker lives; {@link qui.config.navigationBasePrefix} +
  * `"/service-worker.js"` will be used by default
+ * @param {Function} [updateHandler] a function to be called when the service worker is updated; should return a promise
+ * that will be used to control the activation of the new service worker
  * @alias qui.pwa.enableServiceWorker
  */
-export function enableServiceWorker(url = null) {
+export function enableServiceWorker(url = null, updateHandler = null) {
     if (!('serviceWorker' in navigator)) {
         throw new Error('service workers not supported')
     }
@@ -114,10 +106,14 @@ export function enableServiceWorker(url = null) {
 
     navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage)
 
+    let refreshing = false
     navigator.serviceWorker.addEventListener('controllerchange', function (event) {
-        if (event.target && event.target.controller) {
-            handleServiceWorkerUpdate(event.target.controller)
+        if (refreshing) {
+            return
         }
+
+        refreshing = true
+        window.location.reload()
     })
 
     navigator.serviceWorker.ready.then(function (registration) {
@@ -127,12 +123,25 @@ export function enableServiceWorker(url = null) {
     navigator.serviceWorker.register(url).then(function (registration) {
         logger.info(`service worker registered with scope "${registration.scope}"`)
         registration.update() /* Manually trigger an update on each refresh */
-        registration.addEventListener('updatefound', function () {
-            let sw = registration.installing || registration.waiting || registration.active
-            if (sw) {
-                handleServiceWorkerUpdate(sw)
-            }
-        })
+
+        function awaitStateChange() {
+            registration.installing.addEventListener('statechange', function () {
+                if (this.state === 'installed') {
+                    handleServiceWorkerUpdate(this, updateHandler)
+                }
+            })
+        }
+
+        if (registration.waiting) {
+            return handleServiceWorkerUpdate(registration.waiting, updateHandler)
+        }
+
+        if (registration.installing) {
+            awaitStateChange()
+        }
+
+        registration.addEventListener('updatefound', awaitStateChange)
+
     }).catch(function (e) {
         logger.error(`service worker registration failed: ${e}`)
     })
