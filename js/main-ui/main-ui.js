@@ -2,8 +2,9 @@
  * @namespace qui.mainui
  */
 
-import $      from '$qui/lib/jquery.module.js'
+import $ from '$qui/lib/jquery.module.js'
 
+import URL         from '$qui/utils/url.js'
 import * as Window from '$qui/window.js'
 
 import * as MenuBar    from './menu-bar.js'
@@ -31,9 +32,17 @@ function initMainContainer() {
     Window.$body.append(mainContainer)
 }
 
+function fixDefaultFavicon() {
+    /* Set default favicon URLs to absolute paths, before the window location changes */
+    $('link[rel=icon], link[rel=apple-touch-icon]').each(function () {
+        this.href = URL.parse(this.href).toString()
+    })
+}
+
 
 export function init() {
     initMainContainer()
+    fixDefaultFavicon()
 
     TopBar.init()
     MenuBar.init()
