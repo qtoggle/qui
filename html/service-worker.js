@@ -4,10 +4,38 @@
 
 /* eslint-disable no-undef */
 
-const CACHE_NAME = '__app_name__placeholder__-cache-__build_hash_placeholder__'
-const MESSAGE_PROVISION = 'qui-provision'
+const MESSAGE_ACTIVATE = 'qui-activate'
+const DEF_APP_NAME = 'qui-app'
+const DEF_BUILD_HASH = 'dev'
+const DEF_CACHE_URL_REGEX = '^.*\\.(svg|png|gif|jpg|jpe?g|ico|woff|html|json|js|css)$'
 
-let config = null
+
+let cacheName
+let appName = '__app_name_placeholder__'
+let buildHash = '__build_hash_placeholder__'
+let cacheURLRegex = '__cache_url_regex_placeholder__'
+
+
+function setup() {
+    /* If webpack did not replace the placeholder... */
+    if (appName.startsWith('__app_name_')) {
+        appName = DEF_APP_NAME
+    }
+
+    if (buildHash.startsWith('__build_hash_')) {
+        buildHash = DEF_BUILD_HASH
+    }
+
+    if (cacheURLRegex.startsWith('__cache_url_regex_')) {
+        cacheURLRegex = DEF_CACHE_URL_REGEX
+    }
+
+    /* Transform into RegExp instance */
+    cacheURLRegex = new RegExp(cacheURLRegex, 'i')
+
+    cacheName = `${appName}-cache-${buildHash}`
+    logDebug(`using cache name ${cacheName}`)
+}
 
 
 function formatLogMessage(message) {
@@ -40,12 +68,7 @@ function sendClientMessage(message, uncontrolled = false) {
 }
 
 function shouldCacheRequest(request) {
-    if (!config) {
-        return false /* Configuration not received yet */
-    }
-
-    return (request.url.startsWith(config.appStaticURL) ||
-            request.url.startsWith(config.quiStaticURL))
+    return request.url.match(cacheURLRegex)
 }
 
 function shouldCacheResponse(response) {
@@ -54,15 +77,25 @@ function shouldCacheResponse(response) {
             response.type === 'basic')
 }
 
+
 self.addEventListener('activate', function (event) {
-    /* Become available to all pages */
-    self.clients.claim().then(function () {
-        caches.keys().then(function (cacheNames) {
-            return Promise.all(cacheNames
-                               .filter(cacheName => cacheName !== CACHE_NAME)
-                               .map(cacheName => caches.delete(cacheName)))
+
+    function deleteCache(name) {
+        logDebug(`deleting cache ${name}`)
+        caches.delete(name)
+    }
+
+    event.waitUntil(
+        /* Become available to all pages */
+        self.clients.claim().then(function () {
+            /* Clear all caches starting with our app name */
+            caches.keys().then(function (cacheNames) {
+                return Promise.all(cacheNames
+                                   .filter(name => name.startsWith(`${appName}-`))
+                                   .map(name => deleteCache(name)))
+            })
         })
-    })
+    )
 })
 
 self.addEventListener('fetch', function (event) {
@@ -82,8 +115,7 @@ self.addEventListener('fetch', function (event) {
                 }
 
                 let responseToCache = response.clone()
-
-                caches.open(CACHE_NAME).then(function (cache) {
+                caches.open(cacheName).then(function (cache) {
                     cache.put(event.request.clone(), responseToCache)
                 })
 
@@ -95,14 +127,8 @@ self.addEventListener('fetch', function (event) {
 
 self.addEventListener('message', function (message) {
     switch (message.data.type) {
-        case MESSAGE_PROVISION:
-            logInfo('received provisioning data')
-            config = message.data.config
-
-            logInfo('clearing cache')
-            caches.delete(CACHE_NAME)
-
-            logInfo('skipping waiting')
+        case MESSAGE_ACTIVATE:
+            logInfo('received activation message')
             self.skipWaiting()
             break
 
@@ -110,3 +136,6 @@ self.addEventListener('message', function (message) {
             logWarn(`unexpected service worker message ${message.data.type}`)
     }
 })
+
+
+setup()

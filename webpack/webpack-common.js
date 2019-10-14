@@ -277,7 +277,7 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
                 makeStaticCopyRule(FONT_REGEX, FONT_DIR),
                 makeStaticCopyRule(HTML_REGEX, HTML_DIR, [
                     ['__build_hash_placeholder__', quiBuildHash],
-                    ['__app_name__placeholder__', appName]
+                    ['__app_name_placeholder__', appName]
                 ])
             ]
         },

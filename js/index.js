@@ -126,11 +126,21 @@ function initConfig() {
     let scripts = document.getElementsByTagName('script')
 
     /* Find the referece to the main app DOM script */
-    let mainAppName = names[names.length - 1]
-    let mainAppScript = Array.from(scripts).find(s => s.src.endsWith(mainAppName))
+    let mainAppScriptName = names[names.length - 1]
+    let mainAppScript = Array.from(scripts).find(s => s.src.endsWith(mainAppScriptName))
     if (!mainAppScript) {
-        throw new Error(`Cannot find main script: no such script ${mainAppName}`)
+        throw new Error(`Cannot find main script: no such script ${mainAppScriptName}`)
     }
+
+    /* Deduce app name from main app script name */
+    let appName = mainAppScriptName.slice(0, -3) /* remove .js */
+    if (appName.endsWith('-bundle')) {
+        appName = appName.slice(0, -7)
+    }
+    if (appName === 'index') { /* development mode */
+        appName = 'qui-app' // TODO deduce app name in development mode
+    }
+    Config.appName = appName
 
     /* Copy all data-* attributes from script tag to Config */
     ObjectUtils.forEach(mainAppScript.dataset, (n, v) => Config.set(n, v))
@@ -141,7 +151,7 @@ function initConfig() {
         throw new Error('Cannot find QUI index script: no script URLs found in stack')
     }
 
-    /* Detect QUI static URL */
+    /* Detect QUI static URL - we know it's the first script in stack */
     let quiIndexScript = urls[0]
     let m = quiIndexScript.match(new RegExp('[.a-z0-9_-]+\\.js'))
     if (!m) {
@@ -156,7 +166,7 @@ function initConfig() {
         Config.quiStaticURL = Config.quiStaticURL.split('/').slice(0, -1).join('/')
     }
 
-    /* Detect app static URL */
+    /* Detect app static URL - we know it's the last script in stack */
     let appIndexScript = urls.slice(-1)[0]
     m = appIndexScript.match(new RegExp('[.a-z0-9_-]+\\.js'))
 

@@ -39,6 +39,13 @@ const Config = {
     navigationBasePrefix: '',
 
     /**
+     * Application name.
+     * @memberof qui.config
+     * @type String
+     */
+    appName: '',
+
+    /**
      * QUI static base URL.
      * @memberof qui.config
      * @type String
