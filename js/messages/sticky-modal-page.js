@@ -9,12 +9,13 @@ export default Mixin((superclass = Object) => {
      * A mixin for pages that are stuck to the global glass until explicitly removed.
      * @alias qui.messages.StickyModalPageMixin
      * @mixin
-     * @mixes qui.base.SingletonMixin
      */
-    class StickyModalPageMixin extends SingletonMixin(superclass) {
+    class StickyModalPageMixin extends superclass {
 
         constructor(...args) {
             super(...args)
+
+            this._showCount = 0
         }
 
         initPageHTML(html) {
@@ -23,61 +24,55 @@ export default Mixin((superclass = Object) => {
         }
 
         close() {
-            /* Call the singleton's hide instead of page's close */
-            this.constructor.hide()
+            /* Call the hide method instead of page's close */
+            this.hide()
             this.onClose()
         }
 
         /**
-         * Override this method to indicate how the page is reset to its initial state.
+         * Override this method to indicate how the page is reset to its initial state, as soon as it is shown.
          */
         reset() {
         }
 
         /**
-         * Show the singleton instance of this page class.
+         * Show this page.
          *
          * This is a reentrant method.
          *
-         * @returns {qui.messages.StickyModalPageMixin}
+         * @returns {qui.messages.StickyModalPageMixin} this page
          */
-        static show() {
-            let instance = this.getInstance()
+        show() {
             if (this._showCount === 0) {
-                instance.attach()
-                instance.getPageHTML().addClass('visible')
+                this.attach()
+                this.getPageHTML().addClass('visible')
                 GlobalGlass.updateVisibility()
             }
 
             this._showCount++
-            instance.reset()
+            this.reset()
 
-            return instance
+            return this
         }
 
         /**
-         * Hide the previously shown instance of this page class.
+         * Hide a previously shown page.
          *
-         * This method should be called as many times as its counterpart {@link qui.messages.StickyModalPageMixin.show}
+         * This method should be called as many times as its counterpart {@link qui.messages.StickyModalPageMixin#show}
          * method has been called, before it actually hides the page.
          */
-        static hide() {
+        hide() {
             this._showCount--
 
             if (this._showCount === 0) {
-                let instance = this.getInstance()
-
-                instance.detach()
-                instance.getPageHTML().removeClass('visible')
+                this.detach()
+                this.getPageHTML().removeClass('visible')
 
                 GlobalGlass.updateVisibility()
             }
         }
 
     }
-
-    // TODO es7 class fields
-    StickyModalPageMixin._showCount = 0
 
     return StickyModalPageMixin
 

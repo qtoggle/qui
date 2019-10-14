@@ -113,7 +113,7 @@ export function enableServiceWorker(url = null, updateHandler = null) {
         }
 
         refreshing = true
-        window.location.reload()
+        Window.reload()
     })
 
     navigator.serviceWorker.ready.then(function (registration) {

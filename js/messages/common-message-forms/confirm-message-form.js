@@ -13,14 +13,12 @@ import MessageForm from '../message-form.js'
  * @extends qui.messages.MessageForm
  * @param {Object} params
  * * see {@link qui.messages.MessageForm} for message form parameters
- * @param {qui.messages.MessageForm.Callback} params.onYes a confirmation callback (will receive `true` as result
- * argument)
- * @param {qui.messages.MessageForm.Callback} [params.onNo] an optional decline callback (will receive `false` as result
- * argument)
+ * @param {qui.messages.MessageForm.Callback} [params.onYes] an optional confirmation callback
+ * @param {qui.messages.MessageForm.Callback} [params.onNo] an optional decline callback
  */
 export default class ConfirmMessageForm extends MessageForm {
 
-    constructor({onYes, onNo = null, ...params}) {
+    constructor({onYes = null, onNo = null, ...params} = {}) {
         ObjectUtils.setDefault(params, 'icon', new StockIcon({name: 'qmark'}))
         ObjectUtils.setDefault(params, 'buttons', [
             new FormButton({id: 'no', caption: gettext('No'), cancel: true}),
@@ -32,6 +30,9 @@ export default class ConfirmMessageForm extends MessageForm {
         this._onYes = onYes
         this._onNo = onNo
 
+        this._resolve = null
+        this._reject = null
+
         this._confirmed = false
     }
 
@@ -41,19 +42,38 @@ export default class ConfirmMessageForm extends MessageForm {
 
     onClose() {
         if (this._confirmed) {
-            asap(this._onYes)
+            if (this._onYes) {
+                asap(this._onYes)
+            }
+            if (this._resolve) {
+                asap(this._resolve)
+            }
         }
         else {
             if (this._onNo) {
                 asap(this._onNo)
             }
+            if (this._reject) {
+                asap(this._reject)
+            }
         }
+    }
+
+    /**
+     * Return a promise resolves on positive answer and is rejected on negative answer.
+     * @returns {Promise}
+     */
+    asPromise() {
+        return new Promise(function (resolve, reject) {
+            this._resolve = resolve
+            this._reject = reject
+        }.bind(this))
     }
 
     /**
      * Show a message form asking the user for confirmation.
      * @param {String} message the message to show
-     * @param {qui.messages.MessageForm.Callback} onYes a function to be called on positive user answer
+     * @param {qui.messages.MessageForm.Callback} [onYes] a function to be called on positive user answer
      * @param {?qui.messages.MessageForm.Callback} [onNo] a function to be called on negative user answer
      * @param {String} [pathId] a path identifier
      * @returns {qui.messages.commonmessageforms.ConfirmMessageForm} the message form
