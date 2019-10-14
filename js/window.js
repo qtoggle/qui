@@ -159,7 +159,11 @@ export function isSmallScreen(width = null, height = null) {
         width = $window.width()
     }
 
-    return width <= SMALL_SCREEN_THRESHOLD
+    if (height == null) {
+        height = $window.height()
+    }
+
+    return Math.min(width, height) <= SMALL_SCREEN_THRESHOLD
 }
 
 /**
