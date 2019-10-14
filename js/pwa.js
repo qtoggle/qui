@@ -13,7 +13,7 @@ import {AssertionError}  from '$qui/base/errors.js'
 
 
 const SERVICE_WORKER_SCRIPT = 'service-worker.js'
-const SERVICE_WORKER_MESSAGE_PROVISION = 'qui-provision'
+const SERVICE_WORKER_MESSAGE_ACTIVATE = 'qui-activate'
 
 const MANIFEST_FILE = 'manifest.json'
 
@@ -74,7 +74,7 @@ function handleServiceWorkerReady(sw) {
 function provisionServiceWorker(sw) {
     logger.info('provisioning service worker')
     let message = {
-        type: SERVICE_WORKER_MESSAGE_PROVISION,
+        type: SERVICE_WORKER_MESSAGE_ACTIVATE,
         config: Config.dump()
     }
 
@@ -113,7 +113,7 @@ export function enableServiceWorker(url = null, updateHandler = null) {
         }
 
         refreshing = true
-        window.location.reload()
+        Window.reload()
     })
 
     navigator.serviceWorker.ready.then(function (registration) {
