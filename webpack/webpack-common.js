@@ -247,7 +247,7 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
         entries[mainEntryName] = mainRequirements
     }
 
-    if (cssOnly && isProduction) {
+    if (cssOnly) {
         shellCommands.push(makeLauncherIconsCmd(appFullPath, distFullPath))
     }
 
