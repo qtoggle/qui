@@ -7,13 +7,15 @@
 const MESSAGE_ACTIVATE = 'qui-activate'
 const DEF_APP_NAME = 'qui-app'
 const DEF_BUILD_HASH = 'dev'
-const DEF_CACHE_URL_REGEX = '^.*\\.(svg|png|gif|jpg|jpe?g|ico|woff|html|json|js|css)$'
+const DEF_CACHE_URL_REGEX = '.*\\.(svg|png|gif|jpg|jpe?g|ico|woff|html|json|js|css)$'
+const DEF_NO_CACHE_URL_REGEX = ('(\\?h=dev)|(&h=dev)')
 
 
 let cacheName
 let appName = '__app_name_placeholder__'
 let buildHash = '__build_hash_placeholder__'
 let cacheURLRegex = '__cache_url_regex_placeholder__'
+let noCacheURLRegex = '__no_cache_url_regex_placeholder__'
 
 
 function setup() {
@@ -21,17 +23,19 @@ function setup() {
     if (appName.startsWith('__app_name_')) {
         appName = DEF_APP_NAME
     }
-
     if (buildHash.startsWith('__build_hash_')) {
         buildHash = DEF_BUILD_HASH
     }
-
     if (cacheURLRegex.startsWith('__cache_url_regex_')) {
         cacheURLRegex = DEF_CACHE_URL_REGEX
+    }
+    if (noCacheURLRegex.startsWith('__no_cache_url_regex_')) {
+        noCacheURLRegex = DEF_NO_CACHE_URL_REGEX
     }
 
     /* Transform into RegExp instance */
     cacheURLRegex = new RegExp(cacheURLRegex, 'i')
+    noCacheURLRegex = new RegExp(noCacheURLRegex, 'i')
 
     cacheName = `${appName}-cache-${buildHash}`
     logDebug(`using cache name ${cacheName}`)
@@ -68,7 +72,7 @@ function sendClientMessage(message, uncontrolled = false) {
 }
 
 function shouldCacheRequest(request) {
-    return request.url.match(cacheURLRegex)
+    return request.url.match(cacheURLRegex) && !request.url.match(noCacheURLRegex)
 }
 
 function shouldCacheResponse(response) {

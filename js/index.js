@@ -127,7 +127,7 @@ function initConfig() {
 
     /* Find the referece to the main app DOM script */
     let mainAppScriptName = names[names.length - 1]
-    let mainAppScript = Array.from(scripts).find(s => s.src.endsWith(mainAppScriptName))
+    let mainAppScript = Array.from(scripts).find(s => s.src.split('?')[0].endsWith(mainAppScriptName))
     if (!mainAppScript) {
         throw new Error(`Cannot find main script: no such script ${mainAppScriptName}`)
     }
@@ -179,7 +179,9 @@ function initConfig() {
     }
 
     /* Use build hash supplied by webpack at build time */
-    Config.buildHash = window.__quiBuildHash || ''
+    if (window.__quiBuildHash) {
+        Config.buildHash = window.__quiBuildHash
+    }
 }
 
 function initJQuery() {
