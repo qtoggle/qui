@@ -10,18 +10,32 @@ jobs:
     name: ESLint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@v1.1.0
+      - name: Source Code Checkout
+        uses: actions/checkout@master
+      - name: Node Setup
+        uses: actions/setup-node@v1.1.0
         with:
           node-version: '10.x'
-      - run: npx eslint js
+      - name: ESLint
+        run: npx eslint js
   jsdoc:
     name: Publish Docs
     runs-on: ubuntu-latest
     needs: lint
     steps:
-      - uses: actions/checkout@master
-      - uses: JamesIves/github-pages-deploy-action@master
+      - name: Source Code Checkout
+        uses: actions/checkout@master
+      - name: Parse Ref
+        id: parse_ref
+        run: |
+          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+          echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+          echo ::set-output name=SOURCE_VERSION::${GITHUB_REF#refs/tags/version-}
+      - name: Update Source Version
+        run: sed -i "s/unknown-version/${{ steps.parse_ref.outputs.SOURCE_VERSION }}/" package.json
+      - name: Deploy GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@master
         env:
           ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
           BASE_BRANCH: master
@@ -35,8 +49,19 @@ jobs:
       - lint
       - jsdoc
     steps:
-      - uses: actions/checkout@master
-      - run: |
+      - name: Source Code Checkout
+        uses: actions/checkout@master
+      - name: Parse Ref
+        id: parse_ref
+        run: |
+          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+          echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+          echo ::set-output name=SOURCE_VERSION::${GITHUB_REF#refs/tags/version-}
+      - name: Update Source Version
+        run: sed -i "s/unknown-version/${{ steps.parse_ref.outputs.SOURCE_VERSION }}/" package.json
+      - name: NPM Publish
+        run: |
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
           npm publish
         env:
