@@ -167,6 +167,8 @@ export default class Form extends mix().with(StructuredViewMixin) {
         else if (this._continuousValidation) {
             this.updateValidationState()
         }
+
+        this._updateBottom()
     }
 
     makeBody() {
