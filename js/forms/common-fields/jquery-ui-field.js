@@ -7,7 +7,7 @@ import FormField from '../form-field.js'
 
 /**
  * A form field backed by a jQuery UI widget.
- * @alias qui.forms.common-fields.JQueryUIField
+ * @alias qui.forms.commonfields.JQueryUIField
  * @extends qui.forms.FormField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters

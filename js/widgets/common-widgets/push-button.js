@@ -33,17 +33,8 @@ $.widget('qui.pushbutton', {
             }
         })
 
-        this.element.on('pressed released', function (e) {
-            /* When specifying custom colors, we have to manually update background color */
-            if (widget.options.style === 'colored') {
-                if (widget.element.hasClass('active')) {
-                    widget.element.css('background', Theme.getColor(widget.options.backgroundActiveColor))
-                }
-                else {
-                    widget.element.css('background', Theme.getColor(widget.options.backgroundColor))
-                }
-            }
-        })
+        /* When specifying custom colors, we have to manually update background color */
+        this.element.on('pressed released', () => this._updateStyle())
 
         this.element.html(this.options.caption)
     },
@@ -52,8 +43,18 @@ $.widget('qui.pushbutton', {
         this.element.removeClass('qui-interactive-button qui-highlight-button qui-danger-button qui-colored-button')
         this.element.addClass(`qui-${style}-button`)
 
-        if (style === 'colored') {
-            this.element.css('background', Theme.getColor(this.options.backgroundColor))
+        this._updateStyle()
+    },
+
+    _updateStyle: function () {
+        if (this.options.style === 'colored' && !this.options.disabled) {
+            if (this.element.hasClass('active')) {
+                this.element.css('background', Theme.getColor(this.options.backgroundActiveColor))
+            }
+            else {
+                this.element.css('background', Theme.getColor(this.options.backgroundColor))
+            }
+
             this.element.css('color', Theme.getColor(this.options.foregroundColor))
         }
         else {
@@ -74,6 +75,8 @@ $.widget('qui.pushbutton', {
                 else {
                     this.element.attr('tabIndex', 0)
                 }
+
+                this._updateStyle()
                 break
 
             case 'caption':
