@@ -50,7 +50,8 @@ export default class JQueryUIField extends FormField {
     }
 
     _widgetCall(...args) {
-        return this._widget[this.constructor.WIDGET_CLASS].apply(this._widget, args)
+        let widget = this.getWidget()
+        return widget[this.constructor.WIDGET_CLASS].apply(widget, args)
     }
 
     validateWidget(value) {
