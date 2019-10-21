@@ -34,7 +34,7 @@ export default class PushButtonField extends JQueryUIField {
     makeWidget() {
         let div = super.makeWidget()
 
-        div.addClass('form-push-button')
+        div.addClass('qui-form-push-button')
         div.on('click', () => this.callback(this.getForm()))
 
         if (this._valueWidth === 100) {

@@ -7,7 +7,7 @@ import FormField from '../form-field.js'
 
 /**
  * A form field backed by a jQuery UI widget.
- * @alias qui.forms.common-fields.JQueryUIField
+ * @alias qui.forms.commonfields.JQueryUIField
  * @extends qui.forms.FormField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
@@ -50,7 +50,8 @@ export default class JQueryUIField extends FormField {
     }
 
     _widgetCall(...args) {
-        return this._widget[this.constructor.WIDGET_CLASS].apply(this._widget, args)
+        let widget = this.getWidget()
+        return widget[this.constructor.WIDGET_CLASS].apply(widget, args)
     }
 
     validateWidget(value) {

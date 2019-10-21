@@ -173,7 +173,11 @@ export default class FormField extends mix().with(ViewMixin) {
         widget.on('focus', () => this._handleFocus())
         widget.on('blur', () => this._handleBlur())
 
-        valueDiv.append(widget)
+        /* Add widget to value div, but only if it hasn't already been added to another container; this allows fields
+         * like CompositeField to use the widget directly inside their container. */
+        if (!widget.parent().length) {
+            valueDiv.append(widget)
+        }
 
         /* Side icon */
         this._sideIcon = new StockIcon({name: 'success', scale: 0.75})

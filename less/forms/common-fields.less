@@ -100,7 +100,7 @@ div.qui-form-field.has-error > div.qui-form-field-value > div.qui-combo-containe
 
 /* Push button */
 
-div.qui-form-field-value > div.form-push-button {
+div.qui-form-push-button {
     padding: 0 0.5em;
     line-height: 2.5em;
 }
@@ -112,4 +112,16 @@ div.qui-form-field-value > div.qui-labels-container.chevrons {
     white-space: nowrap;
     max-width: 100%;
     overflow: auto;
+}
+
+
+/* Composite field */
+
+div.qui-composite-field-container {
+    display: grid;
+    grid-gap: 0.5em;
+}
+
+div.qui-composite-field-container.layout-horizontal {
+    grid-auto-flow: column;
 }
