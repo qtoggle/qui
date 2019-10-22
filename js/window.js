@@ -189,7 +189,11 @@ export function reload(path) {
     logger.debug('reloading')
 
     asap(function () {
-        if (path) { // TODO if path is (almost) identical to the current path, no reload will occur
+        if (path) {
+            if (window.location.href === path) {
+                path = ''
+            }
+
             window.location.href = path
         }
         else {
