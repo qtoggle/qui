@@ -340,11 +340,16 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
     /**
      * Return the index of the given field. If the field does not belong to this form, `-1` is returned.
-     * @param {qui.forms.Form} field the field
+     * @param {qui.forms.Form|String} field the field or a field name
      * @returns {Number}
      */
     getFieldIndex(field) {
-        return this._fields.indexOf(field)
+        if (typeof field === 'string') {
+            return this._fields.findIndex(f => f.getName() === field)
+        }
+        else {
+            return this._fields.indexOf(field)
+        }
     }
 
     /**
