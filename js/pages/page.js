@@ -64,6 +64,12 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
+         * Called when the page is pushed to a context.
+         */
+        onPush() {
+        }
+
+        /**
          * Called when the page is closed.
          */
         onClose() {
@@ -470,7 +476,7 @@ export default Mixin((superclass = Object, rootclass) => {
                 let currentPage = context.getCurrentPage()
                 if (currentPage) {
                     // TODO it would make more sense to prevent calling currentPage.handleBecomeCurrent()
-                    //  and all other update function calls, if this page has only be closed to be replaced
+                    //  and all other update function calls, if this page has only been closed to be replaced
                     //  immediately by another one
                     currentPage.onCloseNext(this)
                     currentPage.handleBecomeCurrent()
@@ -648,6 +654,7 @@ export default Mixin((superclass = Object, rootclass) => {
                 updateUI()
             }
 
+            this.onPush()
             this.handleBecomeCurrent()
         }
 
