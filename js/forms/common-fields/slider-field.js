@@ -4,7 +4,7 @@ import JQueryUIField from './jquery-ui-field.js'
 /**
  * A slider field. The value data type is `Number`.
  * @alias qui.forms.commonfields.SliderField
- * @extends qui.forms.JQueryUIField
+ * @extends qui.forms.commonfields.JQueryUIField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
  * @param {Object[]} params.ticks tick marks (pairs of `label` and `value`)

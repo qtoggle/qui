@@ -6,7 +6,7 @@ import JQueryUIField from './jquery-ui-field.js'
 /**
  * A check box field. The value data type is `Boolean`.
  * @alias qui.forms.commonfields.CheckField
- * @extends qui.forms.JQueryUIField
+ * @extends qui.forms.commonfields.JQueryUIField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
  * @param {String} [params.onClass] the CSS class to add to the check button in *on* state (defaults to `on`)

@@ -4,7 +4,7 @@ import JQueryUIField from './jquery-ui-field.js'
 /**
  * A field backed by an up-down (spinner) widget. The value data type is `Number`.
  * @alias qui.forms.commonfields.UpDownField
- * @extends qui.forms.JQueryUIField
+ * @extends qui.forms.commonfields.JQueryUIField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
  * @param {Number} [params.min] the minimum value (defaults to `0`)

@@ -5,7 +5,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * A field backed by colored labels. The value data type is `String[]` (a list of labels) or `Object` (a dictionary with
  * labels as keys and background colors as values).
  * @alias qui.forms.commonfields.LabelsField
- * @extends qui.forms.JQueryUIField
+ * @extends qui.forms.commonfields.JQueryUIField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
  * @param {String} [params.color] the label text color (defaults to `@background-color`)

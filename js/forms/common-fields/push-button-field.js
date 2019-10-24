@@ -6,7 +6,7 @@ import JQueryUIField from './jquery-ui-field.js'
 /**
  * A push button field. The value of this field will always be `null`.
  * @alias qui.forms.commonfields.PushButtonField
- * @extends qui.forms.JQueryUIField
+ * @extends qui.forms.commonfields.JQueryUIField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
  * @param {String} params.caption the button caption

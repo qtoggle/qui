@@ -4,10 +4,10 @@ import TextField from './text-field.js'
 /**
  * A numeric text field. The value data type is `String`.
  * @alias qui.forms.commonfields.NumericField
- * @extends qui.forms.TextField
+ * @extends qui.forms.commonfields.TextField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
- * * see {@link qui.forms.TextField} for text field parameters
+ * * see {@link qui.forms.commonfields.TextField} for text field parameters
  */
 export default class NumericField extends TextField {
 

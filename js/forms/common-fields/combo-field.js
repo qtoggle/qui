@@ -4,7 +4,7 @@ import JQueryUIField from './jquery-ui-field.js'
 /**
  * A combo box field. The value data type can be anything.
  * @alias qui.forms.commonfields.ComboField
- * @extends qui.forms.JQueryUIField
+ * @extends qui.forms.commonfields.JQueryUIField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
  * @param {Object[]} params.choices choices (pairs of `label` and `value`)
