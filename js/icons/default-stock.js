@@ -17,11 +17,12 @@
  *  * `"user"`
  *  * `"sync"`
  *  * `"magnifier"`
- *  * `"menu"`
- *  * `"options"`
  *  * `"full-screen"`
  *  * `"duplicate"`
  *  * `"envelope"`
+ *  * `"gear"`
+ *  * `"menu"`
+ *  * `"options"`
  *
  * Defined variants are:
  *  * `"darkgray"`
@@ -123,11 +124,12 @@ Stocks.register(NAME, function () {
             'user': getQUIStockNameXOffset('user'),
             'sync': getQUIStockNameXOffset('sync'),
             'magnifier': getQUIStockNameXOffset('magnifier'),
-            'menu': getQUIStockNameXOffset('menu'),
-            'options': getQUIStockNameXOffset('options'),
             'full-screen': getQUIStockNameXOffset('full-screen'),
             'duplicate': getQUIStockNameXOffset('duplicate'),
-            'envelope': getQUIStockNameXOffset('envelope')
+            'envelope': getQUIStockNameXOffset('envelope'),
+            'gear': getQUIStockNameXOffset('gear'),
+            'menu': getQUIStockNameXOffset('menu'),
+            'options': getQUIStockNameXOffset('options')
         },
         variants: {
             'darkgray': getQUIStockVariantYOffset('darkgray'),
