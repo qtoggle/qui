@@ -1,6 +1,6 @@
-import * as OptionsBar     from '$qui/main-ui/options-bar.js'
-import {getCurrentContext} from '$qui/pages/pages.js'
-import * as ObjectUtils    from '$qui/utils/object.js'
+import * as OptionsBar  from '$qui/main-ui/options-bar.js'
+import {getCurrentPage} from '$qui/pages/pages.js'
+import * as ObjectUtils from '$qui/utils/object.js'
 
 import Form from '../form.js'
 
@@ -48,7 +48,7 @@ export default class OptionsForm extends Form {
 
     static init() {
         OptionsBar.openCloseSignal.connect(function (opened) {
-            let currentPage = getCurrentContext().getCurrentPage()
+            let currentPage = getCurrentPage()
             if (!currentPage) {
                 return
             }

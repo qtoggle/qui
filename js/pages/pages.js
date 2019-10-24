@@ -130,7 +130,7 @@ function newContext() {
 }
 
 /**
- * Returns the current pages context.
+ * Return the current pages context.
  * @alias qui.pages.getCurrentContext
  * @returns {qui.pages.PagesContext}
  */
@@ -139,7 +139,7 @@ export function getCurrentContext() {
 }
 
 /**
- * Replaces the current pages context.
+ * Replace the current pages context.
  * @alias qui.pages.setCurrentContext
  * @param {?qui.pages.PagesContext} context new context, or `null` to replace with a brand new context
  */
@@ -173,6 +173,15 @@ export function setCurrentContext(context) {
     }
 
     updateUI()
+}
+
+/**
+ * Return the current page.
+ * @alias qui.pages.getCurrentPage
+ * @returns {?qui.pages.PageMixin}
+ */
+export function getCurrentPage() {
+    return currentContext.getCurrentPage()
 }
 
 
