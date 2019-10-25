@@ -43,9 +43,9 @@ export function getPendingRequests() {
  * Perform an AJAX JSON HTTP request and decode response as JSON.
  * @alias qui.utils.ajax.requestJSON
  * @param {String} method the HTTP method
- * @param {String} path the path to request
- * @param {Object} query
- * @param {*} data data to transmit in request body
+ * @param {String} path the path or a URL to request
+ * @param {Object} [query]
+ * @param {*} [data] data to transmit in request body
  * @param {Function} [success] successful callback; will be called with decoded response and headers as parameters
  * @param {Function} [failure] failure callback; will be called with decoded response, status code, a result message and
  * headers as parameters
@@ -54,7 +54,7 @@ export function getPendingRequests() {
  * @returns {jqXHR}
  */
 export function requestJSON(
-    method, path, query, data = null, success = null, failure = null, headers = null,
+    method, path, query = {}, data = null, success = null, failure = null, headers = null,
     timeout = DEFAULT_REQUEST_TIMEOUT
 ) {
     let contentType = null
@@ -64,7 +64,7 @@ export function requestJSON(
         contentType = 'application/json'
     }
 
-    let url = URL.parse(window.location.href).alter({path: path, query: query}).toString()
+    let url = URL.parse(URL.qualify(path)).alter({query: query}).toString()
 
     let request = $.ajax({
         url: url,
