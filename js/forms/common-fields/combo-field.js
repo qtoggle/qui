@@ -14,6 +14,14 @@ export default class ComboField extends JQueryUIField {
 
     // TODO add setters and getters for widget properties
 
+    /**
+     * Set the list of choices.
+     * @param {Object[]} choices choices (pairs of `label` and `value`)
+     */
+    setChoices(choices) {
+        this._widgetCall({choices: choices})
+    }
+
 }
 
 // TODO es7 class fields
