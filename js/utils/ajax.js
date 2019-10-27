@@ -54,7 +54,7 @@ export function getPendingRequests() {
  * @returns {jqXHR}
  */
 export function requestJSON(
-    method, path, query = {}, data = null, success = null, failure = null, headers = null,
+    method, path, query = null, data = null, success = null, failure = null, headers = null,
     timeout = DEFAULT_REQUEST_TIMEOUT
 ) {
     let contentType = null
@@ -64,7 +64,7 @@ export function requestJSON(
         contentType = 'application/json'
     }
 
-    let url = URL.parse(URL.qualify(path)).alter({query: query}).toString()
+    let url = URL.parse(URL.qualify(path)).alter({query: query || {}}).toString()
 
     let request = $.ajax({
         url: url,
