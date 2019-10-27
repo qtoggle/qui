@@ -18,7 +18,7 @@ import PageMixin from '../page.js'
  */
 export default class ModalProgressPage extends mix().with(PageMixin) {
 
-    constructor({message = null, progressPercent = -1, progressOptions = {}, ...params}) {
+    constructor({message = null, progressPercent = -1, progressOptions = {}, ...params} = {}) {
         params.modal = true
 
         super(params)
