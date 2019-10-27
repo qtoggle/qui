@@ -18,7 +18,7 @@ import * as MenuBar from './menu-bar.js'
 import * as TopBar  from './top-bar.js'
 
 
-const logger = Logger.get('qui.main-ui.options-bar')
+const logger = Logger.get('qui.mainui.optionsbar')
 
 
 let barHTML = null

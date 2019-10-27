@@ -5,16 +5,16 @@
 import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
-import {gettext}         from '$qui/base/i18n.js'
-import StockIcon         from '$qui/icons/stock-icon.js'
-import * as Gestures     from '$qui/utils/gestures.js'
-import * as Window       from '$qui/window.js'
+import {gettext}     from '$qui/base/i18n.js'
+import StockIcon     from '$qui/icons/stock-icon.js'
+import * as Gestures from '$qui/utils/gestures.js'
+import * as Window   from '$qui/window.js'
 
 import * as OptionsBar from './options-bar.js'
 import * as TopBar     from './top-bar.js'
 
 
-const logger = Logger.get('qui.main-ui.menu-bar')
+const logger = Logger.get('qui.mainui.menubar')
 
 
 let barHTML = null
