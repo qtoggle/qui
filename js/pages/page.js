@@ -226,7 +226,7 @@ export default Mixin((superclass = Object, rootclass) => {
                 this._whenLoaded.then(function () {
                     this.clearProgress()
                 }.bind(this)).catch(function (error) {
-                    this.setError(error.toString())
+                    this.setError(error)
                 }.bind(this))
             }
 

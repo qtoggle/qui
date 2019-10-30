@@ -350,10 +350,14 @@ export default Mixin((superclass = Object) => {
          *
          * It is safe to call this method multiple times, updating the error message.
          *
-         * @param {?String} [message] an error message
+         * @param {?String|Error} [message] an error message
          */
         setError(message = null) {
             /* No duplicate setError() protection, since we want to be able to update the error */
+
+            if (message instanceof Error) {
+                message = message.message
+            }
 
             this._errorMessage = message
             this.setState(STATE_ERROR)

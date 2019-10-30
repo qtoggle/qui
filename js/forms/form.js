@@ -845,7 +845,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
         }.bind(this)).catch(function (error) {
 
-            field.setError(error.toString())
+            field.setError(error)
 
             return error /* Pass error further as a simple argument */
 

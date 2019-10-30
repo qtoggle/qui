@@ -60,7 +60,7 @@ export class PageNotFoundError extends Error {
 export class PageLoadError extends Error {
 
     constructor(path, pathId, section, page, error) {
-        super(gettext(`Page could not be loaded: ${error.toString()}`))
+        super(gettext(`Page could not be loaded: ${error.message}`))
 
         this.path = path
         this.pathId = pathId
@@ -242,7 +242,7 @@ export function navigate(path, handleErrors, pageState) {
 
     function handleError(error) {
         if (handleErrors) {
-            Toast.error(error.toString())
+            Toast.error(error.message)
             logger.errorStack('navigation error', error)
 
             // TODO this is a good place to add custom navigation error handling function
