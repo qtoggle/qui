@@ -629,8 +629,6 @@ export default class Form extends mix().with(StructuredViewMixin) {
                 errors = {'': e}
             }
 
-            errors = ObjectUtils.mapValue(errors, m => m.toString())
-
             ObjectUtils.forEach(errors, function (name, error) {
 
                 /* Do not show errors for unchanged fields */
@@ -1057,7 +1055,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
             dataValidated = this._validateData().catch(function (e) {
 
                 let errorMapping = new ErrorMapping(e)
-                this._setErrors(ObjectUtils.mapValue(errorMapping.errors, m => m.toString()))
+                this._setErrors(errorMapping.errors)
 
                 throw errorMapping
 
@@ -1096,7 +1094,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
                 let errorMapping = new ErrorMapping(e)
 
                 this.clearProgress()
-                this._setErrors(ObjectUtils.mapValue(errorMapping.errors, m => m.toString()))
+                this._setErrors(errorMapping.errors)
 
             }.bind(this))
 
