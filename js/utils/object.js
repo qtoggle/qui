@@ -16,6 +16,14 @@ function hasOwnProperty(obj, prop) {
     return Object.prototype.hasOwnProperty.call(obj, prop)
 }
 
+/**
+ * Tells if a value is a pure object.
+ * @param {*} value value to test
+ * @returns {Boolean}
+ */
+export function isObject(value) {
+    return (value != null) && (value.constructor === Object)
+}
 
 /**
  * Create an object from a list of entries. Each entry is an array of two elements: the key and its associated value.
