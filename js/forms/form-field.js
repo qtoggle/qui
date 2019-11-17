@@ -534,12 +534,15 @@ export default class FormField extends mix().with(ViewMixin) {
     showWarning(message) {
         this.getHTML().find('span.qui-form-field-warning-text').html(message)
         this.getHTML().addClass('has-warning')
+        if (message) {
+            this.getHTML().addClass('has-warning-message')
+        }
 
         this._updateSideIcon()
     }
 
     hideWarning() {
-        this.getHTML().removeClass('has-warning')
+        this.getHTML().removeClass('has-warning has-warning-message')
         Theme.afterTransition(function () {
             if (this.hasWarning()) {
                 return /* Warning has been reshown */
@@ -557,12 +560,15 @@ export default class FormField extends mix().with(ViewMixin) {
     showError(message) {
         this.getHTML().find('span.qui-form-field-error-text').html(message)
         this.getHTML().addClass('has-error')
+        if (message) {
+            this.getHTML().addClass('has-error-message')
+        }
 
         this._updateSideIcon()
     }
 
     hideError() {
-        this.getHTML().removeClass('has-error')
+        this.getHTML().removeClass('has-error has-error-message')
         Theme.afterTransition(function () {
             if (this.hasError()) {
                 return /* Error has been reshown */
@@ -777,10 +783,10 @@ export default class FormField extends mix().with(ViewMixin) {
     _updateSideIcon() {
         /* Use asap() here so that we can rely on the the final state when deciding what side icon to display */
         asap(function () {
-            if (this.hasError()) {
+            if (this.getHTML().hasClass('has-error-message')) {
                 this.setSideIcon('error')
             }
-            else if (this.hasWarning()) {
+            else if (this.getHTML().hasClass('has-warning-message')) {
                 this.setSideIcon('warning')
             }
             else if (this.isApplied()) {
