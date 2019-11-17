@@ -262,6 +262,14 @@ export default class Section extends mix().with(SingletonMixin) {
     }
 
     /**
+     * Return the current page of this section.
+     * @returns {?qui.pages.PageMixin}
+     */
+    getCurrentPage() {
+        return this.getPagesContext().getCurrentPage()
+    }
+
+    /**
      * Return the pages context of this section.
      * @returns {qui.pages.PagesContext}
      */
