@@ -390,6 +390,11 @@ $.widget('qui.combo', {
         }
     },
 
+    updateChoices: function () {
+        /* Will call makeChoices */
+        this._setOption('choices', [])
+    },
+
     _makeItems: function () {
         let widget = this
 

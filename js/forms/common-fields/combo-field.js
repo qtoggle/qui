@@ -22,6 +22,17 @@ export default class ComboField extends JQueryUIField {
         this._widgetCall({choices: choices})
     }
 
+    /**
+     * Update the list of choices, calling makeChoices.
+     */
+    updateChoices() {
+        let value = this._widgetCall('getValue')
+        this._widgetCall('updateChoices')
+        if (value != null) {
+            this._widgetCall('setValue', value)
+        }
+    }
+
 }
 
 // TODO es7 class fields
