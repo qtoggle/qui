@@ -166,8 +166,8 @@ export default class FormField extends mix().with(ViewMixin) {
 
         widget.on('change', function () {
             this.clearApplied()
-            this.onChange(this.widgetToValue(), this.getForm())
             this.getForm()._handleFieldChange(this)
+            this.onChange(this.widgetToValue(), this.getForm())
         }.bind(this))
 
         widget.on('focus', () => this._handleFocus())
