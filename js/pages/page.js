@@ -460,10 +460,10 @@ export default Mixin((superclass = Object, rootclass) => {
             if (context) {
                 this.handleLeaveCurrent()
                 context.pop()
-                this._context = null
             }
 
             this.onClose()
+            this._context = null
 
             /* Detach from DOM */
             if (this._attached) {
