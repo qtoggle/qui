@@ -924,8 +924,10 @@ export default class Form extends mix().with(StructuredViewMixin) {
     /* Error state */
 
     showError(message) {
-        this._errorDiv.find('span.qui-form-error-text').html(message)
-        this.getHTML().addClass('has-error')
+        if (message) {
+            this._errorDiv.find('span.qui-form-error-text').html(message)
+            this.getHTML().addClass('has-error')
+        }
     }
 
     hideError() {
