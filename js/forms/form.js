@@ -631,9 +631,9 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
             ObjectUtils.forEach(errors, function (name, error) {
 
-                /* Do not show errors for unchanged fields */
+                /* Do not show error messages for unchanged fields */
                 if (name && !this._changedFields[name]) {
-                    delete errors[name]
+                    errors[name] = ''
                 }
 
             }, this)
@@ -998,10 +998,6 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
     _setErrors(errors) {
         ObjectUtils.forEach(errors, function (name, msg) {
-            if (!msg) {
-                return
-            }
-
             if (name) {
                 let field = this.getField(name)
                 if (field) {
