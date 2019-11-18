@@ -357,6 +357,26 @@ export default class FormField extends mix().with(ViewMixin) {
     }
 
 
+    /* Separator */
+
+    /**
+     * Tell if the field has separator above.
+     * @returns {Boolean}
+     */
+    hasSeparator() {
+        return this._separator
+    }
+
+    /**
+     * Set the field separator.
+     * @param {Boolean} separator
+     */
+    setSeparator(separator) {
+        this.getHTML().toggleClass('separator', separator)
+        this._separator = separator
+    }
+
+
     /* Required */
 
     /**
