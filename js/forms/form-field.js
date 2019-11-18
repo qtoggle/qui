@@ -224,6 +224,17 @@ export default class FormField extends mix().with(ViewMixin) {
     }
 
 
+    /* Value */
+
+    /**
+     * Return the current field value.
+     * @returns {*}
+     */
+    getValue() {
+        return this.widgetToValue()
+    }
+
+
     /* Name */
 
     /**
