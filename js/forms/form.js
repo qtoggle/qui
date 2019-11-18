@@ -729,6 +729,14 @@ export default class Form extends mix().with(StructuredViewMixin) {
     }
 
     /**
+     * Return the names of the fields whose values have been changed.
+     * @returns {String[]}
+     */
+    getChangedFields() {
+        return Object.keys(this._changedFields)
+    }
+
+    /**
      * Called whenever a field value changes.
      * @param {Object} data the *unvalidated* form data
      * @param {String} fieldName the name of the field that was changed
@@ -766,7 +774,10 @@ export default class Form extends mix().with(StructuredViewMixin) {
      *
      * If `null` or `undefined` is returned, the form data is considered applied right away. If a promise is returned,
      * data is considered applied when the promise is resolved and {@link qui.forms.Form#setApplied} is called to mark
-     * the form as applied. A rejected promise will set a form error using {@link qui.views.ViewMixin#setError}.
+     * the form as applied.
+     *
+     * A rejected promise will set a form error using {@link qui.views.ViewMixin#setError}. To set field errors, reject
+     * the returned promise with a {@link qui.forms.ErrorMapping}.
      *
      * Form will be put in progress using {@link qui.views.ViewMixin#setProgress} while promise is active.
      *
