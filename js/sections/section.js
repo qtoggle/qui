@@ -212,7 +212,7 @@ export default class Section extends mix().with(SingletonMixin) {
             if (index === 0) { /* Main page removed */
                 this._mainPage = null
             }
-        }.bind(this))
+        }.bind(this), /* once = */ true)
 
         this._mainPage.pushSelf(pagesContext)
     }

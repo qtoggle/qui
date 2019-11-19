@@ -19,10 +19,12 @@ export default class Signal {
      * Add a handler to the signal. This function doesn't check for duplicates, so if a handler is bound more than once
      * to the same signal, it will be called multiple times when the signal is emitted.
      * @param {qui.base.Signal.SignalHandler} handler the handler function to add
+     * @param {Boolean} [once] optionally set this to `true` to call the handler only once, the first time the signal is
+     * emitted, and then disconnect the handler from the signal
      * @returns {qui.base.Signal} this signal
      */
-    connect(handler) {
-        this._handlers.push(handler)
+    connect(handler, once = false) {
+        this._handlers.push({handler: handler, once: once})
 
         return this
     }
@@ -33,7 +35,7 @@ export default class Signal {
      * @returns {qui.base.Signal} this signal
      */
     disconnect(handler) {
-        this._handlers = this._handlers.filter(h => h !== handler)
+        this._handlers = this._handlers.filter(e => e.handler !== handler)
 
         return this
     }
@@ -63,7 +65,11 @@ export default class Signal {
         // eslint-disable-next-line no-undef-init
         let globalResult = undefined
 
-        this._handlers.some(function (handler) {
+        this._handlers.some(function ({handler, once}) {
+
+            if (once) {
+                this.disconnect(handler)
+            }
 
             let result = handler.apply(this._object, args)
             if (result !== false) {
