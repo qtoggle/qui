@@ -93,7 +93,7 @@ input[type=email]::selection {
 textarea::selection {
     background: fade(@foreground-active-color, 99%);
     color: @focus-color;
-} 
+}
 
 input[type=text]::-moz-selection {
     background: @foreground-active-color;
@@ -154,7 +154,7 @@ input[type=email][readonly]::selection {
 textarea[readonly]::selection {
     background: fade(@interactive-color, 99%);
     color: @background-color;
-} 
+}
 
 input[type=text][readonly]::-moz-selection {
     background: @interactive-color;
@@ -277,12 +277,34 @@ input::-webkit-outer-spin-button {
   margin: 0;
 }
 
+
+/* Password input */
+
+div.text-input.clear-enabled > input[type=password] {
+    padding-right: 1.75em;
+}
+
+div.qui-password-input-clear-button {
+    display: inline-block;
+    width: 1.75em;
+    height: 1.75em;
+    padding: 0.375em;
+    border-left: 0.0625em solid @interactive-color;
+    border-radius: 0 0.2em 0.2em 0;
+    vertical-align: top;
+    position: relative;
+    top: 0;
+    right: 1.75em;
+    cursor: pointer;
+}
+
+div.qui-password-input-clear-button.active {
+    background: @interactive-color;
+}
+
 div.qui-password-input-clear-icon {
     width: 1em;
     height: 1em;
-    vertical-align: top;
     position: relative;
-    top: 0.375em;
-    right: 1.4em;
-    cursor: pointer;
+    left: -0.0625em;
 }

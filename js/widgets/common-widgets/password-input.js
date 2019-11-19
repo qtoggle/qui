@@ -19,27 +19,30 @@ $.widget('qui.passwordinput', $.qui.textinput, {
         this._super()
 
         if (this.options.clearEnabled) {
-            this.element.append(this._makeClearIcon())
+            this.element.addClass('clear-enabled')
+            this.element.append(this._makeClearButton())
         }
     },
 
-    _makeClearIcon: function () {
-        let clearIcon = $('<div class="qui-icon qui-base-button qui-password-input-clear-icon"></div>')
+    _makeClearButton: function () {
+        let clearIcon = $('<div class="qui-icon qui-password-input-clear-icon"></div>')
         new StockIcon({
             name: 'close', variant: 'interactive',
-            activeName: 'close', activeVariant: 'interactive-active',
-            focusedName: 'close', focusedVariant: 'background',
+            activeName: 'close', activeVariant: 'background',
             scale: 0.5
         }).applyTo(clearIcon)
 
-        clearIcon.on('click', function () {
+        let clearButton = $('<div class="qui-base-button qui-password-input-clear-button"></div>')
+        clearButton.append(clearIcon)
+
+        clearButton.on('click', function () {
 
             this._input.val('')
             this._input.trigger('change')
 
         }.bind(this))
 
-        return clearIcon
+        return clearButton
     }
 
 })

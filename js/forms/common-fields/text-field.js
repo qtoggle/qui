@@ -9,6 +9,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * * see {@link qui.forms.FormField} for form field parameters
  * @param {?String} [params.placeholder] an empty-text placeholder
  * @param {Boolean} [params.clearPlaceholder] set to `true` to clear the placeholder on first change
+ * (defaults to `false`)
  * @param {Boolean} [params.autocomplete] enables or disables field autocomplete (enabled by default)
  * @param {?Number} [params.minLength] a minimum required text length
  * @param {?Number} [params.maxLength] the maximum allowed text length
