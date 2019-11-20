@@ -5,7 +5,7 @@
 import Logger from '$qui/lib/logger.module.js'
 
 
-let logger = Logger.get('qui.icons')
+const logger = Logger.get('qui.icons')
 let stocks = {}
 let stockMakers = []
 
