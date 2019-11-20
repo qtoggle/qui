@@ -19,6 +19,7 @@ const logger = Logger.get('qui.window')
 
 let unloading = false
 let reloading = false
+let closeListeners = []
 
 
 /**
@@ -176,7 +177,7 @@ export function isLandscape() {
 }
 
 
-/* Various window functions */
+/* Reloading & closing */
 
 /**
  * Reload the window.
@@ -209,6 +210,29 @@ export function reload(path) {
  */
 export function isClosing() {
     return unloading || reloading
+}
+
+/**
+ * Add a listener function to be called when the window is closed. If any of the close listeners returns `false`, window
+ * closing will be prevented, if possible.
+ * @param {Function} listener
+ */
+export function addCloseListener(listener) {
+    closeListeners.push(listener)
+}
+
+/**
+ * Remove a listener function from the listeners that are called when the window is closed.
+ * @param {Function} listener
+ */
+export function removeCloseListener(listener) {
+    let index = closeListeners.findIndex(function (l) {
+        return l === listener
+    })
+
+    if (index >= 0) {
+        closeListeners.splice(index, 1)
+    }
 }
 
 
@@ -290,6 +314,20 @@ export function init() {
         if (writePendingRequests.length > 0) {
             logger.warn(`application unload: there are ${writePendingRequests.length} write pending ajax requests`)
             canUnload = false
+        }
+
+        if (canUnload) {
+            canUnload = !closeListeners.some(function (l) {
+                try {
+                    if (l() === false) {
+                        logger.warn('application unload prevented by close listener')
+                        return true
+                    }
+                }
+                catch (e) {
+                    logger.errorStack('close listener call failed', e)
+                }
+            })
         }
 
         if (!canUnload) {
