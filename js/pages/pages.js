@@ -41,11 +41,15 @@ function initBreadcrumbs() {
                 return /* Already there */
             }
 
+            // TODO capture history entry and add it only on page.close().then()
             Navigation.addHistoryEntry()
 
+            /* Close all pages following the page associated to clicked breadcrumb */
             let page = currentContext.getPageAt(i + 1)
             if (page) {
-                page.close()
+                page.close().catch(function () {
+                    logger.debug('breadcrumb navigation cancelled by rejected page close')
+                })
             }
 
         })

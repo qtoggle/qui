@@ -424,12 +424,14 @@ export default class Section extends mix().with(SingletonMixin) {
      * @param {qui.pages.PageMixin} page the page to be pushed
      * @param {Boolean} [addHistoryEntry] whether to create a new history entry for current page before adding the new
      * page, or not (defaults to `true`)
+     * @returns {Promise} a promise that resolves as soon as the page is pushed, or rejected if the page cannot be
+     * pushed
      */
     pushPage(page, addHistoryEntry = true) {
         let context = this.getPagesContext()
         let currentPage = context.getCurrentPage()
         if (currentPage) {
-            currentPage.pushPage(page, addHistoryEntry)
+            return currentPage.pushPage(page, addHistoryEntry)
         }
         else {
             if (addHistoryEntry) {
@@ -442,6 +444,8 @@ export default class Section extends mix().with(SingletonMixin) {
             if (context.isCurrent()) {
                 Navigation.updateHistoryEntry()
             }
+
+            return Promise.resolve()
         }
     }
 

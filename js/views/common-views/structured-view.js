@@ -142,7 +142,9 @@ export default Mixin((superclass = Object) => {
                 topDiv.append(closeIconDiv)
 
                 closeIconDiv.on('click', function () {
-                    this.close()
+                    this.close().catch().then(function () {
+                        logger.debug('breadcrumb navigation cancelled by rejected page close')
+                    })
                 }.bind(this))
             }
 

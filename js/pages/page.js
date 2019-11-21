@@ -439,61 +439,62 @@ export default Mixin((superclass = Object, rootclass) => {
          * Close the page.
          */
         close() {
-            if (rootPrototype.close) {
-                rootPrototype.close.call(this)
-            }
-
             if (this._closed) {
                 throw new AssertionError('Attempt to close an already closed page')
             }
 
-            /* Mark as closed */
-            this._closed = true
-
             /* Close all following pages */
+            let promise = Promise.resolve()
             let index = this._getIndex()
-            if (index >= 0) {
-                while (this.getContext().getSize() - 1 > index) {
-                    this.getContext().getCurrentPage().close()
+            let context = this.getContext()
+            if (index >= 0 && context && context.getSize() > index + 1) {
+                promise = context.getPageAt(index + 1).close()
+            }
+
+            return promise.then(() => this.canClose()).then(function () {
+                if (rootPrototype.close) {
+                    rootPrototype.close.call(this)
                 }
-            }
 
-            /* Pop this page from context */
-            let context = this._context
-            if (context) {
-                this.handleLeaveCurrent()
-                context.pop()
-            }
+                /* Mark as closed */
+                this._closed = true
 
-            this.onClose()
-            this._context = null
+                /* Pop this page from context */
+                if (context) {
+                    this.handleLeaveCurrent()
+                    context.pop()
+                }
 
-            /* Detach from DOM */
-            if (this._attached) {
-                this.detach()
-            }
+                this.onClose()
+                this._context = null
 
-            updateUI()
+                /* Detach from DOM */
+                if (this._attached) {
+                    this.detach()
+                }
 
-            if (context) {
-                let currentPage = context.getCurrentPage()
-                if (currentPage) {
-                    // TODO it would make more sense to prevent calling currentPage.handleBecomeCurrent()
-                    //  and all other update function calls, if this page has only been closed to be replaced
-                    //  immediately by another one
-                    currentPage.onCloseNext(this)
-                    currentPage.handleBecomeCurrent()
+                updateUI()
 
-                    if (context.isCurrent()) {
-                        Navigation.updateHistoryEntry()
+                if (context) {
+                    let currentPage = context.getCurrentPage()
+                    if (currentPage) {
+                        // TODO it would make more sense to prevent calling currentPage.handleBecomeCurrent()
+                        //  and all other update function calls, if this page has only been closed to be replaced
+                        //  immediately by another one
+                        currentPage.onCloseNext(this)
+                        currentPage.handleBecomeCurrent()
+
+                        if (context.isCurrent()) {
+                            Navigation.updateHistoryEntry()
+                        }
+                    }
+                    else {
+                        if (context.isCurrent()) {
+                            OptionsBar.setContent(null)
+                        }
                     }
                 }
-                else {
-                    if (context.isCurrent()) {
-                        OptionsBar.setContent(null)
-                    }
-                }
-            }
+            }.bind(this))
         }
 
         /**
@@ -507,6 +508,15 @@ export default Mixin((superclass = Object, rootclass) => {
             }
 
             return this._closed
+        }
+
+        /**
+         * Override this method to prevent accidental closing of the page, to the possible extent. Pages can be closed
+         * by default.
+         * @returns {Promise} a promise that, if rejected, will prevent the page close
+         */
+        canClose() {
+            return Promise.resolve()
         }
 
         /**
@@ -606,7 +616,8 @@ export default Mixin((superclass = Object, rootclass) => {
          * @param {qui.pages.PageMixin} page the page to be pushed
          * @param {Boolean} [addHistoryEntry] whether to create a new history entry for current page before adding the
          * new page, or not (defaults to `true`)
-         * @returns {qui.pages.PageMixin} the pushed page
+         * @returns {Promise} a promise that resolves as soon as the page is pushed, or rejected if the page cannot be
+         * pushed
          */
         pushPage(page, addHistoryEntry = true) {
             let index = this._getIndex()
@@ -615,25 +626,32 @@ export default Mixin((superclass = Object, rootclass) => {
             }
 
             if (addHistoryEntry) {
+                // TODO capture history entry and add it only on page.close().then()
                 Navigation.addHistoryEntry()
             }
 
             let context = this.getContext()
 
             /* Close any following page */
+            let promise
             let nextPage = context.getPageAt(index + 1)
             if (nextPage) {
-                nextPage.close()
+                promise = nextPage.close()
+            }
+            else {
+                promise = Promise.resolve()
             }
 
-            this.handleLeaveCurrent()
+            return promise.then(function () {
+                this.handleLeaveCurrent()
 
-            page.pushSelf(context)
-            page.whenLoaded() /* Start loading the page automatically when pushed */
+                page.pushSelf(context)
+                page.whenLoaded() /* Start loading the page automatically when pushed */
 
-            if (context.isCurrent()) {
-                Navigation.updateHistoryEntry()
-            }
+                if (context.isCurrent()) {
+                    Navigation.updateHistoryEntry()
+                }
+            }.bind(this))
         }
 
         /**

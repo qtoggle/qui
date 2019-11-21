@@ -277,15 +277,20 @@ export function navigate(path, handleErrors, pageState) {
     function navigateNext(currentPage) {
         if (!path.length) { /* Navigation done */
             /* Pop everything beyond given path */
+            let promise
             let page = getCurrentContext().getPageAt(currIndex)
             if (page) {
-                if (!page.close()) { // TODO Page.close
-                    logger.debug('page close rejected')
-                }
+                promise = page.close()
+            }
+            else {
+                promise = Promise.resolve()
             }
 
-            updateHistoryEntry()
-            return
+            return promise.then(function () {
+                updateHistoryEntry()
+            }).catch(function () {
+                logger.debug('page close rejected')
+            })
         }
 
         let pathId = path.shift()
@@ -312,11 +317,12 @@ export function navigate(path, handleErrors, pageState) {
                 })
             }
 
-            currentPage.pushPage(nextPage, /* addHistoryEntry = */ false)
-            currIndex++
+            return currentPage.pushPage(nextPage, /* addHistoryEntry = */ false).then(function () {
+                currIndex++
 
-            return nextPage.whenLoaded().then(function () {
-                return navigateNext(nextPage)
+                return nextPage.whenLoaded().then(function () {
+                    return navigateNext(nextPage)
+                })
             })
         })
     }
@@ -360,28 +366,25 @@ export function navigate(path, handleErrors, pageState) {
             commonPathLen++
         }
 
-        let currentPage
         let currentContext = getCurrentContext()
-        let steps = oldPath.length - commonPathLen - 1
+        let promise = Promise.resolve(() => section.getMainPage())
         if (commonPathLen) { /* We have a common path part */
             path = path.slice(commonPathLen)
             currIndex += commonPathLen
 
-            while (steps-- > 0 && currentContext.getCurrentPage()) {
-                if (!currentContext.getCurrentPage().close()) { // TODO Page.close
+            let page = currentContext.getPageAt(commonPathLen)
+            if (page) {
+                promise = page.close().then(() => currentContext.getCurrentPage())
+                promise.catch(function () {
                     logger.debug('page close rejected')
-                    break
-                }
+                })
             }
-
-            currentPage = currentContext.getCurrentPage()
-        }
-        else { /* No common path part, start navigation from section's main page */
-            currentPage = section.getMainPage()
         }
 
-        return currentPage.whenLoaded().then(function () {
-            return currentPage
+        return promise.then(function (currentPage) {
+            return currentPage.whenLoaded().then(function () {
+                return currentPage
+            })
         })
 
     }).then(function (currentPage) {
