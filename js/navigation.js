@@ -12,6 +12,7 @@ import {getCurrentContext} from '$qui/pages/pages.js'
 import * as PWA            from '$qui/pwa.js'
 import * as Sections       from '$qui/sections/sections.js'
 import {asap}              from '$qui/utils/misc.js'
+import * as ObjectUtils    from '$qui/utils/object.js'
 import URL                 from '$qui/utils/url.js'
 import * as Window         from '$qui/window.js'
 
@@ -93,68 +94,6 @@ function navigateInitial() {
     else {
         logger.debug('initial navigation to home')
         Sections.showHome()
-    }
-}
-
-function initHistory() {
-    Window.$window.on('hashchange', function () {
-        if (!Config.navigationUsesFragment) {
-            return
-        }
-
-        updateCurrentURL()
-        logger.debug(`hash-change: navigating to "${currentURLPath}"`)
-        navigate(currentURLPath)
-    })
-
-    Window.$window.on('popstate', function (e) {
-        let oe = e.originalEvent
-        if (oe.state == null) { /* Not ours */
-            return
-        }
-
-        updateCurrentURL()
-        logger.debug(`pop-state: going through history to "${currentURLPath}"`)
-        navigate(currentURLPath, /* handleErrors = */ true, /* pageState = */ oe.state.pageState)
-    })
-}
-
-function setHistoryEntry(addUpdate) {
-    let path = getCurrentPath()
-    let pathStr = `/${path.join('/')}`
-    let pageState = getCurrentContext().getPages().map(page => page.getHistoryState())
-
-    let msg = `${addUpdate === 'add' ? 'adding' : 'updating'} history entry`
-    msg = `${msg}: path = "${pathStr}", pageState = "${JSON.stringify(pageState)}"`
-
-    logger.debug(msg)
-
-    let state = {
-        pageState: pageState
-    }
-
-    currentURLPath = pathStr
-
-    /* Preserve query, if present */
-    if (currentURLQuery) {
-        pathStr += `?${currentURLQuery}`
-    }
-
-    if (addUpdate === 'add') {
-        currentURLQuery = null
-    }
-
-    if (Config.navigationUsesFragment) {
-        pathStr = `#${pathStr}`
-    }
-
-    pathStr = basePath + pathStr
-
-    if (addUpdate === 'add') {
-        window.history.pushState(state, '', pathStr)
-    }
-    else { /* Assuming update */
-        window.history.replaceState(state, '', pathStr)
     }
 }
 
@@ -409,12 +348,61 @@ export function navigate(path, handleErrors, pageState) {
     }).catch(handleError)
 }
 
+
+function setHistoryEntry(addUpdate, state) {
+    let pathStr = ObjectUtils.pop(state, 'pathStr')
+
+    let msg = `${addUpdate === 'add' ? 'adding' : 'updating'} history entry`
+    msg = `${msg}: path = "${pathStr}", pageState = "${JSON.stringify(state.pageState)}"`
+
+    logger.debug(msg)
+
+    if (addUpdate === 'add') {
+        currentURLQuery = null
+        window.history.pushState(state, '', pathStr)
+    }
+    else {
+        currentURLPath = pathStr
+        window.history.replaceState(state, '', pathStr)
+    }
+}
+
+/**
+ * Capture a snapshot of the state of the current history entry.
+ * @alias qui.navigation.getCurrentHistoryEntryState
+ * @returns {Object}
+ */
+export function getCurrentHistoryEntryState() {
+    let path = getCurrentPath()
+    let pathStr = `/${path.join('/')}`
+    let pageState = getCurrentContext().getPages().map(page => page.getHistoryState())
+
+    /* Preserve query, if present */
+    if (currentURLQuery) {
+        pathStr += `?${currentURLQuery}`
+    }
+
+    if (Config.navigationUsesFragment) {
+        pathStr = `#${pathStr}`
+    }
+
+    pathStr = basePath + pathStr
+
+    return {
+        pageState: pageState,
+        pathStr: pathStr
+    }
+}
+
 /**
  * Add a history entry corresponding to the current path.
  * @alias qui.navigation.addHistoryEntry
  * @see qui.navigation.getCurrentPath
+ * @param {Object} [state] the history entry state to add (will use {@link qui.navigation.getCurrentHistoryEntryState}
+ * by default)
  */
-export function addHistoryEntry() {
+export function addHistoryEntry(state = null) {
+    state = state || getCurrentHistoryEntryState()
     setHistoryEntry(/* addUpdate = */ 'add')
 }
 
@@ -422,10 +410,36 @@ export function addHistoryEntry() {
  * Update the current history entry from the current path.
  * @alias qui.navigation.updateHistoryEntry
  * @see qui.navigation.getCurrentPath
+ * @param {Object} [state] the history entry state to add (will use {@link qui.navigation.getCurrentHistoryEntryState}
+ * by default)
  */
-export function updateHistoryEntry() {
-    setHistoryEntry(/* addUpdate = */ 'update')
+export function updateHistoryEntry(state = null) {
+    state = state || getCurrentHistoryEntryState()
+    setHistoryEntry(/* addUpdate = */ 'update', state)
     PWA.updateManifest()
+}
+
+function initHistory() {
+    Window.$window.on('hashchange', function () {
+        if (!Config.navigationUsesFragment) {
+            return
+        }
+
+        updateCurrentURL()
+        logger.debug(`hash-change: navigating to "${currentURLPath}"`)
+        navigate(currentURLPath)
+    })
+
+    Window.$window.on('popstate', function (e) {
+        let oe = e.originalEvent
+        if (oe.state == null) { /* Not ours */
+            return
+        }
+
+        updateCurrentURL()
+        logger.debug(`pop-state: going through history to "${currentURLPath}"`)
+        navigate(currentURLPath, /* handleErrors = */ true, /* pageState = */ oe.state.pageState)
+    })
 }
 
 

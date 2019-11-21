@@ -629,9 +629,9 @@ export default Mixin((superclass = Object, rootclass) => {
                 throw new AssertionError('Attempt to push from a contextless page')
             }
 
+            let state = null
             if (addHistoryEntry) {
-                // TODO capture history entry and add it only on page.close().then()
-                Navigation.addHistoryEntry()
+                state = Navigation.getCurrentHistoryEntryState()
             }
 
             let context = this.getContext()
@@ -647,6 +647,8 @@ export default Mixin((superclass = Object, rootclass) => {
             }
 
             return promise.then(function () {
+                Navigation.addHistoryEntry(state)
+
                 this.handleLeaveCurrent()
 
                 page.pushSelf(context)
