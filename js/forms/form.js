@@ -1042,7 +1042,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
      * Execute the cancel form action. By default this is {@link qui.forms.Form#close}.
      */
     cancelAction() {
-        this.close()
+        this.close(/* force = */ true)
     }
 
     /**
@@ -1094,7 +1094,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
                 if (this._closeOnApply) {
                     if (!this.isClosed()) {
-                        this.close()
+                        this.close(/* force = */ true)
                     }
                 }
 

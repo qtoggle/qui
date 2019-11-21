@@ -436,9 +436,13 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
-         * Close the page.
+         * Close the page. Calls {@link qui.pages.PageMixin#canClose} to determine if the page can be closed.
+         * @param {Boolean} [force] set to `true` to force page close without calling
+         * {@link qui.pages.PageMixin#canClose}
+         * @returns {Promise} a promise that is resolved as soon as the page is closed and is rejected if the page close
+         * was rejected.
          */
-        close() {
+        close(force = false) {
             if (this._closed) {
                 throw new AssertionError('Attempt to close an already closed page')
             }
@@ -451,7 +455,7 @@ export default Mixin((superclass = Object, rootclass) => {
                 promise = context.getPageAt(index + 1).close()
             }
 
-            return promise.then(() => this.canClose()).then(function () {
+            return promise.then(() => force || this.canClose()).then(function () {
                 if (rootPrototype.close) {
                     rootPrototype.close.call(this)
                 }

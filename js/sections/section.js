@@ -457,7 +457,7 @@ export default class Section extends mix().with(SingletonMixin) {
 
         if (this._mainPage) {
             /* Close main page and all following pages */
-            this._mainPage.close()
+            this._mainPage.close(/* force = */ true)
             this._mainPage = null
         }
 
