@@ -1,4 +1,6 @@
-import $ from '$qui/lib/jquery.module.js'
+
+import $      from '$qui/lib/jquery.module.js'
+import Logger from '$qui/lib/logger.module.js'
 
 import {Mixin}     from '$qui/base/mixwith.js'
 import StockIcon   from '$qui/icons/stock-icon.js'
@@ -7,6 +9,9 @@ import {asap}      from '$qui/utils/misc.js'
 import * as Window from '$qui/window.js'
 
 import ViewMixin from '../view.js'
+
+
+const logger = Logger.get('qui.views.commonviews.structuredview')
 
 
 export default Mixin((superclass = Object) => {

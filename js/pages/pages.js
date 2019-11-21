@@ -2,7 +2,8 @@
  * @namespace qui.pages
  */
 
-import $ from '$qui/lib/jquery.module.js'
+import $      from '$qui/lib/jquery.module.js'
+import Logger from '$qui/lib/logger.module.js'
 
 import * as GlobalGlass from '$qui/global-glass.js'
 import * as OptionsBar  from '$qui/main-ui/options-bar.js'
@@ -17,6 +18,7 @@ import PagesContext from './pages-context.js'
 
 
 const MAX_BREADCRUMBS = 10
+const logger = Logger.get('qui.pages')
 
 let pagesContainer = null
 let breadcrumbsContainer = null

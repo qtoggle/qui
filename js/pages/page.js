@@ -1,4 +1,6 @@
-import $ from '$qui/lib/jquery.module.js'
+
+import $      from '$qui/lib/jquery.module.js'
+import Logger from '$qui/lib/logger.module.js'
 
 import {AssertionError} from '$qui/base/errors.js'
 import {Mixin}          from '$qui/base/mixwith.js'
@@ -13,7 +15,8 @@ import * as Window      from '$qui/window.js'
 import {getPagesContainer, updateUI} from './pages.js'
 
 
-let viewMixinPrototype = ViewMixin().prototype
+const viewMixinPrototype = ViewMixin().prototype
+const logger = Logger.get('qui.pages.page')
 
 
 export default Mixin((superclass = Object, rootclass) => {
@@ -598,7 +601,8 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
-         * Push a new page after this one. Any following pages will be closed.
+         * Push a new page after this one. Any following pages will be closed. The new page is not guaranteed to be
+         * pushed by the time the function exists.
          * @param {qui.pages.PageMixin} page the page to be pushed
          * @param {Boolean} [addHistoryEntry] whether to create a new history entry for current page before adding the
          * new page, or not (defaults to `true`)
@@ -630,8 +634,6 @@ export default Mixin((superclass = Object, rootclass) => {
             if (context.isCurrent()) {
                 Navigation.updateHistoryEntry()
             }
-
-            return page
         }
 
         /**

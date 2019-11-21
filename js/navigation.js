@@ -279,7 +279,9 @@ export function navigate(path, handleErrors, pageState) {
             /* Pop everything beyond given path */
             let page = getCurrentContext().getPageAt(currIndex)
             if (page) {
-                page.close()
+                if (!page.close()) { // TODO Page.close
+                    logger.debug('page close rejected')
+                }
             }
 
             updateHistoryEntry()
@@ -366,7 +368,10 @@ export function navigate(path, handleErrors, pageState) {
             currIndex += commonPathLen
 
             while (steps-- > 0 && currentContext.getCurrentPage()) {
-                currentContext.getCurrentPage().close()
+                if (!currentContext.getCurrentPage().close()) { // TODO Page.close
+                    logger.debug('page close rejected')
+                    break
+                }
             }
 
             currentPage = currentContext.getCurrentPage()

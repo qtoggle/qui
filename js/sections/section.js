@@ -419,11 +419,11 @@ export default class Section extends mix().with(SingletonMixin) {
     }
 
     /**
-     * Push a new page onto the section's context.
+     * Push a new page onto the section's context. The page is not guaranteed to be pushed by the time the function
+     * exists.
      * @param {qui.pages.PageMixin} page the page to be pushed
      * @param {Boolean} [addHistoryEntry] whether to create a new history entry for current page before adding the new
      * page, or not (defaults to `true`)
-     * @returns {qui.pages.PageMixin} the pushed page
      */
     pushPage(page, addHistoryEntry = true) {
         let context = this.getPagesContext()
@@ -443,8 +443,6 @@ export default class Section extends mix().with(SingletonMixin) {
                 Navigation.updateHistoryEntry()
             }
         }
-
-        return page
     }
 
     /**
