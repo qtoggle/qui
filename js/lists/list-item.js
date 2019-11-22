@@ -28,6 +28,7 @@ export default class ListItem extends mix().with(ViewMixin) {
         let html = $('<div class="qui-base-button qui-list-child item"></div>')
 
         html.on('click', function () {
+
             let items = this._list.getItems()
             let oldItemElem = this._list.getBody().children('.qui-list-child.item.selected')
             let oldIndex = oldItemElem.index()
@@ -38,10 +39,13 @@ export default class ListItem extends mix().with(ViewMixin) {
                 return
             }
 
-            if (this._list.onSelectionChange(this, index, oldItem, oldIndex) !== false) {
+            let promise = this._list.onSelectionChange(this, index, oldItem, oldIndex)
+            promise = promise || Promise.resolve()
+            promise.then(function () {
                 this._list.getBody().children('.qui-list-child.item').removeClass('selected')
                 html.addClass('selected')
-            }
+            }.bind(this)).catch(() => {})
+
         }.bind(this))
 
         if (this._content) {

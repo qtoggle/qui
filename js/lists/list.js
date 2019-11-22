@@ -432,7 +432,7 @@ export default class List extends mix().with(StructuredViewMixin) {
      * @param {Number} newIndex the new selected index (can be `-1`)
      * @param {qui.lists.ListItem} oldItem the previously selected item (can be `null`)
      * @param {Number} oldIndex the previously selected index (can be `-1`)
-     * @returns {?Boolean} if `false` is returned, then the selection change is cancelled
+     * @returns {?Promise} an optional promise which, if rejected, will prevent the selection change
      */
     onSelectionChange(newItem, newIndex, oldItem, oldIndex) {
     }
