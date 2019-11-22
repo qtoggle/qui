@@ -290,10 +290,6 @@ export function init() {
 
     /* Window unload handling */
     $window.on('beforeunload', function (e) {
-        if (unloading) { /* Already called */
-            return
-        }
-
         unloading = true
 
         logger.info('application unload requested')
@@ -333,6 +329,7 @@ export function init() {
         if (!canUnload) {
             e.preventDefault()
             return false
+            unloading = false
         }
     })
 
