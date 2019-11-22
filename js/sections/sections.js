@@ -115,7 +115,7 @@ export function get(id) {
 /**
  * Return the current section.
  * @alias qui.sections.getCurrent
- * @returns {qui.sections.Section}
+ * @returns {?qui.sections.Section}
  */
 export function getCurrent() {
     return currentSection

@@ -2,6 +2,7 @@ import {gettext}        from '$qui/base/i18n.js'
 import {mix}            from '$qui/base/mixwith.js'
 import StockIcon        from '$qui/icons/stock-icon.js'
 import PageMixin        from '$qui/pages/page.js'
+import * as Sections    from '$qui/sections/sections.js'
 import * as ObjectUtils from '$qui/utils/object.js'
 import * as Window      from '$qui/window.js'
 
@@ -56,4 +57,23 @@ export default class PageForm extends mix(Form).with(PageMixin) {
         })
     }
 
+    static init() {
+        Window.addCloseListener(function () {
+            /* Go through all current pages and collect page forms. Then see if they have changed fields and, if any of
+             * them does and has preventUnappliedClose flag set, try to prevent navigating away from the page */
+
+            let currentSection = Sections.getCurrent()
+            if (!currentSection) {
+                return
+            }
+
+            let context = currentSection.getPagesContext()
+            let pages = context.getPages()
+            let pageForms = pages.filter(p => p instanceof PageForm)
+
+            if (pageForms.some(f => f.getChangedFields().length > 0 && f._preventUnappliedClose)) {
+                return false
+            }
+        })
+    }
 }
