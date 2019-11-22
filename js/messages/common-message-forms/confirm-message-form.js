@@ -71,14 +71,14 @@ export default class ConfirmMessageForm extends MessageForm {
     }
 
     /**
-     * Show a message form asking the user for confirmation.
+     * Create a message form asking the user for confirmation.
      * @param {String} message the message to show
      * @param {qui.messages.MessageForm.Callback} [onYes] a function to be called on positive user answer
      * @param {?qui.messages.MessageForm.Callback} [onNo] a function to be called on negative user answer
      * @param {String} [pathId] a path identifier
      * @returns {qui.messages.commonmessageforms.ConfirmMessageForm} the message form
      */
-    static show(message, onYes, onNo, pathId) {
+    static create(message, onYes, onNo, pathId) {
         return new this({
             message: message,
             onYes: onYes,

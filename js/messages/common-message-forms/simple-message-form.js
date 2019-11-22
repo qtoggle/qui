@@ -77,7 +77,7 @@ export default class SimpleMessageForm extends MessageForm {
     }
 
     /**
-     * Show a simple message form.
+     * Create a simple message form.
      * @param {String} message the message to show
      * @param {String} type message type (`"info"`, `"warning"` or `"error"`)
      * @param {qui.messages.MessageForm.Callback} [onClose] a function to be called when form is dismissed
@@ -85,7 +85,7 @@ export default class SimpleMessageForm extends MessageForm {
      * @param {String} [pathId] the path identifier
      * @returns {qui.messages.commonmessageforms.SimpleMessageForm} the message form
      */
-    static show(message, type, onClose, buttonCaption, pathId) {
+    static create(message, type, onClose, buttonCaption, pathId) {
         return new this({
             message: message,
             type: type,
