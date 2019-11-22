@@ -306,7 +306,7 @@ export function navigate(path, handleErrors, pageState) {
         }
 
         let currentContext = getCurrentContext()
-        let promise = Promise.resolve(() => section.getMainPage())
+        let promise = Promise.resolve(section.getMainPage())
         if (commonPathLen) { /* We have a common path part */
             path = path.slice(commonPathLen)
             currIndex += commonPathLen
@@ -403,7 +403,7 @@ export function getCurrentHistoryEntryState() {
  */
 export function addHistoryEntry(state = null) {
     state = state || getCurrentHistoryEntryState()
-    setHistoryEntry(/* addUpdate = */ 'add')
+    setHistoryEntry(/* addUpdate = */ 'add', state)
 }
 
 /**
