@@ -1,4 +1,5 @@
-import $ from '$qui/lib/jquery.module.js'
+import $      from '$qui/lib/jquery.module.js'
+import Logger from '$qui/lib/logger.module.js'
 
 import {gettext}             from '$qui/base/i18n.js'
 import {mix}                 from '$qui/base/mixwith.js'
@@ -10,6 +11,9 @@ import * as StringUtils      from '$qui/utils/string.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
 
 import ListItem from './list-item.js'
+
+
+const logger = Logger.get('qui.lists.list')
 
 
 /**
@@ -237,22 +241,29 @@ export default class List extends mix().with(StructuredViewMixin) {
 
     _makeAddElem() {
         let addElem = $('<div class="qui-base-button qui-list-child add"></div>')
-        let list = this
 
         let addIcon = $('<div class="qui-icon"></div>')
         addElem.append(addIcon)
         new StockIcon({name: 'plus', variant: 'interactive'}).applyTo(addIcon)
 
         addElem.on('click', function () {
-            list.getBody().children('.qui-list-child.item').removeClass('selected')
-            list.onAdd()
-        })
+
+            let promise = this.onAdd()
+            promise = promise || Promise.resolve()
+            promise.then(function () {
+                this.getBody().children('.qui-list-child.item').removeClass('selected')
+            }.bind(this)).catch(function () {
+                logger.debug('add rejected')
+            })
+
+        }.bind(this))
 
         return addElem
     }
 
     /**
      * Override this to define the behavior of the list when the add button is pressed.
+     * @returns {?Promise} an optional promise which, if rejected, will cancel adding
      */
     onAdd() {
     }
@@ -432,7 +443,7 @@ export default class List extends mix().with(StructuredViewMixin) {
      * @param {Number} newIndex the new selected index (can be `-1`)
      * @param {qui.lists.ListItem} oldItem the previously selected item (can be `null`)
      * @param {Number} oldIndex the previously selected index (can be `-1`)
-     * @returns {?Promise} an optional promise which, if rejected, will prevent the selection change
+     * @returns {?Promise} an optional promise which, if rejected, will cancel the selection change
      */
     onSelectionChange(newItem, newIndex, oldItem, oldIndex) {
     }

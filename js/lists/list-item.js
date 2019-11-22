@@ -1,7 +1,11 @@
-import $ from '$qui/lib/jquery.module.js'
+import $      from '$qui/lib/jquery.module.js'
+import Logger from '$qui/lib/logger.module.js'
 
 import {mix}     from '$qui/base/mixwith.js'
 import ViewMixin from '$qui/views/view.js'
+
+
+const logger = Logger.get('qui.lists.listitem')
 
 
 /**
@@ -44,7 +48,9 @@ export default class ListItem extends mix().with(ViewMixin) {
             promise.then(function () {
                 this._list.getBody().children('.qui-list-child.item').removeClass('selected')
                 html.addClass('selected')
-            }.bind(this)).catch(() => {})
+            }.bind(this)).catch(function () {
+                logger.debug('selection change rejected')
+            })
 
         }.bind(this))
 
