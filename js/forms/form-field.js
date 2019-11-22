@@ -46,10 +46,9 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
 export default class FormField extends mix().with(ViewMixin) {
 
     constructor({
-        name, initialValue = null, label = '', description = '', unit = '', separator = false,
-        required = false, readonly = false, disabled = false, hidden = false, forceOneLine = false,
-        valueWidth = null, onChange = null, validate = null,
-        ...params
+        name, initialValue = null, label = '', description = '', unit = '', separator = false, required = false,
+        readonly = false, disabled = false, hidden = false, forceOneLine = false, valueWidth = null, onChange = null,
+        validate = null, ...params
     }) {
         super(params)
 
@@ -80,11 +79,13 @@ export default class FormField extends mix().with(ViewMixin) {
         this._sideIcon = null
         this._sideIconDiv = null
         this._focused = false
-
-        this._updateSideIcon()
     }
 
     makeHTML() {
+        if (!this._form) {
+            throw new AssertionError('makeHTML() called before assigning to a form')
+        }
+
         let html = $(`<div class="qui-form-field" data-name="${this._name}"></div>`)
 
         if (this._forceOneLine) {

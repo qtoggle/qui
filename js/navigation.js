@@ -227,8 +227,6 @@ export function navigate(path, handleErrors, pageState) {
 
             return promise.then(function () {
                 updateHistoryEntry()
-            }).catch(function () {
-                logger.debug('page close rejected')
             })
         }
 
@@ -395,7 +393,7 @@ export function getCurrentHistoryEntryState() {
 }
 
 /**
- * Add a history entry corresponding to the current path.
+ * Add a history entry corresponding to the current path, or optionally to a given state.
  * @alias qui.navigation.addHistoryEntry
  * @see qui.navigation.getCurrentPath
  * @param {Object} [state] the history entry state to add (will use {@link qui.navigation.getCurrentHistoryEntryState}
@@ -407,7 +405,7 @@ export function addHistoryEntry(state = null) {
 }
 
 /**
- * Update the current history entry from the current path.
+ * Update the current history entry from the current path, or optionally from a given state.
  * @alias qui.navigation.updateHistoryEntry
  * @see qui.navigation.getCurrentPath
  * @param {Object} [state] the history entry state to add (will use {@link qui.navigation.getCurrentHistoryEntryState}
@@ -438,7 +436,10 @@ function initHistory() {
 
         updateCurrentURL()
         logger.debug(`pop-state: going through history to "${currentURLPath}"`)
-        navigate(currentURLPath, /* handleErrors = */ true, /* pageState = */ oe.state.pageState)
+
+        navigate(currentURLPath, /* handleErrors = */ true, /* pageState = */ oe.state.pageState).catch(function () {
+            addHistoryEntry(oe.state)
+        })
     })
 }
 
