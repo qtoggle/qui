@@ -737,6 +737,15 @@ export default class Form extends mix().with(StructuredViewMixin) {
     }
 
     /**
+     * Clear the changed state of a field.
+     * @param {String} name the field name
+     */
+    markFieldUnchanged(name) {
+        delete this._changedFields[name]
+        this.updateValidationState()
+    }
+
+    /**
      * Called whenever a field value changes.
      * @param {Object} data the *unvalidated* form data
      * @param {String} fieldName the name of the field that was changed
@@ -847,7 +856,8 @@ export default class Form extends mix().with(StructuredViewMixin) {
                 field.setProgress()
                 whenApplied.then(function () {
                     field.setApplied()
-                })
+                    delete this._changedFields[name]
+                }.bind(this))
 
                 return whenApplied
             }
@@ -1091,6 +1101,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
             whenApplied.then(function () {
 
                 this.setApplied()
+                this._changedFields = {}
 
                 if (this._closeOnApply) {
                     if (!this.isClosed()) {
