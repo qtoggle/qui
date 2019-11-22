@@ -70,21 +70,4 @@ export default class ConfirmMessageForm extends MessageForm {
         }.bind(this))
     }
 
-    /**
-     * Create a message form asking the user for confirmation.
-     * @param {String} message the message to show
-     * @param {qui.messages.MessageForm.Callback} [onYes] a function to be called on positive user answer
-     * @param {?qui.messages.MessageForm.Callback} [onNo] a function to be called on negative user answer
-     * @param {String} [pathId] a path identifier
-     * @returns {qui.messages.commonmessageforms.ConfirmMessageForm} the message form
-     */
-    static create(message, onYes, onNo, pathId) {
-        return new this({
-            message: message,
-            onYes: onYes,
-            onNo: onNo,
-            pathId: pathId
-        })
-    }
-
 }

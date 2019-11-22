@@ -384,6 +384,15 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
+         * Tells if the page has a context, effectively indicating whether the page is currently added to a context, or
+         * not.
+         * @returns {Boolean}
+         */
+        hasContext() {
+            return !!this._context
+        }
+
+        /**
          * Tell if the page is kept visible while the next page is current.
          * @returns {Boolean}
          */

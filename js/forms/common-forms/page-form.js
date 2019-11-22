@@ -47,6 +47,7 @@ export default class PageForm extends mix(Form).with(PageMixin) {
             return super.canClose()
         }
 
+        /* Dynamically import common-message-forms.js here, because it depends itself on PageForm */
         return import('$qui/messages/common-message-forms.js').then(function (CommonMessageForms) {
             let message = gettext('Discard changes?')
             let confirmForm = new CommonMessageForms.StickyConfirmMessageForm({message: message})
