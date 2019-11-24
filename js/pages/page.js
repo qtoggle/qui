@@ -98,20 +98,6 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
-         * Called when the page is resized.
-         */
-        onResize() {
-        }
-
-        /**
-         * Called when the page is scrolled vertically.
-         * @param {Number} offset the vertical scroll offset
-         * @param {Number} maxOffset the maximum vertical scroll offset
-         */
-        onVertScroll(offset) {
-        }
-
-        /**
          * Override this method to customize navigation beyond this page. By default, it returns `null`, preventing
          * further navigation.
          *
@@ -357,12 +343,33 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
+         * Called when the page is scrolled vertically.
+         * @param {Number} offset the vertical scroll offset
+         * @param {Number} maxOffset the maximum vertical scroll offset
+         */
+        onVertScroll(offset) {
+        }
+
+        /**
          * Handle vertical scroll events. Internally calls {@link qui.pages.PageMixin#onVertScroll}.
          */
         handleVertScroll() {
             let params = this.getVertScrollParams()
 
             this.onVertScroll(params.offset, params.maxOffset)
+        }
+
+        /**
+         * Called when the page is resized.
+         */
+        onResize() {
+        }
+
+        /**
+         * Handle the resize events. Internally calls {@link qui.pages.PageMixin#onResize}.
+         */
+        handleResize() {
+            this.onResize()
         }
 
         _getIndex() {

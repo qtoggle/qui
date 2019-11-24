@@ -280,7 +280,7 @@ function handlePageScroll() {
 function triggerPageResize() {
     asap(function () {
         currentContext.getPages().forEach(function (page) {
-            page.onResize()
+            page.handleResize()
         })
     })
 }
