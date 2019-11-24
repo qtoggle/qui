@@ -13,6 +13,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * @param {Boolean} [params.autocomplete] enables or disables field autocomplete (enabled by default)
  * @param {?Number} [params.minLength] a minimum required text length
  * @param {?Number} [params.maxLength] the maximum allowed text length
+ * @param {Boolean} [params.continuousChange] enables or disables change events at each key stroke
  */
 export default class TextField extends JQueryUIField {
 

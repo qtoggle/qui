@@ -32,10 +32,12 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
  * @param {Number} [params.valuesWidth] sets the width of the values column, as percent, relative to the form body; when
  * set to `0` the width of each field's value will be computed automatically; this attribute is ignored for forms that
  * have `compact` set to `true` (defaults to `60`)
- * @param {Object} [params.continuousValidation] if set to `true`, each field will be validated upon change, instead of
- * when the form data is applied (using {@link qui.forms.Form#applyData}). Defaults to `false`.
- * @param {Object} [params.closeOnApply] if set to `false`, the form will not automatically close when data is applied
- * (using {@link qui.forms.Form#applyData}). Defaults to `true`.
+ * @param {Boolean} [params.continuousValidation] if set to `true`, each field will be validated upon change, instead of
+ * when the form data is applied (using {@link qui.forms.Form#applyData}). Defaults to `false`
+ * @param {Boolean} [params.closeOnApply] if set to `false`, the form will not automatically close when data is applied
+ * (using {@link qui.forms.Form#applyData}). Defaults to `true`
+ * @param {Boolean} [params.autoDisableDefaultButton] controls if the default button is automatically enabled and
+ * disabled based on currently changed fields, their validity and applied state. Defaults to `true`
  * @param {qui.forms.FormField[]} [params.fields] fields to be added to the form
  * @param {qui.forms.FormButton[]} [params.buttons] buttons to be added to the form
  * @param {Object} [params.data] a dictionary with initial values for the fields
@@ -44,8 +46,8 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
     constructor({
         width = null, noBackground = false, compact = false, fieldsAlignment = 'center', valuesWidth = 60,
-        continuousValidation = false, closeOnApply = true, fields = [], buttons = [], data = null,
-        ...params
+        continuousValidation = false, closeOnApply = true, autoDisableDefaultButton = true, fields = [], buttons = [],
+        data = null, ...params
     }) {
         super(params)
 
@@ -56,6 +58,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
         this._valuesWidth = valuesWidth
         this._continuousValidation = continuousValidation
         this._closeOnApply = closeOnApply
+        this._autoDisableDefaultButton = autoDisableDefaultButton
         this._fields = fields
         this._buttons = buttons
         this._initialData = data
@@ -205,6 +208,28 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
     /* Buttons */
 
+    updateButtonsState() {
+        if (this._autoDisableDefaultButton) {
+            let defaultButton = this._buttons.find(b => b.isDefault())
+            if (defaultButton) {
+                let enabled
+                if (this._continuousValidation) {
+                    enabled = this._isValid !== false
+                }
+                else {
+                    enabled = Object.keys(this._changedFields).length > 0
+                }
+
+                if (enabled) {
+                    defaultButton.enable()
+                }
+                else {
+                    defaultButton.disable()
+                }
+            }
+        }
+    }
+
     /**
      * Add a button to the form.
      * @param {Number} index the index where the button should be added; `-1` will add the button at the end
@@ -224,6 +249,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
         }
 
         this._updateBottom()
+        this.updateButtonsState()
     }
 
     /**
@@ -242,6 +268,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
         }
 
         this._updateBottom()
+        this.updateButtonsState()
     }
 
     /**
@@ -595,7 +622,6 @@ export default class Form extends mix().with(StructuredViewMixin) {
      * rejected)
      */
     updateValidationState(extraErrors) {
-        let defaultButton = this._buttons.find(b => b.isDefault())
         let hasExtraErrorsSentinel = new Error()
 
         return this._validateData().then(function (data) {
@@ -605,9 +631,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
             if (this._isValid === false || this._isValid == null) { /* Form just became valid */
                 this._isValid = true
                 this.onValid(data)
-                if (defaultButton) {
-                    defaultButton.enable()
-                }
+                this.updateButtonsState()
             }
 
             if (extraErrors && Object.keys(extraErrors).length) {
@@ -648,9 +672,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
             if (this._isValid === true || this._isValid == null) { /* Form just became invalid */
                 this._isValid = false
                 this.onInvalid()
-                if (defaultButton) {
-                    defaultButton.disable()
-                }
+                this.updateButtonsState()
             }
 
         }.bind(this))
@@ -742,7 +764,9 @@ export default class Form extends mix().with(StructuredViewMixin) {
      */
     markFieldUnchanged(name) {
         delete this._changedFields[name]
-        this.updateValidationState()
+        if (this._continuousValidation) {
+            this.updateValidationState()
+        }
     }
 
     /**
@@ -841,6 +865,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
             })
 
             this.onChange(data, name)
+            this.updateButtonsState()
 
             return
         }
@@ -876,7 +901,6 @@ export default class Form extends mix().with(StructuredViewMixin) {
             })
 
             this.onChange(data, name)
-
             let extraErrors = error ? {[name]: error} : null
 
             this.updateValidationState(extraErrors).then(function (data) {
@@ -1102,6 +1126,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
                 this.setApplied()
                 this._changedFields = {}
+                this.updateButtonsState()
 
                 if (this._closeOnApply) {
                     if (!this.isClosed()) {
