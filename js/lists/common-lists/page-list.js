@@ -33,4 +33,9 @@ export default class PageList extends mix(List).with(PageMixin) {
         return super.prepareIcon(icon)
     }
 
+    handleVertScroll(offset) {
+        super.handleVertScroll(offset)
+        this.getProgressWidget().css('margin-top', `${offset}px`)
+    }
+
 }

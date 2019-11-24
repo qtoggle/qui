@@ -499,4 +499,8 @@ export default class List extends mix().with(StructuredViewMixin) {
         }.bind(this), this._glassDiv)
     }
 
+    getProgressWidget() {
+        return this._progressWidget
+    }
+
 }
