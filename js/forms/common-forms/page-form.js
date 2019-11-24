@@ -57,6 +57,11 @@ export default class PageForm extends mix(Form).with(PageMixin) {
         })
     }
 
+    handleVertScroll(offset) {
+        super.handleVertScroll(offset)
+        this.getProgressWidget().css('margin-top', `${offset}px`)
+    }
+
     static init() {
         Window.addCloseListener(function () {
             /* Go through all current pages and collect page forms. Then see if they have changed fields and, if any of

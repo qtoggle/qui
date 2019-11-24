@@ -965,6 +965,10 @@ export default class Form extends mix().with(StructuredViewMixin) {
         }.bind(this), this._glassDiv)
     }
 
+    getProgressWidget() {
+        return this._progressWidget
+    }
+
 
     /* Error state */
 
