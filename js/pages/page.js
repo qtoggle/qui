@@ -67,37 +67,6 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
-         * Called when the page is pushed to a context.
-         */
-        onPush() {
-        }
-
-        /**
-         * Called when the page is closed.
-         */
-        onClose() {
-        }
-
-        /**
-         * Called when the next page is closed.
-         * @param {qui.pages.PageMixin} next the next page that has just been closed
-         */
-        onCloseNext(next) {
-        }
-
-        /**
-         * Called when the page becomes the current page on the current context.
-         */
-        onBecomeCurrent() {
-        }
-
-        /**
-         * Called when the page is no longer the current page on the current context.
-         */
-        onLeaveCurrent() {
-        }
-
-        /**
          * Override this method to customize navigation beyond this page. By default, it returns `null`, preventing
          * further navigation.
          *
@@ -486,6 +455,19 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
+         * Called when the page is closed.
+         */
+        onClose() {
+        }
+
+        /**
+         * Called when the next page is closed.
+         * @param {qui.pages.PageMixin} next the next page that has just been closed
+         */
+        onCloseNext(next) {
+        }
+
+        /**
          * Close the page. Calls {@link qui.pages.PageMixin#canClose} to determine if the page can be closed.
          * @param {Boolean} [force] set to `true` to force page close without calling
          * {@link qui.pages.PageMixin#canClose}
@@ -577,6 +559,12 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
+         * Called when the page becomes the current page on the current context.
+         */
+        onBecomeCurrent() {
+        }
+
+        /**
          * Handle the event of becoming the current page of the current context.
          */
         handleBecomeCurrent() {
@@ -593,6 +581,12 @@ export default Mixin((superclass = Object, rootclass) => {
             else {
                 OptionsBar.close()
             }
+        }
+
+        /**
+         * Called when the page is no longer the current page on the current context.
+         */
+        onLeaveCurrent() {
         }
 
         /**
@@ -667,6 +661,12 @@ export default Mixin((superclass = Object, rootclass) => {
             else {
                 this._optionsBarOpen = false
             }
+        }
+
+        /**
+         * Called when the page is pushed to a context.
+         */
+        onPush() {
         }
 
         /**

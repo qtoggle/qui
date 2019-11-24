@@ -67,6 +67,11 @@ export default class PageForm extends mix(Form).with(PageMixin) {
         this._updateVertScroll()
     }
 
+    handleResize() {
+        super.handleResize()
+        this._updateVertScroll()
+    }
+
     _updateVertScroll() {
         let params = this.getVertScrollParams()
         let fixedBottom = (params.maxOffset > 0) && (params.offset < params.maxOffset) && Window.isSmallScreen()

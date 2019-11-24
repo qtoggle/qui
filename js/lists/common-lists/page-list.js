@@ -35,13 +35,14 @@ export default class PageList extends mix(List).with(PageMixin) {
 
     handleVertScroll() {
         super.handleVertScroll()
+        this._updateVertScroll()
     }
 
     _updateVertScroll() {
         let params = this.getVertScrollParams()
 
         /* Place progress widget in the viewport by pushing it down a bit */
-        this.getProgressWidget().css('margin-top', `${offset}px`)
+        this.getProgressWidget().css('margin-top', `${params.offset}px`)
     }
 
 }
