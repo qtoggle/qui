@@ -5,6 +5,7 @@
 import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
+import {AssertionError} from '$qui/base/errors.js'
 import * as GlobalGlass from '$qui/global-glass.js'
 import * as OptionsBar  from '$qui/main-ui/options-bar.js'
 import * as TopBar      from '$qui/main-ui/top-bar.js'
@@ -14,7 +15,7 @@ import * as HTML        from '$qui/utils/html.js'
 import {asap}           from '$qui/utils/misc.js'
 import * as Window      from '$qui/window.js'
 
-import PagesContext from './pages-context.js'
+import PagesContext     from './pages-context.js'
 
 
 const MAX_BREADCRUMBS = 10
@@ -251,7 +252,7 @@ function updatePagesVisibility() {
     GlobalGlass.updateVisibility()
 }
 
-function updateVariousFlags() {
+function updateContentScroll() {
     /* Scrolled content */
     let scrolled = currentContext.getPages().some(function (p) {
         if (!p.isVisible()) {
@@ -262,6 +263,18 @@ function updateVariousFlags() {
 
     })
     Window.$body.toggleClass('content-scrolled', scrolled)
+}
+
+function handlePageScroll() {
+    updateContentScroll()
+
+    let $this = $(this)
+    let page = $this.data('page')
+    if (!page) {
+        throw AssertionError('page scroll event from a non-page HTML element')
+    }
+
+    page.handleVertScroll(this.scrollTop)
 }
 
 function triggerPageResize() {
@@ -285,12 +298,12 @@ function triggerPageResizeOnTransitionEnd(e) {
 }
 
 function attachPageHTMLHandlers(page) {
-    page.getPageHTML().on('scroll', updateVariousFlags)
+    page.getPageHTML().on('scroll', handlePageScroll)
     page.getPageHTML().on('transitionend', triggerPageResizeOnTransitionEnd)
 }
 
 function detachPageHTMLHandlers(page) {
-    page.getPageHTML().off('scroll', updateVariousFlags)
+    page.getPageHTML().off('scroll', handlePageScroll)
     page.getPageHTML().off('transitionend', triggerPageResizeOnTransitionEnd)
 }
 
@@ -312,7 +325,7 @@ export function updateUI() {
     asap(function () {
         updateBreadcrumbs()
         updatePagesVisibility()
-        updateVariousFlags()
+        updateContentScroll()
     })
 }
 

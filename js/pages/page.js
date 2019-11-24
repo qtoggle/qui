@@ -104,6 +104,13 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
+         * Called when the page is scrolled vertically.
+         * @param {Number} offset the vertical scroll offset
+         */
+        onVertScroll(offset) {
+        }
+
+        /**
          * Override this method to customize navigation beyond this page. By default, it returns `null`, preventing
          * further navigation.
          *
@@ -255,6 +262,9 @@ export default Mixin((superclass = Object, rootclass) => {
                 html.addClass('modal')
             }
 
+            /* Add a reference from HTML element to the page object */
+            html.data('page', this)
+
             html.append(this.getHTML())
 
             return html
@@ -329,6 +339,10 @@ export default Mixin((superclass = Object, rootclass) => {
                 this.getPageHTML().detach()
 
             }.bind(this), this.getPageHTML())
+        }
+
+        handleVertScroll(offset) {
+            this.onVertScroll(offset)
         }
 
         _getIndex() {
