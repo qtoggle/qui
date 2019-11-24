@@ -12,7 +12,6 @@ import {getCurrentContext} from '$qui/pages/pages.js'
 import * as PWA            from '$qui/pwa.js'
 import * as Sections       from '$qui/sections/sections.js'
 import {asap}              from '$qui/utils/misc.js'
-import * as ObjectUtils    from '$qui/utils/object.js'
 import URL                 from '$qui/utils/url.js'
 import * as Window         from '$qui/window.js'
 
@@ -348,7 +347,7 @@ export function navigate(path, handleErrors, pageState) {
 
 
 function setHistoryEntry(addUpdate, state) {
-    let pathStr = ObjectUtils.pop(state, 'pathStr')
+    let pathStr = state.pathStr
 
     let msg = `${addUpdate === 'add' ? 'adding' : 'updating'} history entry`
     msg = `${msg}: path = "${pathStr}", pageState = "${JSON.stringify(state.pageState)}"`
@@ -357,11 +356,11 @@ function setHistoryEntry(addUpdate, state) {
 
     if (addUpdate === 'add') {
         currentURLQuery = null
-        window.history.pushState(state, '', pathStr)
+        window.history.pushState(state, '', basePath + pathStr)
     }
     else {
         currentURLPath = pathStr
-        window.history.replaceState(state, '', pathStr)
+        window.history.replaceState(state, '', basePath + pathStr)
     }
 }
 
@@ -383,8 +382,6 @@ export function getCurrentHistoryEntryState() {
     if (Config.navigationUsesFragment) {
         pathStr = `#${pathStr}`
     }
-
-    pathStr = basePath + pathStr
 
     return {
         pageState: pageState,
