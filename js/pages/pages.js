@@ -274,7 +274,7 @@ function handlePageScroll() {
         throw AssertionError('page scroll event from a non-page HTML element')
     }
 
-    page.handleVertScroll(this.scrollTop)
+    page.handleVertScroll()
 }
 
 function triggerPageResize() {

@@ -97,6 +97,23 @@ div.qui-form-bottom:empty {
     padding: 0;
 }
 
+body.small-screen form.qui-form.fixed-bottom {
+    /* attach buttons to the bottom when scrolling on form */
+
+    & > div.qui-form-bottom {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        box-shadow: 0 -0.3125em 0.5em -0.3125em @bar-shadow-color;
+    }
+
+    & > div.qui-form-body {
+        margin-bottom: 3.6em; /* it's 3.5 + 0.1 guard */
+        border-bottom-width: 0;
+    }
+}
+
 
 /* progress */
 

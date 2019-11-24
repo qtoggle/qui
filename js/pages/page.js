@@ -86,13 +86,13 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
-         * Called when the page becomes current.
+         * Called when the page becomes the current page on the current context.
          */
         onBecomeCurrent() {
         }
 
         /**
-         * Called when the page is no longer current.
+         * Called when the page is no longer the current page on the current context.
          */
         onLeaveCurrent() {
         }
@@ -106,6 +106,7 @@ export default Mixin((superclass = Object, rootclass) => {
         /**
          * Called when the page is scrolled vertically.
          * @param {Number} offset the vertical scroll offset
+         * @param {Number} maxOffset the maximum vertical scroll offset
          */
         onVertScroll(offset) {
         }
@@ -341,8 +342,27 @@ export default Mixin((superclass = Object, rootclass) => {
             }.bind(this), this.getPageHTML())
         }
 
-        handleVertScroll(offset) {
-            this.onVertScroll(offset)
+        /**
+         * Return the current vertical scroll parameters.
+         * @returns {{offset: Number, maxOffset: Number}} `offset` represents the current scroll offset and `maxOffset`
+         * is the maximum scroll offset (`0` if no scrolling is possible)
+         */
+        getVertScrollParams() {
+            let pageHTML = this.getPageHTML()
+
+            return {
+                offset: pageHTML[0].scrollTop,
+                maxOffset: pageHTML[0].scrollHeight - pageHTML[0].clientHeight
+            }
+        }
+
+        /**
+         * Handle vertical scroll events. Internally calls {@link qui.pages.PageMixin#onVertScroll}.
+         */
+        handleVertScroll() {
+            let params = this.getVertScrollParams()
+
+            this.onVertScroll(params.offset, params.maxOffset)
         }
 
         _getIndex() {
