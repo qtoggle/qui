@@ -217,7 +217,8 @@ export default class Form extends mix().with(StructuredViewMixin) {
                     enabled = this._isValid !== false
                 }
                 else {
-                    enabled = Object.keys(this._changedFields).length > 0
+                    enabled = (Object.keys(this._changedFields).length > 0) ||
+                              (Object.keys(this._fieldsByName).length === 0)
                 }
 
                 if (enabled) {
