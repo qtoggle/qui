@@ -508,7 +508,10 @@ export default Mixin((superclass = Object, rootclass) => {
 
                 /* Pop this page from context */
                 if (context) {
-                    this.handleLeaveCurrent()
+                    if (context.isCurrent()) {
+                        this.handleLeaveCurrent()
+                    }
+
                     context.pop()
                 }
 
@@ -529,9 +532,9 @@ export default Mixin((superclass = Object, rootclass) => {
                         //  and all other update function calls, if this page has only been closed to be replaced
                         //  immediately by another one
                         currentPage.onCloseNext(this)
-                        currentPage.handleBecomeCurrent()
 
                         if (context.isCurrent()) {
+                            currentPage.handleBecomeCurrent()
                             Navigation.updateHistoryEntry()
                         }
                     }
@@ -567,24 +570,26 @@ export default Mixin((superclass = Object, rootclass) => {
         }
 
         /**
-         * Handle the event of becoming the current page.
+         * Handle the event of becoming the current page of the current context.
          */
         handleBecomeCurrent() {
             this.onBecomeCurrent()
             let context = this.getContext()
-            if (context && context.isCurrent()) {
-                OptionsBar.setContent(this._prepareOptionsBarContent())
-                if (this._optionsBarOpen) {
-                    OptionsBar.open()
-                }
-                else {
-                    OptionsBar.close()
-                }
+            if (!context || !context.isCurrent()) {
+                throw new AssertionError('Attempt to call handleBecomeCurrent() on non-current context')
+            }
+
+            OptionsBar.setContent(this._prepareOptionsBarContent())
+            if (this._optionsBarOpen) {
+                OptionsBar.open()
+            }
+            else {
+                OptionsBar.close()
             }
         }
 
         /**
-         * Handle the event of no longer being the current page.
+         * Handle the event of no longer being the current page of the current context.
          */
         handleLeaveCurrent() {
             this.onLeaveCurrent()
@@ -694,7 +699,9 @@ export default Mixin((superclass = Object, rootclass) => {
                     Navigation.addHistoryEntry(state)
                 }
 
-                this.handleLeaveCurrent()
+                if (context.isCurrent()) {
+                    this.handleLeaveCurrent()
+                }
 
                 page.pushSelf(context)
                 page.whenLoaded() /* Start loading the page automatically when pushed */
@@ -726,7 +733,10 @@ export default Mixin((superclass = Object, rootclass) => {
             }
 
             this.onPush()
-            this.handleBecomeCurrent()
+
+            if (context.isCurrent()) {
+                this.handleBecomeCurrent()
+            }
         }
 
 
