@@ -656,7 +656,9 @@ export default Mixin((superclass = Object, rootclass) => {
             }
 
             return promise.then(function () {
-                Navigation.addHistoryEntry(state)
+                if (addHistoryEntry) {
+                    Navigation.addHistoryEntry(state)
+                }
 
                 this.handleLeaveCurrent()
 
