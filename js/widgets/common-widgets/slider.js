@@ -8,6 +8,7 @@ $.widget('qui.slider', {
     options: {
         value: 0,
         ticks: [{label: 0, value: 0}, {label: 50, value: 50}, {label: 100, value: 100}],
+        ticksStep: 1,
         snapMode: 0,
         continuousChange: false,
         equidistant: false,
@@ -353,7 +354,7 @@ $.widget('qui.slider', {
     _makeLabels: function () {
         this._labels.empty()
 
-        for (let i = 0; i < this.options.ticks.length; i++) {
+        for (let i = 0; i < this.options.ticks.length; i += this.options.ticksStep) {
             let tick = this.options.ticks[i]
             let span = $(`<span class="qui-slider-label">${tick.label}</span>`)
             this._labels.append(span)

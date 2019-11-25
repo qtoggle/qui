@@ -7,7 +7,8 @@ import JQueryUIField from './jquery-ui-field.js'
  * @extends qui.forms.commonfields.JQueryUIField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
- * @param {Object[]} params.ticks tick marks (pairs of `label` and `value`)
+ * @param {Object[]} [params.ticks] tick marks (pairs of `label` and `value`)
+ * @param {Number} [params.ticksStep] display every `ticksStep` tick (defaults to `1`)
  * @param {Boolean} [params.equidistant] set to `true` to draw the tick marks equidistantly, even if their corresponding
  * values are not equally distanced
  * @param {Number} [params.snapMode] `0` - no snapping (default), `1` - strict snapping and `2` - loose snapping
@@ -28,6 +29,6 @@ export default class SliderField extends JQueryUIField {
 // TODO es7 class fields
 SliderField.WIDGET_CLASS = 'slider'
 SliderField.WIDGET_ATTRS = [
-    'ticks', 'equidistant', 'snapMode', 'snapDistance',
+    'ticks', 'ticksStep', 'equidistant', 'snapMode', 'snapDistance',
     'increment', 'fastFactor', 'continuousChange'
 ]
