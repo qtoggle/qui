@@ -74,13 +74,15 @@ export default class PageForm extends mix(Form).with(PageMixin) {
 
     _updateVertScroll() {
         let params = this.getVertScrollParams()
-        let fixedBottom = (params.maxOffset > 0) && (params.offset < params.maxOffset) && Window.isSmallScreen()
+        let fixedBottom = (params.maxOffset > 0) && Window.isSmallScreen()
+        let fullyScrolled = (params.maxOffset - params.offset <= 1) && Window.isSmallScreen()
 
         /* Place progress widget in the viewport by pushing it down a bit */
         this.getProgressWidget().css('margin-top', `${params.offset}px`)
 
         /* Make form buttons always visible */
         this.getHTML().toggleClass('fixed-bottom', fixedBottom)
+        this.getHTML().toggleClass('fully-scrolled', fullyScrolled)
     }
 
     static init() {
