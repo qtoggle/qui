@@ -1,6 +1,7 @@
 import $ from '$qui/lib/jquery.module.js'
 
-import * as Gestures from '$qui/utils/gestures.js'
+import * as Gestures    from '$qui/utils/gestures.js'
+import * as StringUtils from '$qui/utils/string.js'
 
 
 $.widget('qui.slider', {
@@ -15,6 +16,7 @@ $.widget('qui.slider', {
         increment: 0.02,
         fastFactor: 5,
         snapDistance: 0.02,
+        caption: '%s',
         readonly: false,
         disabled: false
     },
@@ -22,7 +24,7 @@ $.widget('qui.slider', {
     _create: function () {
         /* Create the widget elements */
 
-        this.element.addClass('slider')
+        this.element.addClass('qui-slider')
         if (this.options.readonly) {
             this.element.addClass('readonly')
         }
@@ -44,6 +46,9 @@ $.widget('qui.slider', {
 
         this._cursor = $('<div class="qui-slider-cursor qui-base-button"></div>')
         this._bar.append(this._cursor)
+
+        this._cursorLabel = $('<span class="qui-slider-label qui-slider-label-cursor"></span>')
+        this._labels.append(this._cursorLabel)
 
         this._maxVal = this.options.value
         this._minVal = this.options.value
@@ -75,11 +80,13 @@ $.widget('qui.slider', {
                 }
 
                 widget.element.focus()
+                widget.element.addClass('active')
             },
             /* onEnd = */ function () {
                 if (!widget.options.continuousChange && !widget.options.readonly) {
                     widget.element.trigger('change', widget._curVal)
                 }
+                widget.element.removeClass('active')
             }
         )
 
@@ -212,7 +219,11 @@ $.widget('qui.slider', {
         pos = Math.max(0, Math.min(1, pos))
 
         this._cursor.css('left', `${(pos * 100)}%`)
+        this._cursorLabel.css('left', `${(pos * 100 - 15)}%`)
         this._curVal = this._posToVal(pos)
+
+        let caption = StringUtils.formatPercent(this.options.caption, this._curVal)
+        this._cursorLabel.html(caption)
     },
 
     _valToPos: function (val) {
@@ -352,12 +363,13 @@ $.widget('qui.slider', {
     },
 
     _makeLabels: function () {
-        this._labels.empty()
+        this._labels.children('div.qui-slider-label:NOT(.qui-slider-label-cursor)').remove()
+        let sliderLabelCursor = this._labels.children('span.qui-slider-label-cursor')
 
         for (let i = 0; i < this.options.ticks.length; i += this.options.ticksStep) {
             let tick = this.options.ticks[i]
             let span = $(`<span class="qui-slider-label">${tick.label}</span>`)
-            this._labels.append(span)
+            sliderLabelCursor.before(span)
 
             /* Determine the position */
             let pos
