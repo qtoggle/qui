@@ -233,9 +233,10 @@ export function navigate(path, handleErrors, pageState) {
 
         logger.debug(`navigating from "${currentPage.getPathId()}" to "${pathId}"`)
 
-        let promise = currentPage.navigate(pathId)
-        if (promise == null || (promise instanceof PageMixin)) { /* Page passed directly */
-            promise = Promise.resolve(promise)
+        let promiseOrPage = currentPage.navigate(pathId)
+        let promise = promiseOrPage
+        if (promiseOrPage == null || (promiseOrPage instanceof PageMixin) /* Page passed directly */) {
+            promise = Promise.resolve(promiseOrPage)
         }
 
         return promise.then(function (nextPage) {

@@ -451,25 +451,27 @@ export default class Section extends mix().with(SingletonMixin) {
 
     /**
      * Reset the section to its initial state, closing all pages, including the main page.
+     * @returns {Promise} a promise that is resolved as soon as the section is reset and the main page is loaded
      */
     reset() {
         this.logger.debug('resetting section')
 
+        let promise = Promise.resolve()
         if (this._mainPage) {
             /* Close main page and all following pages */
-            this._mainPage.close(/* force = */ true)
+            promise = this._mainPage.close(/* force = */ true)
+        }
+
+        return promise.then(function () {
             this._mainPage = null
-        }
-
-        if (this.isCurrent()) {
-            this._makeAndPushMainPage()
-            this.whenLoaded().then(function () {
-
-                /* Start loading the main page when pushed, but don't wait for result */
-                this._mainPage.whenLoaded()
-
-            }.bind(this))
-        }
+            if (this.isCurrent()) {
+                this._makeAndPushMainPage()
+                return this.whenLoaded().then(function () {
+                    /* Start loading the main page when pushed, but don't wait for result */
+                    return this._mainPage.whenLoaded()
+                }.bind(this))
+            }
+        }.bind(this))
     }
 
     /**

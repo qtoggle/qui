@@ -179,11 +179,14 @@ export function showHome(reset) {
         throw new AssertionError('No home section')
     }
 
+    let promise = Promise.resolve()
     if (reset) {
-        homeSection.reset()
+        promise = homeSection.reset()
     }
 
-    return switchTo(homeSection, /* source = */ 'home')
+    return promise.then(function () {
+        return switchTo(homeSection, /* source = */ 'home')
+    })
 }
 
 /**
