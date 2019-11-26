@@ -322,6 +322,8 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
         /* The form itself may no longer be valid */
         this._clearValidationCache('')
+
+        this.updateButtonsState()
     }
 
     /**
@@ -355,6 +357,8 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
         /* Invalidate form's validation cache */
         this._clearValidationCache(name)
+
+        this.updateButtonsState()
     }
 
     /**
