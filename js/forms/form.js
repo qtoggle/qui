@@ -812,7 +812,8 @@ export default class Form extends mix().with(StructuredViewMixin) {
      * the form as applied.
      *
      * A rejected promise will set a form error using {@link qui.views.ViewMixin#setError}. To set field errors, reject
-     * the returned promise with a {@link qui.forms.ErrorMapping}.
+     * the returned promise with a {@link qui.forms.ErrorMapping}. A null error will simply cancel the application,
+     * without setting any error.
      *
      * Form will be put in progress using {@link qui.views.ViewMixin#setProgress} while promise is active.
      *
@@ -1143,11 +1144,14 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
             }.bind(this)).catch(function (e) {
 
-                let errorMapping = new ErrorMapping(e)
-
                 this.clearProgress()
-                this._clearErrors()
-                this._setErrors(errorMapping.errors)
+
+                /* e may be null/undefined, in which case, the form apply has simply been cancelled */
+                if (e) {
+                    let errorMapping = new ErrorMapping(e)
+                    this._clearErrors()
+                    this._setErrors(errorMapping.errors)
+                }
 
             }.bind(this))
 
