@@ -110,6 +110,7 @@ import '$qui/widgets/common-widgets.js'
 import '$qui/widgets/widgets.js'
 
 import '$qui/window.js'
+import {getCurrent} from '$qui/sections/sections.js'
 
 
 const logger = Logger.get('qui')
@@ -182,6 +183,10 @@ function initConfig() {
     if (window.__quiBuildHash) {
         Config.buildHash = window.__quiBuildHash
     }
+
+    /* Export Config to global scope  */
+    let qui = (window.qui = window.qui || {})
+    qui.Config = Config
 }
 
 function initJQuery() {
@@ -220,6 +225,10 @@ function configureLogging() {
             this.error(error.stack)
         }
     }
+
+    /* Export Logger to global scope  */
+    let qui = (window.qui = window.qui || {})
+    qui.Logger = Logger
 }
 
 function logCurrentConfig() {

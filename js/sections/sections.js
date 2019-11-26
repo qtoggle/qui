@@ -210,4 +210,8 @@ export function getHome() {
 
 export function init() {
     attachSectionEventRelays()
+
+    /* Export some stuff to global scope */
+    let qui = (window.qui = window.qui || {})
+    qui.getCurrentSection = getCurrent
 }
