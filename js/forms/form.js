@@ -668,6 +668,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
                 delete errors['']
             }
 
+            this._clearErrors()
             this._setErrors(errors)
 
             if (this._isValid === true || this._isValid == null) { /* Form just became invalid */
@@ -1103,6 +1104,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
             dataValidated = this._validateData().catch(function (e) {
 
                 let errorMapping = new ErrorMapping(e)
+                this._clearErrors()
                 this._setErrors(errorMapping.errors)
 
                 throw errorMapping
@@ -1144,6 +1146,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
                 let errorMapping = new ErrorMapping(e)
 
                 this.clearProgress()
+                this._clearErrors()
                 this._setErrors(errorMapping.errors)
 
             }.bind(this))
