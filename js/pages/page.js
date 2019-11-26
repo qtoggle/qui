@@ -1,6 +1,5 @@
 
 import $      from '$qui/lib/jquery.module.js'
-import Logger from '$qui/lib/logger.module.js'
 
 import {AssertionError} from '$qui/base/errors.js'
 import {Mixin}          from '$qui/base/mixwith.js'
@@ -16,7 +15,6 @@ import {getPagesContainer, updateUI} from './pages.js'
 
 
 const viewMixinPrototype = ViewMixin().prototype
-const logger = Logger.get('qui.pages.page')
 
 
 export default Mixin((superclass = Object, rootclass) => {

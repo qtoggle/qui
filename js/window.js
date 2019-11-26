@@ -328,8 +328,8 @@ export function init() {
 
         if (!canUnload) {
             e.preventDefault()
-            return false
             unloading = false
+            return false
         }
     })
 
