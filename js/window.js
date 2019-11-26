@@ -13,7 +13,7 @@ import * as AJAX  from '$qui/utils/ajax.js'
 import {asap}     from '$qui/utils/misc.js'
 
 
-const SMALL_SCREEN_THRESHOLD = 800 /* Logical pixels */
+const SMALL_SCREEN_THRESHOLD = 700 /* Logical pixels */
 
 const logger = Logger.get('qui.window')
 
