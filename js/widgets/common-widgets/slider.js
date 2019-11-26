@@ -4,6 +4,9 @@ import * as Gestures    from '$qui/utils/gestures.js'
 import * as StringUtils from '$qui/utils/string.js'
 
 
+const TEMPORARY_SHOW_VALUE_TIMEOUT = 500 /* Seconds */
+
+
 $.widget('qui.slider', {
 
     options: {
@@ -50,6 +53,9 @@ $.widget('qui.slider', {
         this._cursorLabel = $('<span class="qui-slider-label qui-slider-label-cursor"></span>')
         this._labels.append(this._cursorLabel)
 
+        this._temporaryShowValueHandle = null
+        this._isDragged = false
+
         this._maxVal = this.options.value
         this._minVal = this.options.value
         this._curVal = this.options.value
@@ -81,12 +87,14 @@ $.widget('qui.slider', {
 
                 widget.element.focus()
                 widget.element.addClass('active')
+                widget._isDragged = true
             },
             /* onEnd = */ function () {
                 if (!widget.options.continuousChange && !widget.options.readonly) {
                     widget.element.trigger('change', widget._curVal)
                 }
                 widget.element.removeClass('active')
+                widget._isDragged = false
             }
         )
 
@@ -104,6 +112,7 @@ $.widget('qui.slider', {
             }
 
             if (changed) {
+                widget._temporarilyShowValue()
                 widget.element.trigger('change', widget._curVal)
                 return false
             }
@@ -120,6 +129,7 @@ $.widget('qui.slider', {
                 case 38: /* Up */
                 case 37: /* Left */
                     if (widget._decrease()) {
+                        widget._temporarilyShowValue()
                         widget.element.trigger('change', widget._curVal)
                         return false
                     }
@@ -129,6 +139,7 @@ $.widget('qui.slider', {
                 case 40: /* Down */
                 case 39: /* Right */
                     if (widget._increase()) {
+                        widget._temporarilyShowValue()
                         widget.element.trigger('change', widget._curVal)
                         return false
                     }
@@ -142,6 +153,7 @@ $.widget('qui.slider', {
                         }
                     }
                     if (changed) {
+                        widget._temporarilyShowValue()
                         widget.element.trigger('change', widget._curVal)
                         return false
                     }
@@ -155,6 +167,7 @@ $.widget('qui.slider', {
                         }
                     }
                     if (changed) {
+                        widget._temporarilyShowValue()
                         widget.element.trigger('change', widget._curVal)
                         return false
                     }
@@ -166,6 +179,7 @@ $.widget('qui.slider', {
                         changed = true
                     }
                     if (changed) {
+                        widget._temporarilyShowValue()
                         widget.element.trigger('change', widget._curVal)
                         return false
                     }
@@ -177,6 +191,7 @@ $.widget('qui.slider', {
                         changed = true
                     }
                     if (changed) {
+                        widget._temporarilyShowValue()
                         widget.element.trigger('change', widget._curVal)
                         return false
                     }
@@ -382,6 +397,20 @@ $.widget('qui.slider', {
 
             span.css('left', `${(pos * 100 - 15)}%`)
         }
+    },
+
+    _temporarilyShowValue: function () {
+        if (this._temporaryShowValueHandle != null) {
+            clearTimeout(this._temporaryShowValueHandle)
+        }
+
+        this.element.addClass('active')
+
+        this._temporaryShowValueHandle = setTimeout(function () {
+            if (!this._isDragged) {
+                this.element.removeClass('active')
+            }
+        }.bind(this), TEMPORARY_SHOW_VALUE_TIMEOUT)
     },
 
     _setOption: function (key, value) {
