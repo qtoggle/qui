@@ -16,6 +16,7 @@
     "pepjs": "*"
   },
   "devDependencies": {
+    "babel-eslint": "*",
     "css-loader": "*",
     "eslint": "*",
     "expose-loader": "*",

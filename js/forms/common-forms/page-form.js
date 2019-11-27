@@ -104,4 +104,5 @@ export default class PageForm extends mix(Form).with(PageMixin) {
             }
         })
     }
+
 }
