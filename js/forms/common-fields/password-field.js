@@ -15,5 +15,6 @@ export default class PasswordField extends TextField {}
 PasswordField.WIDGET_CLASS = 'passwordinput'
 PasswordField.WIDGET_ATTRS = [
     'placeholder', 'clearPlaceholder', 'autocomplete',
-    'minLength', 'maxLength', 'continuousChange', 'clearEnabled'
+    'minLength', 'maxLength', 'continuousChange', 'clearEnabled',
+    'revealOnFocus'
 ]

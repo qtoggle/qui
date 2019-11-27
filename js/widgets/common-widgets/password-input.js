@@ -8,7 +8,8 @@ import * as TextInput from './text-input.js' /* Needed */
 $.widget('qui.passwordinput', $.qui.textinput, {
 
     options: {
-        clearEnabled: false
+        clearEnabled: false,
+        revealOnFocus: false
     },
 
     type: 'password',
@@ -22,6 +23,22 @@ $.widget('qui.passwordinput', $.qui.textinput, {
             this.element.addClass('clear-enabled')
             this.element.append(this._makeClearButton())
         }
+
+        this.element.on('focus', function () {
+
+            if (this.options.revealOnFocus) {
+                this._input.attr('type', 'text')
+            }
+
+        }.bind(this))
+
+        this.element.on('blur', function () {
+
+            if (this.options.revealOnFocus) {
+                this._input.attr('type', this.type)
+            }
+
+        }.bind(this))
     },
 
     _makeClearButton: function () {
