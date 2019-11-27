@@ -1,4 +1,6 @@
-import {Mixin, mix}          from '$qui/base/mixwith.js'
+
+import {Mixin}               from '$qui/base/mixwith.js'
+import {mix}                 from '$qui/base/mixwith.js'
 import StockIcon             from '$qui/icons/stock-icon.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
 

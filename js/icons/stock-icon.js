@@ -1,8 +1,10 @@
+
+import * as ObjectUtils from '$qui/utils/object.js'
+
 import * as DefaultStock     from './default-stock.js'
 import Icon                  from './icon.js'
 import MultiStateSpritesIcon from './multi-state-sprites-icon.js'
 import * as Stocks           from './stocks.js'
-import * as ObjectUtils      from '$qui/utils/object.js'
 
 
 /**

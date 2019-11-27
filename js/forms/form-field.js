@@ -1,3 +1,4 @@
+
 import $ from '$qui/lib/jquery.module.js'
 
 import {AssertionError} from '$qui/base/errors.js'
@@ -10,7 +11,8 @@ import {asap}           from '$qui/utils/misc.js'
 import ViewMixin        from '$qui/views/view.js'
 import * as Window      from '$qui/window.js'
 
-import {STATE_APPLIED, ValidationError} from './forms.js'
+import {STATE_APPLIED}   from './forms.js'
+import {ValidationError} from './forms.js'
 
 
 const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */

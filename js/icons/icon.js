@@ -1,5 +1,3 @@
-import * as ObjectUtils from '$qui/utils/object.js'
-
 
 const ICON_DATA_ATTR = '_icon'
 

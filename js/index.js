@@ -24,7 +24,6 @@ import * as Sections      from '$qui/sections/sections.js'
 import * as ArrayUtils    from '$qui/utils/array.js'
 import * as DateUtils     from '$qui/utils/date.js'
 import * as ObjectUtils   from '$qui/utils/object.js'
-import URL                from '$qui/utils/url.js'
 import * as Widgets       from '$qui/widgets/widgets.js'
 import * as Window        from '$qui/window.js'
 
@@ -110,7 +109,6 @@ import '$qui/widgets/common-widgets.js'
 import '$qui/widgets/widgets.js'
 
 import '$qui/window.js'
-import {getCurrent} from '$qui/sections/sections.js'
 
 
 const logger = Logger.get('qui')

@@ -16,6 +16,8 @@ const _wrappedMixin = '__mixwith_wrappedMixin'
  *
  * @callback qui.base.mixwith.MixinFunction
  * @param {typeof Object} superclass class to which the mixin will be applied
+ * @param rootclass
+ * @param mixin
  */
 
 

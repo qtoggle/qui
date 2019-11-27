@@ -1,3 +1,4 @@
+
 import {gettext}        from '$qui/base/i18n.js'
 import {mix}            from '$qui/base/mixwith.js'
 import StockIcon        from '$qui/icons/stock-icon.js'

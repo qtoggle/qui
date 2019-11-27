@@ -1,15 +1,17 @@
+
 import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
-import {NotImplementedError}                  from '$qui/base/errors.js'
-import {mix}                                  from '$qui/base/mixwith.js'
-import SingletonMixin                         from '$qui/base/singleton.js'
-import StockIcon                              from '$qui/icons/stock-icon.js'
-import * as MenuBar                           from '$qui/main-ui/menu-bar.js'
-import * as TopBar                            from '$qui/main-ui/top-bar.js'
-import * as Navigation                        from '$qui/navigation.js'
-import {getCurrentContext, setCurrentContext} from '$qui/pages/pages.js'
-import * as Window                            from '$qui/window.js'
+import {NotImplementedError} from '$qui/base/errors.js'
+import {mix}                 from '$qui/base/mixwith.js'
+import SingletonMixin        from '$qui/base/singleton.js'
+import StockIcon             from '$qui/icons/stock-icon.js'
+import * as MenuBar          from '$qui/main-ui/menu-bar.js'
+import * as TopBar           from '$qui/main-ui/top-bar.js'
+import * as Navigation       from '$qui/navigation.js'
+import {getCurrentContext}   from '$qui/pages/pages.js'
+import {setCurrentContext}   from '$qui/pages/pages.js'
+import * as Window           from '$qui/window.js'
 
 import * as Sections from './sections.js'
 

@@ -1,3 +1,4 @@
+
 import $ from '$qui/lib/jquery.module.js'
 
 import StockIcon from '$qui/icons/stock-icon.js'

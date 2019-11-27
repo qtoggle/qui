@@ -1,5 +1,5 @@
 
-import $      from '$qui/lib/jquery.module.js'
+import $ from '$qui/lib/jquery.module.js'
 
 import {AssertionError} from '$qui/base/errors.js'
 import {Mixin}          from '$qui/base/mixwith.js'
@@ -11,7 +11,8 @@ import {asap}           from '$qui/utils/misc.js'
 import ViewMixin        from '$qui/views/view.js'
 import * as Window      from '$qui/window.js'
 
-import {getPagesContainer, updateUI} from './pages.js'
+import {getPagesContainer} from './pages.js'
+import {updateUI}          from './pages.js'
 
 
 const viewMixinPrototype = ViewMixin().prototype
@@ -314,7 +315,7 @@ export default Mixin((superclass = Object, rootclass) => {
          * @param {Number} offset the vertical scroll offset
          * @param {Number} maxOffset the maximum vertical scroll offset
          */
-        onVertScroll(offset) {
+        onVertScroll(offset, maxOffset) {
         }
 
         /**

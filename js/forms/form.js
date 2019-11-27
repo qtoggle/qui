@@ -1,3 +1,4 @@
+
 import $ from '$qui/lib/jquery.module.js'
 
 import {AssertionError}      from '$qui/base/errors.js'
@@ -8,8 +9,10 @@ import * as ObjectUtils      from '$qui/utils/object.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
 import * as Window           from '$qui/window.js'
 
-import {STATE_APPLIED, ValidationError, ErrorMapping} from './forms.js'
-import FormField                                      from './form-field.js'
+import {ErrorMapping}    from './forms.js'
+import {ValidationError} from './forms.js'
+import {STATE_APPLIED}   from './forms.js'
+import FormField         from './form-field.js'
 
 
 const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
@@ -1159,7 +1162,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
             }.bind(this))
 
-        }.bind(this)).catch(function (e) {
+        }.bind(this)).catch(function () {
 
             this.clearProgress()
 

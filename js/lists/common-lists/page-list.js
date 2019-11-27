@@ -1,3 +1,4 @@
+
 import {mix}            from '$qui/base/mixwith.js'
 import StockIcon        from '$qui/icons/stock-icon.js'
 import PageMixin        from '$qui/pages/page.js'

@@ -1,3 +1,4 @@
+
 import {AssertionError} from '$qui/base/errors.js'
 
 

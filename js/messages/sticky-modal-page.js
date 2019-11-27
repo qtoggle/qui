@@ -1,5 +1,5 @@
+
 import {Mixin}          from '$qui/base/mixwith.js'
-import SingletonMixin   from '$qui/base/singleton.js'
 import * as GlobalGlass from '$qui/global-glass.js'
 
 

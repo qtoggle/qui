@@ -1,3 +1,4 @@
+
 import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
@@ -6,11 +7,8 @@ import {mix}                 from '$qui/base/mixwith.js'
 import StockIcon             from '$qui/icons/stock-icon.js'
 import * as Theme            from '$qui/theme.js'
 import {asap}                from '$qui/utils/misc.js'
-import * as ObjectUtils      from '$qui/utils/object.js'
 import * as StringUtils      from '$qui/utils/string.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
-
-import ListItem from './list-item.js'
 
 
 const logger = Logger.get('qui.lists.list')

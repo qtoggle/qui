@@ -4,12 +4,12 @@
 
 import Logger from '$qui/lib/logger.module.js'
 
+import {AssertionError}  from '$qui/base/errors.js'
 import Signal            from '$qui/base/signal.js'
 import Config            from '$qui/config.js'
 import {appendBuildHash} from '$qui/utils/misc.js'
 import URL               from '$qui/utils/url.js'
 import * as Window       from '$qui/window.js'
-import {AssertionError}  from '$qui/base/errors.js'
 
 
 const SERVICE_WORKER_SCRIPT = 'service-worker.js'
@@ -107,7 +107,7 @@ export function enableServiceWorker(url = null, updateHandler = null) {
     navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage)
 
     let refreshing = false
-    navigator.serviceWorker.addEventListener('controllerchange', function (event) {
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
         if (refreshing) {
             return
         }

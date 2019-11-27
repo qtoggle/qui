@@ -15,7 +15,7 @@ import * as HTML        from '$qui/utils/html.js'
 import {asap}           from '$qui/utils/misc.js'
 import * as Window      from '$qui/window.js'
 
-import PagesContext     from './pages-context.js'
+import PagesContext from './pages-context.js'
 
 
 const MAX_BREADCRUMBS = 10
