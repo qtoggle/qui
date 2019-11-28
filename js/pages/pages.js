@@ -49,6 +49,7 @@ function initBreadcrumbs() {
             if (page) {
                 page.close().then(function () {
                     Navigation.addHistoryEntry(state)
+                    Navigation.updateHistoryEntry()
                 }).catch(function () {
                     logger.debug('breadcrumb navigation cancelled by rejected page close')
                 })
