@@ -1,6 +1,7 @@
 
 @import (reference) "../base";
 @import (reference) "../theme";
+@import (reference) "common";
 
 
 input[type=text],
@@ -16,12 +17,12 @@ textarea {
     color: @foreground-color;
     resize: none;
     transition: color @transition-duration linear,
-                border-color @transition-duration linear,
-                box-shadow (@transition-duration / 2) linear;
+                border-color @transition-duration linear;
     font-size: inherit;
     font-family: inherit;
     line-height: 1.15em;
     box-sizing: border-box;
+    .qui-focusable-widget();
 }
 
 input[type=text],
@@ -38,7 +39,7 @@ input[type=number]:FOCUS,
 input[type=tel]:FOCUS,
 input[type=email]:FOCUS,
 textarea:FOCUS {
-    box-shadow: 0 0 0 0.2em fade(@interactive-color, 30%);
+    .qui-focused-widget(@interactive-color, 30%);
 }
 
 input[type=text][readonly],
@@ -47,9 +48,7 @@ input[type=number][readonly],
 input[type=tel][readonly],
 input[type=email][readonly],
 textarea[readonly] {
-    color: @foreground-color;
     border-color: @disabled-color;
-    background: transparent;
 }
 
 input[type=text][readonly]:FOCUS,
@@ -58,7 +57,7 @@ input[type=number][readonly]:FOCUS,
 input[type=tel][readonly]:FOCUS,
 input[type=email][readonly]:FOCUS,
 textarea[readonly]:FOCUS {
-    box-shadow: 0 0 0 0.2em fade(@disabled-color, 50%);
+    .qui-focused-widget-readonly();
 }
 
 input[type=text][disabled],

@@ -1,5 +1,6 @@
 
 @import (reference) "../theme";
+@import (reference) "../widgets/common";
 
 
 /* Fields based on input entries */
@@ -17,7 +18,7 @@ div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input
 div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=number]:FOCUS,
 div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=tel]:FOCUS,
 div.qui-form-field.has-error > div.qui-form-field-value > div.text-input > input[type=email]:FOCUS {
-    box-shadow: 0 0 0 0.2em fade(@error-color, 30%);
+    .qui-focused-widget-error();
 }
 
 

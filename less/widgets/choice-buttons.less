@@ -1,13 +1,19 @@
 
 @import (reference) "../base";
 @import (reference) "../theme";
+@import (reference) "common";
 
 
 div.qui-choice-buttons-container {
     border-radius: 0.2em;
+    .qui-focusable-widget();
 }
 
-div.qui-choice-group-container {
+div.qui-choice-buttons-container:FOCUS {
+    .qui-focused-widget();
+}
+
+div.qui-choice-buttons-group-container {
     white-space: nowrap;
 }
 
@@ -34,10 +40,6 @@ div.qui-choice-button.on:NOT(.active) {
     background: @interactive-color;
 }
 
-div.qui-choice-buttons-container:FOCUS {
-    box-shadow: 0 0 0 0.2em fade(@interactive-color, 30%);
-}
-
 div.qui-choice-button:FIRST-CHILD {
     border-top-left-radius: 0.1875em;
     border-bottom-left-radius: 0.1875em;
@@ -49,16 +51,16 @@ div.qui-choice-button:LAST-CHILD {
     border-right-width: 0.0625em;
 }
 
-div.qui-choice-group-container:LAST-CHILD div.qui-choice-button {
+div.qui-choice-buttons-group-container:LAST-CHILD div.qui-choice-button {
     border-bottom-width: 0.0625em;
 }
 
-div.qui-choice-group-container:NOT(:FIRST-CHILD) div.qui-choice-button {
+div.qui-choice-buttons-group-container:NOT(:FIRST-CHILD) div.qui-choice-button {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
 
-div.qui-choice-group-container:NOT(:LAST-CHILD) div.qui-choice-button {
+div.qui-choice-buttons-group-container:NOT(:LAST-CHILD) div.qui-choice-button {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }

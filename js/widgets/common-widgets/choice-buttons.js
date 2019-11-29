@@ -255,7 +255,7 @@ $.widget('qui.choicebuttons', {
 
                 let index = 0
                 choices.forEach(function (subChoices) {
-                    let group = $('<div class="qui-choice-group-container"></div>')
+                    let group = $('<div class="qui-choice-buttons-group-container"></div>')
                     subChoices.forEach(function (choice) {
                         let button = $('<div class="qui-base-button qui-interactive-button qui-choice-button"></div>')
                         button.html(choice.label)
