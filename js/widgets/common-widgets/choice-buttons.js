@@ -14,7 +14,7 @@ $.widget('qui.choicebuttons', {
     _create: function () {
         let widget = this
 
-        this.element.addClass('qui-choice-groups-container')
+        this.element.addClass('qui-choice-buttons-container')
 
         if (this.options.readonly) {
             this.element.addClass('readonly')

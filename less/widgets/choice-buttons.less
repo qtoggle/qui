@@ -3,7 +3,8 @@
 @import (reference) "../theme";
 
 
-div.qui-choice-groups-container {
+div.qui-choice-buttons-container {
+    border-radius: 0.2em;
 }
 
 div.qui-choice-group-container {
@@ -33,16 +34,8 @@ div.qui-choice-button.on:NOT(.active) {
     background: @interactive-color;
 }
 
-div.qui-choice-groups-container:FOCUS div.qui-choice-button {
-    border-color: @focus-color;
-}
-
-div.qui-choice-groups-container:FOCUS div.qui-choice-button.on {
-    background: @focus-color;
-}
-
-div.qui-choice-groups-container:FOCUS div.qui-choice-button.active {
-    background: @focus-active-color;
+div.qui-choice-buttons-container:FOCUS {
+    box-shadow: 0 0 0 0.2em fade(@interactive-color, 30%);
 }
 
 div.qui-choice-button:FIRST-CHILD {
@@ -70,14 +63,14 @@ div.qui-choice-group-container:NOT(:LAST-CHILD) div.qui-choice-button {
     border-bottom-right-radius: 0;
 }
 
-div.qui-choice-groups-container.disabled div.qui-choice-button {
+div.qui-choice-buttons-container.disabled div.qui-choice-button {
     border-color: @disabled-color;
     color: @disabled-foreground-color;
     background: @background-color;
     cursor: default;
 }
 
-div.qui-choice-groups-container.disabled div.qui-choice-button.on {
+div.qui-choice-buttons-container.disabled div.qui-choice-button.on {
     color: @background-color;
     background: @disabled-color;
 }
