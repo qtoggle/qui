@@ -15,9 +15,9 @@ textarea {
     background: @background-color;
     color: @foreground-color;
     resize: none;
-    transition: background @transition-duration linear,
-                color @transition-duration linear,
-                border-color @transition-duration linear;
+    transition: color @transition-duration linear,
+                border-color @transition-duration linear,
+                box-shadow (@transition-duration / 2) linear;
     font-size: inherit;
     font-family: inherit;
     line-height: 1.15em;
@@ -38,9 +38,7 @@ input[type=number]:FOCUS,
 input[type=tel]:FOCUS,
 input[type=email]:FOCUS,
 textarea:FOCUS {
-    background: @focus-color;
-    border-color: @focus-color;
-    color: @foreground-active-color;
+    box-shadow: 0 0 0 0.2em fade(@interactive-color, 30%);
 }
 
 input[type=text][readonly],
@@ -54,6 +52,15 @@ textarea[readonly] {
     background: transparent;
 }
 
+input[type=text][readonly]:FOCUS,
+input[type=password][readonly]:FOCUS,
+input[type=number][readonly]:FOCUS,
+input[type=tel][readonly]:FOCUS,
+input[type=email][readonly]:FOCUS,
+textarea[readonly]:FOCUS {
+    box-shadow: 0 0 0 0.2em fade(@disabled-color, 50%);
+}
+
 input[type=text][disabled],
 input[type=password][disabled],
 input[type=number][disabled],
@@ -63,66 +70,6 @@ textarea[disabled] {
     .noselect;
     border-color: @disabled-color;
     color: @disabled-foreground-color;
-}
-
-input[type=text]::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
-input[type=password]::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
-input[type=number]::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
-input[type=tel]::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
-input[type=email]::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
-textarea::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
-input[type=text]::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-input[type=password]::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-input[type=number]::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-input[type=tel]::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-input[type=email]::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-textarea::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
 }
 
 
@@ -222,41 +169,6 @@ textarea:-ms-input-placeholder {
     color: @disabled-color;
 }
 
-input[type=text]:FOCUS::input-placeholder,
-input[type=password]:FOCUS::input-placeholder,
-input[type=number]:FOCUS::input-placeholder,
-input[type=tel]:FOCUS::input-placeholder,
-input[type=email]:FOCUS::input-placeholder,
-textarea:FOCUS::input-placeholder {
-    color: transparent;
-}
-
-input[type=text]:FOCUS::-webkit-input-placeholder,
-input[type=password]:FOCUS::-webkit-input-placeholder,
-input[type=number]:FOCUS::-webkit-input-placeholder,
-input[type=tel]:FOCUS::-webkit-input-placeholder,
-input[type=email]:FOCUS::-webkit-input-placeholder,
-textarea:FOCUS::-webkit-input-placeholder {
-    color: transparent;
-}
-
-input[type=text]:FOCUS::-moz-input-placeholder,
-input[type=password]:FOCUS::-moz-input-placeholder,
-input[type=number]:FOCUS::-moz-input-placeholder,
-input[type=tel]:FOCUS::-moz-input-placeholder,
-input[type=email]:FOCUS::-moz-input-placeholder,
-textarea:FOCUS::-moz-input-placeholder {
-    color: transparent;
-}
-
-input[type=text]:FOCUS:-ms-input-placeholder,
-input[type=password]:FOCUS:-ms-input-placeholder,
-input[type=number]:FOCUS:-ms-input-placeholder,
-input[type=tel]:FOCUS:-ms-input-placeholder,
-input[type=email]:FOCUS:-ms-input-placeholder,
-textarea:FOCUS:-ms-input-placeholder {
-    color: transparent;
-}
 
 input:-webkit-autofill {
     box-shadow: 0 0 0 100em @background-color inset;
