@@ -125,6 +125,11 @@ div.qui-list-glass.visible div.list-glass-icon {
         transition: background @transition-duration linear;
     }
 
+    & > input[type=text]::selection {
+        background: fade(@foreground-active-color, 99%);
+        color: @interactive-color;
+    }
+
     & > input[type=text]:FOCUS {
         background-color: @interactive-color;
         color: @foreground-active-color;

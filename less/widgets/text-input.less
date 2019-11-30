@@ -68,69 +68,20 @@ input[type=email][disabled],
 textarea[disabled] {
     .noselect;
     border-color: @disabled-color;
-    color: @disabled-foreground-color;
+    color: @disabled-color;
 }
 
 
-input[type=text][readonly]::selection {
+input[type=text]::selection,
+input[type=password]::selection,
+input[type=number]::selection,
+input[type=tel]::selection,
+input[type=email]::selection,
+textarea::selection {
     background: fade(@interactive-color, 99%);
     color: @background-color;
 }
 
-input[type=password][readonly]::selection {
-    background: fade(@interactive-color, 99%);
-    color: @background-color;
-}
-
-input[type=number][readonly]::selection {
-    background: fade(@interactive-color, 99%);
-    color: @background-color;
-}
-
-input[type=tel][readonly]::selection {
-    background: fade(@interactive-color, 99%);
-    color: @background-color;
-}
-
-input[type=email][readonly]::selection {
-    background: fade(@interactive-color, 99%);
-    color: @background-color;
-}
-
-textarea[readonly]::selection {
-    background: fade(@interactive-color, 99%);
-    color: @background-color;
-}
-
-input[type=text][readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-input[type=password][readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-input[type=number][readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-input[type=tel][readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-input[type=email][readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-textarea[readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
 
 input[type=text]::input-placeholder,
 input[type=password]::input-placeholder,
@@ -168,6 +119,9 @@ textarea:-ms-input-placeholder {
     color: @disabled-color;
 }
 
+
+/* Chrome autofill & other oddities */
+
 input:-webkit-autofill {
     /* box-shadow here is a Chrome hack to customize autofill background */
     box-shadow+: 0 0 0 100em @background-color inset !important;
@@ -182,10 +136,16 @@ input:-webkit-autofill:FOCUS {
     .qui-focused-widget();
 }
 
+input:-webkit-autofill::selection {
+    background: fade(@interactive-color, 99%) !important;
+    color: @background-color !important;
+    -webkit-text-fill-color: @background-color !important;
+}
+
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 

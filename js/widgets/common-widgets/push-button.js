@@ -11,7 +11,7 @@ $.widget('qui.pushbutton', {
         caption: 'Button',
         backgroundColor: '@interactive-color',
         backgroundActiveColor: '@interactive-active-color',
-        foregroundColor: '@white-color',
+        foregroundColor: '@foreground-active-color',
         disabled: false
     },
 
