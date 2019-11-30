@@ -11,7 +11,8 @@ $.widget('qui.labels', {
         background: null,
         disabled: false,
         chevrons: false,
-        clickable: false
+        clickable: false,
+        onClick(label, index) {}
     },
 
     _create: function () {
@@ -71,10 +72,18 @@ $.widget('qui.labels', {
         this.element.html('')
         this._labels = []
 
-        labels.forEach(function (labelInfo) {
+        labels.forEach(function (labelInfo, index) {
+
             let label = this._makeLabel(labelInfo)
             this._labels.push(label)
             this.element.append(label)
+
+            if (this.options.clickable) {
+                label.on('click', function () {
+                    this.options.onClick(label.text(), index)
+                }.bind(this))
+            }
+
         }, this)
     },
 

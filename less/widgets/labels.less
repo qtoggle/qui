@@ -6,70 +6,76 @@
 div.qui-labels-container {
     display: inline-block;
     white-space: normal;
-}
 
-div.qui-labels-container > span.qui-label {
-    display: inline-block;
-    position: relative;
-    vertical-align: middle;
-    white-space: nowrap;
-    border-radius: 1em;
-    padding: 0.1em 0.4em;
-    margin: 0.125em 0.25em 0.125em 0;
-    font-size: 0.9em;
-}
+    & > span.qui-label {
+        display: inline-block;
+        position: relative;
+        vertical-align: middle;
+        white-space: nowrap;
+        border-radius: 0.2em;
+        padding: 0.1em 0.4em;
+        margin: 0.125em 0.25em 0.125em 0;
+        font-size: 0.9em;
+    }
 
-div.qui-labels-container.clickable > span.qui-label {
-    background: @interactive-color !important;
-    border-color: @interactive-color !important;
-    color: @foreground-active-color !important;
-}
+    &.clickable {
 
-div.qui-labels-container.clickable > span.qui-label.active {
-    background: @interactive-active-color !important;
-    border-color: @interactive-active-color !important;
-}
+        & > span.qui-label {
+            background: @interactive-color !important;
+            border-color: @interactive-color !important;
+            color: @foreground-active-color !important;
+            cursor: pointer;
+        }
 
-div.qui-labels-container.chevrons > span.qui-label:NOT(:LAST-CHILD) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-right: 0.7em;
-}
+        & > span.qui-label.active {
+            background: @interactive-active-color !important;
+            border-color: @interactive-active-color !important;
+        }
 
-div.qui-labels-container.chevrons > span.qui-label:NOT(:FIRST-CHILD) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
+    }
 
-div.qui-labels-container.chevrons > span.qui-label:NOT(:FIRST-CHILD)::BEFORE {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    left: -0.5em;
-    border-style: solid;
-    border-width: 0.75em 0 0.75em 0.5em;
-    border-color: inherit;
-    border-left-color: transparent;
-}
+    &.chevrons {
 
-div.qui-labels-container.chevrons > span.qui-label:NOT(:LAST-CHILD)::AFTER {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    right: -1em;
-    border-style: solid;
-    border-width: 0.75em 0.5em;
-    border-color: transparent;
-    border-left-color: inherit;
-}
+        & > span.qui-label:NOT(:LAST-CHILD) {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            margin-right: 0.7em;
+        }
 
-div.qui-labels-container.clickable > span.qui-label {
-    cursor: pointer;
-}
+        & > span.qui-label:NOT(:FIRST-CHILD) {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
 
-div.qui-labels-container.disabled > span.qui-label {
-    background: @disabled-color !important;
-    border-color: @disabled-color !important;
+        & > span.qui-label:NOT(:FIRST-CHILD)::BEFORE {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: -0.5em;
+            border-style: solid;
+            border-width: 0.75em 0 0.75em 0.5em;
+            border-color: inherit;
+            border-left-color: transparent;
+        }
+
+        & > span.qui-label:NOT(:LAST-CHILD)::AFTER {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            right: -1em;
+            border-style: solid;
+            border-width: 0.75em 0.5em;
+            border-color: transparent;
+            border-left-color: inherit;
+        }
+
+    }
+
+    &.disabled > span.qui-label {
+        background: @disabled-color !important;
+        border-color: @disabled-color !important;
+    }
+
 }
