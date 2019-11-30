@@ -21,6 +21,7 @@ $.widget('qui.slider', {
         fastFactor: 5,
         snapDistance: 0.02,
         caption: '%s',
+        decimals: 0,
         readonly: false,
         disabled: false
     },
@@ -238,7 +239,8 @@ $.widget('qui.slider', {
         this._cursorLabel.css('left', `${(pos * 100 - 15)}%`)
         this._curVal = this._posToVal(pos)
 
-        let caption = StringUtils.formatPercent(this.options.caption, this._curVal)
+        let captionVal = this._curVal.toFixed(this.options.decimals)
+        let caption = StringUtils.formatPercent(this.options.caption, captionVal)
         this._cursorLabel.html(caption)
     },
 
@@ -326,7 +328,7 @@ $.widget('qui.slider', {
             let newPos = oldPos + Math.max(this.options.increment, this.options.snapDistance + 0.01)
             newPos = this._bestPos(newPos)
 
-            if (newPos !== oldPos) {
+            if (Math.abs(newPos - oldPos) > 10e-6) {
                 this._setPos(newPos)
 
                 return true
@@ -368,7 +370,7 @@ $.widget('qui.slider', {
             let newPos = oldPos - Math.max(this.options.increment, this.options.snapDistance + 0.01)
             newPos = this._bestPos(newPos)
 
-            if (newPos !== oldPos) {
+            if (Math.abs(newPos - oldPos) > 10e-6) {
                 this._setPos(newPos)
 
                 return true
