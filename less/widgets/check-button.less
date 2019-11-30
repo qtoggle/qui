@@ -57,7 +57,8 @@ div.qui-check-button {
     }
 
     &.readonly {
-        border-color: @foreground-color;
+        border-color: @disabled-color;
+        color: @foreground-color;
 
         &:FOCUS {
             .qui-focused-widget-readonly();
@@ -65,7 +66,7 @@ div.qui-check-button {
 
         &.on,
         &.active {
-            background: @foreground-color;
+            background: @background-color
         }
 
     }
@@ -74,6 +75,7 @@ div.qui-check-button {
 
         border-color: @disabled-color;
         background: @background-color !important;
+        color: @foreground-active-color;
 
         &.on {
             background: @disabled-color !important;

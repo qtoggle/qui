@@ -96,7 +96,7 @@ input[type=number]::selection,
 input[type=tel]::selection,
 input[type=email]::selection,
 textarea::selection {
-    background: fade(@interactive-color, 99%);
+    background: fade(@selection-color, 99%);
     color: @background-color;
 }
 
@@ -166,7 +166,7 @@ input.has-error:-webkit-autofill:FOCUS {
 }
 
 input:-webkit-autofill::selection {
-    background: fade(@interactive-color, 99%) !important;
+    background: fade(@selection-color, 99%) !important;
     color: @background-color !important;
     -webkit-text-fill-color: @background-color !important;
 }
