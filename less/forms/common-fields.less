@@ -5,33 +5,6 @@
 
 /* Fields based on input entries */
 
-div.qui-form-field.has-error > div.qui-form-field-value > div.text-input {
-
-    & > input[type=text]:NOT([readonly]):NOT([disabled]),
-    & > input[type=password]:NOT([readonly]):NOT([disabled]),
-    & > input[type=number]:NOT([readonly]):NOT([disabled]),
-    & > input[type=tel]:NOT([readonly]):NOT([disabled]),
-    & > input[type=email]:NOT([readonly]):NOT([disabled]) {
-        border-color: @error-color;
-    }
-
-    & > input[type=text]:NOT([readonly]):NOT([disabled]):FOCUS,
-    & > input[type=password]:NOT([readonly]):NOT([disabled]):FOCUS,
-    & > input[type=number]:NOT([readonly]):NOT([disabled]):FOCUS,
-    & > input[type=tel]:NOT([readonly]):NOT([disabled]):FOCUS,
-    & > input[type=email]:NOT([readonly]):NOT([disabled]):FOCUS {
-        .qui-focused-widget-error();
-    }
-
-    & > input:-webkit-autofill:FOCUS {
-        /* box-shadow here is a Chrome hack to customize autofill background */
-        box-shadow+: 0 0 0 100em @background-color inset !important;
-        -webkit-text-fill-color: @foreground-color;
-        .qui-focused-widget-error();
-    }
-
-}
-
 div.qui-form-field-value > div.text-input > input,
 div.qui-form-field-value > div.text-input > textarea {
     width: 100%;

@@ -33,13 +33,31 @@ input[type=email] {
     height: 1.75em;
 }
 
+input[type=text].has-error,
+input[type=password].has-error,
+input[type=number].has-error,
+input[type=tel].has-error,
+input[type=email].has-error,
+textarea {
+    border-color: @error-color;
+}
+
 input[type=text]:FOCUS,
 input[type=password]:FOCUS,
 input[type=number]:FOCUS,
 input[type=tel]:FOCUS,
 input[type=email]:FOCUS,
 textarea:FOCUS {
-    .qui-focused-widget(@interactive-color, 30%);
+    .qui-focused-widget();
+}
+
+input[type=text].has-error:FOCUS,
+input[type=password].has-error:FOCUS,
+input[type=number].has-error:FOCUS,
+input[type=tel].has-error:FOCUS,
+input[type=email].has-error:FOCUS,
+textarea.has-error:FOCUS {
+    .qui-focused-widget-error();
 }
 
 input[type=text][readonly],
@@ -93,35 +111,6 @@ textarea::placeholder {
 }
 
 
-/* Chrome autofill & other oddities */
-
-input:-webkit-autofill {
-    /* box-shadow here is a Chrome hack to customize autofill background */
-    box-shadow+: 0 0 0 100em @background-color inset !important;
-    -webkit-text-fill-color: @foreground-color;
-    .qui-focusable-widget();
-}
-
-input:-webkit-autofill:FOCUS {
-    /* box-shadow here is a Chrome hack to customize autofill background */
-    box-shadow+: 0 0 0 100em @background-color inset !important;
-    -webkit-text-fill-color: @foreground-color;
-    .qui-focused-widget();
-}
-
-input:-webkit-autofill::selection {
-    background: fade(@interactive-color, 99%) !important;
-    color: @background-color !important;
-    -webkit-text-fill-color: @background-color !important;
-}
-
-input::-webkit-inner-spin-button,
-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-
 /* Password input */
 
 div.text-input.clear-enabled > input[type=password] {
@@ -151,4 +140,46 @@ div.qui-password-input-clear-icon {
     height: 1em;
     position: relative;
     left: -0.0625em;
+}
+
+
+/* Chrome oddities */
+
+input:-webkit-autofill {
+    /* box-shadow here is a Chrome hack to customize autofill background */
+    box-shadow+: 0 0 0 100em @background-color inset !important;
+    -webkit-text-fill-color: @foreground-color;
+    .qui-focusable-widget();
+}
+
+input:-webkit-autofill:FOCUS {
+    /* box-shadow here is a Chrome hack to customize autofill background */
+    box-shadow+: 0 0 0 100em @background-color inset !important;
+    -webkit-text-fill-color: @foreground-color;
+    .qui-focused-widget();
+}
+
+input.has-error:-webkit-autofill:FOCUS {
+    box-shadow+: 0 0 0 100em @background-color inset !important;
+    -webkit-text-fill-color: @foreground-color;
+    .qui-focused-widget-error();
+}
+
+input:-webkit-autofill::selection {
+    background: fade(@interactive-color, 99%) !important;
+    color: @background-color !important;
+    -webkit-text-fill-color: @background-color !important;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Firefox oddities */
+
+input[type=number] {
+    -moz-appearance: textfield;
 }
