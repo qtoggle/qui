@@ -28,6 +28,11 @@ export default class LabelsField extends JQueryUIField {
         this._widgetCall('option', 'onClick', (label, index) => this.onClick(label, index))
     }
 
+    /**
+     * Called when a label is clicked.
+     * @param {String} label the text of the clicked label
+     * @param {Number} index the index of the clicked label (starting at `0`)
+     */
     onClick(label, index) {
     }
 

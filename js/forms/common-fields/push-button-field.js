@@ -11,8 +11,8 @@ import JQueryUIField from './jquery-ui-field.js'
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
  * @param {String} params.caption the button caption
- * @param {Function} params.callback callback to be executed when the button is pushed (see
- * {@link qui.forms.commonfields.PushButtonField#callback})
+ * @param {Function} params.onClick function to be executed when the button is pushed (see
+ * {@link qui.forms.commonfields.PushButtonField#onClick})
  * @param {String} [params.style] button style:
  *  * `"interactive"` (default)
  *  * `"highlight"`
@@ -24,19 +24,19 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 export default class PushButtonField extends JQueryUIField {
 
-    constructor({callback, ...params}) {
+    constructor({onClick, ...params}) {
         ObjectUtils.setDefault(params, 'style', 'interactive')
 
         super(params)
 
-        this.callback = callback
+        this.onClick = onClick
     }
 
     makeWidget() {
         let div = super.makeWidget()
 
         div.addClass('qui-form-push-button')
-        div.on('click', () => this.callback(this.getForm()))
+        div.on('click', () => this.onClick(this.getForm()))
 
         if (this._valueWidth === 100) {
             div.css('display', 'block')
@@ -49,7 +49,7 @@ export default class PushButtonField extends JQueryUIField {
      * Called when the button is pushed.
      * @param {qui.forms.Form} form owning form
      */
-    callback(form) {
+    onClick(form) {
     }
 
     valueToWidget(value) {
