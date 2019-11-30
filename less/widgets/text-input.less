@@ -168,18 +168,18 @@ textarea:-ms-input-placeholder {
     color: @disabled-color;
 }
 
-
 input:-webkit-autofill {
-    box-shadow: 0 0 0 100em @background-color inset;
-    -webkit-text-fill-color: @interactive-color;
-    transition: box-shadow @transition-duration linear,
-                -webkit-text-fill-color @transition-duration linear;
+    /* box-shadow here is a Chrome hack to customize autofill background */
+    box-shadow+: 0 0 0 100em @background-color inset !important;
+    -webkit-text-fill-color: @foreground-color;
+    .qui-focusable-widget();
 }
 
 input:-webkit-autofill:FOCUS {
-    color: red;
-    box-shadow: 0 0 0 100em @focus-color inset;
-    -webkit-text-fill-color: @foreground-active-color;
+    /* box-shadow here is a Chrome hack to customize autofill background */
+    box-shadow+: 0 0 0 100em @background-color inset !important;
+    -webkit-text-fill-color: @foreground-color;
+    .qui-focused-widget();
 }
 
 input::-webkit-inner-spin-button,
