@@ -2,6 +2,7 @@
 import $ from '$qui/lib/jquery.module.js'
 
 import * as Theme from '$qui/theme.js'
+import * as Colors from '$qui/utils/colors.js'
 
 
 $.widget('qui.pushbutton', {
@@ -57,6 +58,10 @@ $.widget('qui.pushbutton', {
             }
 
             this.element.css('color', Theme.getColor(this.options.foregroundColor))
+
+            /* Manually compute and supply box-shadow focus color */
+            let shadowColor = Colors.alpha(Theme.getColor(this.options.backgroundColor), 0.3)
+            this.element[0].style.setProperty('--focus-shadow-color', shadowColor)
         }
         else {
             this.element.css('background', '')
