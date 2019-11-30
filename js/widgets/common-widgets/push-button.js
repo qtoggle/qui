@@ -39,6 +39,12 @@ $.widget('qui.pushbutton', {
         this.element.on('pressed released', () => this._updateStyle())
 
         this.element.html(this.options.caption)
+
+        this.element.on('keydown', function (e) {
+            if (e.which === 32) {
+                this.element.trigger('click')
+            }
+        }.bind(this))
     },
 
     _setStyle: function (style) {
