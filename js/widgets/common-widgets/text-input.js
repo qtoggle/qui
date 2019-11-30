@@ -10,7 +10,7 @@ $.widget('qui.textinput', {
         name: '',
         placeholder: '',
         clearPlaceholder: false,
-        autocomplete: true,
+        autocomplete: false,
         continuousChange: false,
         minLength: null,
         maxLength: null,
@@ -20,7 +20,7 @@ $.widget('qui.textinput', {
 
     type: 'text',
     _autocomplete_on: null,
-    _autocomplete_off: 'disabled',
+    _autocomplete_off: 'off',
 
     _create: function () {
         this.element.addClass('text-input')
