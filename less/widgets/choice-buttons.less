@@ -7,72 +7,131 @@
 div.qui-choice-buttons-container {
     border-radius: 0.2em;
     .qui-focusable-widget();
-}
 
-div.qui-choice-buttons-container:FOCUS {
-    .qui-focused-widget();
-}
+    &:FOCUS {
+        .qui-focused-widget();
+    }
 
-div.qui-choice-buttons-group-container {
-    white-space: nowrap;
-}
+    &.has-error:FOCUS {
+        .qui-focused-widget-error();
+    }
 
-div.qui-choice-button {
-    display: inline-block;
-    padding: 0.25em;
-    border-radius: 0;
-    border-width: 0.0625em 0 0 0.0625em;
-    border-style: solid;
-    border-color: @interactive-color;
-    min-width: 1em;
-    box-sizing: border-box;
-    text-align: center;
-    background: @background-color;
-    color: @foreground-color;
-}
+    &.readonly:FOCUS {
+        .qui-focused-widget-readonly();
+    }
 
-div.qui-choice-button.on,
-div.qui-choice-button.active {
-    color: @foreground-active-color;
-}
+    & > div.qui-choice-buttons-group-container {
+        white-space: nowrap;
 
-div.qui-choice-button.on:NOT(.active) {
-    background: @interactive-color;
-}
+        & > div.qui-choice-button {
+            display: inline-block;
+            padding: 0.25em;
+            border-radius: 0;
+            border-width: 0.0625em 0 0 0.0625em;
+            border-style: solid;
+            border-color: @interactive-color;
+            min-width: 1em;
+            box-sizing: border-box;
+            text-align: center;
+            background: @background-color;
+            color: @foreground-color;
 
-div.qui-choice-button:FIRST-CHILD {
-    border-top-left-radius: 0.1875em;
-    border-bottom-left-radius: 0.1875em;
-}
+            &.on,
+            &.active {
+                color: @foreground-active-color;
+            }
 
-div.qui-choice-button:LAST-CHILD {
-    border-top-right-radius: 0.1875em;
-    border-bottom-right-radius: 0.1875em;
-    border-right-width: 0.0625em;
-}
+            &.active {
+                background: @interactive-active-color;
+            }
 
-div.qui-choice-buttons-group-container:LAST-CHILD div.qui-choice-button {
-    border-bottom-width: 0.0625em;
-}
+            &.on:NOT(.active) {
+                background: @interactive-color;
+            }
 
-div.qui-choice-buttons-group-container:NOT(:FIRST-CHILD) div.qui-choice-button {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
+            &:FIRST-CHILD {
+                border-top-left-radius: 0.1875em;
+                border-bottom-left-radius: 0.1875em;
+            }
 
-div.qui-choice-buttons-group-container:NOT(:LAST-CHILD) div.qui-choice-button {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
+            &:LAST-CHILD {
+                border-top-right-radius: 0.1875em;
+                border-bottom-right-radius: 0.1875em;
+                border-right-width: 0.0625em;
+            }
 
-div.qui-choice-buttons-container.disabled div.qui-choice-button {
-    border-color: @disabled-color;
-    color: @disabled-foreground-color;
-    background: @background-color;
-    cursor: default;
-}
+        }
 
-div.qui-choice-buttons-container.disabled div.qui-choice-button.on {
-    color: @background-color;
-    background: @disabled-color;
+        &:LAST-CHILD div.qui-choice-button {
+            border-bottom-width: 0.0625em;
+        }
+
+        &:NOT(:FIRST-CHILD) div.qui-choice-button {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        &:NOT(:LAST-CHILD) div.qui-choice-button {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+    }
+
+    &.has-error > div.qui-choice-buttons-group-container {
+
+        & > div.qui-choice-button {
+            border-color: @error-color;
+
+            &.active {
+                background: @error-active-color;
+            }
+
+            &.on:NOT(.active) {
+                background: @error-color;
+            }
+
+        }
+
+    }
+
+    &.readonly > div.qui-choice-buttons-group-container {
+
+        & > div.qui-choice-button {
+            border-color: @disabled-color;
+            background: @background-color;
+            cursor: default;
+
+            &.active:NOT(.on) {
+                color: @foreground-color;
+                background: @background-color !important;
+            }
+
+            &.on {
+                color: @background-color;
+                background: @foreground-color !important;
+            }
+
+        }
+
+    }
+
+    &.disabled > div.qui-choice-buttons-group-container {
+
+        & > div.qui-choice-button,
+        & > div.qui-choice-button.active {
+            border-color: @disabled-color;
+            color: @disabled-color;
+            background: @background-color;
+            cursor: default;
+
+            &.on {
+                color: @background-color;
+                background: @disabled-color !important;
+            }
+
+        }
+
+    }
+
 }
