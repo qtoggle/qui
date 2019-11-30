@@ -69,6 +69,10 @@ $.widget('qui.choicebuttons', {
 
                 case 37: /* Left */
                     active = widget._getButtons().filter(`.${widget.options.onClass}`)
+                    if (!active.length) {
+                        active = widget._getButtons().filter(':eq(1)')
+                    }
+
                     index = active.index()
                     group = active.parent()
                     if (index > 0) {
@@ -82,6 +86,10 @@ $.widget('qui.choicebuttons', {
 
                 case 39: /* Right */
                     active = widget._getButtons().filter(`.${widget.options.onClass}`)
+                    if (!active.length) {
+                        active = widget._getButtons().filter(':eq(-2)')
+                    }
+
                     index = active.index()
                     group = active.parent()
                     if (index < group.children('div.qui-choice-button').length - 1) {
