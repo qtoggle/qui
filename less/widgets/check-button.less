@@ -1,6 +1,7 @@
 
 @import (reference) "../base";
 @import (reference) "../theme";
+@import (reference) "common";
 
 
 div.qui-check-button {
@@ -15,56 +16,69 @@ div.qui-check-button {
     overflow: hidden;
     background: @background-color;
     color: @foreground-active-color;
-}
+    transition+: background @transition-duration ease,
+                 color @transition-duration ease,
+                 opacity @transition-duration ease,
+                 border @transition-duration ease;
+    .qui-focusable-widget();
 
-div.qui-check-button:FOCUS {
-    border-color: @focus-color;
-}
+    &:FOCUS {
+        .qui-focused-widget();
+    }
 
-div.qui-check-button.active:FOCUS {
-    background: @focus-active-color;
-    border-color: @focus-active-color;
-}
+    &.on {
+        background: @interactive-color;
+    }
 
-div.qui-check-button.on:NOT(.active) {
-    background: @interactive-color;
-}
+    &.active {
+        background: @interactive-active-color;
+    }
 
-div.qui-check-button.on.active:FOCUS {
-    background: @focus-active-color;
-    border-color: @focus-active-color;
-}
+    &.on::BEFORE {
+        content: '\2713';
+        font-size: 1.4em;
+    }
 
-div.qui-check-button.on:NOT(.active):FOCUS {
-    background: @focus-color;
-}
+    &.has-error {
+        border-color: @error-color;
 
-div.qui-check-button.on::BEFORE {
-    content: '\2713';
-    font-size: 1.4em;
-    cursor: pointer;
-}
+        &:FOCUS {
+            .qui-focused-widget-error();
+        }
 
-div.qui-check-button.readonly,
-div.qui-check-button.readonly.on,
-div.qui-check-button.readonly:FOCUS,
-div.qui-check-button.readonly.on:FOCUS {
-    color: @foreground-color;
-    border-color: @disabled-color;
-    background: transparent;
-    cursor: default;
-}
+        &.on {
+            background: @error-color;
+        }
 
-div.qui-check-button.disabled,
-div.qui-check-button.disabled.on {
-    color: @disabled-foreground-color;
-    border-color: @disabled-color;
-    background: @background-color;
-    cursor: default;
-}
+        &.active {
+            background: @error-active-color;
+        }
 
-div.qui-check-button.readonly::BEFORE,
-div.qui-check-button.disabled::BEFORE {
-    cursor: default;
-}
+    }
 
+    &.readonly {
+        border-color: @foreground-color;
+
+        &:FOCUS {
+            .qui-focused-widget-readonly();
+        }
+
+        &.on,
+        &.active {
+            background: @foreground-color;
+        }
+
+    }
+
+    &.disabled {
+
+        border-color: @disabled-color;
+        background: @background-color !important;
+
+        &.on {
+            background: @disabled-color !important;
+        }
+
+    }
+
+}
