@@ -1,9 +1,8 @@
 
 @import (reference) "../base";
 @import (reference) "../theme";
+@import (reference) "common";
 
-
-/* container */
 
 div.qui-combo-container {
     position: relative;
@@ -11,201 +10,184 @@ div.qui-combo-container {
     width: 100%;
     box-sizing: border-box;
     vertical-align: middle;
-}
-
-/* button */
-
-div.qui-combo-button {
-    border: 0.0625em solid @interactive-color;
     border-radius: 0.2em;
-    position: relative;
-    min-width: 2em;
-    background: @background-color;
-    color: @foreground-color;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+    .qui-focusable-widget();
 
-div.qui-combo-button.active {
-    border-color: @interactive-active-color;
-    background: @interactive-active-color;
-}
+    & > div.qui-combo-button {
+        border: 0.0625em solid @interactive-color;
+        border-radius: 0.2em;
+        position: relative;
+        min-width: 2em;
+        background: @background-color;
+        color: @foreground-color;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
-div.qui-combo-container:FOCUS > div.qui-combo-button,
-div.qui-combo-button.open {
-    background: @focus-color;
-    border-color: @focus-color;
-    color: @foreground-active-color;
-}
+        & > div.qui-combo-current-label {
+            padding-right: 1.8em;
+            min-height: 1.6875em;
+        }
 
-div.qui-combo-container:FOCUS > div.qui-combo-button.active,
-div.qui-combo-button.open.active {
-    background: @focus-active-color;
-    border-color: @focus-active-color;
-}
+        & > span.qui-combo-arrow-separator {
+            position: absolute;
+            display: inline-block;
+            top: 0;
+            right: 1.8em;
+            width: 0;
+            height: 100%;
+            border-width: 0 0.0625em 0 0;
+            border-style: solid;
+            border-color: inherit;
+            transition: border-color @transition-duration linear;
+        }
 
-div.qui-combo-button.open {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
+        & > span.qui-combo-arrow {
+            position: absolute;
+            top: 40%;
+            right: 0;
+            margin: 0 0.5em;
+            border-width: 0.5em 0.4em;
+            border-style: solid;
+            border-color: transparent;
+            border-top-color: inherit;
+            transition: border-color @transition-duration linear;
+        }
 
-div.qui-combo-container.readonly > div.qui-combo-button,
-div.qui-combo-container.readonly > div.qui-combo-button.active {
-    border-color: @disabled-color;
-    background: @background-color;
-    color: @foreground-color;
-    cursor: default;
-}
+    }
 
-div.qui-combo-container.disabled > div.qui-combo-button,
-div.qui-combo-container.disabled > div.qui-combo-button.active {
-    border-color: @disabled-color;
-    background-color: @background-color;
-    color: @disabled-alt-color;
-    cursor: default;
-}
+    & > input.qui-combo-filter {
+        box-shadow: none;
+        display: none;
+    }
 
-div.qui-combo-container > div.qui-combo-button > div.qui-combo-current-label {
-    padding-right: 1.8em;
-    min-height: 1.6875em;
-}
+    & > div.qui-combo-item-container {
+        position: relative;
+        color: @foreground-color;
+        border: 0.0625em solid @interactive-color;
+        background-color: @background-color;
+        margin-top: 0.0625em;
+        margin-bottom: -0.1875em; /* Effectively reduces height to 0 when closed */
+        min-width: 100%;
+        min-height: 0;
+        max-height: 0;
+        box-sizing: border-box;
+        opacity: 0;
+        text-align: left;
+        overflow: auto;
+        border-radius: 0 0 0.2em 0.2em;
+        transition: max-height @transition-duration ease,
+                    opacity @transition-duration ease;
 
+        & > div.qui-combo-item {
+            white-space: nowrap;
+            cursor: default;
+            background: @background-color;
+            overflow: hidden;
+            transition: background @transition-duration ease,
+                        color @transition-duration ease,
+                        height @transition-duration ease,
+                        max-height @transition-duration ease;
 
-/* arrow */
+            &.odd {
+                background: @odd-color;
+            }
 
-span.qui-combo-arrow-separator {
-    position: absolute;
-    display: inline-block;
-    top: 0;
-    right: 1.8em;
-    width: 0;
-    height: 100%;
-    border-width: 0 0.0625em 0 0;
-    border-style: solid;
-    border-color: @interactive-color;
-    transition: border-color @transition-duration linear;
-}
+            &.selected {
+                background: @interactive-color;
+                color: @foreground-active-color;
+            }
 
-div.qui-combo-container:FOCUS > div.qui-combo-button > span.qui-combo-arrow-separator,
-div.qui-combo-button.open > span.qui-combo-arrow-separator {
-    border-color: @background-color;
-}
+            &.separator {
+                border-top: 0.0625em solid @border-color;
+            }
 
-div.qui-combo-container.readonly > div.qui-combo-button > span.qui-combo-arrow-separator {
-    border-color: @disabled-color;
-}
+            &.hidden {
+                max-height: 0 !important;
+            }
 
-div.qui-combo-container.disabled > div.qui-combo-button > span.qui-combo-arrow-separator {
-    border-color: @disabled-color;
-}
+            &.hidden:NOT(.separator) {
+                border: 0;
+            }
 
-span.qui-combo-arrow {
-    position: absolute;
-    top: 40%;
-    right: 0;
-    margin: 0 0.5em;
-    border-width: 0.5em 0.4em;
-    border-style: solid;
-    border-color: @interactive-color transparent transparent transparent;
-    transition: border-color @transition-duration linear;
-}
+        }
 
-div.qui-combo-button.active > span.qui-combo-arrow {
-    border-color: @foreground-active-color transparent transparent transparent;
-}
+    }
 
-div.qui-combo-container:FOCUS > div.qui-combo-button > span.qui-combo-arrow,
-div.qui-combo-button.open > span.qui-combo-arrow {
-    border-top-color: @foreground-active-color;
-}
+    &.open {
 
-div.qui-combo-container.readonly > div.qui-combo-button > span.qui-combo-arrow {
-    border-top-color: @disabled-color;
-}
+        & > div.qui-combo-button {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
 
-div.qui-combo-container.disabled > div.qui-combo-button > span.qui-combo-arrow {
-    border-top-color: @disabled-color;
-}
+        & > div.qui-combo-item-container {
+            opacity: 1;
+            min-height: 1.75em;
+            max-height: 12em;
+            margin-bottom: 0;
+        }
 
+        &.filter-enabled > input.qui-combo-filter {
+            display: block;
+            border-radius: 0;
+            margin-top: 0.0625em;
+            width: 100%;
+        }
 
-/* filter input */
+    }
 
-div.qui-combo-container > input.qui-combo-filter {
-    display: none;
-}
+    &:FOCUS,
+    &.open {
+        .qui-focused-widget();
+    }
 
-div.qui-combo-container.filter-enabled > div.qui-combo-button.open + input.qui-combo-filter {
-    display: block;
-    border-radius: 0;
-    margin-top: 0.0625em;
-    width: 100%;
-}
+    &.has-error {
 
+        & > div.qui-combo-button,
+        & > input.qui-combo-filter,
+        & > div.qui-combo-item-container {
+            border-color: @error-color;
+        }
 
-/* item container */
+        &:FOCUS,
+        &.open {
+            .qui-focused-widget-error();
+        }
 
-div.qui-combo-item-container {
-    position: relative;
-    color: @foreground-color;
-    border: 0.0625em solid @focus-color;
-    background-color: @background-color;
-    margin-top: 0.0625em;
-    min-width: 100%;
-    min-height: 0;
-    max-height: 0;
-    box-sizing: border-box;
-    opacity: 0;
-    text-align: left;
-    overflow: auto;
-    border-radius: 0 0 0.2em 0.2em;
-    transition: max-height @transition-duration ease,
-                border-width @transition-duration ease,
-                opacity @transition-duration ease;
-}
+    }
 
-div.qui-combo-item-container.open {
-    opacity: 1;
-    min-height: 1.75em;
-    max-height: 12em;
-}
+    &.readonly {
 
+        & > div.qui-combo-button {
+            border-color: @readonly-color;
+            cursor: default;
 
-/* item */
+            & > span.qui-combo-arrow {
+                border-top-color: @foreground-color;
+            }
 
-div.qui-combo-item {
-    white-space: nowrap;
-    cursor: default;
-    background: @background-color;
-    overflow: hidden;
-    transition: background @transition-duration ease,
-                color @transition-duration ease,
-                height @transition-duration ease,
-                max-height @transition-duration ease;
-}
+        }
 
-div.qui-combo-item.odd {
-    background: mix(@background-color, @background-root-color, 25%);
-}
+        &:FOCUS {
+            .qui-focused-widget-readonly();
+        }
 
-div.qui-combo-item.selected {
-    background: @focus-color;
-    color: @foreground-active-color;
-}
+    }
 
-div.qui-combo-item.separator {
-    border-top: 0.0625em solid @border-color;
-}
+    &.disabled > div.qui-combo-button {
+        border-color: @disabled-color;
+        color: @disabled-color;
+        cursor: default;
 
-body div.qui-combo-item.hidden {
-    max-height: 0 !important;
-}
+        & > span.qui-combo-arrow {
+            border-top-color: @disabled-color;
+        }
+    }
 
-body div.qui-combo-item.hidden:NOT(.separator) {
-    border: 0;
 }
 
 
-/* combo item label */
+/* Simple label */
 
 div.qui-combo-item-simple-label {
     overflow: hidden;
@@ -214,10 +196,3 @@ div.qui-combo-item-simple-label {
     line-height: 1.6875em;
     padding: 0 0.25em;
 }
-
-body.small-screen1 div.qui-combo-item > div.qui-combo-item-simple-label {
-    min-height: 2.5em;
-    line-height: 2.5em;
-    padding: 0 0.5em;
-}
-
