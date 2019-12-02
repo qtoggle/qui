@@ -1,74 +1,115 @@
 
 @import (reference) "../base";
 @import (reference) "../theme";
+@import (reference) "common";
 
 
 div.qui-updown-container {
     white-space: nowrap;
     overflow: hidden;
-}
+    border-radius: 0.2em;
+    .qui-focusable-widget();
 
-div.qui-updown-container:FOCUS > div.qui-base-button.qui-updown {
-    background: @focus-color;
-}
+    & > input.qui-updown-input {
+        width: 100%;
+        height: 1.75em;
+        box-sizing: border-box;
+        border-color: @interactive-color;
+    }
 
-div.qui-updown-container > input.qui-updown {
-    width: 100%;
-    height: 1.75em;
-    box-sizing: border-box;
-    border-color: @interactive-color;
-}
+    & > div.qui-updown-button {
+        display: inline-block;
+        width: 1.75em;
+        height: 1.75em;
+        line-height: 1.75em;
+        vertical-align: top;
+        text-align: center;
+        border-width: 0;
 
-div.qui-updown-container:FOCUS > input.qui-updown {
-    border-color: @focus-color;
-    color: @foreground-color;
-}
+        &.down {
+            margin-left: -3.5625em;
+            border-radius: 0;
 
-div.qui-updown-container.readonly > input.qui-updown {
-    color: @foreground-color;
-    border-color: @disabled-color;
-    background: transparent;
-}
+            &:AFTER {
+                content: '\2013';
+            }
 
-div.qui-updown-container.disabled > input.qui-updown {
-    border-color: @disabled-color;
-    color: @disabled-alt-color;
-}
+        }
 
-div.qui-updown-container > div.qui-base-button.qui-updown {
-    display: inline-block;
-    width: 1.75em;
-    height: 1.75em;
-    line-height: 1.75em;
-    vertical-align: top;
-    text-align: center;
-    border-width: 0;
-    color: @foreground-active-color;
-}
+        &.up {
+            margin-left: 0.0625em;
+            border-radius: 0 0.2em 0.2em 0;
 
-div.qui-updown-container.readonly > div.qui-base-button.qui-updown,
-div.qui-updown-container.disabled > div.qui-base-button.qui-updown {
-    display: none;
-}
+            &:AFTER {
+                content: '+';
+            }
 
-div.qui-updown-container > div.qui-base-button.qui-updown.active {
-    background: @focus-active-color;
-}
+        }
 
-div.qui-updown-container > div.qui-base-button.qui-updown.down {
-    margin-left: -3.5625em;
-    border-radius: 0;
-}
+    }
 
-div.qui-updown-container > div.qui-base-button.qui-updown.down:AFTER {
-    content: '\2013';
-}
+    &:FOCUS {
+        .qui-focused-widget();
+    }
 
-div.qui-updown-container > div.qui-base-button.qui-updown.up {
-    border-radius: 0 0.2em 0.2em 0;
-    margin-left: 0.0625em;
-}
+    &.has-error {
 
-div.qui-updown-container > div.qui-base-button.qui-updown.up:AFTER {
-    content: '+';
+        & > input.qui-updown-input {
+            border-color: @error-color;
+        }
+
+        & > div.qui-updown-button {
+            background: @error-color;
+
+            &.active {
+                background: @error-active-color;
+            }
+        }
+
+        &:FOCUS {
+            .qui-focused-widget-error();
+        }
+
+    }
+
+    &.readonly {
+
+        & > input.qui-updown-input {
+            border-color: @readonly-color;
+        }
+
+        & > div.qui-updown-button {
+            background: @readonly-color;
+            cursor: default;
+
+            &.active {
+                background: @readonly-color;
+            }
+
+        }
+
+        &:FOCUS {
+            .qui-focused-widget-readonly();
+        }
+
+    }
+
+    &.disabled {
+
+        & > input.qui-updown-input {
+            border-color: @disabled-color;
+        }
+
+        & > div.qui-updown-button {
+            background: @disabled-color;
+            cursor: default;
+
+            &.active {
+                background: @disabled-color;
+            }
+
+        }
+
+    }
+
 }

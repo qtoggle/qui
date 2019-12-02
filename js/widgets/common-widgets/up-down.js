@@ -19,13 +19,11 @@ $.widget('qui.updown', {
     },
 
     _create: function () {
-        this._input = $('<input type="text" class="qui-updown">')
-        this._downButton = $(
-            `<div class="qui-base-button qui-interactive-button qui-updown down" title="${gettext('decrease')}"></div>`
-        )
-        this._upButton = $(
-            `<div class="qui-base-button qui-interactive-button qui-updown up" title="${gettext('increase')}"></div>`
-        )
+        this._input = $('<input type="text" class="qui-updown-input">')
+        this._downButton = $(`<div class="qui-base-button qui-interactive-button qui-updown-button down"
+                                   title="${gettext('decrease')}"></div>`)
+        this._upButton = $(`<div class="qui-base-button qui-interactive-button qui-updown-button up"
+                                 title="${gettext('increase')}"></div>`)
 
         this._curVal = this.options.min
         this._input.val(this.options.min.toFixed(this.options.decimals))
@@ -101,11 +99,19 @@ $.widget('qui.updown', {
 
         /* Install the up/down buttons click handlers */
         this._downButton.on('click', function () {
+            if (widget.options.readonly || widget.options.disabled) {
+                return
+            }
+
             if (widget._decrease()) {
                 widget._markChange()
             }
         })
         this._upButton.on('click', function () {
+            if (widget.options.readonly || widget.options.disabled) {
+                return
+            }
+
             if (widget._increase()) {
                 widget._markChange()
             }
@@ -130,6 +136,10 @@ $.widget('qui.updown', {
         /* Install up/down buttons long press handlers */
 
         this._downButton.longpress(function () {
+            if (widget.options.readonly || widget.options.disabled) {
+                return
+            }
+
             incDecLoopActive = true
             decLoop()
         })
@@ -138,6 +148,10 @@ $.widget('qui.updown', {
         })
 
         this._upButton.longpress(function () {
+            if (widget.options.readonly || widget.options.disabled) {
+                return
+            }
+
             incDecLoopActive = true
             incLoop()
         })
@@ -147,7 +161,7 @@ $.widget('qui.updown', {
 
         /* Install keys handler */
         this.element.on('keydown', function (e) {
-            if (widget.options.readonly) {
+            if (widget.options.readonly || widget.options.disabled) {
                 return
             }
 
