@@ -67,13 +67,8 @@ div.qui-slider {
 
     &:FOCUS {
 
-        & > div.qui-slider-bar-container > div.qui-slider-bar {
-            border-color: @focus-color;
-
-            & > div.qui-slider-cursor {
-                .qui-focused-widget();
-            }
-
+        & > div.qui-slider-bar-container > div.qui-slider-bar > div.qui-slider-cursor {
+            .qui-focused-widget();
         }
 
     }
