@@ -40,6 +40,15 @@ div.qui-progress-disc-container {
         animation: spin 1s linear infinite;
     }
 
+    &.has-warning {
+
+        & > svg > ellipse.qui-progress-disc-ring,
+        & > svg > path.qui-progress-disc-cursor {
+            stroke: @warning-color !important;
+        }
+
+    }
+
     &.has-error {
 
         & > svg > ellipse.qui-progress-disc-ring,

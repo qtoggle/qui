@@ -141,6 +141,21 @@ div.qui-combo-container {
         .qui-focused-widget();
     }
 
+    &.has-warning {
+
+        & > div.qui-combo-button,
+        & > input.qui-combo-filter,
+        & > div.qui-combo-item-container {
+            border-color: @warning-color;
+        }
+
+        &:FOCUS,
+        &.open {
+            .qui-focused-widget-warning();
+        }
+
+    }
+
     &.has-error {
 
         & > div.qui-combo-button,

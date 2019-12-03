@@ -12,6 +12,10 @@ div.qui-choice-buttons-container {
         .qui-focused-widget();
     }
 
+    &.has-warning:FOCUS {
+        .qui-focused-widget-warning();
+    }
+
     &.has-error:FOCUS {
         .qui-focused-widget-error();
     }
@@ -74,6 +78,23 @@ div.qui-choice-buttons-container {
         &:NOT(:LAST-CHILD) div.qui-choice-button {
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
+        }
+
+    }
+
+    &.has-warning > div.qui-choice-buttons-group-container {
+
+        & > div.qui-choice-button {
+            border-color: @warning-color;
+
+            &.active {
+                background: @warning-active-color;
+            }
+
+            &.on:NOT(.active) {
+                background: @warning-color;
+            }
+
         }
 
     }

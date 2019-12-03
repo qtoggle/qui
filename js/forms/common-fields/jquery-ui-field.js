@@ -79,6 +79,16 @@ export default class JQueryUIField extends FormField {
         this._widgetCall({disabled: true})
     }
 
+    showWarning(message) {
+        super.showWarning(message)
+        this.getFocusableElement().addClass('has-warning')
+    }
+
+    hideWarning() {
+        super.hideWarning()
+        this.getFocusableElement().removeClass('has-warning')
+    }
+
     showError(message) {
         super.showError(message)
         this.getFocusableElement().addClass('has-error')

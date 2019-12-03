@@ -90,6 +90,28 @@ div.qui-slider {
 
     }
 
+    &.has-warning {
+
+        & > div.qui-slider-bar-container > div.qui-slider-bar {
+            border-color: @warning-color;
+
+            & > div.qui-slider-cursor {
+                background: @warning-color;
+
+                &.active {
+                    background: @warning-active-color;
+                }
+
+            }
+
+        }
+
+        &:FOCUS > div.qui-slider-bar-container > div.qui-slider-bar > div.qui-slider-cursor {
+            .qui-focused-widget-warning();
+        }
+
+    }
+
     &.has-error {
 
         & > div.qui-slider-bar-container > div.qui-slider-bar {

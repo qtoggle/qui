@@ -33,6 +33,15 @@ input[type=email] {
     height: 1.75em;
 }
 
+input[type=text].has-warning,
+input[type=password].has-warning,
+input[type=number].has-warning,
+input[type=tel].has-warning,
+input[type=email].has-warning,
+textarea {
+    border-color: @warning-color;
+}
+
 input[type=text].has-error,
 input[type=password].has-error,
 input[type=number].has-error,
@@ -49,6 +58,15 @@ input[type=tel]:FOCUS,
 input[type=email]:FOCUS,
 textarea:FOCUS {
     .qui-focused-widget();
+}
+
+input[type=text].has-warning:FOCUS,
+input[type=password].has-warning:FOCUS,
+input[type=number].has-warning:FOCUS,
+input[type=tel].has-warning:FOCUS,
+input[type=email].has-warning:FOCUS,
+textarea.has-warning:FOCUS {
+    .qui-focused-widget-warning();
 }
 
 input[type=text].has-error:FOCUS,
@@ -157,6 +175,12 @@ input:-webkit-autofill:FOCUS {
     box-shadow+: 0 0 0 100em @background-color inset !important;
     -webkit-text-fill-color: @foreground-color;
     .qui-focused-widget();
+}
+
+input.has-warning:-webkit-autofill:FOCUS {
+    box-shadow+: 0 0 0 100em @background-color inset !important;
+    -webkit-text-fill-color: @foreground-color;
+    .qui-focused-widget-warning();
 }
 
 input.has-error:-webkit-autofill:FOCUS {

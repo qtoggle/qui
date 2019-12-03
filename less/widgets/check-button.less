@@ -39,6 +39,23 @@ div.qui-check-button {
         font-size: 1.4em;
     }
 
+    &.has-warning {
+        border-color: @warning-color;
+
+        &:FOCUS {
+            .qui-focused-widget-warning();
+        }
+
+        &.on {
+            background: @warning-color;
+        }
+
+        &.active {
+            background: @warning-active-color;
+        }
+
+    }
+
     &.has-error {
         border-color: @error-color;
 
