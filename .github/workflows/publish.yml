@@ -40,7 +40,7 @@ jobs:
         run: sed -i "s/unknown-version/${{ steps.parse_ref.outputs.SOURCE_VERSION }}/" package.json
       - name: Deploy GitHub Pages
         uses: JamesIves/github-pages-deploy-action@3.0.4
-        env:
+        with:
           ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
           BASE_BRANCH: master
           BRANCH: gh-pages
@@ -68,5 +68,5 @@ jobs:
         run: |
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
           npm publish
-        env:
+        with:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
