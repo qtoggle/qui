@@ -25,3 +25,4 @@ export default class ColorComboField extends JQueryUIField {
 
 // TODO es7 class fields
 ColorComboField.WIDGET_CLASS = 'colorcombo'
+ColorComboField.WIDGET_ATTRS = ['filterEnabled']

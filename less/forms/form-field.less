@@ -4,7 +4,6 @@
 
 
 div.qui-form-field {
-    padding: 0.25em 0;
     white-space: nowrap;
     transition: height @transition-duration ease, opacity @transition-duration ease;
     position: relative;
@@ -33,7 +32,7 @@ form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-li
 }
 
 
-    /* warning & error */
+/* Warning & error */
 
 div.qui-form-field-warning {
     color: @warning-color;
@@ -57,7 +56,7 @@ div.qui-form-field-error {
 div.qui-form-field.has-warning.warning-visible > div.qui-form-field-warning,
 div.qui-form-field.has-error.error-visible > div.qui-form-field-error {
     max-height: 5em;
-    padding-bottom: 0.5em;
+    padding-top: 0.5em;
     opacity: 1;
 }
 
@@ -79,7 +78,7 @@ div.qui-form-field-error-label {
 }
 
 
-    /* description */
+/* Description */
 
 div.qui-form-field-description {
     overflow: hidden;
@@ -94,7 +93,7 @@ div.qui-form-field-description {
 
 div.qui-form-field.description-visible > div.qui-form-field-description {
     max-height: 5em;
-    padding-bottom: 0.5em;
+    padding-top: 0.5em;
     opacity: 1;
 }
 
@@ -130,12 +129,12 @@ div.qui-form-field.auto-width {
 }
 
 
-/* label & value */
+/* Label & value */
 
 div.qui-form-field-label {
     display: inline-block;
     width: 50%;
-    padding-right: 0.5em;
+    padding: 0.2em 0.5em 0.2em 0.2em;
     white-space: normal;
     box-sizing: border-box;
     vertical-align: middle;
@@ -160,15 +159,16 @@ div.qui-form-field-value {
     width: 50%;
     vertical-align: middle;
     box-sizing: border-box;
+    padding: 0.2em;
 }
 
 div.qui-form-field.side-icon-visible > div.qui-form-field-value {
     padding-right: 2em;
-    margin-right: -1.5em;  /* makes place for the side icon */
+    margin-right: -1.5em; /* Makes place for the side icon */
 }
 
 div.qui-form-field-value > * {
-    box-sizing: border-box;    
+    box-sizing: border-box;
 }
 
 form.qui-form.fields-alignment-center > div.qui-form-body > div.qui-form-field > div.qui-form-field-label {
@@ -187,10 +187,17 @@ form.qui-form.fields-alignment-sides > div.qui-form-body > div.qui-form-field > 
     text-align: right;
 }
 
-form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line) > div.qui-form-field-label,
-form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line) > div.qui-form-field-value {
-    width: 100%;
+form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line) {
+
+    padding-top: 0.4em;
+
+    & > div.qui-form-field-label,
+    & > div.qui-form-field-value {
+        width: 100%;
+    }
+
 }
+
 
 div.qui-form-field.auto-width > div.qui-form-field-label,
 div.qui-form-field.auto-width > div.qui-form-field-value {
@@ -198,7 +205,7 @@ div.qui-form-field.auto-width > div.qui-form-field-value {
 }
 
 
-    /* unit */
+/* Unit */
 
 span.qui-form-field-unit {
     font-size: 75%;
@@ -206,7 +213,7 @@ span.qui-form-field-unit {
 }
 
 
-    /* side icon */
+/* Side icon */
 
 div.qui-form-field-side-icon {
     display: none;

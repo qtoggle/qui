@@ -1,0 +1,24 @@
+
+@import (reference) "../base";
+@import (reference) "../theme";
+
+
+.qui-focusable-widget() {
+    transition+: box-shadow (@transition-duration / 2) linear;
+}
+
+.qui-focused-widget(@color: @interactive-color, @percent: 30%) {
+    box-shadow+: 0 0 0 0.2em fade(@color, @percent);
+}
+
+.qui-focused-widget-readonly() {
+    .qui-focused-widget(@disabled-color, 50%);
+}
+
+.qui-focused-widget-warning() {
+    .qui-focused-widget(@warning-color);
+}
+
+.qui-focused-widget-error() {
+    .qui-focused-widget(@error-color);
+}

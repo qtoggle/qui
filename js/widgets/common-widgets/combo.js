@@ -19,7 +19,7 @@ $.widget('qui.combo', {
     },
 
     _create: function () {
-        this._buttonDiv = $('<div class="qui-base-button qui-interactive-button qui-combo-button"></div>')
+        this._buttonDiv = $('<div class="qui-base-button qui-combo-button"></div>')
         this._opened = false
         this._searchStr = ''
         this._prevItemDiv = null
@@ -339,8 +339,7 @@ $.widget('qui.combo', {
         }
 
         this._opened = true
-        this._itemContainer.addClass('open')
-        this._buttonDiv.addClass('open')
+        this.element.addClass('open')
 
         Window.$body.on('pointerdown', this._pointerDown)
 
@@ -366,8 +365,7 @@ $.widget('qui.combo', {
         }
 
         this._opened = false
-        this._itemContainer.removeClass('open')
-        this._buttonDiv.removeClass('open')
+        this.element.removeClass('open')
 
         Window.$body.off('pointerdown', this._pointerDown)
 

@@ -14,7 +14,7 @@ $.widget('qui.choicebuttons', {
     _create: function () {
         let widget = this
 
-        this.element.addClass('qui-choice-groups-container')
+        this.element.addClass('qui-choice-buttons-container')
 
         if (this.options.readonly) {
             this.element.addClass('readonly')
@@ -69,6 +69,10 @@ $.widget('qui.choicebuttons', {
 
                 case 37: /* Left */
                     active = widget._getButtons().filter(`.${widget.options.onClass}`)
+                    if (!active.length) {
+                        active = widget._getButtons().filter(':eq(1)')
+                    }
+
                     index = active.index()
                     group = active.parent()
                     if (index > 0) {
@@ -82,6 +86,10 @@ $.widget('qui.choicebuttons', {
 
                 case 39: /* Right */
                     active = widget._getButtons().filter(`.${widget.options.onClass}`)
+                    if (!active.length) {
+                        active = widget._getButtons().filter(':eq(-2)')
+                    }
+
                     index = active.index()
                     group = active.parent()
                     if (index < group.children('div.qui-choice-button').length - 1) {
@@ -255,7 +263,7 @@ $.widget('qui.choicebuttons', {
 
                 let index = 0
                 choices.forEach(function (subChoices) {
-                    let group = $('<div class="qui-choice-group-container"></div>')
+                    let group = $('<div class="qui-choice-buttons-group-container"></div>')
                     subChoices.forEach(function (choice) {
                         let button = $('<div class="qui-base-button qui-interactive-button qui-choice-button"></div>')
                         button.html(choice.label)

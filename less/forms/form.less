@@ -2,7 +2,7 @@
 @import (reference) "../theme";
 
 
-/* form main div */
+/* Form main div */
 
 form.qui-form {
     width: 40em;
@@ -48,14 +48,14 @@ body.small-screen div.qui-pages-container > div.qui-page > form.qui-form {
 }
 
 
-/* form body */
+/* Form body */
 
 div.qui-form-body {
     background: @background-color;
     border-color: @border-color;
     border-style: solid;
     border-bottom-width: 0.0625em;
-    padding: 1.5em 0.5em;
+    padding: 0.75em 0.5em;
 }
 
 form.qui-form.topless > div.qui-form-body {
@@ -68,7 +68,7 @@ form.qui-form.buttonless > div.qui-form-body {
 }
 
 form.qui-form.compact > div.qui-form-body {
-    padding: 0.5em;
+    padding: 0.25em 0.5em;
 }
 
 form.qui-form.compact.minimized > div.qui-form-body {
@@ -80,7 +80,7 @@ form.qui-form.no-background > div.qui-form-body {
 }
 
 
-/* form bottom */
+/* Form bottom */
 
 div.qui-form-bottom {
     background: @background-color;
@@ -97,11 +97,11 @@ div.qui-form-bottom:empty {
     padding: 0;
 }
 
-/* attach buttons to the bottom when scrolling on form */
+/* Attach buttons to the bottom when scrolling on form */
 body.small-screen form.qui-form.fixed-bottom {
 
     & > div.qui-form-body {
-        margin-bottom: 3.6em; /* it's 3.5 + 0.1 guard */
+        margin-bottom: 3.6em; /* It's 3.5 + 0.1 guard */
     }
 
     &:NOT(.fully-scrolled) > div.qui-form-body {
@@ -124,7 +124,7 @@ body.small-screen form.qui-form.fixed-bottom {
 }
 
 
-/* progress */
+/* Progress */
 
 div.qui-form-progress-widget.qui-progress-disc-container {
     position: absolute;
@@ -161,7 +161,7 @@ div.qui-form-glass.visible {
 }
 
 
-/* error */
+/* Error */
 
 div.qui-form-error {
     overflow: hidden;

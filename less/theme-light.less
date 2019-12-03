@@ -67,8 +67,9 @@
 @background-color: @white-color;
 @foreground-color: @gray-color;
 @border-color: #e6e6e6;
+@readonly-color: @lightgray-color;
 @disabled-color: @lightgray-color;
-@disabled-foreground-color: @gray-color;
+@disabled-alt-color: @white-color;
 
 @background-active-color: @background-root-color;
 @foreground-active-color: @white-color;
@@ -84,8 +85,7 @@
 
 
 @selection-color: @interactive-color;
-@focus-color: @interactive-color;
-@focus-active-color: @interactive-active-color;
+@odd-color: mix(@background-color, @interactive-color, 90%);
 
 @floating-background-color: @background-color;
 @floating-shadow-color: rgba(0, 0, 0, 0.1);

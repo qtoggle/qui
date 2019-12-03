@@ -842,6 +842,7 @@ export default class FormField extends mix().with(ViewMixin) {
     getWidget() {
         if (!this._widget) {
             this._widget = this.makeWidget()
+            this.initWidget(this._widget)
         }
 
         return this._widget
@@ -856,6 +857,16 @@ export default class FormField extends mix().with(ViewMixin) {
      * @returns {jQuery}
      */
     makeWidget() {
+    }
+
+    /**
+     * Initialize the widget's HTML element.
+     *
+     * Override this to implement how the widget element is set up, after it has been created.
+     *
+     * @param {jQuery} widget the widget's HTML element
+     */
+    initWidget(widget) {
     }
 
     /**

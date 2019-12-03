@@ -5,43 +5,66 @@
 
 div.qui-progress-disc-container {
     position: relative;
-}
-    
-div.qui-progress-disc-container > svg {
-    transform: rotate(-90deg);
-    vertical-align: top;
-}
 
-div.qui-progress-disc-container.no-value > svg {
-    transform: rotate(0deg);
-    animation: spin 1s linear infinite;
-}
+    & > svg {
+        transform: rotate(-90deg);
+        vertical-align: top;
 
-div.qui-progress-disc-container > div.qui-progress-disc-label {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    text-align: center;
-    font-size: 90%;
-}
+        & > ellipse.qui-progress-disc-ring {
+            opacity: 0.3;
+            fill: transparent;
+        }
 
-div.qui-progress-disc-container > div.qui-progress-disc-label.small {
-    font-size: 50%;
-}
+        & > path.qui-progress-disc-cursor {
+            fill: transparent;
+        }
 
-div.qui-progress-disc-container > svg > ellipse.qui-progress-disc-ring {
-    fill: transparent;
-}
+    }
 
-div.qui-progress-disc-container.disabled > svg > ellipse.qui-progress-disc-ring {
-    stroke: fade(@disabled-color, 20%) !important;
-}
+    & > div.qui-progress-disc-label {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        text-align: center;
+        font-size: 90%;
 
-div.qui-progress-disc-container > svg > path.qui-progress-disc-cursor {
-    fill: transparent;
-}
+        &.small {
+            font-size: 50%;
+        }
 
-div.qui-progress-disc-container.disabled > svg > path.qui-progress-disc-cursor {
-    stroke: @disabled-color !important;
+    }
+
+    &.no-value > svg {
+        transform: rotate(0deg);
+        animation: spin 1s linear infinite;
+    }
+
+    &.has-warning {
+
+        & > svg > ellipse.qui-progress-disc-ring,
+        & > svg > path.qui-progress-disc-cursor {
+            stroke: @warning-color !important;
+        }
+
+    }
+
+    &.has-error {
+
+        & > svg > ellipse.qui-progress-disc-ring,
+        & > svg > path.qui-progress-disc-cursor {
+            stroke: @error-color !important;
+        }
+
+    }
+
+    &.disabled {
+
+        & > svg > ellipse.qui-progress-disc-ring,
+        & > svg > path.qui-progress-disc-cursor {
+            stroke: @disabled-color !important;
+        }
+
+    }
+
 }

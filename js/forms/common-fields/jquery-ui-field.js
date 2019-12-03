@@ -30,10 +30,10 @@ export default class JQueryUIField extends FormField {
     }
 
     focus() {
-        this._getFocusableElement().focus()
+        this.getFocusableElement().focus()
     }
 
-    _getFocusableElement() {
+    getFocusableElement() {
         return this.getWidget()
     }
 
@@ -77,6 +77,26 @@ export default class JQueryUIField extends FormField {
 
     disableWidget() {
         this._widgetCall({disabled: true})
+    }
+
+    showWarning(message) {
+        super.showWarning(message)
+        this.getFocusableElement().addClass('has-warning')
+    }
+
+    hideWarning() {
+        super.hideWarning()
+        this.getFocusableElement().removeClass('has-warning')
+    }
+
+    showError(message) {
+        super.showError(message)
+        this.getFocusableElement().addClass('has-error')
+    }
+
+    hideError() {
+        super.hideError()
+        this.getFocusableElement().removeClass('has-error')
     }
 
 }

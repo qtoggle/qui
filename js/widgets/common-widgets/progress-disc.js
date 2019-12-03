@@ -125,7 +125,7 @@ $.widget('qui.progressdisc', {
         this._ring.setAttribute('rx', iRadius.toString())
         this._ring.setAttribute('ry', iRadius.toString())
         this._ring.setAttribute('stroke-width', thickness.toString())
-        this._ring.setAttribute('stroke', Colors.alpha(color, 0.2))
+        this._ring.setAttribute('stroke', color)
 
         this._cursor.setAttribute('stroke-width', thickness.toString())
         this._cursor.setAttribute('stroke', color)

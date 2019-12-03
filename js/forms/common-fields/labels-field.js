@@ -12,10 +12,29 @@ import JQueryUIField from './jquery-ui-field.js'
  * @param {String} [params.color] the label text color (defaults to `@background-color`)
  * @param {String} [params.background] the default label background color, used unless the given labels specify
  * otherwise (defaults to `@foreground-color`)
+ * @param {Function} [params.onClick] function to be executed when a label is clicked
  */
 export default class LabelsField extends JQueryUIField {
 
     // TODO add setters and getters for widget properties
+
+    constructor({onClick = null, ...params}) {
+        super(params)
+
+        this.onClick = onClick
+    }
+
+    initWidget(widget) {
+        this._widgetCall('option', 'onClick', (label, index) => this.onClick(label, index))
+    }
+
+    /**
+     * Called when a label is clicked.
+     * @param {String} label the text of the clicked label
+     * @param {Number} index the index of the clicked label (starting at `0`)
+     */
+    onClick(label, index) {
+    }
 
 }
 

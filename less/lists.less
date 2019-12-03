@@ -114,25 +114,37 @@ div.qui-list-glass.visible div.list-glass-icon {
 
 .qui-list-child.search > div.qui-list-search-wrapper {
     position: relative;
-}
 
-.qui-list-child.search > div.qui-list-search-wrapper > input[type=text] {
-    width: 100%;
-    box-sizing: border-box;
-    height: 3em;
-    padding: 0.5em 2.75em 0.5em 0.5em;
-    border: 0;
-    border-radius: 0;
-}
+    & > input[type=text] {
+        width: 100%;
+        box-sizing: border-box;
+        height: 3em;
+        padding: 0.5em 2.75em 0.5em 0.5em;
+        border: 0;
+        border-radius: 0;
+        transition: background @transition-duration linear;
+    }
 
-.qui-list-child.search > div.qui-list-search-wrapper > div.qui-icon {
-    cursor:  pointer;
-    width: 2em;
-    height: 2em;
-    margin: 0.5em;
-    position: absolute;
-    right: 0;
-    top: 0;
+    & > input[type=text]::selection {
+        background: fade(@foreground-active-color, 99%);
+        color: @interactive-color;
+    }
+
+    & > input[type=text]:FOCUS {
+        background-color: @interactive-color;
+        color: @foreground-active-color;
+    }
+
+    & > div.qui-icon {
+        cursor:  pointer;
+        width: 2em;
+        height: 2em;
+        margin: 0.5em;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
 }
 
 

@@ -67,8 +67,9 @@
 @background-color: @darkgray-color;
 @foreground-color: @white-color;
 @border-color: #555555;
+@readonly-color: @gray-color;
 @disabled-color: @gray-color;
-@disabled-foreground-color: @lightgray-color;
+@disabled-alt-color: @lightgray-color;
 
 @background-active-color: @background-root-color;
 @foreground-active-color: @foreground-color;
@@ -83,8 +84,7 @@
 @danger-active-color: @red-active-color;
 
 @selection-color: @interactive-color;
-@focus-color: @interactive-color;
-@focus-active-color: @interactive-active-color;
+@odd-color: mix(@background-color, @interactive-color, 90%);
 
 @floating-background-color: @background-color;
 @floating-shadow-color: rgba(0, 0, 0, 0.2);

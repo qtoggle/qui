@@ -1,6 +1,7 @@
 
 @import (reference) "../base";
 @import (reference) "../theme";
+@import (reference) "common";
 
 
 .qui-base-button {
@@ -59,6 +60,28 @@
     border-radius: 0.2em;
     min-width: 6em;
     text-align: center;
+    transition+: background @transition-duration ease,
+                 color @transition-duration ease,
+                 opacity @transition-duration ease,
+                 border @transition-duration ease;
+    .qui-focusable-widget();
+
+    &:FOCUS {
+        .qui-focused-widget();
+    }
+
+    &.qui-highlight-button:FOCUS {
+        .qui-focused-widget(@highlight-color);
+    }
+
+    &.qui-danger-button:FOCUS {
+        .qui-focused-widget(@danger-color);
+    }
+
+    &.qui-colored-button:FOCUS {
+        box-shadow+: 0 0 0 0.2em var(--focus-shadow-color);
+    }
+
 }
 
 .qui-colored-button.disabled,
@@ -67,5 +90,5 @@
 .qui-danger-button.disabled,
 .qui-push-button.disabled {
     background: @disabled-color;
-    color: @disabled-foreground-color;
+    color: @disabled-alt-color;
 }

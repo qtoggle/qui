@@ -1,90 +1,182 @@
 
 @import (reference) "../base";
 @import (reference) "../theme";
+@import (reference) "common";
 
 
 div.qui-slider {
-    padding: 0.5em 0.5em 0.5em;
+    padding: 0.5em 0.8em 0.8em 0.8em;
     overflow: hidden;
     .noselect;
-}
 
-div.qui-slider-labels {
-    position: relative;
-    white-space: nowrap;
-    height: 1.5em;
-    margin: 0 0.5em;
-}
+    & > div.qui-slider-labels {
+        position: relative;
+        white-space: nowrap;
+        height: 1.8em;
+        margin: 0 0.5em;
 
-span.qui-slider-label {
-    width: 30%;
-    text-align: center;
-    position: absolute;
-    font-size: 0.85em;
-    opacity: 1;
-    transition: opacity @transition-duration ease,
-                color @transition-duration ease;
-}
+        & > span.qui-slider-label {
+            width: 30%;
+            text-align: center;
+            position: absolute;
+            font-size: 0.85em;
+            opacity: 1;
+            transition: opacity @transition-duration ease,
+                        color @transition-duration ease;
 
-div.qui-slider.active > div.qui-slider-labels > span.qui-slider-label {
-    opacity: 0.3; /* Reduce labels opacity so that cursor label becomes visible */
-}
+            &.qui-slider-label-cursor {
+                opacity: 0;
+            }
 
-div.qui-slider.disabled span.qui-slider-label {
-    color: @disabled-foreground-color;
-}
+        }
 
-span.qui-slider-label.qui-slider-label-cursor {
-    opacity: 0;
-}
+    }
 
-div.qui-slider.active > div.qui-slider-labels > span.qui-slider-label-cursor {
-    opacity: 1;
-    background: linear-gradient(to right, transparent 0%,@background-color 50%,transparent 100%);
-}
+    & > div.qui-slider-bar-container {
+        padding: 0 0.5em;
 
-div.qui-slider-bar-container {
-    padding: 0 0.5em;
-}
+        & > div.qui-slider-bar {
+            position: relative;
+            height: 0.5em;
+            border: 0.0625em solid @interactive-color;
+            border-radius: 0.2em;
+            transition: border-color @transition-duration linear;
 
-div.qui-slider-bar {
-    position: relative;
-    height: 0.5em;
-    border: 0.0625em solid @interactive-color;
-    border-radius: 0.2em;
-    transition: border-color @transition-duration linear;
-}
+            & > div.qui-slider-cursor {
+                position: absolute;
+                left: 0;
+                top: -0.5em;
+                width: 1.5em;
+                height: 1.5em;
+                margin-left: -0.75em;
+                cursor: pointer;
+                border-width: 0;
+                border-radius: 0.2em;
+                background: @interactive-color;
+                transition+: background @transition-duration ease;
+                .qui-focusable-widget();
+            }
 
-div.qui-slider.disabled div.qui-slider-bar {
-    border-color: @disabled-color;
-}
+            & > div.qui-slider-cursor.active {
+                background: @interactive-active-color;
+            }
 
-div.qui-slider:FOCUS div.qui-slider-bar {
-    border-color: @focus-color;
-}
+        }
 
-div.qui-slider-cursor {
-    position: absolute;
-    left: 0;
-    top: -0.5em;
-    width: 1.5em;
-    height: 1.5em;
-    margin-left: -0.75em;
-    cursor: pointer;
-    border-width: 0;
-    border-radius: 0.2em;
-    background: @interactive-color;
-}
+    }
 
-div.qui-slider:FOCUS div.qui-slider-cursor {
-    background: @focus-color;
-}
+    &:FOCUS {
 
-div.qui-slider:FOCUS div.qui-slider-cursor.active {
-    background: @focus-active-color;
-}
+        & > div.qui-slider-bar-container > div.qui-slider-bar > div.qui-slider-cursor {
+            .qui-focused-widget();
+        }
 
-div.qui-slider.disabled div.qui-slider-cursor {
-    background: @disabled-color;
-    cursor: default;
+    }
+
+    &.active {
+
+        & > div.qui-slider-labels {
+
+            & > span.qui-slider-label {
+                opacity: 0.3; /* Reduce labels opacity so that cursor label becomes visible */
+            }
+
+            & > span.qui-slider-label-cursor {
+                opacity: 1;
+                background: linear-gradient(to right, transparent 0%,@background-color 50%,transparent 100%);
+            }
+
+        }
+
+    }
+
+    &.has-warning {
+
+        & > div.qui-slider-bar-container > div.qui-slider-bar {
+            border-color: @warning-color;
+
+            & > div.qui-slider-cursor {
+                background: @warning-color;
+
+                &.active {
+                    background: @warning-active-color;
+                }
+
+            }
+
+        }
+
+        &:FOCUS > div.qui-slider-bar-container > div.qui-slider-bar > div.qui-slider-cursor {
+            .qui-focused-widget-warning();
+        }
+
+    }
+
+    &.has-error {
+
+        & > div.qui-slider-bar-container > div.qui-slider-bar {
+            border-color: @error-color;
+
+            & > div.qui-slider-cursor {
+                background: @error-color;
+
+                &.active {
+                    background: @error-active-color;
+                }
+
+            }
+
+        }
+
+        &:FOCUS > div.qui-slider-bar-container > div.qui-slider-bar > div.qui-slider-cursor {
+            .qui-focused-widget-error();
+        }
+
+    }
+
+    &.readonly {
+
+        & > div.qui-slider-bar-container > div.qui-slider-bar {
+            border-color: @readonly-color;
+
+            & > div.qui-slider-cursor {
+                background: @foreground-color;
+
+                &.active {
+                    background: @foreground-color;
+                }
+
+            }
+
+        }
+
+        &:FOCUS > div.qui-slider-bar-container > div.qui-slider-bar > div.qui-slider-cursor {
+            .qui-focused-widget-readonly();
+        }
+
+    }
+
+    &.disabled {
+
+        & > div.qui-slider-labels > span.qui-slider-label {
+            color: @disabled-color;
+        }
+
+        & > div.qui-slider-bar-container > div.qui-slider-bar {
+            border-color: @disabled-color;
+
+            & > div.qui-slider-cursor {
+                background: @disabled-color;
+                cursor: default;
+
+                &.active {
+                    background: @disabled-color;
+                }
+
+            }
+
+        }
+
+    }
+
 }

@@ -2,6 +2,7 @@
 import $ from '$qui/lib/jquery.module.js'
 
 import * as Theme from '$qui/theme.js'
+import * as Colors from '$qui/utils/colors.js'
 
 
 $.widget('qui.pushbutton', {
@@ -11,7 +12,7 @@ $.widget('qui.pushbutton', {
         caption: 'Button',
         backgroundColor: '@interactive-color',
         backgroundActiveColor: '@interactive-active-color',
-        foregroundColor: '@white-color',
+        foregroundColor: '@foreground-active-color',
         disabled: false
     },
 
@@ -38,6 +39,12 @@ $.widget('qui.pushbutton', {
         this.element.on('pressed released', () => this._updateStyle())
 
         this.element.html(this.options.caption)
+
+        this.element.on('keydown', function (e) {
+            if (e.which === 32) {
+                this.element.trigger('click')
+            }
+        }.bind(this))
     },
 
     _setStyle: function (style) {
@@ -57,6 +64,10 @@ $.widget('qui.pushbutton', {
             }
 
             this.element.css('color', Theme.getColor(this.options.foregroundColor))
+
+            /* Manually compute and supply box-shadow focus color */
+            let shadowColor = Colors.alpha(Theme.getColor(this.options.backgroundColor), 0.3)
+            this.element[0].style.setProperty('--focus-shadow-color', shadowColor)
         }
         else {
             this.element.css('background', '')

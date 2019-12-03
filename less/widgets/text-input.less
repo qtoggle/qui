@@ -1,6 +1,7 @@
 
 @import (reference) "../base";
 @import (reference) "../theme";
+@import (reference) "common";
 
 
 input[type=text],
@@ -15,13 +16,13 @@ textarea {
     background: @background-color;
     color: @foreground-color;
     resize: none;
-    transition: background @transition-duration linear,
-                color @transition-duration linear,
+    transition: color @transition-duration linear,
                 border-color @transition-duration linear;
     font-size: inherit;
     font-family: inherit;
     line-height: 1.15em;
     box-sizing: border-box;
+    .qui-focusable-widget();
 }
 
 input[type=text],
@@ -32,15 +33,49 @@ input[type=email] {
     height: 1.75em;
 }
 
+input[type=text].has-warning,
+input[type=password].has-warning,
+input[type=number].has-warning,
+input[type=tel].has-warning,
+input[type=email].has-warning,
+textarea {
+    border-color: @warning-color;
+}
+
+input[type=text].has-error,
+input[type=password].has-error,
+input[type=number].has-error,
+input[type=tel].has-error,
+input[type=email].has-error,
+textarea {
+    border-color: @error-color;
+}
+
 input[type=text]:FOCUS,
 input[type=password]:FOCUS,
 input[type=number]:FOCUS,
 input[type=tel]:FOCUS,
 input[type=email]:FOCUS,
 textarea:FOCUS {
-    background: @focus-color;
-    border-color: @focus-color;
-    color: @foreground-active-color;
+    .qui-focused-widget();
+}
+
+input[type=text].has-warning:FOCUS,
+input[type=password].has-warning:FOCUS,
+input[type=number].has-warning:FOCUS,
+input[type=tel].has-warning:FOCUS,
+input[type=email].has-warning:FOCUS,
+textarea.has-warning:FOCUS {
+    .qui-focused-widget-warning();
+}
+
+input[type=text].has-error:FOCUS,
+input[type=password].has-error:FOCUS,
+input[type=number].has-error:FOCUS,
+input[type=tel].has-error:FOCUS,
+input[type=email].has-error:FOCUS,
+textarea.has-error:FOCUS {
+    .qui-focused-widget-error();
 }
 
 input[type=text][readonly],
@@ -49,9 +84,16 @@ input[type=number][readonly],
 input[type=tel][readonly],
 input[type=email][readonly],
 textarea[readonly] {
-    color: @foreground-color;
-    border-color: @disabled-color;
-    background: transparent;
+    border-color: @readonly-color;
+}
+
+input[type=text][readonly]:FOCUS,
+input[type=password][readonly]:FOCUS,
+input[type=number][readonly]:FOCUS,
+input[type=tel][readonly]:FOCUS,
+input[type=email][readonly]:FOCUS,
+textarea[readonly]:FOCUS {
+    .qui-focused-widget-readonly();
 }
 
 input[type=text][disabled],
@@ -62,219 +104,28 @@ input[type=email][disabled],
 textarea[disabled] {
     .noselect;
     border-color: @disabled-color;
-    color: @disabled-foreground-color;
+    color: @disabled-color;
 }
 
-input[type=text]::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
 
-input[type=password]::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
-input[type=number]::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
-input[type=tel]::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
-input[type=email]::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
+input[type=text]::selection,
+input[type=password]::selection,
+input[type=number]::selection,
+input[type=tel]::selection,
+input[type=email]::selection,
 textarea::selection {
-    background: fade(@foreground-active-color, 99%);
-    color: @focus-color;
-}
-
-input[type=text]::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-input[type=password]::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-input[type=number]::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-input[type=tel]::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-input[type=email]::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-textarea::-moz-selection {
-    background: @foreground-active-color;
-    color: @focus-color;
-}
-
-
-input[type=text][readonly]::selection {
-    background: fade(@interactive-color, 99%);
+    background: fade(@selection-color, 99%);
     color: @background-color;
 }
 
-input[type=password][readonly]::selection {
-    background: fade(@interactive-color, 99%);
-    color: @background-color;
-}
 
-input[type=number][readonly]::selection {
-    background: fade(@interactive-color, 99%);
-    color: @background-color;
-}
-
-input[type=tel][readonly]::selection {
-    background: fade(@interactive-color, 99%);
-    color: @background-color;
-}
-
-input[type=email][readonly]::selection {
-    background: fade(@interactive-color, 99%);
-    color: @background-color;
-}
-
-textarea[readonly]::selection {
-    background: fade(@interactive-color, 99%);
-    color: @background-color;
-}
-
-input[type=text][readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-input[type=password][readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-input[type=number][readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-input[type=tel][readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-input[type=email][readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-textarea[readonly]::-moz-selection {
-    background: @interactive-color;
-    color: @background-color;
-}
-
-input[type=text]::input-placeholder,
-input[type=password]::input-placeholder,
-input[type=number]::input-placeholder,
-input[type=tel]::input-placeholder,
-input[type=email]::input-placeholder,
-textarea::input-placeholder {
+input[type=text]::placeholder,
+input[type=password]::placeholder,
+input[type=number]::placeholder,
+input[type=tel]::placeholder,
+input[type=email]::placeholder,
+textarea::placeholder {
     color: @disabled-color;
-}
-
-input[type=text]::-webkit-input-placeholder,
-input[type=password]::-webkit-input-placeholder,
-input[type=number]::-webkit-input-placeholder,
-input[type=tel]::-webkit-input-placeholder,
-input[type=email]::-webkit-input-placeholder,
-textarea::-webkit-input-placeholder {
-    color: @disabled-color;
-}
-
-input[type=text]::-moz-input-placeholder,
-input[type=password]::-moz-input-placeholder,
-input[type=number]::-moz-input-placeholder,
-input[type=tel]::-moz-input-placeholder,
-input[type=email]::-moz-input-placeholder,
-textarea::-moz-input-placeholder {
-    color: @disabled-color;
-}
-
-input[type=text]:-ms-input-placeholder,
-input[type=password]:-ms-input-placeholder,
-input[type=number]:-ms-input-placeholder,
-input[type=tel]:-ms-input-placeholder,
-input[type=email]:-ms-input-placeholder,
-textarea:-ms-input-placeholder {
-    color: @disabled-color;
-}
-
-input[type=text]:FOCUS::input-placeholder,
-input[type=password]:FOCUS::input-placeholder,
-input[type=number]:FOCUS::input-placeholder,
-input[type=tel]:FOCUS::input-placeholder,
-input[type=email]:FOCUS::input-placeholder,
-textarea:FOCUS::input-placeholder {
-    color: transparent;
-}
-
-input[type=text]:FOCUS::-webkit-input-placeholder,
-input[type=password]:FOCUS::-webkit-input-placeholder,
-input[type=number]:FOCUS::-webkit-input-placeholder,
-input[type=tel]:FOCUS::-webkit-input-placeholder,
-input[type=email]:FOCUS::-webkit-input-placeholder,
-textarea:FOCUS::-webkit-input-placeholder {
-    color: transparent;
-}
-
-input[type=text]:FOCUS::-moz-input-placeholder,
-input[type=password]:FOCUS::-moz-input-placeholder,
-input[type=number]:FOCUS::-moz-input-placeholder,
-input[type=tel]:FOCUS::-moz-input-placeholder,
-input[type=email]:FOCUS::-moz-input-placeholder,
-textarea:FOCUS::-moz-input-placeholder {
-    color: transparent;
-}
-
-input[type=text]:FOCUS:-ms-input-placeholder,
-input[type=password]:FOCUS:-ms-input-placeholder,
-input[type=number]:FOCUS:-ms-input-placeholder,
-input[type=tel]:FOCUS:-ms-input-placeholder,
-input[type=email]:FOCUS:-ms-input-placeholder,
-textarea:FOCUS:-ms-input-placeholder {
-    color: transparent;
-}
-
-input:-webkit-autofill {
-    box-shadow: 0 0 0 100em @background-color inset;
-    -webkit-text-fill-color: @interactive-color;
-    transition: box-shadow @transition-duration linear,
-                -webkit-text-fill-color @transition-duration linear;
-}
-
-input:-webkit-autofill:FOCUS {
-    color: red;
-    box-shadow: 0 0 0 100em @focus-color inset;
-    -webkit-text-fill-color: @foreground-active-color;
-}
-
-input::-webkit-inner-spin-button,
-input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 
@@ -307,4 +158,52 @@ div.qui-password-input-clear-icon {
     height: 1em;
     position: relative;
     left: -0.0625em;
+}
+
+
+/* Chrome oddities */
+
+input:-webkit-autofill {
+    /* box-shadow here is a Chrome hack to customize autofill background */
+    box-shadow+: 0 0 0 100em @background-color inset !important;
+    -webkit-text-fill-color: @foreground-color;
+    .qui-focusable-widget();
+}
+
+input:-webkit-autofill:FOCUS {
+    /* box-shadow here is a Chrome hack to customize autofill background */
+    box-shadow+: 0 0 0 100em @background-color inset !important;
+    -webkit-text-fill-color: @foreground-color;
+    .qui-focused-widget();
+}
+
+input.has-warning:-webkit-autofill:FOCUS {
+    box-shadow+: 0 0 0 100em @background-color inset !important;
+    -webkit-text-fill-color: @foreground-color;
+    .qui-focused-widget-warning();
+}
+
+input.has-error:-webkit-autofill:FOCUS {
+    box-shadow+: 0 0 0 100em @background-color inset !important;
+    -webkit-text-fill-color: @foreground-color;
+    .qui-focused-widget-error();
+}
+
+input:-webkit-autofill::selection {
+    background: fade(@selection-color, 99%) !important;
+    color: @background-color !important;
+    -webkit-text-fill-color: @background-color !important;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Firefox oddities */
+
+input[type=number] {
+    -moz-appearance: textfield;
 }

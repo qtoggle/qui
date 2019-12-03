@@ -32,7 +32,7 @@ export default class FormButton extends mix().with(ViewMixin) {
         id, caption, style,
         backgroundColor = '@interactive-color',
         backgroundActiveColor = '@interactive-active-color',
-        foregroundColor = '@white-color',
+        foregroundColor = '@foreground-active-color',
         def = false, cancel = false, callback = null,
         ...params
     }) {
