@@ -45,9 +45,8 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
-          BASE_BRANCH: master
-          BRANCH: 'gh-pages'
-          FOLDER: 'docs'
+          BRANCH: gh-pages
+          FOLDER: docs
   publish:
     name: Publish to NPM
     runs-on: ubuntu-latest
