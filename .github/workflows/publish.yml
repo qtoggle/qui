@@ -28,7 +28,7 @@ jobs:
     needs: lint
     steps:
       - name: Source Code Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v1
       - name: Parse Ref
         id: parse_ref
         run: |
@@ -38,14 +38,15 @@ jobs:
           echo ::set-output name=SOURCE_VERSION::${GITHUB_REF#refs/tags/version-}
       - name: Update Source Version
         run: sed -i "s/unknown-version/${{ steps.parse_ref.outputs.SOURCE_VERSION }}/" package.json
+      - name: Install
+        run: |
+          npm install && rm -rf docs/* js/lib/* && npx jsdoc -c jsdoc.conf.json
       - name: Deploy GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@3.0.4
+        uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
-          BASE_BRANCH: master
           BRANCH: gh-pages
           FOLDER: docs
-          BUILD_SCRIPT: npm install && rm -rf docs/* js/lib/* && npx jsdoc -c jsdoc.conf.json && git checkout package.json
   publish:
     name: Publish to NPM
     runs-on: ubuntu-latest
@@ -53,7 +54,7 @@ jobs:
       - lint
     steps:
       - name: Source Code Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v1
       - name: Parse Ref
         id: parse_ref
         run: |
