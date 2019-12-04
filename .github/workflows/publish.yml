@@ -52,6 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - lint
+      - jsdoc
     steps:
       - name: Source Code Checkout
         uses: actions/checkout@v1
