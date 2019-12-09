@@ -11,7 +11,7 @@ $.widget('qui.textinput', {
         placeholder: '',
         clearPlaceholder: false,
         autocomplete: false,
-        continuousChange: false,
+        continuousChange: true,
         minLength: null,
         maxLength: null,
         readonly: false,
