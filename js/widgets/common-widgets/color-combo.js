@@ -25,16 +25,16 @@ $.widget('qui.colorcombo', $.qui.combo, {
         {name: 'cyan',          label: gettext('Cyan')}
     ],
     THEME_COLORS: [
-        {name: 'background',    label: gettext('Background')},
-        {name: 'foreground',    label: gettext('Foreground')},
-        {name: 'border',        label: gettext('Border')},
-        {name: 'disabled',      label: gettext('Disabled')},
-        {name: 'interactive',   label: gettext('Interactive')},
-        {name: 'highlight',     label: gettext('Highlight')},
-        {name: 'danger',        label: gettext('Danger')},
-        {name: 'warning',       label: gettext('Warning')},
-        {name: 'info',          label: gettext('Information')},
-        {name: 'error',         label: gettext('Error')}
+        {name: 'background',    label: gettext('Background Color')},
+        {name: 'foreground',    label: gettext('Foreground Color')},
+        {name: 'border',        label: gettext('Border Color')},
+        {name: 'disabled',      label: gettext('Disabled Color')},
+        {name: 'interactive',   label: gettext('Interactive Color')},
+        {name: 'highlight',     label: gettext('Highlight Color')},
+        {name: 'danger',        label: gettext('Danger Color')},
+        {name: 'warning',       label: gettext('Warning Color')},
+        {name: 'info',          label: gettext('Information Color')},
+        {name: 'error',         label: gettext('Error Color')}
     ],
 
     options: {
