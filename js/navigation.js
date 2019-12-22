@@ -12,6 +12,7 @@ import {getCurrentContext} from '$qui/pages/pages.js'
 import * as PWA            from '$qui/pwa.js'
 import * as Sections       from '$qui/sections/sections.js'
 import {asap}              from '$qui/utils/misc.js'
+import * as StringUtils    from '$qui/utils/string.js'
 import URL                 from '$qui/utils/url.js'
 import * as Window         from '$qui/window.js'
 
@@ -60,7 +61,17 @@ export class PageNotFoundError extends Error {
 export class PageLoadError extends Error {
 
     constructor(path, pathId, section, page, error) {
-        super(gettext(`Page could not be loaded: ${error.message}`))
+        let msg
+        if (error) {
+            msg = StringUtils.formatPercent(
+                gettext('Page could not be loaded: %(error)s'),
+                {error: error.message}
+            )
+        }
+        else {
+            msg = gettext('Page could not be loaded')
+        }
+        super(msg)
 
         this.path = path
         this.pathId = pathId
