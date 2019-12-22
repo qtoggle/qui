@@ -31,5 +31,5 @@ export default class SliderField extends JQueryUIField {
 SliderField.WIDGET_CLASS = 'slider'
 SliderField.WIDGET_ATTRS = [
     'ticks', 'ticksStep', 'equidistant', 'snapMode', 'snapDistance',
-    'increment', 'fastFactor', 'continuousChange'
+    'increment', 'fastFactor', 'continuousChange', 'decimals'
 ]
