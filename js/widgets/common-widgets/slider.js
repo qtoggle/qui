@@ -52,7 +52,7 @@ $.widget('qui.slider', {
         this._cursor = $('<div class="qui-slider-cursor qui-base-button"></div>')
         this._bar.append(this._cursor)
 
-        this._cursorLabel = $('<span class="qui-slider-label qui-slider-label-cursor"></span>')
+        this._cursorLabel = $('<span class="qui-slider-label qui-slider-cursor-label"></span>')
         this._labels.append(this._cursorLabel)
 
         this._temporaryShowValueHandle = null
@@ -235,13 +235,27 @@ $.widget('qui.slider', {
     _setPos: function (pos) {
         pos = Math.max(0, Math.min(1, pos))
 
+        /* Update cursor position */
         this._cursor.css('left', `${(pos * 100)}%`)
         this._cursorLabel.css('left', `${(pos * 100 - 15)}%`)
         this._curVal = this._posToVal(pos)
 
+        /* Update cursor caption */
         let captionVal = this._curVal.toFixed(this.options.decimals)
         let caption = StringUtils.formatPercent(this.options.caption, captionVal)
         this._cursorLabel.html(caption)
+
+        /* Hide overlapping tick labels */
+        let cursorLabelLeft = parseInt(this._cursorLabel[0].style.left) /* Percent */
+        let overlapWidth = 15  /* Percent */
+
+        this._labels.children('span.qui-slider-label:NOT(.qui-slider-cursor-label)').each(function () {
+            let labelElement = $(this)
+            let labelLeft = parseInt(this.style.left) /* Percent */
+
+            let noOverlap = cursorLabelLeft > labelLeft + overlapWidth || cursorLabelLeft + overlapWidth < labelLeft
+            labelElement.toggleClass('overlapping', !noOverlap)
+        })
     },
 
     _valToPos: function (val) {
@@ -381,13 +395,12 @@ $.widget('qui.slider', {
     },
 
     _makeLabels: function () {
-        this._labels.children('div.qui-slider-label:NOT(.qui-slider-label-cursor)').remove()
-        let sliderLabelCursor = this._labels.children('span.qui-slider-label-cursor')
+        this._labels.children('span.qui-slider-label:NOT(.qui-slider-cursor-label)').remove()
 
         for (let i = 0; i < this.options.ticks.length; i += this.options.ticksStep) {
             let tick = this.options.ticks[i]
             let span = $(`<span class="qui-slider-label">${tick.label}</span>`)
-            sliderLabelCursor.before(span)
+            this._cursorLabel.before(span)
 
             /* Determine the position */
             let pos

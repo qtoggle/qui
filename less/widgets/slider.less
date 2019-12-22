@@ -24,7 +24,14 @@ div.qui-slider {
             transition: opacity @transition-duration ease,
                         color @transition-duration ease;
 
-            &.qui-slider-label-cursor {
+            &.qui-slider-cursor-label {
+                color: @interactive-color;
+                background: linear-gradient(to right,
+                                            transparent 0%, @background-color 25%,
+                                            @background-color 75%, transparent 100%);
+            }
+
+            &.overlapping {
                 opacity: 0;
             }
 
@@ -77,13 +84,8 @@ div.qui-slider {
 
         & > div.qui-slider-labels {
 
-            & > span.qui-slider-label {
-                opacity: 0.3; /* Reduce labels opacity so that cursor label becomes visible */
-            }
-
-            & > span.qui-slider-label-cursor {
+            & > span.qui-slider-label.overlapping {
                 opacity: 1;
-                background: linear-gradient(to right, transparent 0%,@background-color 50%,transparent 100%);
             }
 
         }
