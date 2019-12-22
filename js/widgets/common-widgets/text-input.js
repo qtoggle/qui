@@ -70,13 +70,20 @@ $.widget('qui.textinput', {
             if (widget.options.continuousChange) {
                 asap(function () {
                     if (this.value !== widget._lastValue) {
-                        $(this).trigger('change')
+                        widget.element.trigger('change')
+                        widget._lastValue = this.value
                     }
                 }.bind(this))
             }
         })
 
-        this._input.on('change', function () {
+        this._input.on('change', function (e) {
+            if (widget.options.continuousChange) {
+                /* Change events are triggered by keydown & alike */
+                e.stopPropagation()
+                return
+            }
+
             widget._lastValue = this.value
             if (widget.options.clearPlaceholder) {
                 widget._input.attr('placeholder', '')
