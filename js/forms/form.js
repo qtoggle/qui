@@ -116,7 +116,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
         html.addClass(`fields-alignment-${this._fieldsAlignment}`)
 
         /* Progress */
-        this._progressWidget = $('<div class="qui-form-progress-widget"></div>').progressdisc({radius: '2em'})
+        this._progressWidget = $('<div class="qui-form-progress-widget"></div>').progressdisk({radius: '2em'})
         this._progressWidget.css('display', 'none')
         this._glassDiv = $('<div class="qui-form-glass"></div>')
 
@@ -933,7 +933,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
         }
 
         if (this._progressVisible) {
-            this._progressWidget.progressdisc('setValue', percent)
+            this._progressWidget.progressdisk('setValue', percent)
             return
         }
 
@@ -942,7 +942,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
         this._glassDiv.css('display', 'block')
         this.getHTML().addClass('progress')
         this._progressWidget.css('display', '')
-        this._progressWidget.progressdisc('setValue', percent)
+        this._progressWidget.progressdisk('setValue', percent)
 
         asap(function () {
 

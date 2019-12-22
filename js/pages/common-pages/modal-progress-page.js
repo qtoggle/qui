@@ -40,8 +40,8 @@ export default class ModalProgressPage extends mix().with(PageMixin) {
         let progressOptions = ObjectUtils.copy(this._progressOptions)
         ObjectUtils.setDefault(progressOptions, 'radius', '2em')
         this._progressWidget = $('<div class="qui-modal-progress-page-progress-widget"></div>')
-        this._progressWidget.progressdisc(progressOptions)
-        this._progressWidget.progressdisc('setValue', this._progressPercent)
+        this._progressWidget.progressdisk(progressOptions)
+        this._progressWidget.progressdisk('setValue', this._progressPercent)
 
         this._messageContainer = $('<div class="qui-modal-progress-page-message"></div>')
         this._messageContainer.html(this._message)
@@ -60,7 +60,7 @@ export default class ModalProgressPage extends mix().with(PageMixin) {
         this.getPageHTML() /* Ensure all HTML elements are created */
 
         this._progressPercent = percent
-        this._progressWidget.progressdisc('setValue', percent)
+        this._progressWidget.progressdisk('setValue', percent)
     }
 
     /**

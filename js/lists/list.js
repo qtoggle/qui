@@ -56,7 +56,7 @@ export default class List extends mix().with(StructuredViewMixin) {
         super.initHTML(html)
 
         /* Progress */
-        this._progressWidget = $('<div class="qui-list-progress-widget"></div>').progressdisc({radius: '2em'})
+        this._progressWidget = $('<div class="qui-list-progress-widget"></div>').progressdisk({radius: '2em'})
         this._progressWidget.css('display', 'none')
         this._glassDiv = $('<div class="qui-list-glass"></div>')
 
@@ -455,7 +455,7 @@ export default class List extends mix().with(StructuredViewMixin) {
         }
 
         if (this._progressVisible) {
-            this._progressWidget.progressdisc('setValue', percent)
+            this._progressWidget.progressdisk('setValue', percent)
             return
         }
 
@@ -464,7 +464,7 @@ export default class List extends mix().with(StructuredViewMixin) {
         this._glassDiv.css('display', 'block')
         this.getHTML().addClass('progress')
         this._progressWidget.css('display', '')
-        this._progressWidget.progressdisc('setValue', percent)
+        this._progressWidget.progressdisk('setValue', percent)
 
         asap(function () {
 

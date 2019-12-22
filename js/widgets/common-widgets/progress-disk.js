@@ -7,7 +7,7 @@ import * as CSS         from '$qui/utils/css.js'
 import * as StringUtils from '$qui/utils/string.js'
 
 
-$.widget('qui.progressdisc', {
+$.widget('qui.progressdisk', {
 
     options: {
         radius: '1em',
@@ -24,21 +24,21 @@ $.widget('qui.progressdisc', {
 
         /* Ring */
         this._ring = document.createElementNS(ns, 'ellipse')
-        this._ring.setAttribute('class', 'qui-progress-disc-ring')
+        this._ring.setAttribute('class', 'qui-progress-disk-ring')
         this._svg.appendChild(this._ring)
 
         /* Cursor */
         this._cursor = document.createElementNS(ns, 'path')
-        this._cursor.setAttribute('class', 'qui-progress-disc-cursor')
+        this._cursor.setAttribute('class', 'qui-progress-disk-cursor')
         this._svg.appendChild(this._cursor)
 
         /* Label */
-        this._label = $('<div class="qui-progress-disc-label"></div>')
+        this._label = $('<div class="qui-progress-disk-label"></div>')
 
         this._curVal = 0
         this._setValue(this._curVal)
 
-        this.element.addClass('qui-progress-disc-container')
+        this.element.addClass('qui-progress-disk-container')
 
         if (this.options.disabled) {
             this.element.addClass('disabled')

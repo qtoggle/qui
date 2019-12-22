@@ -3,25 +3,25 @@
 @import (reference) "../theme";
 
 
-div.qui-progress-disc-container {
+div.qui-progress-disk-container {
     position: relative;
 
     & > svg {
         transform: rotate(-90deg);
         vertical-align: top;
 
-        & > ellipse.qui-progress-disc-ring {
+        & > ellipse.qui-progress-disk-ring {
             opacity: 0.3;
             fill: transparent;
         }
 
-        & > path.qui-progress-disc-cursor {
+        & > path.qui-progress-disk-cursor {
             fill: transparent;
         }
 
     }
 
-    & > div.qui-progress-disc-label {
+    & > div.qui-progress-disk-label {
         position: absolute;
         width: 100%;
         top: 0;
@@ -42,8 +42,8 @@ div.qui-progress-disc-container {
 
     &.has-warning {
 
-        & > svg > ellipse.qui-progress-disc-ring,
-        & > svg > path.qui-progress-disc-cursor {
+        & > svg > ellipse.qui-progress-disk-ring,
+        & > svg > path.qui-progress-disk-cursor {
             stroke: @warning-color !important;
         }
 
@@ -51,8 +51,8 @@ div.qui-progress-disc-container {
 
     &.has-error {
 
-        & > svg > ellipse.qui-progress-disc-ring,
-        & > svg > path.qui-progress-disc-cursor {
+        & > svg > ellipse.qui-progress-disk-ring,
+        & > svg > path.qui-progress-disk-cursor {
             stroke: @error-color !important;
         }
 
@@ -60,8 +60,8 @@ div.qui-progress-disc-container {
 
     &.disabled {
 
-        & > svg > ellipse.qui-progress-disc-ring,
-        & > svg > path.qui-progress-disc-cursor {
+        & > svg > ellipse.qui-progress-disk-ring,
+        & > svg > path.qui-progress-disk-cursor {
             stroke: @disabled-color !important;
         }
 
