@@ -12,7 +12,6 @@ const DEF_NO_CACHE_URL_REGEX = ('(\\?h=dev)|(&h=dev)')
 
 
 let cacheName
-let devMode = false
 let appName = '__app_name_placeholder__'
 let buildHash = '__build_hash_placeholder__'
 let cacheURLRegex = '__cache_url_regex_placeholder__'
@@ -26,7 +25,6 @@ function setup() {
     }
     if (buildHash.startsWith('__build_hash_')) {
         buildHash = DEF_BUILD_HASH
-        devMode = true
     }
     if (cacheURLRegex.startsWith('__cache_url_regex_')) {
         cacheURLRegex = DEF_CACHE_URL_REGEX
@@ -105,9 +103,6 @@ self.addEventListener('activate', function (event) {
 })
 
 self.addEventListener('fetch', function (event) {
-    if (devMode) { /* Don't use cache in development mode */
-        return
-    }
     if (!shouldCacheRequest(event.request)) {
         return
     }
