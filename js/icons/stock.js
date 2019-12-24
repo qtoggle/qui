@@ -1,6 +1,4 @@
 
-import {appendBuildHash} from '$qui/utils/misc.js'
-
 import * as DefaultStock from './default-stock.js'
 
 
@@ -45,8 +43,6 @@ export default class Stock {
         if (!this.variantAliases) {
             this.variantAliases = defaultStock.variantAliases
         }
-
-        this.src = appendBuildHash(this.src)
     }
 
     /**

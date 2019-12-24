@@ -103,24 +103,6 @@ function makeLessRule({type, theme, isProduction, appName, appFullPath, quiFullP
         }
     }
 
-    const hashURLLoader = {
-        loader: 'string-replace-loader',
-        options: {
-            multiple: [
-                { /* URLs with query arguments */
-                    search: 'url\\(([\'"])?(?!http)(.+?\\?.+?)([\'"])?\\)',
-                    replace: 'url($1$2&h=' + quiBuildHash + '$3)',
-                    flags: 'g'
-                },
-                { /* URLs without query arguments */
-                    search: 'url\\(([\'"])?(?!http)([^\\?]+?)([\'"])?\\)',
-                    replace: 'url($1$2?h=' + quiBuildHash + '$3)',
-                    flags: 'g'
-                }
-            ]
-        }
-    }
-
     let loaders
     if (isProduction) {
         loaders = [
@@ -135,7 +117,6 @@ function makeLessRule({type, theme, isProduction, appName, appFullPath, quiFullP
         ]
     }
 
-    loaders.push(hashURLLoader)
     loaders.push(lessLoader)
 
     return {
