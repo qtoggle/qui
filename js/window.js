@@ -59,6 +59,14 @@ export let resizeSignal = new Signal()
  */
 export let screenLayoutChangeSignal = new Signal()
 
+/**
+ * Emitted whenever the application window becomes visible or is no longer visible. Handlers are called with the
+ * following parameters:
+ *  * `visible`, telling if the application is visible or not: `Boolean`
+ * @alias qui.window.visibilityChangeSignal
+ */
+export let visibilityChangeSignal = new Signal()
+
 
 /* Full screen */
 
@@ -177,6 +185,28 @@ export function isLandscape() {
 }
 
 
+/* Visibility */
+
+function handleBecomeVisible() {
+    $body.addClass('visible')
+    logger.debug('application is visible')
+}
+
+function handleBecomeHidden() {
+    $body.removeClass('visible')
+    logger.debug('application is hidden')
+}
+
+/**
+ * Tell whether the application is visible or not.
+ * @alias qui.window.isVisible
+ * @returns {Boolean}
+ */
+export function isVisible() {
+    return !document.hidden
+}
+
+
 /* Reloading & closing */
 
 /**
@@ -244,7 +274,7 @@ export function init() {
 
     /* Window resize handling */
     let initialResize = true
-    $window.resize(function () {
+    $window.on('resize', function () {
         let width = $window.width()
         let height = $window.height()
         let smallScreen = isSmallScreen(width, height)
@@ -333,7 +363,7 @@ export function init() {
         }
     })
 
-    /* Full screen */
+    /* Full screen handling */
     $document.on('fullscreenchange webkitfullscreenchange mozfullscreenchange msfullscreenchange', function () {
         if (isFullScreen()) {
             handleEnterFullScreen()
@@ -342,6 +372,25 @@ export function init() {
             handleExitFullScreen()
         }
     })
+
+    /* Visibility handling */
+    $document.on('visibilitychange', function () {
+        if (this.hidden) {
+            handleBecomeHidden()
+        }
+        else {
+            handleBecomeVisible()
+        }
+
+        visibilityChangeSignal.emit(!this.hidden)
+    })
+
+    if (isVisible()) {
+        handleBecomeVisible()
+    }
+    else {
+        handleBecomeHidden()
+    }
 
     $body.addClass('disable-transitions')
 
