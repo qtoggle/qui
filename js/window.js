@@ -60,6 +60,14 @@ export let resizeSignal = new Signal()
 export let screenLayoutChangeSignal = new Signal()
 
 /**
+ * Emitted whenever the application enters or leaves full-screen mode. Handlers are called with the following
+ * parameters:
+ *  * `fullScreen`, telling if the application is currently in full-screen mode, nor not: `Boolean`
+ * @alias qui.window.fullScreenChangeSignal
+ */
+export let fullScreenChangeSignal = new Signal()
+
+/**
  * Emitted whenever the application window becomes visible or is no longer visible. Handlers are called with the
  * following parameters:
  *  * `visible`, telling if the application is visible or not: `Boolean`
@@ -85,21 +93,7 @@ function handleExitFullScreen() {
  * @alias qui.window.enterFullScreen
  */
 export function enterFullScreen() {
-    let element = document.documentElement
-    let requestFullScreen = (
-        element.requestFullscreen ||
-        element.requestFullScreen ||
-        element.webkitRequestFullscreen ||
-        element.webkitRequestFullScreen ||
-        element.mozRequestFullscreen ||
-        element.mozRequestFullScreen ||
-        element.msRequestFullscreen ||
-        element.msRequestFullScreen
-    )
-
-    if (requestFullScreen) {
-        requestFullScreen.call(element)
-    }
+    document.documentElement.requestFullscreen()
 }
 
 /**
@@ -108,10 +102,7 @@ export function enterFullScreen() {
  * @returns {Boolean}
  */
 export function isFullScreen() {
-    return (document.fullScreen ||
-            document.webkitIsFullScreen ||
-            document.mozFullScreen ||
-            document.msFullscreenElement != null)
+    return document.fullscreenEnabled != null
 }
 
 
@@ -364,13 +355,15 @@ export function init() {
     })
 
     /* Full screen handling */
-    $document.on('fullscreenchange webkitfullscreenchange mozfullscreenchange msfullscreenchange', function () {
+    $document.on('fullscreenchange', function () {
         if (isFullScreen()) {
             handleEnterFullScreen()
         }
         else {
             handleExitFullScreen()
         }
+
+        fullScreenChangeSignal.emit(isFullScreen())
     })
 
     /* Visibility handling */
