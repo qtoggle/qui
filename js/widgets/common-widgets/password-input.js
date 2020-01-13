@@ -56,7 +56,7 @@ $.widget('qui.passwordinput', $.qui.textinput, {
         clearButton.on('click', function () {
 
             this._input.val('')
-            this._input.trigger('change')
+            this.element.trigger('change')
 
         }.bind(this))
 
