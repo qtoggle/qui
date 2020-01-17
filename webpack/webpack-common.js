@@ -302,7 +302,10 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
                 new OptimizeCssAssetsPlugin({
                     assetNameRegExp: /-bundle-.*\.css$/g,
                     cssProcessorPluginOptions: {
-                        preset: ['default', { discardComments: { removeAll: true } }]
+                        preset: ['default', {
+                            discardComments: { removeAll: true },
+                            mergeRules: false
+                        }]
                     }
                 })
             ]
