@@ -384,7 +384,14 @@ function setHistoryEntry(addUpdate, state) {
 export function getCurrentHistoryEntryState() {
     let path = getCurrentPath()
     let pathStr = `/${path.join('/')}`
-    let pageState = getCurrentContext().getPages().map(page => page.getHistoryState())
+    let pageState = []
+
+    try {
+        pageState = getCurrentContext().getPages().map(page => page.getHistoryState())
+    }
+    catch (e) {
+        logger.errorStack('failed to gather history state', e)
+    }
 
     /* Preserve query, if present */
     if (currentURLQuery) {
