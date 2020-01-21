@@ -13,7 +13,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * @param {Number} [params.max] the maximum value (defaults to `100`)
  * @param {String} [params.caption] the caption template displayed on top of the disk (defaults to `%s%%`)
  */
-export default class ProgressDiskField extends JQueryUIField {
+class ProgressDiskField extends JQueryUIField {
 
     // TODO add setters and getters for widget properties
 
@@ -22,3 +22,6 @@ export default class ProgressDiskField extends JQueryUIField {
 // TODO es7 class fields
 ProgressDiskField.WIDGET_CLASS = 'progressdisk'
 ProgressDiskField.WIDGET_ATTRS = ['radius', 'caption']
+
+
+export default ProgressDiskField

@@ -12,7 +12,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * * see {@link qui.forms.FormField} for form field parameters
  * @param {String} [params.onClass] the CSS class to add to the check button in *on* state (defaults to `on`)
  */
-export default class CheckField extends JQueryUIField {
+class CheckField extends JQueryUIField {
 
     constructor({...params}) {
         /* We always prefer having the check box on the same line with its label */
@@ -36,3 +36,6 @@ export default class CheckField extends JQueryUIField {
 // TODO es7 class fields
 CheckField.WIDGET_CLASS = 'checkbutton'
 CheckField.WIDGET_ATTRS = ['onClass']
+
+
+export default CheckField

@@ -2,7 +2,7 @@
 import {Mixin} from '$qui/base/mixwith.js'
 
 
-export default Mixin((superclass = Object) => {
+const SingletonMixin = Mixin((superclass = Object) => {
 
     /**
      * A mixin that helps implementing the singleton pattern.
@@ -15,6 +15,10 @@ export default Mixin((superclass = Object) => {
         // static _instance = null
         // static _args = null
 
+        /**
+         * @constructs qui.base.SingletonMixin
+         * @param {...*} args
+         */
         constructor(...args) {
             super(...args)
         }
@@ -56,3 +60,6 @@ export default Mixin((superclass = Object) => {
     return SingletonMixin
 
 })
+
+
+export default SingletonMixin

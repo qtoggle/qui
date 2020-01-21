@@ -18,7 +18,7 @@ import {updateUI}          from './pages.js'
 const viewMixinPrototype = ViewMixin().prototype
 
 
-export default Mixin((superclass = Object, rootclass) => {
+const PageMixin = Mixin((superclass = Object, rootclass) => {
 
     let rootPrototype = rootclass.prototype
 
@@ -824,3 +824,6 @@ export default Mixin((superclass = Object, rootclass) => {
     return PageMixin
 
 })
+
+
+export default PageMixin

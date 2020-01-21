@@ -36,7 +36,7 @@ import Icon from './icon.js'
  * @param {Number} [params.scale] icon scaling factor; defaults to `1`
  * @param {String} [params.decoration] icon decoration
  */
-export default class MultiStateSpritesIcon extends Icon {
+class MultiStateSpritesIcon extends Icon {
 
     constructor({url, bgWidth, bgHeight, size = 1, unit = 'rem', states = null, scale = 1, decoration = null}) {
         super()
@@ -320,3 +320,6 @@ export default class MultiStateSpritesIcon extends Icon {
 
 // TODO es7 class fields
 MultiStateSpritesIcon.KNOWN_STATES = ['normal', 'active', 'focused', 'selected']
+
+
+export default MultiStateSpritesIcon

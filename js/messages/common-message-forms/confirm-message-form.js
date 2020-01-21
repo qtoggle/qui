@@ -17,7 +17,7 @@ import MessageForm from '../message-form.js'
  * @param {qui.messages.MessageForm.Callback} [params.onYes] an optional confirmation callback
  * @param {qui.messages.MessageForm.Callback} [params.onNo] an optional decline callback
  */
-export default class ConfirmMessageForm extends MessageForm {
+class ConfirmMessageForm extends MessageForm {
 
     constructor({onYes = null, onNo = null, ...params} = {}) {
         ObjectUtils.setDefault(params, 'icon', new StockIcon({name: 'qmark'}))
@@ -72,3 +72,6 @@ export default class ConfirmMessageForm extends MessageForm {
     }
 
 }
+
+
+export default ConfirmMessageForm

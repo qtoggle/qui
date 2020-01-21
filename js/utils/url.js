@@ -10,7 +10,7 @@
  * @param {Object} [query]
  * @param {String} [fragment]
  */
-export default class URL {
+class URL {
 
     constructor({
         scheme, username = '', password = '', host, port = null, path = '',
@@ -173,3 +173,6 @@ URL.VALID_REGEX = new RegExp(
     '(?:[a-z\\u00a1-\\uffff]*)))|localhost)(?::\\d{1,5})?(?:(/|\\?|#)[^\\s]*)?$',
     'i'
 )
+
+
+export default URL

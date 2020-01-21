@@ -10,7 +10,7 @@ import TextField from './text-field.js'
  * * see {@link qui.forms.FormField} for form field parameters
  * * see {@link qui.forms.commonfields.TextField} for text field parameters
  */
-export default class EmailField extends TextField {
+class EmailField extends TextField {
 
     validateWidget(value) {
         return null // TODO implement me
@@ -20,3 +20,6 @@ export default class EmailField extends TextField {
 
 // TODO es7 class fields
 EmailField.WIDGET_CLASS = 'emailinput'
+
+
+export default EmailField

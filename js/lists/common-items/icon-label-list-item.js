@@ -15,7 +15,7 @@ import ListItem from '../list-item.js'
  * @param {qui.icons.Icon} [params.icon] item icon
  * @param {String} params.label item label
  */
-export default class IconLabelListItem extends ListItem {
+class IconLabelListItem extends ListItem {
 
     constructor({icon = null, label, ...params}) {
         super(params)
@@ -99,3 +99,6 @@ export default class IconLabelListItem extends ListItem {
     }
 
 }
+
+
+export default IconLabelListItem

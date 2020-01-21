@@ -21,7 +21,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * @param {Boolean} [params.continuousChange] set to `true` to trigger a `change` event with every little slider move
  * when this is `false` (the default), the `change` event will be triggered at the end of the move
  */
-export default class SliderField extends JQueryUIField {
+class SliderField extends JQueryUIField {
 
     // TODO add setters and getters for widget properties
 
@@ -33,3 +33,6 @@ SliderField.WIDGET_ATTRS = [
     'ticks', 'ticksStep', 'equidistant', 'snapMode', 'snapDistance',
     'increment', 'fastFactor', 'continuousChange', 'decimals'
 ]
+
+
+export default SliderField

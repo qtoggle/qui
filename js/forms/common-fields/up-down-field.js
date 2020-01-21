@@ -15,7 +15,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * @param {Number} [params.decimals] the number of decimals (defaults to `0`)
  * @param {Boolean} [params.continuousChange] set to `false` to only trigger a `change` event when losing focus
  */
-export default class UpDownField extends JQueryUIField {
+class UpDownField extends JQueryUIField {
 
     // TODO add setters and getters for widget properties
 
@@ -56,3 +56,6 @@ export default class UpDownField extends JQueryUIField {
 // TODO es7 class fields
 UpDownField.WIDGET_CLASS = 'updown'
 UpDownField.WIDGET_ATTRS = ['min', 'max', 'step', 'fastFactor', 'decimals', 'continuousChange']
+
+
+export default UpDownField

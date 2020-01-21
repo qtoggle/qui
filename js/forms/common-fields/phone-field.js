@@ -10,7 +10,10 @@ import TextField from './text-field.js'
  * * see {@link qui.forms.FormField} for form field parameters
  * * see {@link qui.forms.commonfields.TextField} for text field parameters
  */
-export default class PhoneField extends TextField {}
+class PhoneField extends TextField {}
 
 // TODO es7 class fields
 PhoneField.WIDGET_CLASS = 'phoneinput'
+
+
+export default PhoneField

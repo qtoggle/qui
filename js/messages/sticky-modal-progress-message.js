@@ -14,6 +14,8 @@ import StickyModalPageMixin from './sticky-modal-page.js'
  * * see {@link qui.pages.commonpages.ModalProgressPage} for modal progress page parameters
  * * see {@link qui.messages.StickyModalPageMixin} for sticky modal page parameters
  */
-export default class StickyModalProgressMessage extends mix(ModalProgressPage).with(StickyModalPageMixin) {
-
+class StickyModalProgressMessage extends mix(ModalProgressPage).with(StickyModalPageMixin) {
 }
+
+
+export default StickyModalProgressMessage

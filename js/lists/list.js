@@ -31,7 +31,7 @@ const logger = Logger.get('qui.lists.list')
  * @param {Boolean} [params.searchEnabled] set to `true` to enable the search feature (defaults to `false`)
  * @param {Boolean} [params.addEnabled] set to `true` to enable the add item feature (defaults to `false`)
  */
-export default class List extends mix().with(StructuredViewMixin) {
+class List extends mix().with(StructuredViewMixin) {
 
     constructor({items = [], searchEnabled = false, addEnabled = false, ...params}) {
         super(params)
@@ -502,3 +502,6 @@ export default class List extends mix().with(StructuredViewMixin) {
     }
 
 }
+
+
+export default List

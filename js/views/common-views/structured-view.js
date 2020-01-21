@@ -14,7 +14,7 @@ import ViewMixin from '../view.js'
 const logger = Logger.get('qui.views.commonviews.structuredview')
 
 
-export default Mixin((superclass = Object) => {
+const StructuredViewMixin = Mixin((superclass = Object) => {
 
     /**
      * A view with top, body and bottom elements.
@@ -348,3 +348,7 @@ export default Mixin((superclass = Object) => {
     return StructuredViewMixin
 
 })
+
+
+export default StructuredViewMixin
+

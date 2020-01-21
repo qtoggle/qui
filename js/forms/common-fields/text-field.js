@@ -16,7 +16,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * @param {?Number} [params.maxLength] maximum allowed text length
  * @param {Boolean} [params.continuousChange] enables or disables change events at each key stroke
  */
-export default class TextField extends JQueryUIField {
+class TextField extends JQueryUIField {
 
     getInputElement() {
         return this.getWidget().children('input')
@@ -34,3 +34,6 @@ TextField.WIDGET_ATTRS = [
     'placeholder', 'clearPlaceholder', 'autocomplete',
     'minLength', 'maxLength', 'continuousChange'
 ]
+
+
+export default TextField

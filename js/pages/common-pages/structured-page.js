@@ -7,7 +7,7 @@ import {StructuredViewMixin} from '$qui/views/common-views.js'
 import PageMixin from '../page.js'
 
 
-export default Mixin((superclass = Object) => {
+const StructuredPageMixin = Mixin((superclass = Object) => {
 
     /**
      * A mixin that combines {@link qui.views.commonviews.StructuredViewMixin} and {@link qui.pages.PageMixin}.
@@ -39,3 +39,6 @@ export default Mixin((superclass = Object) => {
     return StructuredPageMixin
 
 })
+
+
+export default StructuredPageMixin

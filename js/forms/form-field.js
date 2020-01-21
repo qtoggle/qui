@@ -45,7 +45,7 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
  * qui.forms.FormField#onChange})
  * @param {Function} [params.validate] a validator function (see {@link qui.forms.FormField#validate})
  */
-export default class FormField extends mix().with(ViewMixin) {
+class FormField extends mix().with(ViewMixin) {
 
     constructor({
         name, initialValue = null, label = '', description = '', unit = '', separator = false, required = false,
@@ -998,3 +998,6 @@ export default class FormField extends mix().with(ViewMixin) {
     }
 
 }
+
+
+export default FormField

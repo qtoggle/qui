@@ -21,7 +21,7 @@ import * as ObjectUtils from '$qui/utils/object.js'
  * @param {String} params.message the message
  * @param {qui.icons.Icon} [params.icon] an optional icon
  */
-export default class MessageForm extends PageForm {
+class MessageForm extends PageForm {
 
     constructor({message, icon = null, ...params}) {
         ObjectUtils.setDefault(params, 'modal', true)
@@ -67,3 +67,6 @@ export default class MessageForm extends PageForm {
     }
 
 }
+
+
+export default MessageForm

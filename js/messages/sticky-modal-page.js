@@ -3,7 +3,7 @@ import {Mixin}          from '$qui/base/mixwith.js'
 import * as GlobalGlass from '$qui/global-glass.js'
 
 
-export default Mixin((superclass = Object) => {
+const StickyModalPageMixin = Mixin((superclass = Object) => {
 
     /**
      * A mixin for pages that are stuck to the global glass until explicitly removed.
@@ -77,3 +77,6 @@ export default Mixin((superclass = Object) => {
     return StickyModalPageMixin
 
 })
+
+
+export default StickyModalPageMixin

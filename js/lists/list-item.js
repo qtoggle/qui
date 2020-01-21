@@ -18,7 +18,7 @@ const logger = Logger.get('qui.lists.listitem')
  * @param {jQuery} params.content item content
  * @param {*} [params.data] user data associated with the item
  */
-export default class ListItem extends mix().with(ViewMixin) {
+class ListItem extends mix().with(ViewMixin) {
 
     constructor({content = null, data = null, ...params}) {
         super(params)
@@ -112,3 +112,6 @@ export default class ListItem extends mix().with(ViewMixin) {
     }
 
 }
+
+
+export default ListItem

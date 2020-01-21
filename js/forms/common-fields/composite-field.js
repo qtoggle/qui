@@ -14,7 +14,7 @@ import FormField from '../form-field.js'
  * @param {String} [params.layout] align subfield widgets vertically (`"vertical"`) or horizontally (`"horizontal"`,
  * default)
  */
-export default class CompositeField extends FormField {
+class CompositeField extends FormField {
 
     constructor({fields, layout = 'horizontal', ...params}) {
         super(params)
@@ -90,3 +90,6 @@ export default class CompositeField extends FormField {
     }
 
 }
+
+
+export default CompositeField

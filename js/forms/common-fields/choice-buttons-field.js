@@ -12,7 +12,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * `value`)
  * @param {String} [params.onClass] the CSS class to add to buttons in *on* state (defaults to `on`)
  */
-export default class ChoiceButtonsField extends JQueryUIField {
+class ChoiceButtonsField extends JQueryUIField {
 
     // TODO add setters and getters for choices
 
@@ -21,3 +21,6 @@ export default class ChoiceButtonsField extends JQueryUIField {
 // TODO es7 class fields
 ChoiceButtonsField.WIDGET_CLASS = 'choicebuttons'
 ChoiceButtonsField.WIDGET_ATTRS = ['choices', 'onClass']
+
+
+export default ChoiceButtonsField

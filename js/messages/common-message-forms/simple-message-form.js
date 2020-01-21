@@ -19,7 +19,7 @@ import MessageForm from '../message-form.js'
  * @param {String} [params.buttonCaption] optional button caption (defaults to `"OK"`)
  * @param {qui.messages.MessageForm.Callback} [params.onClose] a dismiss callback
  */
-export default class SimpleMessageForm extends MessageForm {
+class SimpleMessageForm extends MessageForm {
 
     constructor({type, buttonCaption = gettext('OK'), onClose = null, ...params}) {
         let variant = null
@@ -78,3 +78,6 @@ export default class SimpleMessageForm extends MessageForm {
     }
 
 }
+
+
+export default SimpleMessageForm

@@ -24,7 +24,7 @@ import * as Stocks           from './stocks.js'
  * @param {String} [params.scale] icon scaling factor (defaults to `1`)
  * @param {String} [params.decoration] icon decoration
  */
-export default class StockIcon extends Icon {
+class StockIcon extends Icon {
 
     constructor({
         name, stockName = DefaultStock.NAME, variant = null, activeName = null, activeVariant = null,
@@ -180,3 +180,6 @@ export default class StockIcon extends Icon {
     }
 
 }
+
+
+export default StockIcon

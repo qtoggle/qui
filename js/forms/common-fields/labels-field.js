@@ -14,7 +14,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * otherwise (defaults to `@foreground-color`)
  * @param {Function} [params.onClick] function to be executed when a label is clicked
  */
-export default class LabelsField extends JQueryUIField {
+class LabelsField extends JQueryUIField {
 
     // TODO add setters and getters for widget properties
 
@@ -41,3 +41,6 @@ export default class LabelsField extends JQueryUIField {
 // TODO es7 class fields
 LabelsField.WIDGET_CLASS = 'labels'
 LabelsField.WIDGET_ATTRS = ['color', 'background', 'chevrons', 'clickable']
+
+
+export default LabelsField

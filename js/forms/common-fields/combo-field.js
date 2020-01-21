@@ -11,7 +11,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * @param {Object[]} params.choices choices (pairs of `label` and `value`)
  * @param {Number} [params.fastFactor] determines how fast the page-up/page-down actions work (defaults to `5`)
  */
-export default class ComboField extends JQueryUIField {
+class ComboField extends JQueryUIField {
 
     // TODO add setters and getters for widget properties
 
@@ -39,3 +39,6 @@ export default class ComboField extends JQueryUIField {
 // TODO es7 class fields
 ComboField.WIDGET_CLASS = 'combo'
 ComboField.WIDGET_ATTRS = ['makeChoices', 'choices', 'fastFactor', 'filterEnabled']
+
+
+export default ComboField

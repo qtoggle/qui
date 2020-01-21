@@ -17,7 +17,7 @@ import * as DefaultStock from './default-stock.js'
  * @param {Object<String,String>} [params.variants] an optional mapping of aliases to icon variants; the variant aliases
  * of the default stock ({@link qui.icons.defaultstock} are used if not supplied
  */
-export default class Stock {
+class Stock {
 
     constructor({src, unit, size, width, height, names, variants = null, variantAliases = {}}) {
         this.src = src
@@ -86,3 +86,6 @@ export default class Stock {
     }
 
 }
+
+
+export default Stock

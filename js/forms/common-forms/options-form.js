@@ -14,7 +14,7 @@ import Form from '../form.js'
  * @param {qui.pages.PageMixin} params.page the page associated to this options form
  * * see {@link qui.forms.Form} for form parameters
  */
-export default class OptionsForm extends Form {
+class OptionsForm extends Form {
 
     constructor({page, ...params}) {
         ObjectUtils.assignDefault(params, {
@@ -63,3 +63,6 @@ export default class OptionsForm extends Form {
     }
 
 }
+
+
+export default OptionsForm

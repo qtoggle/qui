@@ -45,7 +45,7 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
  * @param {qui.forms.FormButton[]} [params.buttons] buttons to be added to the form
  * @param {Object} [params.data] a dictionary with initial values for the fields
  */
-export default class Form extends mix().with(StructuredViewMixin) {
+class Form extends mix().with(StructuredViewMixin) {
 
     constructor({
         width = null, noBackground = false, compact = false, fieldsAlignment = 'center', valuesWidth = 60,
@@ -1179,3 +1179,6 @@ export default class Form extends mix().with(StructuredViewMixin) {
     }
 
 }
+
+
+export default Form

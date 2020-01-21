@@ -13,7 +13,7 @@ import FormField from '../form-field.js'
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
  */
-export default class JQueryUIField extends FormField {
+class JQueryUIField extends FormField {
 
     constructor({...params}) {
         super(params)
@@ -111,3 +111,6 @@ JQueryUIField.WIDGET_DEF_ATTRS = {}
 
 /* Attribute names to be copied from field to widget */
 JQueryUIField.WIDGET_ATTRS = []
+
+
+export default JQueryUIField

@@ -22,7 +22,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * @param {String} [params.backgroundActiveColor] custom background active color (ignored unless `style` is `"colored"`)
  * @param {String} [params.foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
  */
-export default class PushButtonField extends JQueryUIField {
+class PushButtonField extends JQueryUIField {
 
     constructor({onClick, ...params}) {
         ObjectUtils.setDefault(params, 'style', 'interactive')
@@ -64,3 +64,6 @@ export default class PushButtonField extends JQueryUIField {
 // TODO es7 class fields
 PushButtonField.WIDGET_CLASS = 'pushbutton'
 PushButtonField.WIDGET_ATTRS = ['caption', 'style', 'backgroundColor', 'backgroundActiveColor', 'foregroundColor']
+
+
+export default PushButtonField

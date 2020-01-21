@@ -10,7 +10,7 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
  * easily extended, this class actually wraps a promise.
  * @alias qui.base.ConditionVariable
  */
-export default class ConditionVariable {
+class ConditionVariable {
 
     constructor() {
         this._resolve = null
@@ -86,3 +86,6 @@ export default class ConditionVariable {
     }
 
 }
+
+
+export default ConditionVariable

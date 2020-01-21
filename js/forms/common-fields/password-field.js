@@ -10,7 +10,7 @@ import TextField from './text-field.js'
  * * see {@link qui.forms.FormField} for form field parameters
  * * see {@link qui.forms.commonfields.TextField} for text field parameters
  */
-export default class PasswordField extends TextField {}
+class PasswordField extends TextField {}
 
 // TODO es7 class fields
 PasswordField.WIDGET_CLASS = 'passwordinput'
@@ -19,3 +19,6 @@ PasswordField.WIDGET_ATTRS = [
     'minLength', 'maxLength', 'continuousChange', 'clearEnabled',
     'revealOnFocus'
 ]
+
+
+export default PasswordField

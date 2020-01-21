@@ -16,7 +16,7 @@ import List from '../list.js'
  * * see {@link qui.lists.List} for list parameters
  * * see {@link qui.pages.PageMixin} for page parameters
  */
-export default class PageList extends mix(List).with(PageMixin) {
+class PageList extends mix(List).with(PageMixin) {
 
     constructor({...params} = {}) {
         ObjectUtils.setDefault(params, 'transparent', false)
@@ -47,3 +47,6 @@ export default class PageList extends mix(List).with(PageMixin) {
     }
 
 }
+
+
+export default PageList

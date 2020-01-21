@@ -10,7 +10,7 @@ import TextField from './text-field.js'
  * * see {@link qui.forms.FormField} for form field parameters
  * * see {@link qui.forms.commonfields.TextField} for text field parameters
  */
-export default class NumericField extends TextField {
+class NumericField extends TextField {
 
     widgetToValue() {
         let value = super.widgetToValue()
@@ -27,3 +27,6 @@ export default class NumericField extends TextField {
 
 // TODO es7 class fields
 NumericField.WIDGET_CLASS = 'numericinput'
+
+
+export default NumericField

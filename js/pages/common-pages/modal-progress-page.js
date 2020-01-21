@@ -17,7 +17,7 @@ import PageMixin from '../page.js'
  * @param {String} [params.progressPercent] initial progress percent (defaults to `-1`)
  * @param {Object} [params.progressOptions] extra options for the progress widget
  */
-export default class ModalProgressPage extends mix().with(PageMixin) {
+class ModalProgressPage extends mix().with(PageMixin) {
 
     constructor({message = null, progressPercent = -1, progressOptions = {}, ...params} = {}) {
         params.modal = true
@@ -76,3 +76,6 @@ export default class ModalProgressPage extends mix().with(PageMixin) {
     }
 
 }
+
+
+export default ModalProgressPage

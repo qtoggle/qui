@@ -21,7 +21,7 @@ import Form from '../form.js'
  * @param {Object} [params.preventUnappliedClose] if set to `true`, the form will try to prevent losing unapplied data
  * when closed, by asking the user for confirmation
  */
-export default class PageForm extends mix(Form).with(PageMixin) {
+class PageForm extends mix(Form).with(PageMixin) {
 
     constructor({preventUnappliedClose = false, ...params}) {
         ObjectUtils.setDefault(params, 'transparent', !Window.isSmallScreen())
@@ -107,3 +107,6 @@ export default class PageForm extends mix(Form).with(PageMixin) {
     }
 
 }
+
+
+export default PageForm

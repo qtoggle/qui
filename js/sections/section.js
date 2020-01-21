@@ -29,7 +29,7 @@ import * as Sections from './sections.js'
  * @param {Number} [params.index] sets the section position (ordering) in relation with other sections; by default,
  * sections are positioned based on their registration order
  */
-export default class Section extends mix().with(SingletonMixin) {
+class Section extends mix().with(SingletonMixin) {
 
     constructor({id, title, icon, buttonType = Sections.BUTTON_TYPE_MENU_BAR, index = 0}) {
         super()
@@ -488,3 +488,6 @@ export default class Section extends mix().with(SingletonMixin) {
     }
 
 }
+
+
+export default Section

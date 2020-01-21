@@ -7,7 +7,7 @@ const ICON_DATA_ATTR = '_icon'
  * @alias qui.icons.Icon
  * @param {Object} params icon attributes
  */
-export default class Icon {
+class Icon {
 
     constructor(params) {
     }
@@ -34,3 +34,6 @@ export default class Icon {
     }
 
 }
+
+
+export default Icon

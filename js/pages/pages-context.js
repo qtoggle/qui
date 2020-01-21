@@ -9,7 +9,7 @@ import * as Window         from '$qui/window.js'
  * A page stack context.
  * @alias qui.pages.PagesContext
  */
-export default class PagesContext {
+class PagesContext {
 
     constructor() {
 
@@ -141,3 +141,6 @@ export default class PagesContext {
     }
 
 }
+
+
+export default PagesContext

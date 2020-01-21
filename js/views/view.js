@@ -27,7 +27,7 @@ export const STATE_ERROR = 'error'
 export const STATE_PROGRESS = 'progress'
 
 
-export default Mixin((superclass = Object) => {
+const ViewMixin = Mixin((superclass = Object) => {
 
     /**
      * A mixin to be used with classes that behave as views (have a visual HTML representation).
@@ -452,3 +452,6 @@ export default Mixin((superclass = Object) => {
     return ViewMixin
 
 })
+
+
+export default ViewMixin

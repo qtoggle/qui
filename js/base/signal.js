@@ -8,7 +8,7 @@
  * @alias qui.base.Signal
  * @param {Object} [object] an optional object that owns and emits the signal
  */
-export default class Signal {
+class Signal {
 
     constructor(object = null) {
         this._object = object
@@ -88,3 +88,6 @@ export default class Signal {
     }
 
 }
+
+
+export default Signal

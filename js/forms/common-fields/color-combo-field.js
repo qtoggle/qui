@@ -11,7 +11,7 @@ import JQueryUIField from './jquery-ui-field.js'
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
  */
-export default class ColorComboField extends JQueryUIField {
+class ColorComboField extends JQueryUIField {
 
     valueToWidget(value) {
         if (value && typeof value === 'string' && !value.startsWith('@')) {
@@ -26,3 +26,6 @@ export default class ColorComboField extends JQueryUIField {
 // TODO es7 class fields
 ColorComboField.WIDGET_CLASS = 'colorcombo'
 ColorComboField.WIDGET_ATTRS = ['filterEnabled']
+
+
+export default ColorComboField
