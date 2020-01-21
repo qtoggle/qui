@@ -105,7 +105,12 @@ $.widget('qui.slider', {
                 return
             }
 
-            let changed = false
+            /* Ignore scroll events on unfocused widget */
+            if (!widget.element.is(':focus')) {
+                return
+            }
+
+            let changed
             if (delta > 0) {
                 changed = widget._increase()
             }
