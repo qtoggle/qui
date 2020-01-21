@@ -61,11 +61,16 @@ $.widget('qui.updown', {
                 return
             }
 
+            /* Ignore scroll events on unfocused widget */
+            if (!widget.element.is(':focus')) {
+                return
+            }
+
             if (!widget.options.continuousChange) {
                 widget.element.focus() /* Needed for triggering the change event on blur */
             }
 
-            let changed = false
+            let changed
             let step = widget.options.step
             if (e.shiftKey) {
                 step *= widget.options.fastFactor
