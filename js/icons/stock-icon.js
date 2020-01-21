@@ -11,21 +11,24 @@ import * as Stocks           from './stocks.js'
  * An icon defined by stock attributes.
  * @alias qui.icons.StockIcon
  * @extends qui.icons.Icon
- * @param {Object} params
- * @param {String} params.name the icon name (in normal state)
- * @param {String} [params.stockName] the name of the stock (defaults to `qui`)
- * @param {String} [params.variant] the icon variant (in normal state)
- * @param {String} [params.activeName] the icon name in active state
- * @param {String} [params.activeVariant] the icon variant in active state
- * @param {String} [params.focusedName] the icon name in focused state
- * @param {String} [params.focusedVariant] the icon variant in focused state
- * @param {String} [params.selectedName] the icon name in selected state
- * @param {String} [params.selectedVariant] the icon variant in selected state
- * @param {String} [params.scale] icon scaling factor (defaults to `1`)
- * @param {String} [params.decoration] icon decoration
  */
 class StockIcon extends Icon {
 
+    /**
+     * @constructs qui.icons.StockIcon
+     * @param {Object} params
+     * @param {String} params.name the icon name (in normal state)
+     * @param {String} [params.stockName] the name of the stock (defaults to `qui`)
+     * @param {String} [params.variant] the icon variant (in normal state)
+     * @param {String} [params.activeName] the icon name in active state
+     * @param {String} [params.activeVariant] the icon variant in active state
+     * @param {String} [params.focusedName] the icon name in focused state
+     * @param {String} [params.focusedVariant] the icon variant in focused state
+     * @param {String} [params.selectedName] the icon name in selected state
+     * @param {String} [params.selectedVariant] the icon variant in selected state
+     * @param {String} [params.scale] icon scaling factor (defaults to `1`)
+     * @param {String} [params.decoration] icon decoration
+     */
     constructor({
         name, stockName = DefaultStock.NAME, variant = null, activeName = null, activeVariant = null,
         focusedName = null, focusedVariant = null, selectedName = null, selectedVariant = null,

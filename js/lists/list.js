@@ -25,14 +25,17 @@ const logger = Logger.get('qui.lists.list')
  * A list view.
  * @alias qui.lists.List
  * @mixes qui.views.commonviews.StructuredViewMixin
- * @param {Object} params
- * * see {@link qui.views.commonviews.StructuredViewMixin} for structured view parameters
- * @param {qui.lists.ListItem[]} [params.items] initial list items
- * @param {Boolean} [params.searchEnabled] set to `true` to enable the search feature (defaults to `false`)
- * @param {Boolean} [params.addEnabled] set to `true` to enable the add item feature (defaults to `false`)
  */
 class List extends mix().with(StructuredViewMixin) {
 
+    /**
+     * @constructs qui.lists.List
+     * @param {Object} params
+     * * see {@link qui.views.commonviews.StructuredViewMixin} for structured view parameters
+     * @param {qui.lists.ListItem[]} [params.items] initial list items
+     * @param {Boolean} [params.searchEnabled] set to `true` to enable the search feature (defaults to `false`)
+     * @param {Boolean} [params.addEnabled] set to `true` to enable the add item feature (defaults to `false`)
+     */
     constructor({items = [], searchEnabled = false, addEnabled = false, ...params}) {
         super(params)
 

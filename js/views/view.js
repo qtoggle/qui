@@ -33,11 +33,14 @@ const ViewMixin = Mixin((superclass = Object) => {
      * A mixin to be used with classes that behave as views (have a visual HTML representation).
      * @alias qui.views.ViewMixin
      * @mixin
-     * @param {Object} [params]
-     * @param {String} [params.cssClass] additional CSS classes to set to the view element
      */
     class ViewMixin extends superclass {
 
+        /**
+         * @constructs qui.views.ViewMixin
+         * @param {Object} [params]
+         * @param {String} [params.cssClass] additional CSS classes to set to the view element
+         */
         constructor({cssClass = null, ...params} = {}) {
             super(params)
 

@@ -15,14 +15,17 @@ import Form from '../form.js'
  * @alias qui.forms.commonforms.PageForm
  * @extends qui.forms.Form
  * @mixes qui.pages.PageMixin
- * @param {Object} params
- * * see {@link qui.forms.Form} for form parameters
- * * see {@link qui.pages.PageMixin} for page parameters
- * @param {Object} [params.preventUnappliedClose] if set to `true`, the form will try to prevent losing unapplied data
- * when closed, by asking the user for confirmation
  */
 class PageForm extends mix(Form).with(PageMixin) {
 
+    /**
+     * @constructs qui.forms.commonforms.PageForm
+     * @param {Object} params
+     * * see {@link qui.forms.Form} for form parameters
+     * * see {@link qui.pages.PageMixin} for page parameters
+     * @param {Object} [params.preventUnappliedClose] if set to `true`, the form will try to prevent losing unapplied data
+     * when closed, by asking the user for confirmation
+     */
     constructor({preventUnappliedClose = false, ...params}) {
         ObjectUtils.setDefault(params, 'transparent', !Window.isSmallScreen())
         super(params)

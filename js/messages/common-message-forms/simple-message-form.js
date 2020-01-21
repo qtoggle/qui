@@ -13,14 +13,17 @@ import MessageForm from '../message-form.js'
  * A simple message form.
  * @alias qui.messages.commonmessageforms.SimpleMessageForm
  * @extends qui.messages.MessageForm
- * @param {Object} params
- * * see {@link qui.messages.MessageForm} for message form parameters
- * @param {String} params.type message type (`"info"`, `"warning"` or `"error"`)
- * @param {String} [params.buttonCaption] optional button caption (defaults to `"OK"`)
- * @param {qui.messages.MessageForm.Callback} [params.onClose] a dismiss callback
  */
 class SimpleMessageForm extends MessageForm {
 
+    /**
+     * @constructs qui.messages.commonmessageforms.SimpleMessageForm
+     * @param {Object} params
+     * * see {@link qui.messages.MessageForm} for message form parameters
+     * @param {String} params.type message type (`"info"`, `"warning"` or `"error"`)
+     * @param {String} [params.buttonCaption] optional button caption (defaults to `"OK"`)
+     * @param {qui.messages.MessageForm.Callback} [params.onClose] a dismiss callback
+     */
     constructor({type, buttonCaption = gettext('OK'), onClose = null, ...params}) {
         let variant = null
         let iconName = null

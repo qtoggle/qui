@@ -30,13 +30,16 @@ let currentURLQuery = null
  * An error indicating that navigation could not be done beyond a certain path.
  * @alias qui.navigation.PageNotFoundError
  * @extends Error
- * @param {String[]} path the full path that could not be navigated
- * @param {String} pathId the path id to which the navigation could not be done
- * @param {qui.sections.Section} section the section in which the navigation error occurred
- * @param {qui.navigation.PageMixin} page the page where the navigation stopped
  */
 export class PageNotFoundError extends Error {
 
+    /**
+     * @constructs qui.navigation.PageNotFoundError
+     * @param {String[]} path the full path that could not be navigated
+     * @param {String} pathId the path id to which the navigation could not be done
+     * @param {qui.sections.Section} section the section in which the navigation error occurred
+     * @param {qui.navigation.PageMixin} page the page where the navigation stopped
+     */
     constructor(path, pathId, section, page) {
         super(gettext(`Page not found: /${path.join('/')}`))
 
@@ -52,14 +55,17 @@ export class PageNotFoundError extends Error {
  * An error indicating that navigation could not be done due to a page load error.
  * @alias qui.navigation.PageLoadError
  * @extends Error
- * @param {String[]} path the full path that could not be navigated
- * @param {String} pathId the path id to which the navigation could not be done
- * @param {qui.sections.Section} section the section in which the navigation error occurred
- * @param {qui.navigation.PageMixin} page the page where the navigation stopped
- * @param {Error} error the error that occurred
  */
 export class PageLoadError extends Error {
 
+    /**
+     * @constructs qui.navigation.PageLoadError
+     * @param {String[]} path the full path that could not be navigated
+     * @param {String} pathId the path id to which the navigation could not be done
+     * @param {qui.sections.Section} section the section in which the navigation error occurred
+     * @param {qui.navigation.PageMixin} page the page where the navigation stopped
+     * @param {Error} error the error that occurred
+     */
     constructor(path, pathId, section, page, error) {
         let msg
         if (error) {

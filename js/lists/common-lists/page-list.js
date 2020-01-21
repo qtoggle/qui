@@ -12,12 +12,15 @@ import List from '../list.js'
  * @alias qui.lists.PageList
  * @extends qui.lists.List
  * @mixes qui.pages.PageMixin
- * @param {Object} [params]
- * * see {@link qui.lists.List} for list parameters
- * * see {@link qui.pages.PageMixin} for page parameters
  */
 class PageList extends mix(List).with(PageMixin) {
 
+    /**
+     * @constructs qui.lists.PageList
+     * @param {Object} [params]
+     * * see {@link qui.lists.List} for list parameters
+     * * see {@link qui.pages.PageMixin} for page parameters
+     */
     constructor({...params} = {}) {
         ObjectUtils.setDefault(params, 'transparent', false)
         ObjectUtils.setDefault(params, 'topless', true)

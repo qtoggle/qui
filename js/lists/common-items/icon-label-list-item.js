@@ -10,13 +10,16 @@ import ListItem from '../list-item.js'
  * A list item made of an icon and a label.
  * @alias qui.lists.commonitems.IconLabelListItem
  * @extends qui.lists.ListItem
- * @param {Object} params
- * * see {@link qui.lists.ListItem} for common list item parameters
- * @param {qui.icons.Icon} [params.icon] item icon
- * @param {String} params.label item label
  */
 class IconLabelListItem extends ListItem {
 
+    /**
+     * @constructs qui.lists.ListItem
+     * @param {Object} params
+     * * see {@link qui.lists.ListItem} for common list item parameters
+     * @param {qui.icons.Icon} [params.icon] item icon
+     * @param {String} params.label item label
+     */
     constructor({icon = null, label, ...params}) {
         super(params)
 

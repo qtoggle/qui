@@ -6,10 +6,13 @@
 /**
  * A signal.
  * @alias qui.base.Signal
- * @param {Object} [object] an optional object that owns and emits the signal
  */
 class Signal {
 
+    /**
+     * @constructs qui.base.Signal
+     * @param {Object} [object] an optional object that owns and emits the signal
+     */
     constructor(object = null) {
         this._object = object
         this._handlers = []

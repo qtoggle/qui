@@ -1,17 +1,20 @@
 /**
  * A class holding the details of a URL.
  * @alias qui.utils.URL
- * @param {String} scheme
- * @param {String} [username]
- * @param {String} [password]
- * @param {String} host
- * @param {Number} [port]
- * @param {String} [path]
- * @param {Object} [query]
- * @param {String} [fragment]
  */
 class URL {
 
+    /**
+     * @constructs qui.utils.URL
+     * @param {String} scheme
+     * @param {String} [username]
+     * @param {String} [password]
+     * @param {String} host
+     * @param {Number} [port]
+     * @param {String} [path]
+     * @param {Object} [query]
+     * @param {String} [fragment]
+     */
     constructor({
         scheme, username = '', password = '', host, port = null, path = '',
         query = {}, fragment = ''

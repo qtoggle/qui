@@ -11,14 +11,17 @@ import PageMixin from '../page.js'
  * A modal page with a progress widget and an optional message.
  * @alias qui.pages.commonpages.ModalProgressPage
  * @mixes qui.pages.PageMixin
- * @param {Object} params
- * * see {@link qui.pages.PageMixin} for page parameters
- * @param {String} [params.message] an optional progress message
- * @param {String} [params.progressPercent] initial progress percent (defaults to `-1`)
- * @param {Object} [params.progressOptions] extra options for the progress widget
  */
 class ModalProgressPage extends mix().with(PageMixin) {
 
+    /**
+     * @constructs qui.pages.commonpages.ModalProgressPage
+     * @param {Object} params
+     * * see {@link qui.pages.PageMixin} for page parameters
+     * @param {String} [params.message] an optional progress message
+     * @param {String} [params.progressPercent] initial progress percent (defaults to `-1`)
+     * @param {Object} [params.progressOptions] extra options for the progress widget
+     */
     constructor({message = null, progressPercent = -1, progressOptions = {}, ...params} = {}) {
         params.modal = true
 

@@ -12,13 +12,16 @@ import MessageForm from '../message-form.js'
  * A message form asking the user for confirmation.
  * @alias qui.messages.commonmessageforms.ConfirmMessageForm
  * @extends qui.messages.MessageForm
- * @param {Object} params
- * * see {@link qui.messages.MessageForm} for message form parameters
- * @param {qui.messages.MessageForm.Callback} [params.onYes] an optional confirmation callback
- * @param {qui.messages.MessageForm.Callback} [params.onNo] an optional decline callback
  */
 class ConfirmMessageForm extends MessageForm {
 
+    /**
+     * @constructs qui.messages.commonmessageforms.ConfirmMessageForm
+     * @param {Object} params
+     * * see {@link qui.messages.MessageForm} for message form parameters
+     * @param {qui.messages.MessageForm.Callback} [params.onYes] an optional confirmation callback
+     * @param {qui.messages.MessageForm.Callback} [params.onNo] an optional decline callback
+     */
     constructor({onYes = null, onNo = null, ...params} = {}) {
         ObjectUtils.setDefault(params, 'icon', new StockIcon({name: 'qmark'}))
         ObjectUtils.setDefault(params, 'buttons', [

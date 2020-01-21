@@ -15,12 +15,15 @@ const StructuredPageMixin = Mixin((superclass = Object) => {
      * @mixin
      * @extends qui.views.commonviews.StructuredViewMixin
      * @mixes qui.pages.PageMixin
-     * @param {Object} [params]
-     * * see {@link qui.views.commonviews.StructuredViewMixin} for structured view parameters
-     * * see {@link qui.pages.PageMixin} for page parameters
      */
     class StructuredPageMixin extends mix(StructuredViewMixin(superclass)).with(PageMixin) {
 
+        /**
+         * @constructs qui.views.commonviews.StructuredViewMixin
+         * @param {...*} args
+         * * see {@link qui.views.commonviews.StructuredViewMixin} for structured view parameters
+         * * see {@link qui.pages.PageMixin} for page parameters
+         */
         constructor(...args) {
             super(...args)
         }

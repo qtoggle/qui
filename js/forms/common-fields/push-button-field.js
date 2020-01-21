@@ -10,20 +10,23 @@ import JQueryUIField from './jquery-ui-field.js'
  * @extends qui.forms.commonfields.JQueryUIField
  * @param {Object} params
  * * see {@link qui.forms.FormField} for form field parameters
- * @param {String} params.caption the button caption
- * @param {Function} params.onClick function to be executed when the button is pushed (see
- * {@link qui.forms.commonfields.PushButtonField#onClick})
- * @param {String} [params.style] button style:
- *  * `"interactive"` (default)
- *  * `"highlight"`
- *  * `"danger"`,
- *  * `"colored"`
- * @param {String} [params.backgroundColor] custom background color (ignored unless `style` is `"colored"`)
- * @param {String} [params.backgroundActiveColor] custom background active color (ignored unless `style` is `"colored"`)
- * @param {String} [params.foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
  */
 class PushButtonField extends JQueryUIField {
 
+    /**
+     * @constructs qui.forms.commonfields.PushButtonField
+     * @param {String} params.caption the button caption
+     * @param {Function} params.onClick function to be executed when the button is pushed (see
+     * {@link qui.forms.commonfields.PushButtonField#onClick})
+     * @param {String} [params.style] button style:
+     *  * `"interactive"` (default)
+     *  * `"highlight"`
+     *  * `"danger"`,
+     *  * `"colored"`
+     * @param {String} [params.backgroundColor] custom background color (ignored unless `style` is `"colored"`)
+     * @param {String} [params.backgroundActiveColor] custom background active color (ignored unless `style` is `"colored"`)
+     * @param {String} [params.foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
+     */
     constructor({onClick, ...params}) {
         ObjectUtils.setDefault(params, 'style', 'interactive')
 

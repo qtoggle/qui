@@ -5,11 +5,14 @@ const ICON_DATA_ATTR = '_icon'
 /**
  * A base class for icons.
  * @alias qui.icons.Icon
- * @param {Object} params icon attributes
  */
 class Icon {
 
-    constructor(params) {
+    /**
+     * @constructs qui.icons.Icon
+     * @param {Object} params icon attributes
+     */
+    constructor(...params) {
     }
 
     /**

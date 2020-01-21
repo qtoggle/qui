@@ -11,6 +11,9 @@ import * as Window         from '$qui/window.js'
  */
 class PagesContext {
 
+    /**
+     * @constructs qui.pages.PagesContext
+     */
     constructor() {
 
         /**

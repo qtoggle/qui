@@ -16,13 +16,16 @@ import * as ObjectUtils from '$qui/utils/object.js'
  * A base class for message forms.
  * @alias qui.messages.MessageForm
  * @extends qui.forms.PageForm
- * @param {Object} params
- * * see {@link qui.forms.PageForm} for page form parameters
- * @param {String} params.message the message
- * @param {qui.icons.Icon} [params.icon] an optional icon
  */
 class MessageForm extends PageForm {
 
+    /**
+     * @constructs qui.messages.MessageForm
+     * @param {Object} params
+     * * see {@link qui.forms.PageForm} for page form parameters
+     * @param {String} params.message the message
+     * @param {qui.icons.Icon} [params.icon] an optional icon
+     */
     constructor({message, icon = null, ...params}) {
         ObjectUtils.setDefault(params, 'modal', true)
         ObjectUtils.setDefault(params, 'transparent', true)

@@ -12,6 +12,10 @@ const StickyModalPageMixin = Mixin((superclass = Object) => {
      */
     class StickyModalPageMixin extends superclass {
 
+        /**
+         * @constructs qui.messages.StickyModalPageMixin
+         * @param {...*} args
+         */
         constructor(...args) {
             super(...args)
 

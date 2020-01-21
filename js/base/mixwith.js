@@ -77,10 +77,13 @@ function BareMixin(mixin) {
 /**
  * A helper class capable of applying one or more mixins to a superclass.
  * @alias qui.base.mixwith.MixinBuilder
- * @param {typeof Object} superclass
  */
 export class MixinBuilder {
 
+    /**
+     * @constructs qui.base.mixwith.MixinBuilder
+     * @param {typeof Object} superclass
+     */
     constructor(superclass) {
         this.superclass = superclass || Object
     }
