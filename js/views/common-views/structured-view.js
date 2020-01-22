@@ -26,22 +26,28 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
 
         /**
          * @constructs qui.views.commonviews.StructuredViewMixin
-         * @param {Object} params
-         * * see {@link qui.views.ViewMixin} for view parameters
-         * @param {?String} [params.title] view title (set to `null` if you don't want a view top at all)
-         * @param {qui.icons.Icon} [params.icon] view icon
-         * @param {Boolean} [params.minimizable] indicates that the view should be minimizable by clicking on its top bar
+         * @param {?String} [title] view title (set to `null` if you don't want a view top at all)
+         * @param {qui.icons.Icon} [icon] view icon
+         * @param {Boolean} [minimizable] indicates that the view should be minimizable by clicking on its top bar
          * (defaults to `false`)
-         * @param {Boolean} [params.minimized] indicates that the view should be initially minimized (defaults to `false`)
-         * @param {Boolean} [params.largeTop] indicates that the view top bar should be larger (defaults to `true`)
-         * @param {Boolean} [params.topless] indicates that the view should not have a top bar (defaults to `false`)
-         * @param {Boolean} [params.closable] set to `true` to display a close button on the top bar (defaults to `false`,
+         * @param {Boolean} [minimized] indicates that the view should be initially minimized (defaults to `false`)
+         * @param {Boolean} [largeTop] indicates that the view top bar should be larger (defaults to `true`)
+         * @param {Boolean} [topless] indicates that the view should not have a top bar (defaults to `false`)
+         * @param {Boolean} [closable] set to `true` to display a close button on the top bar (defaults to `false`,
          * ignored when `minimizable` is `true`)
+         * @param params
+         * * see {@link qui.views.ViewMixin} for view parameters
          */
         constructor({
-            title = null, icon = null, minimizable = false, minimized = false, largeTop = true,
-            topless = false, closable = false, ...params
-        }) {
+            title = null,
+            icon = null,
+            minimizable = false,
+            minimized = false,
+            largeTop = true,
+            topless = false,
+            closable = false,
+            ...params
+        } = {}) {
             super(params)
 
             this._title = title

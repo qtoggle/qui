@@ -14,10 +14,10 @@ const StickyModalPageMixin = Mixin((superclass = Object) => {
 
         /**
          * @constructs qui.messages.StickyModalPageMixin
-         * @param {...*} args
+         * @param [params]
          */
-        constructor(...args) {
-            super(...args)
+        constructor({...params} = {}) {
+            super(params)
 
             this._showCount = 0
         }

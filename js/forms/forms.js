@@ -16,9 +16,16 @@ export const STATE_APPLIED = 'applied'
  * A form (or form field) validation error.
  * @alias qui.forms.ValidationError
  * @extends Error
- * @param {String} message the error message to be displayed to the user
  */
 export class ValidationError extends Error {
+
+    /**
+     * @constructs qui.forms.ValidationError
+     * @param {String} message the error message to be displayed to the user
+     */
+    constructor(message) {
+        super(message)
+    }
 
     toString() {
         return this.message

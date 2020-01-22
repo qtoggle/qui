@@ -14,22 +14,45 @@ class LabelsField extends JQueryUIField {
 
     /**
      * @constructs qui.forms.commonfields.LabelsField
-     * @param {Object} params
-     * * see {@link qui.forms.FormField} for form field parameters
-     * @param {String} [params.color] the label text color (defaults to `@background-color`)
-     * @param {String} [params.background] the default label background color, used unless the given labels specify
+     * @param {String} [color] the label text color (defaults to `@background-color`)
+     * @param {String} [background] the default label background color, used unless the given labels specify
      * otherwise (defaults to `@foreground-color`)
-     * @param {Boolean} [params.chevrons] `true` if you want to join labels using chevron-like arrows
-     * @param {Function} [params.onClick] function to be executed when a label is clicked
+     * @param {Boolean} [chevrons] set to `true` if you want to join labels using chevron-like arrows
+     * @param {Boolean} [clickable] set to `true` if you want your labels to be clickable
+     * @param {Function} [onClick] function to be executed when a label is clicked (see
+     * {@link qui.forms.commonfields.LabelsField#onClick})
+     * @param params
+     * * see {@link qui.forms.FormField} for form field parameters
      */
-    constructor({onClick = null, ...params}) {
-        super(params)
+    constructor({
+        color = '@background-color',
+        background = '@foreground-color',
+        chevrons = false,
+        clickable = false,
+        onClick = null,
+        ...params
+    }) {
+        let that
 
-        this.onClick = onClick
-    }
+        super({
+            widgetAttrs: {
+                color: color,
+                background: background,
+                chevrons: chevrons,
+                clickable: clickable,
+                onClick: function (label, index) {
+                    return that.onClick(label, index)
+                }
+            },
+            ...params
+        })
 
-    initWidget(widget) {
-        this._widgetCall('option', 'onClick', (label, index) => this.onClick(label, index))
+        if (onClick) {
+            this.onClick = onClick
+        }
+
+        /* "that" needs to be assigned here because we can't refer to "this" before super() */
+        that = this
     }
 
     /**
@@ -44,7 +67,6 @@ class LabelsField extends JQueryUIField {
 
 // TODO es7 class fields
 LabelsField.WIDGET_CLASS = 'labels'
-LabelsField.WIDGET_ATTRS = ['color', 'background', 'chevrons', 'clickable']
 
 
 export default LabelsField

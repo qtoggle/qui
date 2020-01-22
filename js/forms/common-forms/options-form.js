@@ -15,8 +15,8 @@ class OptionsForm extends Form {
 
     /**
      * @constructs qui.forms.commonforms.OptionsForm
-     * @param {Object} params
-     * @param {qui.pages.PageMixin} params.page the page associated to this options form
+     * @param {qui.pages.PageMixin} page the page associated to this options form
+     * @param params
      * * see {@link qui.forms.Form} for form parameters
      */
     constructor({page, ...params}) {

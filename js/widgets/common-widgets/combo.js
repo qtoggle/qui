@@ -382,7 +382,7 @@ $.widget('qui.combo', {
 
     makeChoices: function () {
         if (this.options.makeChoices) {
-            return this.options.makeChoices()
+            return this.options.makeChoices() || []
         }
         else {
             return []

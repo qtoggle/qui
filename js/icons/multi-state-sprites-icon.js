@@ -31,15 +31,14 @@ class MultiStateSpritesIcon extends Icon {
 
     /**
      * @constructs qui.icons.Icon
-     * @param {Object} params
-     * @param {String} params.url the URL of the image resource
-     * @param {Number} params.bgWidth the total width of the image resource
-     * @param {Number} params.bgHeight the total height of the image resource
-     * @param {Number} [params.size] the size of the icon; defaults to `1`
-     * @param {String} [params.unit] the CSS unit used for all dimension attributes; defaults to `"rem"`
-     * @param {Object<String,qui.icons.MultiStateSpritesIcon.StateDetails>} [params.states] a mapping with icon states
-     * @param {Number} [params.scale] icon scaling factor; defaults to `1`
-     * @param {String} [params.decoration] icon decoration
+     * @param {String} url the URL of the image resource
+     * @param {Number} bgWidth the total width of the image resource
+     * @param {Number} bgHeight the total height of the image resource
+     * @param {Number} [size] the size of the icon; defaults to `1`
+     * @param {String} [unit] the CSS unit used for all dimension attributes; defaults to `"rem"`
+     * @param {Object<String,qui.icons.MultiStateSpritesIcon.StateDetails>} [states] a mapping with icon states
+     * @param {Number} [scale] icon scaling factor; defaults to `1`
+     * @param {String} [decoration] icon decoration
      */
     constructor({url, bgWidth, bgHeight, size = 1, unit = 'rem', states = null, scale = 1, decoration = null}) {
         super()

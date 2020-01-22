@@ -16,8 +16,14 @@ class URL {
      * @param {String} [fragment]
      */
     constructor({
-        scheme, username = '', password = '', host, port = null, path = '',
-        query = {}, fragment = ''
+        scheme,
+        username = '',
+        password = '',
+        host,
+        port = null,
+        path = '',
+        query = {},
+        fragment = ''
     }) {
         this.scheme = scheme
         this.username = username

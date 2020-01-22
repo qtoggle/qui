@@ -38,8 +38,8 @@ const ViewMixin = Mixin((superclass = Object) => {
 
         /**
          * @constructs qui.views.ViewMixin
-         * @param {Object} [params]
-         * @param {String} [params.cssClass] additional CSS classes to set to the view element
+         * @param {String} [cssClass] additional CSS classes to set to the view element
+         * @param [params]
          */
         constructor({cssClass = null, ...params} = {}) {
             super(params)

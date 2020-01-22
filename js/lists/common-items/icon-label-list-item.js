@@ -15,12 +15,12 @@ class IconLabelListItem extends ListItem {
 
     /**
      * @constructs qui.lists.ListItem
-     * @param {Object} params
+     * @param {String} label item label
+     * @param {qui.icons.Icon} [icon] item icon
+     * @param params
      * * see {@link qui.lists.ListItem} for common list item parameters
-     * @param {qui.icons.Icon} [params.icon] item icon
-     * @param {String} params.label item label
      */
-    constructor({icon = null, label, ...params}) {
+    constructor({label, icon = null, ...params}) {
         super(params)
 
         this._icon = icon

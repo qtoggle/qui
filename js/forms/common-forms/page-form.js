@@ -20,11 +20,11 @@ class PageForm extends mix(Form).with(PageMixin) {
 
     /**
      * @constructs qui.forms.commonforms.PageForm
-     * @param {Object} params
+     * @param {Boolean} [preventUnappliedClose] if set to `true`, the form will try to prevent losing unapplied data
+     * when closed, by asking the user for confirmation
+     * @param params
      * * see {@link qui.forms.Form} for form parameters
      * * see {@link qui.pages.PageMixin} for page parameters
-     * @param {Object} [params.preventUnappliedClose] if set to `true`, the form will try to prevent losing unapplied data
-     * when closed, by asking the user for confirmation
      */
     constructor({preventUnappliedClose = false, ...params}) {
         ObjectUtils.setDefault(params, 'transparent', !Window.isSmallScreen())

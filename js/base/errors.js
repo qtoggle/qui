@@ -8,7 +8,6 @@
  * @extends Error
  */
 export class AssertionError extends Error {
-
 }
 
 /**
@@ -17,7 +16,6 @@ export class AssertionError extends Error {
  * @extends Error
  */
 export class TimeoutError extends Error {
-
 }
 
 /**
@@ -26,5 +24,4 @@ export class TimeoutError extends Error {
  * @extends Error
  */
 export class NotImplementedError extends Error {
-
 }

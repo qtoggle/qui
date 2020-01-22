@@ -13,15 +13,15 @@ class CheckField extends JQueryUIField {
 
     /**
      * @constructs qui.forms.commonfields.CheckField
-     * @param {Object} params
+     * @param {String} [onClass] the CSS class to add to the check button in *on* state (defaults to `on`)
+     * @param params
      * * see {@link qui.forms.FormField} for form field parameters
-     * @param {String} [params.onClass] the CSS class to add to the check button in *on* state (defaults to `on`)
      */
-    constructor({...params}) {
+    constructor({onClass = 'on', ...params}) {
         /* We always prefer having the check box on the same line with its label */
         ObjectUtils.setDefault(params, 'forceOneLine', true)
 
-        super(params)
+        super({widgetAttrs: {onClass: onClass}, ...params})
     }
 
     setForm(form) {
@@ -38,7 +38,6 @@ class CheckField extends JQueryUIField {
 
 // TODO es7 class fields
 CheckField.WIDGET_CLASS = 'checkbutton'
-CheckField.WIDGET_ATTRS = ['onClass']
 
 
 export default CheckField

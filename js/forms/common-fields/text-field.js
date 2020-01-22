@@ -6,17 +6,43 @@ import JQueryUIField from './jquery-ui-field.js'
  * A simple text field. The value data type is `String`.
  * @alias qui.forms.commonfields.TextField
  * @extends qui.forms.commonfields.JQueryUIField
- * @param {Object} params
- * * see {@link qui.forms.FormField} for form field parameters
- * @param {?String} [params.placeholder] an empty-text placeholder
- * @param {Boolean} [params.clearPlaceholder] set to `true` to clear the placeholder on first change (defaults to
- * `false`)
- * @param {Boolean} [params.autocomplete] enables or disables field autocomplete (enabled by default)
- * @param {?Number} [params.minLength] minimum required text length
- * @param {?Number} [params.maxLength] maximum allowed text length
- * @param {Boolean} [params.continuousChange] enables or disables change events at each key stroke
  */
 class TextField extends JQueryUIField {
+
+    /**
+     * @constructs qui.forms.commonfields.TextField
+     * @param {?String} [placeholder] an empty-text placeholder
+     * @param {Boolean} [clearPlaceholder] set to `true` to clear the placeholder on first change (defaults to `false`)
+     * @param {Boolean} [autocomplete] enables or disables field autocomplete (enabled by default)
+     * @param {?Number} [minLength] minimum required text length
+     * @param {?Number} [maxLength] maximum allowed text length
+     * @param {Boolean} [continuousChange] set to `true` to enable change events at each key stroke
+     * @param {Object} [widgetAttrs] extra attributes to pass to underlying JQueryUI widget
+     * @param params
+     * * see {@link qui.forms.FormField} for form field parameters
+     */
+    constructor({
+        placeholder = null,
+        clearPlaceholder = false,
+        autocomplete = true,
+        minLength = null,
+        maxLength = null,
+        continuousChange = false,
+        widgetAttrs = {},
+        ...params
+    }) {
+        Object.assign(widgetAttrs, {
+            placeholder: placeholder,
+            clearPlaceholder: clearPlaceholder,
+            autocomplete: autocomplete,
+            minLength: minLength,
+            maxLength: maxLength,
+            continuousChange: continuousChange,
+            ...params
+        })
+
+        super({widgetAttrs: widgetAttrs, ...params})
+    }
 
     getInputElement() {
         return this.getWidget().children('input')
@@ -30,10 +56,6 @@ class TextField extends JQueryUIField {
 
 // TODO es7 class fields
 TextField.WIDGET_CLASS = 'textinput'
-TextField.WIDGET_ATTRS = [
-    'placeholder', 'clearPlaceholder', 'autocomplete',
-    'minLength', 'maxLength', 'continuousChange'
-]
 
 
 export default TextField

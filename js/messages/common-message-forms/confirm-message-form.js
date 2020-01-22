@@ -17,10 +17,10 @@ class ConfirmMessageForm extends MessageForm {
 
     /**
      * @constructs qui.messages.commonmessageforms.ConfirmMessageForm
-     * @param {Object} params
+     * @param {qui.messages.MessageForm.Callback} [onYes] an optional confirmation callback
+     * @param {qui.messages.MessageForm.Callback} [onNo] an optional decline callback
+     * @param params
      * * see {@link qui.messages.MessageForm} for message form parameters
-     * @param {qui.messages.MessageForm.Callback} [params.onYes] an optional confirmation callback
-     * @param {qui.messages.MessageForm.Callback} [params.onNo] an optional decline callback
      */
     constructor({onYes = null, onNo = null, ...params} = {}) {
         ObjectUtils.setDefault(params, 'icon', new StockIcon({name: 'qmark'}))

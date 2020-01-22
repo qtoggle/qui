@@ -27,33 +27,45 @@ class FormField extends mix().with(ViewMixin) {
 
     /**
      * @constructs qui.forms.FormField
-     * @param {Object} params
-     * * see {@link qui.views.ViewMixin} for view parameters
-     * @param {String} params.name field name
-     * @param {String} [params.initialValue] an optional initial value for the field
-     * @param {String} [params.label] field label
-     * @param {String} [params.description] an optional field description
-     * @param {String} [params.unit] an optional unit of measurement
-     * @param {Boolean} [params.separator] if set to `true`, a separator will be drawn above the field (defaults to `false`)
-     * @param {Boolean} [params.required] if set to `true`, the field value must be present for a successful validation
+     * @param {String} name field name
+     * @param {String} [initialValue] an optional initial value for the field
+     * @param {String} [label] field label
+     * @param {String} [description] an optional field description
+     * @param {String} [unit] an optional unit of measurement
+     * @param {Boolean} [separator] if set to `true`, a separator will be drawn above the field (defaults to `false`)
+     * @param {Boolean} [required] if set to `true`, the field value must be present for a successful validation
      * (defaults to `false`)
-     * @param {Boolean} [params.readonly] if set to `true`, the field widget will not allow user input
-     * @param {Boolean} [params.disabled] if set to `true`, the field widget will be completely disabled (defaults to
+     * @param {Boolean} [readonly] if set to `true`, the field widget will not allow user input
+     * @param {Boolean} [disabled] if set to `true`, the field widget will be completely disabled (defaults to
      * `false`)
-     * @param {Boolean} [params.hidden] if set to `true`, the field will be initially hidden (defaults to `false`)
-     * @param {Boolean} [params.forceOneLine] if set to `true`, label and value will be shown on one single line, ignoring
+     * @param {Boolean} [hidden] if set to `true`, the field will be initially hidden (defaults to `false`)
+     * @param {Boolean} [forceOneLine] if set to `true`, label and value will be shown on one single line, ignoring
      * form's `compact` attribute
-     * @param {?Number} [params.valueWidth] sets the width of the value column, in percents, relative to the form body; if
+     * @param {?Number} [valueWidth] sets the width of the value column, in percents, relative to the form body; if
      * set to `null` (the default), the form's `valuesWidth` setting will be used; if set to `0`, no width constraints will
      * be imposed on value or label; this attribute only works for fields displayed on a single line
-     * @param {Function} [params.onChange] called whenever the field value changes (see {@link
+     * @param {Function} [onChange] called whenever the field value changes (see {@link
      * qui.forms.FormField#onChange})
-     * @param {Function} [params.validate] a validator function (see {@link qui.forms.FormField#validate})
+     * @param {Function} [validate] a validator function (see {@link qui.forms.FormField#validate})
+     * @param params
+     * * see {@link qui.views.ViewMixin} for view parameters
      */
     constructor({
-        name, initialValue = null, label = '', description = '', unit = '', separator = false, required = false,
-        readonly = false, disabled = false, hidden = false, forceOneLine = false, valueWidth = null, onChange = null,
-        validate = null, ...params
+        name,
+        initialValue = null,
+        label = '',
+        description = '',
+        unit = '',
+        separator = false,
+        required = false,
+        readonly = false,
+        disabled = false,
+        hidden = false,
+        forceOneLine = false,
+        valueWidth = null,
+        onChange = null,
+        validate = null,
+        ...params
     }) {
         super(params)
 

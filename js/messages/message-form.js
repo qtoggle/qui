@@ -21,10 +21,10 @@ class MessageForm extends PageForm {
 
     /**
      * @constructs qui.messages.MessageForm
-     * @param {Object} params
+     * @param {String} message the message
+     * @param {qui.icons.Icon} [icon] an optional icon
+     * @param params
      * * see {@link qui.forms.PageForm} for page form parameters
-     * @param {String} params.message the message
-     * @param {qui.icons.Icon} [params.icon] an optional icon
      */
     constructor({message, icon = null, ...params}) {
         ObjectUtils.setDefault(params, 'modal', true)

@@ -15,13 +15,14 @@ class JQueryUIField extends FormField {
 
     /**
      * @constructs qui.forms.commonfields.JQueryUIField
-     * @param {Object} params
+     * @param params
      * * see {@link qui.forms.FormField} for form field parameters
+     * @param {Object} widgetAttrs attributes to pass to underlying JQueryUI widget
      */
-    constructor({...params}) {
+    constructor({widgetAttrs, ...params}) {
         super(params)
 
-        this._widgetAttrs = ObjectUtils.filter(params, (k, v) => this.constructor.WIDGET_ATTRS.indexOf(k) >= 0)
+        this._widgetAttrs = widgetAttrs
     }
 
     makeHTML() {
@@ -41,8 +42,7 @@ class JQueryUIField extends FormField {
     }
 
     makeWidget() {
-        let attrs = ObjectUtils.copy(this.constructor.WIDGET_DEF_ATTRS)
-        Object.assign(attrs, this._widgetAttrs)
+        let attrs = ObjectUtils.copy(this._widgetAttrs)
 
         /* Always supply field name to widget */
         attrs['name'] = this.getName()
@@ -108,12 +108,6 @@ class JQueryUIField extends FormField {
 
 /* jQuery UI widget class */
 JQueryUIField.WIDGET_CLASS = ''
-
-/* Default widget attributes */
-JQueryUIField.WIDGET_DEF_ATTRS = {}
-
-/* Attribute names to be copied from field to widget */
-JQueryUIField.WIDGET_ATTRS = []
 
 
 export default JQueryUIField

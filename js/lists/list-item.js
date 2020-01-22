@@ -18,10 +18,10 @@ class ListItem extends mix().with(ViewMixin) {
 
     /**
      * @constructs qui.lists.ListItem
-     * @param {Object} params
+     * @param {jQuery} [content] item content
+     * @param {*} [data] user data associated with the item
+     * @param params
      * * see {@link qui.views.ViewMixin} for view parameters
-     * @param {jQuery} params.content item content
-     * @param {*} [params.data] user data associated with the item
      */
     constructor({content = null, data = null, ...params}) {
         super(params)

@@ -13,11 +13,11 @@ class CompositeField extends FormField {
 
     /**
      * @constructs qui.forms.commonfields.CompositeField
-     * @param {Object} params
-     * * see {@link qui.forms.FormField} for form field parameters
-     * @param {qui.forms.FormField[]} [params.fields] the list of subfields
-     * @param {String} [params.layout] align subfield widgets vertically (`"vertical"`) or horizontally (`"horizontal"`,
+     * @param {qui.forms.FormField[]} fields the list of subfields
+     * @param {String} [layout] align subfield widgets vertically (`"vertical"`) or horizontally (`"horizontal"`,
      * default)
+     * @param params
+     * * see {@link qui.forms.FormField} for form field parameters
      */
     constructor({fields, layout = 'horizontal', ...params}) {
         super(params)

@@ -9,13 +9,6 @@ const ICON_DATA_ATTR = '_icon'
 class Icon {
 
     /**
-     * @constructs qui.icons.Icon
-     * @param {Object} params icon attributes
-     */
-    constructor(...params) {
-    }
-
-    /**
      * Apply the icon to an HTML element.
      * @param {jQuery} element the element to which the icon will be applied
      */

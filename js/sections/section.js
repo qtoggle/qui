@@ -25,13 +25,12 @@ class Section extends mix().with(SingletonMixin) {
 
     /**
      * @constructs qui.sections.Section
-     * @param {Object} params
-     * @param {String} params.id section identifier
-     * @param {String} params.title section title
-     * @param {qui.icons.Icon} params.icon section icon
-     * @param {String} [params.buttonType] one of {@link qui.sections.BUTTON_TYPE_MENU_BAR} (default),
+     * @param {String} id section identifier
+     * @param {String} title section title
+     * @param {qui.icons.Icon} icon section icon
+     * @param {String} [buttonType] one of {@link qui.sections.BUTTON_TYPE_MENU_BAR} (default),
      * {@link qui.sections.BUTTON_TYPE_TOP_BAR} and {@link qui.sections.BUTTON_TYPE_NONE}
-     * @param {Number} [params.index] sets the section position (ordering) in relation with other sections; by default,
+     * @param {Number} [index] sets the section position (ordering) in relation with other sections; by default,
      * sections are positioned based on their registration order
      */
     constructor({id, title, icon, buttonType = Sections.BUTTON_TYPE_MENU_BAR, index = 0}) {

@@ -16,23 +16,30 @@ class StockIcon extends Icon {
 
     /**
      * @constructs qui.icons.StockIcon
-     * @param {Object} params
-     * @param {String} params.name the icon name (in normal state)
-     * @param {String} [params.stockName] the name of the stock (defaults to `qui`)
-     * @param {String} [params.variant] the icon variant (in normal state)
-     * @param {String} [params.activeName] the icon name in active state
-     * @param {String} [params.activeVariant] the icon variant in active state
-     * @param {String} [params.focusedName] the icon name in focused state
-     * @param {String} [params.focusedVariant] the icon variant in focused state
-     * @param {String} [params.selectedName] the icon name in selected state
-     * @param {String} [params.selectedVariant] the icon variant in selected state
-     * @param {String} [params.scale] icon scaling factor (defaults to `1`)
-     * @param {String} [params.decoration] icon decoration
+     * @param {String} name the icon name (in normal state)
+     * @param {String} [stockName] the name of the stock (defaults to `qui`)
+     * @param {String} [variant] the icon variant (in normal state)
+     * @param {String} [activeName] the icon name in active state
+     * @param {String} [activeVariant] the icon variant in active state
+     * @param {String} [focusedName] the icon name in focused state
+     * @param {String} [focusedVariant] the icon variant in focused state
+     * @param {String} [selectedName] the icon name in selected state
+     * @param {String} [selectedVariant] the icon variant in selected state
+     * @param {Number} [scale] icon scaling factor (defaults to `1`)
+     * @param {String} [decoration] icon decoration
      */
     constructor({
-        name, stockName = DefaultStock.NAME, variant = null, activeName = null, activeVariant = null,
-        focusedName = null, focusedVariant = null, selectedName = null, selectedVariant = null,
-        scale = 1, decoration = null
+        name,
+        stockName = DefaultStock.NAME,
+        variant = null,
+        activeName = null,
+        activeVariant = null,
+        focusedName = null,
+        focusedVariant = null,
+        selectedName = null,
+        selectedVariant = null,
+        scale = 1,
+        decoration = null
     }) {
         super()
 

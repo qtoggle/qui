@@ -20,12 +20,12 @@ const StructuredPageMixin = Mixin((superclass = Object) => {
 
         /**
          * @constructs qui.views.commonviews.StructuredViewMixin
-         * @param {...*} args
+         * @param [params]
          * * see {@link qui.views.commonviews.StructuredViewMixin} for structured view parameters
          * * see {@link qui.pages.PageMixin} for page parameters
          */
-        constructor(...args) {
-            super(...args)
+        constructor({...params} = {}) {
+            super(params)
         }
 
         prepareIcon(icon) {
