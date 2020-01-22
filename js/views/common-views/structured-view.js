@@ -360,4 +360,3 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
 
 
 export default StructuredViewMixin
-

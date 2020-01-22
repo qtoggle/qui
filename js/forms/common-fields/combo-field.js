@@ -32,7 +32,7 @@ class ComboField extends JQueryUIField {
                 filterEnabled: filterEnabled,
                 makeChoices: function () {
                     return that.makeChoices()
-                },
+                }
             },
             ...params
         })

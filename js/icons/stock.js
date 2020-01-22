@@ -18,8 +18,8 @@ class Stock {
      * @param {Object<String,Number>} names a mapping associating each icon name to its horizontal offset
      * @param {?Object<String,Number>} [variants] a mapping associating each icon variant to its vertical offset; the
      * variants of the default stock ({@link qui.icons.defaultstock} are used if not supplied
-     * @param {Object<String,String>} [variantAliases] an optional mapping of aliases to icon variants; the variant aliases
-     * of the default stock ({@link qui.icons.defaultstock} are used if not supplied
+     * @param {Object<String,String>} [variantAliases] an optional mapping of aliases to icon variants; the variant
+     * aliases of the default stock ({@link qui.icons.defaultstock} are used if not supplied
      *
      */
     constructor({src, unit, size, width, height, names, variants = null, variantAliases = {}}) {

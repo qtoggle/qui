@@ -36,16 +36,14 @@ class FormField extends mix().with(ViewMixin) {
      * @param {Boolean} [required] if set to `true`, the field value must be present for a successful validation
      * (defaults to `false`)
      * @param {Boolean} [readonly] if set to `true`, the field widget will not allow user input
-     * @param {Boolean} [disabled] if set to `true`, the field widget will be completely disabled (defaults to
-     * `false`)
+     * @param {Boolean} [disabled] if set to `true`, the field widget will be completely disabled (defaults to `false`)
      * @param {Boolean} [hidden] if set to `true`, the field will be initially hidden (defaults to `false`)
      * @param {Boolean} [forceOneLine] if set to `true`, label and value will be shown on one single line, ignoring
      * form's `compact` attribute
      * @param {?Number} [valueWidth] sets the width of the value column, in percents, relative to the form body; if
-     * set to `null` (the default), the form's `valuesWidth` setting will be used; if set to `0`, no width constraints will
-     * be imposed on value or label; this attribute only works for fields displayed on a single line
-     * @param {Function} [onChange] called whenever the field value changes (see {@link
-     * qui.forms.FormField#onChange})
+     * set to `null` (the default), the form's `valuesWidth` setting will be used; if set to `0`, no width constraints
+     * will be imposed on value or label; this attribute only works for fields displayed on a single line
+     * @param {Function} [onChange] called whenever the field value changes (see {@link qui.forms.FormField#onChange})
      * @param {Function} [validate] a validator function (see {@link qui.forms.FormField#validate})
      * @param params
      * * see {@link qui.views.ViewMixin} for view parameters

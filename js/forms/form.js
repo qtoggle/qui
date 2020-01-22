@@ -31,19 +31,20 @@ class Form extends mix().with(StructuredViewMixin) {
      * @param {Boolean} [noBackground] indicates that the form should have transparent background (defaults to
      * `false`)
      * @param {Boolean} [compact] indicates that the form should be compact to better fit in smaller containers;
-     * compact forms have field labels and values on separate lines, to reduce the overall form width (defaults to `false`)
+     * compact forms have field labels and values on separate lines, to reduce the overall form width (defaults to
+     * `false`)
      * @param {String} [fieldsAlignment] indicates how field labels and values are aligned:
      *  * `"center"` - aligns labels to the right and values to the left (default)
      *  * `"sides"` - aligns labels to the left and values to the right
      * @param {Number} [valuesWidth] sets the width of the values column, as percent, relative to the form body; when
-     * set to `0` the width of each field's value will be computed automatically; this attribute is ignored for forms that
-     * have `compact` set to `true` (defaults to `60`)
+     * set to `0` the width of each field's value will be computed automatically; this attribute is ignored for forms
+     * that have `compact` set to `true` (defaults to `60`)
      * @param {Boolean} [continuousValidation] if set to `true`, each field will be validated upon change, instead of
      * when the form data is applied (using {@link qui.forms.Form#applyData}). Defaults to `false`
      * @param {Boolean} [closeOnApply] if set to `false`, the form will not automatically close when data is applied
      * (using {@link qui.forms.Form#applyData}). Defaults to `true`
-     * @param {Boolean} [autoDisableDefaultButton] controls if the default button is automatically enabled and
-     * disabled based on currently changed fields, their validity and applied state. Defaults to `true`
+     * @param {Boolean} [autoDisableDefaultButton] controls if the default button is automatically enabled and disabled
+     * based on currently changed fields, their validity and applied state. Defaults to `true`
      * @param {qui.forms.FormField[]} [fields] fields to be added to the form
      * @param {qui.forms.FormButton[]} [buttons] buttons to be added to the form
      * @param {Object} [data] a dictionary with initial values for the fields
@@ -1194,4 +1195,3 @@ class Form extends mix().with(StructuredViewMixin) {
 
 
 export default Form
-
