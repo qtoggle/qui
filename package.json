@@ -22,7 +22,6 @@
     "expose-loader": "*",
     "file-loader": "*",
     "glob": "*",
-    "jaguarjs-jsdoc": "*",
     "jsdoc": "*",
     "jsdoc-export-default-interop": "*",
     "jsdoc-typeof-plugin": "*",
