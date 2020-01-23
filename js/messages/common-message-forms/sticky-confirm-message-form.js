@@ -14,7 +14,7 @@ import StickyModalPageMixin from '../sticky-modal-page.js'
 class StickyConfirmMessageForm extends mix(ConfirmMessageForm).with(StickyModalPageMixin) {
 
     /**
-     * @constructs qui.messages.commonmessageforms.StickyConfirmMessageForm
+     * @constructs
      * @param {...*} args parent class parameters
      */
     constructor({...args}) {

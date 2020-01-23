@@ -13,7 +13,7 @@ import ViewMixin from '$qui/views/view.js'
 class FormButton extends mix().with(ViewMixin) {
 
     /**
-     * @constructs qui.forms.FormButton
+     * @constructs
      * @param {String} id button identifier
      * @param {String} caption button caption
      * @param {String} [style] button style:

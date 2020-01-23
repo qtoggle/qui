@@ -30,7 +30,7 @@ import Icon from './icon.js'
 class MultiStateSpritesIcon extends Icon {
 
     /**
-     * @constructs qui.icons.Icon
+     * @constructs
      * @param {String} url the URL of the image resource
      * @param {Number} bgWidth the total width of the image resource
      * @param {Number} bgHeight the total height of the image resource

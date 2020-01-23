@@ -81,7 +81,7 @@ function BareMixin(mixin) {
 export class MixinBuilder {
 
     /**
-     * @constructs qui.base.mixwith.MixinBuilder
+     * @constructs
      * @param {typeof Object} superclass
      */
     constructor(superclass) {

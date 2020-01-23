@@ -13,7 +13,7 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
 class ConditionVariable {
 
     /**
-     * @constructs qui.base.ConditionVariable
+     * @constructs
      */
     constructor() {
         this._resolve = null

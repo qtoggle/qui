@@ -14,7 +14,7 @@ import ListItem from '../list-item.js'
 class IconLabelListItem extends ListItem {
 
     /**
-     * @constructs qui.lists.ListItem
+     * @constructs
      * @param {String} label item label
      * @param {qui.icons.Icon} [icon] item icon
      * @param {...*} args parent class parameters

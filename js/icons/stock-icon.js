@@ -15,7 +15,7 @@ import * as Stocks           from './stocks.js'
 class StockIcon extends Icon {
 
     /**
-     * @constructs qui.icons.StockIcon
+     * @constructs
      * @param {String} name the icon name (in normal state)
      * @param {String} [stockName] the name of the stock (defaults to `qui`)
      * @param {String} [variant] the icon variant (in normal state)

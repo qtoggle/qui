@@ -10,7 +10,7 @@
 class Signal {
 
     /**
-     * @constructs qui.base.Signal
+     * @constructs
      * @param {Object} [object] an optional object that owns and emits the signal
      */
     constructor(object = null) {

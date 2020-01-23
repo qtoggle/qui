@@ -10,7 +10,7 @@ import TextField from './text-field.js'
 class PhoneField extends TextField {
 
     /**
-     * @constructs qui.forms.commonfields.PhoneField
+     * @constructs
      * @param {...*} args parent class parameters
      */
     constructor({...args}) {

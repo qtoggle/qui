@@ -29,7 +29,7 @@ const logger = Logger.get('qui.lists.list')
 class List extends mix().with(StructuredViewMixin) {
 
     /**
-     * @constructs qui.lists.List
+     * @constructs
      * @param {qui.lists.ListItem[]} [items] initial list items
      * @param {Boolean} [searchEnabled] set to `true` to enable the search feature (defaults to `false`)
      * @param {Boolean} [addEnabled] set to `true` to enable the add item feature (defaults to `false`)

@@ -10,7 +10,7 @@ import JQueryUIField from './jquery-ui-field.js'
 class ChoiceButtonsField extends JQueryUIField {
 
     /**
-     * @constructs qui.forms.commonfields.ChoiceButtonsField
+     * @constructs
      * @param {Object[]|Object[][]} choices choices or groups of choices (pairs/arrays of pairs of `label` and `value`)
      * @param {String} [onClass] the CSS class to add to buttons in *on* state (defaults to `on`)
      * @param {...*} args parent class parameters

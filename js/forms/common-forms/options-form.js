@@ -14,7 +14,7 @@ import Form from '../form.js'
 class OptionsForm extends Form {
 
     /**
-     * @constructs qui.forms.commonforms.OptionsForm
+     * @constructs
      * @param {qui.pages.PageMixin} page the page associated to this options form
      * @param {...*} args parent class parameters
      */

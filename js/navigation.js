@@ -34,7 +34,7 @@ let currentURLQuery = null
 export class PageNotFoundError extends Error {
 
     /**
-     * @constructs qui.navigation.PageNotFoundError
+     * @constructs
      * @param {String[]} path the full path that could not be navigated
      * @param {String} pathId the path id to which the navigation could not be done
      * @param {qui.sections.Section} section the section in which the navigation error occurred
@@ -59,7 +59,7 @@ export class PageNotFoundError extends Error {
 export class PageLoadError extends Error {
 
     /**
-     * @constructs qui.navigation.PageLoadError
+     * @constructs
      * @param {String[]} path the full path that could not be navigated
      * @param {String} pathId the path id to which the navigation could not be done
      * @param {qui.sections.Section} section the section in which the navigation error occurred
@@ -96,7 +96,7 @@ export class PageLoadError extends Error {
 export class SectionLoadError extends Error {
 
     /**
-     * @constructs qui.navigation.PageLoadError
+     * @constructs
      * @param {String[]} path the full path that could not be navigated
      * @param {String} pathId the path id to which the navigation could not be done
      * @param {qui.sections.Section} section the section in which the navigation error occurred

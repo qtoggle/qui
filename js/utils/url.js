@@ -5,7 +5,7 @@
 class URL {
 
     /**
-     * @constructs qui.utils.URL
+     * @constructs
      * @param {String} scheme
      * @param {String} [username]
      * @param {String} [password]

@@ -10,7 +10,7 @@ import TextField from './text-field.js'
 class EmailField extends TextField {
 
     /**
-     * @constructs qui.forms.commonfields.EmailField
+     * @constructs
      * @param {...*} args parent class parameters
      */
     constructor({...args}) {

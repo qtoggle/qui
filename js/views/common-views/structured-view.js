@@ -14,6 +14,7 @@ import ViewMixin from '../view.js'
 const logger = Logger.get('qui.views.commonviews.structuredview')
 
 
+/** @lends qui.views.commonviews.StructuredViewMixin */
 const StructuredViewMixin = Mixin((superclass = Object) => {
 
     /**
@@ -25,7 +26,7 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
     class StructuredViewMixin extends ViewMixin(superclass) {
 
         /**
-         * @constructs qui.views.commonviews.StructuredViewMixin
+         * @constructs
          * @param {?String} [title] view title (set to `null` if you don't want a view top at all)
          * @param {qui.icons.Icon} [icon] view icon
          * @param {Boolean} [minimizable] indicates that the view should be minimizable by clicking on its top bar

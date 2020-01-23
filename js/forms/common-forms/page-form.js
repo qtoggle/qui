@@ -19,7 +19,7 @@ import Form from '../form.js'
 class PageForm extends mix(Form).with(PageMixin) {
 
     /**
-     * @constructs qui.forms.commonforms.PageForm
+     * @constructs
      * @param {Boolean} [preventUnappliedClose] if set to `true`, the form will try to prevent losing unapplied data
      * when closed, by asking the user for confirmation
      * @param {...*} args parent class parameters

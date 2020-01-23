@@ -10,7 +10,7 @@ import TextField from './text-field.js'
 class NumericField extends TextField {
 
     /**
-     * @constructs qui.forms.commonfields.NumericField
+     * @constructs
      * @param {...*} args parent class parameters
      */
     constructor({...args}) {

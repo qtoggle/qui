@@ -27,6 +27,7 @@ export const STATE_ERROR = 'error'
 export const STATE_PROGRESS = 'progress'
 
 
+/** @lends qui.views.ViewMixin */
 const ViewMixin = Mixin((superclass = Object) => {
 
     /**
@@ -37,7 +38,7 @@ const ViewMixin = Mixin((superclass = Object) => {
     class ViewMixin extends superclass {
 
         /**
-         * @constructs qui.views.ViewMixin
+         * @constructs
          * @param {String} [cssClass] additional CSS classes to set to the view element
          * @param {...*} args parent class parameters
          */

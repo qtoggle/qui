@@ -12,7 +12,7 @@ class UpDownField extends JQueryUIField {
     // TODO add setters and getters for widget properties
 
     /**
-     * @constructs qui.forms.commonfields.UpDownField
+     * @constructs
      * @param {Number} [min] the minimum value (defaults to `0`)
      * @param {Number} [max] the maximum value (defaults to `100`)
      * @param {Number} [step] the step value (defaults to `1`)

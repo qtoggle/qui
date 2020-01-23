@@ -27,7 +27,7 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
 class FormField extends mix().with(ViewMixin) {
 
     /**
-     * @constructs qui.forms.FormField
+     * @constructs
      * @param {String} name field name
      * @param {String} [initialValue] an optional initial value for the field
      * @param {String} [label] field label

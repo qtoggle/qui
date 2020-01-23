@@ -12,7 +12,7 @@ import FormField from '../form-field.js'
 class CompositeField extends FormField {
 
     /**
-     * @constructs qui.forms.commonfields.CompositeField
+     * @constructs
      * @param {qui.forms.FormField[]} fields the list of subfields
      * @param {String} [layout] align subfield widgets vertically (`"vertical"`) or horizontally (`"horizontal"`,
      * default)

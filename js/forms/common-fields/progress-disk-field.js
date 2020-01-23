@@ -10,7 +10,7 @@ import JQueryUIField from './jquery-ui-field.js'
 class ProgressDiskField extends JQueryUIField {
 
     /**
-     * @constructs qui.forms.commonfields.ProgressDiskField
+     * @constructs
      * @param {Number|String} [radius] the disk radius (defaults to `1em`)
      * @param {Number} [min] the minimum value (defaults to `0`)
      * @param {Number} [max] the maximum value (defaults to `100`)

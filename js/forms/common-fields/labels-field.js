@@ -13,7 +13,7 @@ class LabelsField extends JQueryUIField {
     // TODO add setters and getters for widget properties
 
     /**
-     * @constructs qui.forms.commonfields.LabelsField
+     * @constructs
      * @param {String} [color] the label text color (defaults to `@background-color`)
      * @param {String} [background] the default label background color, used unless the given labels specify
      * otherwise (defaults to `@foreground-color`)

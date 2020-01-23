@@ -20,7 +20,7 @@ export const STATE_APPLIED = 'applied'
 export class ValidationError extends Error {
 
     /**
-     * @constructs qui.forms.ValidationError
+     * @constructs
      * @param {String} message the error message to be displayed to the user
      */
     constructor(message) {
@@ -41,7 +41,7 @@ export class ValidationError extends Error {
 export class ErrorMapping extends Error {
 
     /**
-     * @constructs qui.forms.ErrorMapping
+     * @constructs
      * @param {Error|Object<String,Error>|qui.forms.ErrorMapping} errors one of:
      *  * a single error that will be associated to the form itself
      *  * a dictionary with errors mapped to field names which will be used as is

@@ -14,7 +14,7 @@ import FormField from '../form-field.js'
 class JQueryUIField extends FormField {
 
     /**
-     * @constructs qui.forms.commonfields.JQueryUIField
+     * @constructs
      * @param {Object} widgetAttrs attributes to pass to underlying JQueryUI widget
      * @param {...*} args parent class parameters
      */

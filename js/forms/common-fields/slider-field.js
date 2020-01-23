@@ -12,7 +12,7 @@ class SliderField extends JQueryUIField {
     // TODO add setters and getters for widget properties
 
     /**
-     * @constructs qui.forms.commonfields.SliderField
+     * @constructs
      * @param {Object[]} [ticks] tick marks (pairs of `label` and `value`)
      * @param {Number} [ticksStep] display every `ticksStep` tick (defaults to `1`)
      * @param {Boolean} [equidistant] set to `true` to draw the tick marks equidistantly, even if their corresponding

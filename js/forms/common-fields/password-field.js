@@ -10,7 +10,7 @@ import TextField from './text-field.js'
 class PasswordField extends TextField {
 
     /**
-     * @constructs qui.forms.commonfields.PasswordField
+     * @constructs
      * @param {Boolean} [clearEnabled] set to `true` to enable clear button
      * @param {Boolean} [revealOnFocus] set to `true` to enable password revealing when widget is focused
      * @param {...*} args parent class parameters

@@ -20,7 +20,7 @@ import * as ObjectUtils from '$qui/utils/object.js'
 class MessageForm extends PageForm {
 
     /**
-     * @constructs qui.messages.MessageForm
+     * @constructs
      * @param {String} message the message
      * @param {qui.icons.Icon} [icon] an optional icon
      * @param {...*} args parent class parameters

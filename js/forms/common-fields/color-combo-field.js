@@ -12,7 +12,7 @@ import JQueryUIField from './jquery-ui-field.js'
 class ColorComboField extends JQueryUIField {
 
     /**
-     * @constructs qui.forms.commonfields.ColorComboField
+     * @constructs
      * @param {Boolean} [filterEnabled] set to `true` to enable filter input box
      * @param {...*} args parent class parameters
      */

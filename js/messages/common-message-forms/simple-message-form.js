@@ -17,7 +17,7 @@ import MessageForm from '../message-form.js'
 class SimpleMessageForm extends MessageForm {
 
     /**
-     * @constructs qui.messages.commonmessageforms.SimpleMessageForm
+     * @constructs
      * @param {String} type message type (`"info"`, `"warning"` or `"error"`)
      * @param {String} [buttonCaption] optional button caption (defaults to `"OK"`)
      * @param {qui.messages.MessageForm.Callback} [onClose] a dismiss callback

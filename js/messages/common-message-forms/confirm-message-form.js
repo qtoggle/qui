@@ -16,7 +16,7 @@ import MessageForm from '../message-form.js'
 class ConfirmMessageForm extends MessageForm {
 
     /**
-     * @constructs qui.messages.commonmessageforms.ConfirmMessageForm
+     * @constructs
      * @param {qui.messages.MessageForm.Callback} [onYes] an optional confirmation callback
      * @param {qui.messages.MessageForm.Callback} [onNo] an optional decline callback
      * @param {...*} args parent class parameters

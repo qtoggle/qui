@@ -27,7 +27,7 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
 class Form extends mix().with(StructuredViewMixin) {
 
     /**
-     * @constructs qui.forms.Form
+     * @constructs
      * @param {Number|String} [width] a specific form width to be used instead of the default
      * @param {Boolean} [noBackground] indicates that the form should have transparent background (defaults to
      * `false`)

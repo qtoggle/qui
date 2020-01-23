@@ -16,7 +16,7 @@ import List from '../list.js'
 class PageList extends mix(List).with(PageMixin) {
 
     /**
-     * @constructs qui.lists.PageList
+     * @constructs
      * @param {...*} args parent class parameters
      */
     constructor({...args} = {}) {

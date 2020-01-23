@@ -10,7 +10,7 @@ import JQueryUIField from './jquery-ui-field.js'
 class TextField extends JQueryUIField {
 
     /**
-     * @constructs qui.forms.commonfields.TextField
+     * @constructs
      * @param {?String} [placeholder] an empty-text placeholder
      * @param {Boolean} [clearPlaceholder] set to `true` to clear the placeholder on first change (defaults to `false`)
      * @param {Boolean} [autocomplete] enables or disables field autocomplete (enabled by default)

@@ -24,7 +24,7 @@ import * as Sections from './sections.js'
 class Section extends mix().with(SingletonMixin) {
 
     /**
-     * @constructs qui.sections.Section
+     * @constructs
      * @param {String} id section identifier
      * @param {String} title section title
      * @param {qui.icons.Icon} icon section icon

@@ -87,7 +87,7 @@ export function str2b64(str) {
 export class SHA256 {
 
     /**
-     * @constructs qui.utils.crypto.SHA256
+     * @constructs
      * @param {String|Number[]} [data] the data to hash
      */
     constructor(data = null) {
@@ -319,7 +319,7 @@ SHA256._K = [
 export class HMACSHA256 {
 
     /**
-     * @constructs qui.utils.crypto.HMACSHA256
+     * @constructs
      * @param {String|Number[]} key the HMAC key
      * @param {String|Number[]} [data] the data to hash
      */

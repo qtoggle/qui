@@ -12,7 +12,7 @@ import JQueryUIField from './jquery-ui-field.js'
 class CheckField extends JQueryUIField {
 
     /**
-     * @constructs qui.forms.commonfields.CheckField
+     * @constructs
      * @param {String} [onClass] the CSS class to add to the check button in *on* state (defaults to `on`)
      * @param {...*} args parent class parameters
      */

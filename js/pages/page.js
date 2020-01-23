@@ -18,6 +18,7 @@ import {updateUI}          from './pages.js'
 const viewMixinPrototype = ViewMixin().prototype
 
 
+/** @lends qui.pages.PageMixin */
 const PageMixin = Mixin((superclass = Object, rootclass) => {
 
     let rootPrototype = rootclass.prototype

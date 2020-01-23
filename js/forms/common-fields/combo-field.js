@@ -12,7 +12,7 @@ class ComboField extends JQueryUIField {
     // TODO add setters and getters for widget properties
 
     /**
-     * @constructs qui.forms.commonfields.ComboField
+     * @constructs
      * @param {Object[]} [choices] choices (pairs of `label` and `value`)
      * @param {Function} [makeChoices] a function that generates choices (see
      * {@link qui.forms.commonfields.ComboField#makeChoices}))

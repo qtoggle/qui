@@ -10,7 +10,7 @@ import JQueryUIField from './jquery-ui-field.js'
 class PushButtonField extends JQueryUIField {
 
     /**
-     * @constructs qui.forms.commonfields.PushButtonField
+     * @constructs
      * @param {String} caption the button caption
      * @param {Function} onClick function to be executed when the button is pushed (see
      * {@link qui.forms.commonfields.PushButtonField#onClick})

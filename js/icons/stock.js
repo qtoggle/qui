@@ -9,7 +9,7 @@ import * as DefaultStock from './default-stock.js'
 class Stock {
 
     /**
-     * @constructs qui.icons.Stock
+     * @constructs
      * @param {String} src image source (normally a URL)
      * @param {String} unit unit of measurement for icon size (e.g. `"em"`, `"rem"`, `"px"`)
      * @param {Number} size icon size with respect to the `unit` (the icon is assumed to be a square)

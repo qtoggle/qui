@@ -14,7 +14,7 @@ import StickyModalPageMixin from './sticky-modal-page.js'
 class StickyModalProgressMessage extends mix(ModalProgressPage).with(StickyModalPageMixin) {
 
     /**
-     * @constructs qui.messages.StickyModalProgressMessage
+     * @constructs
      * @param {...*} args parent class parameters
      */
     constructor({...args} = {}) {
