@@ -16,6 +16,14 @@ const SingletonMixin = Mixin((superclass = Object) => {
         // static _args = null
 
         /**
+         * @constructs qui.base.SingletonMixin
+         * @param {...*} args parent class parameters
+         */
+        constructor(...args) {
+            super(...args)
+        }
+
+        /**
          * Prepare the class for instantiation, establishing the constructor arguments.
          *
          * Any arguments passed to this method will be passed to the constructor, when creating the singleton.

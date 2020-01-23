@@ -13,12 +13,10 @@ class PasswordField extends TextField {
      * @constructs qui.forms.commonfields.PasswordField
      * @param {Boolean} [clearEnabled] set to `true` to enable clear button
      * @param {Boolean} [revealOnFocus] set to `true` to enable password revealing when widget is focused
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
-     * * see {@link qui.forms.commonfields.TextField} for text field parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({clearEnabled = false, revealOnFocus = false, ...params}) {
-        super({widgetAttrs: {clearEnabled: clearEnabled, revealOnFocus: revealOnFocus}, ...params})
+    constructor({clearEnabled = false, revealOnFocus = false, ...args}) {
+        super({widgetAttrs: {clearEnabled: clearEnabled, revealOnFocus: revealOnFocus}, ...args})
     }
 
 }

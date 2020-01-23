@@ -9,6 +9,7 @@ import StockIcon        from '$qui/icons/stock-icon.js'
 import * as Theme       from '$qui/theme.js'
 import {asap}           from '$qui/utils/misc.js'
 import ViewMixin        from '$qui/views/view.js'
+import {STATE_NORMAL}   from '$qui/views/view.js'
 import * as Window      from '$qui/window.js'
 
 import {STATE_APPLIED}   from './forms.js'
@@ -45,8 +46,7 @@ class FormField extends mix().with(ViewMixin) {
      * will be imposed on value or label; this attribute only works for fields displayed on a single line
      * @param {Function} [onChange] called whenever the field value changes (see {@link qui.forms.FormField#onChange})
      * @param {Function} [validate] a validator function (see {@link qui.forms.FormField#validate})
-     * @param params
-     * * see {@link qui.views.ViewMixin} for view parameters
+     * @param {...*} args parent class parameters
      */
     constructor({
         name,
@@ -63,9 +63,9 @@ class FormField extends mix().with(ViewMixin) {
         valueWidth = null,
         onChange = null,
         validate = null,
-        ...params
+        ...args
     }) {
-        super(params)
+        super(args)
 
         this._name = name
         this._initialValue = initialValue
@@ -642,7 +642,7 @@ class FormField extends mix().with(ViewMixin) {
      */
     clearApplied() {
         if (this.getState() === STATE_APPLIED) {
-            this.setState(this.STATE_NORMAL)
+            this.setState(STATE_NORMAL)
         }
     }
 

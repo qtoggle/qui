@@ -15,12 +15,11 @@ class JQueryUIField extends FormField {
 
     /**
      * @constructs qui.forms.commonfields.JQueryUIField
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
      * @param {Object} widgetAttrs attributes to pass to underlying JQueryUI widget
+     * @param {...*} args parent class parameters
      */
-    constructor({widgetAttrs, ...params}) {
-        super(params)
+    constructor({widgetAttrs, ...args}) {
+        super(args)
 
         this._widgetAttrs = widgetAttrs
     }

@@ -16,11 +16,10 @@ class OptionsForm extends Form {
     /**
      * @constructs qui.forms.commonforms.OptionsForm
      * @param {qui.pages.PageMixin} page the page associated to this options form
-     * @param params
-     * * see {@link qui.forms.Form} for form parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({page, ...params}) {
-        ObjectUtils.assignDefault(params, {
+    constructor({page, ...args}) {
+        ObjectUtils.assignDefault(args, {
             compact: true,
             width: 'auto',
             largeTop: false,
@@ -30,7 +29,7 @@ class OptionsForm extends Form {
             continuousValidation: true
         })
 
-        super(params)
+        super(args)
 
         this._page = page
     }

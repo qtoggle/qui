@@ -35,8 +35,7 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
          * @param {Boolean} [topless] indicates that the view should not have a top bar (defaults to `false`)
          * @param {Boolean} [closable] set to `true` to display a close button on the top bar (defaults to `false`,
          * ignored when `minimizable` is `true`)
-         * @param params
-         * * see {@link qui.views.ViewMixin} for view parameters
+         * @param {...*} args parent class parameters
          */
         constructor({
             title = null,
@@ -46,9 +45,9 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
             largeTop = true,
             topless = false,
             closable = false,
-            ...params
+            ...args
         } = {}) {
-            super(params)
+            super(args)
 
             this._title = title
             this._icon = icon

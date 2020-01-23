@@ -15,7 +15,7 @@ $.widget('qui.slider', {
         ticks: [{label: 0, value: 0}, {label: 50, value: 50}, {label: 100, value: 100}],
         ticksStep: 1,
         snapMode: 0,
-        continuousChange: false,
+        continuousChange: true,
         equidistant: false,
         increment: 0.02,
         fastFactor: 5,

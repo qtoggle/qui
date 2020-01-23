@@ -16,11 +16,10 @@ class CompositeField extends FormField {
      * @param {qui.forms.FormField[]} fields the list of subfields
      * @param {String} [layout] align subfield widgets vertically (`"vertical"`) or horizontally (`"horizontal"`,
      * default)
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({fields, layout = 'horizontal', ...params}) {
-        super(params)
+    constructor({fields, layout = 'horizontal', ...args}) {
+        super(args)
 
         this._fields = fields
         this._layout = layout

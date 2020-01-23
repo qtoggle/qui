@@ -33,11 +33,10 @@ class List extends mix().with(StructuredViewMixin) {
      * @param {qui.lists.ListItem[]} [items] initial list items
      * @param {Boolean} [searchEnabled] set to `true` to enable the search feature (defaults to `false`)
      * @param {Boolean} [addEnabled] set to `true` to enable the add item feature (defaults to `false`)
-     * @param params
-     * * see {@link qui.views.commonviews.StructuredViewMixin} for structured view parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({items = [], searchEnabled = false, addEnabled = false, ...params}) {
-        super(params)
+    constructor({items = [], searchEnabled = false, addEnabled = false, ...args} = {}) {
+        super(args)
 
         this._items = items
         this._searchEnabled = searchEnabled

@@ -11,12 +11,10 @@ class EmailField extends TextField {
 
     /**
      * @constructs qui.forms.commonfields.EmailField
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
-     * * see {@link qui.forms.commonfields.TextField} for text field parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({...params}) {
-        super(params)
+    constructor({...args}) {
+        super(args)
     }
 
     validateWidget(value) {

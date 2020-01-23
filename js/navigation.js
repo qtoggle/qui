@@ -88,6 +88,41 @@ export class PageLoadError extends Error {
 
 }
 
+/**
+ * An error indicating that navigation could not be done due to a section load error.
+ * @alias qui.navigation.SectionLoadError
+ * @extends Error
+ */
+export class SectionLoadError extends Error {
+
+    /**
+     * @constructs qui.navigation.PageLoadError
+     * @param {String[]} path the full path that could not be navigated
+     * @param {String} pathId the path id to which the navigation could not be done
+     * @param {qui.sections.Section} section the section in which the navigation error occurred
+     * @param {Error} error the error that occurred
+     */
+    constructor(path, pathId, section, error) {
+        let msg
+        if (error) {
+            msg = StringUtils.formatPercent(
+                gettext('Page could not be loaded: %(error)s'),
+                {error: error.message}
+            )
+        }
+        else {
+            msg = gettext('Page could not be loaded')
+        }
+        super(msg)
+
+        this.path = path
+        this.pathId = pathId
+        this.section = section
+        this.error = error
+    }
+
+}
+
 
 function updateCurrentURL() {
     let details
@@ -296,7 +331,7 @@ export function navigate(path, handleErrors, pageState) {
 
         logger.errorStack(`could not navigate to section "${section.getId()}"`, error)
 
-        throw new PageLoadError(origPath, section.getId(), section, error)
+        throw new SectionLoadError(origPath, section.getId(), section, error)
 
     }).then(function () {
 

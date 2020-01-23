@@ -23,18 +23,19 @@ class MessageForm extends PageForm {
      * @constructs qui.messages.MessageForm
      * @param {String} message the message
      * @param {qui.icons.Icon} [icon] an optional icon
-     * @param params
-     * * see {@link qui.forms.PageForm} for page form parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({message, icon = null, ...params}) {
-        ObjectUtils.setDefault(params, 'modal', true)
-        ObjectUtils.setDefault(params, 'transparent', true)
-        ObjectUtils.setDefault(params, 'topless', true)
-        ObjectUtils.setDefault(params, 'width', '20em')
-        ObjectUtils.setDefault(params, 'valuesWidth', 100)
-        ObjectUtils.setDefault(params, 'title', params.message)
+    constructor({message, icon = null, ...args}) {
+        ObjectUtils.assignDefault(args, {
+            modal: true,
+            transparent: true,
+            topless: true,
+            width: '20em',
+            valuesWidth: 100,
+            title: args.message
+        })
 
-        super(params)
+        super(args)
 
         this._message = message
         this._icon = icon

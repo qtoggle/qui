@@ -15,12 +15,10 @@ class StickyConfirmMessageForm extends mix(SimpleMessageForm).with(StickyModalPa
 
     /**
      * @constructs qui.messages.commonmessageforms.StickySimpleMessageForm
-     * @param params
-     * * see {@link qui.messages.commonmessageforms.SimpleMessageForm} for simple message form parameters
-     * * see {@link qui.messages.StickyModalPageMixin} for sticky modal page parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({...params}) {
-        super(params)
+    constructor({...args}) {
+        super(args)
     }
 
 }

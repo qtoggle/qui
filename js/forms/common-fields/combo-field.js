@@ -18,11 +18,10 @@ class ComboField extends JQueryUIField {
      * {@link qui.forms.commonfields.ComboField#makeChoices}))
      * @param {Number} [fastFactor] determines how fast the page-up/page-down actions work (defaults to `5`)
      * @param {Boolean} [filterEnabled] set to `true` to enable filter input box
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({choices = [], makeChoices = null, fastFactor = null, filterEnabled = false, ...params}) {
 
+    constructor({choices = [], makeChoices = null, fastFactor = null, filterEnabled = false, ...args}) {
         let that
 
         super({
@@ -34,7 +33,7 @@ class ComboField extends JQueryUIField {
                     return that.makeChoices()
                 }
             },
-            ...params
+            ...args
         })
 
         /* "that" needs to be assigned here because we can't refer to "this" before super() */

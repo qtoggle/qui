@@ -32,11 +32,16 @@ class PagesContext {
          */
         this.popSignal = new Signal(this)
 
+        /**
+         * @type {qui.pages.PageMixin[]}
+         * @private
+         */
         this._stack = []
     }
 
     /**
      * Return the number of pages.
+     * @returns {Number}
      */
     getSize() {
         return this._stack.length

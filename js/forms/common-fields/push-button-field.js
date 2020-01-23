@@ -1,6 +1,4 @@
 
-import * as ObjectUtils from '$qui/utils/object.js'
-
 import JQueryUIField from './jquery-ui-field.js'
 
 
@@ -25,8 +23,7 @@ class PushButtonField extends JQueryUIField {
      * @param {String} [backgroundColor] custom background color (ignored unless `style` is `"colored"`)
      * @param {String} [backgroundActiveColor] custom background active color (ignored unless `style` is `"colored"`)
      * @param {String} [foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
+     * @param {...*} args parent class parameters
      */
     constructor({
         caption,
@@ -35,7 +32,7 @@ class PushButtonField extends JQueryUIField {
         backgroundColor = null,
         backgroundActiveColor = null,
         foregroundColor = null,
-        ...params
+        ...args
     }) {
         super({
             widgetAttrs: {
@@ -45,7 +42,7 @@ class PushButtonField extends JQueryUIField {
                 backgroundActiveColor: backgroundActiveColor,
                 foregroundColor: foregroundColor
             },
-            ...params
+            ...args
         })
 
         if (onClick) {

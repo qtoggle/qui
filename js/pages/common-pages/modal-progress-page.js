@@ -19,13 +19,12 @@ class ModalProgressPage extends mix().with(PageMixin) {
      * @param {String} [message] an optional progress message
      * @param {Number} [progressPercent] initial progress percent (defaults to `-1`)
      * @param {Object} [progressOptions] extra options for the progress widget
-     * @param [params]
-     * * see {@link qui.pages.PageMixin} for page parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({message = null, progressPercent = -1, progressOptions = {}, ...params} = {}) {
-        params.modal = true
+    constructor({message = null, progressPercent = -1, progressOptions = {}, ...args} = {}) {
+        args.modal = true
 
-        super(params)
+        super(args)
 
         this._progressPercent = progressPercent
         this._progressOptions = progressOptions

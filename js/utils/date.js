@@ -64,7 +64,7 @@ export function formatPercent(date, format, trans = true) {
     let minutes = date.getMinutes()
     let seconds = date.getSeconds()
 
-    let hours12 = hours
+    let hours12
     if (hours === 0) {
         hours12 = 12
     }

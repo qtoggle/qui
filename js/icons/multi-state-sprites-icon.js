@@ -270,7 +270,7 @@ class MultiStateSpritesIcon extends Icon {
             let width = size * pxFactor
 
             canvas.width = width
-            canvas.height = width
+            canvas.height = width /* Yes, width */
 
             context.scale(this._scale, this._scale)
             context.translate(-offsetX * pxFactor, -offsetY * pxFactor)

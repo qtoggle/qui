@@ -15,12 +15,10 @@ class StickyModalProgressMessage extends mix(ModalProgressPage).with(StickyModal
 
     /**
      * @constructs qui.messages.StickyModalProgressMessage
-     * @param [params]
-     * * see {@link qui.pages.commonpages.ModalProgressPage} for modal progress page parameters
-     * * see {@link qui.messages.StickyModalPageMixin} for sticky modal page parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({...params} = {}) {
-        super(params)
+    constructor({...args} = {}) {
+        super(args)
     }
 
 }

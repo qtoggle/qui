@@ -21,8 +21,7 @@ class LabelsField extends JQueryUIField {
      * @param {Boolean} [clickable] set to `true` if you want your labels to be clickable
      * @param {Function} [onClick] function to be executed when a label is clicked (see
      * {@link qui.forms.commonfields.LabelsField#onClick})
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
+     * @param {...*} args parent class parameters
      */
     constructor({
         color = '@background-color',
@@ -30,7 +29,7 @@ class LabelsField extends JQueryUIField {
         chevrons = false,
         clickable = false,
         onClick = null,
-        ...params
+        ...args
     }) {
         let that
 
@@ -44,7 +43,7 @@ class LabelsField extends JQueryUIField {
                     return that.onClick(label, index)
                 }
             },
-            ...params
+            ...args
         })
 
         if (onClick) {

@@ -39,10 +39,10 @@ const ViewMixin = Mixin((superclass = Object) => {
         /**
          * @constructs qui.views.ViewMixin
          * @param {String} [cssClass] additional CSS classes to set to the view element
-         * @param [params]
+         * @param {...*} args parent class parameters
          */
-        constructor({cssClass = null, ...params} = {}) {
-            super(params)
+        constructor({cssClass = null, ...args} = {}) {
+            super(args)
 
             /* ViewMixin is prepared to be initialized multiple times along the inheritance path;
              * this may happen when inheriting ViewMixin more than once through mixins */
@@ -142,7 +142,6 @@ const ViewMixin = Mixin((superclass = Object) => {
         /**
          * Define the behavior of the view when entering states. Entering a state usually means showing a visual element
          * corresponding to that state.
-         *
          * @param {String} oldState
          * @param {String} newState
          */
@@ -168,7 +167,6 @@ const ViewMixin = Mixin((superclass = Object) => {
         /**
          * Define the behavior of the view when leaving states. Leaving a state usually means hiding a visual element
          * corresponding to that state.
-         *
          * @param {String} oldState
          * @param {String} newState
          */

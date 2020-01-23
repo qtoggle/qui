@@ -124,7 +124,7 @@ function initConfig() {
 
     let scripts = document.getElementsByTagName('script')
 
-    /* Find the referece to the main app DOM script */
+    /* Find the reference to the main app DOM script */
     let mainAppScriptName = names[names.length - 1]
     let mainAppScript = Array.from(scripts).find(s => s.src.split('?')[0].endsWith(mainAppScriptName))
     if (!mainAppScript) {

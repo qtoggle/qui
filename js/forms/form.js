@@ -7,6 +7,7 @@ import * as Theme            from '$qui/theme.js'
 import {asap}                from '$qui/utils/misc.js'
 import * as ObjectUtils      from '$qui/utils/object.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
+import {STATE_NORMAL}        from '$qui/views/view.js'
 import * as Window           from '$qui/window.js'
 
 import {ErrorMapping}    from './forms.js'
@@ -48,8 +49,7 @@ class Form extends mix().with(StructuredViewMixin) {
      * @param {qui.forms.FormField[]} [fields] fields to be added to the form
      * @param {qui.forms.FormButton[]} [buttons] buttons to be added to the form
      * @param {Object} [data] a dictionary with initial values for the fields
-     * @param params
-     * * see {@link qui.views.commonviews.StructuredViewMixin} for structured view parameters
+     * @param {...*} args parent class parameters
      */
     constructor({
         width = null,
@@ -63,9 +63,9 @@ class Form extends mix().with(StructuredViewMixin) {
         fields = [],
         buttons = [],
         data = null,
-        ...params
-    }) {
-        super(params)
+        ...args
+    } = {}) {
+        super(args)
 
         this._width = width
         this._noBackground = noBackground
@@ -388,7 +388,7 @@ class Form extends mix().with(StructuredViewMixin) {
 
     /**
      * Return the index of the given field. If the field does not belong to this form, `-1` is returned.
-     * @param {qui.forms.Form|String} field the field or a field name
+     * @param {qui.forms.FormField|String} field the field or a field name
      * @returns {Number}
      */
     getFieldIndex(field) {
@@ -457,9 +457,7 @@ class Form extends mix().with(StructuredViewMixin) {
 
                 /* Schedule after pending validation */
                 if (cached instanceof Promise) {
-                    fieldPromise = cached.catch(() => {}).then(function () {
-                        return this
-                    }.bind(fieldPromise))
+                    fieldPromise = cached.catch(() => {}).then(() => fieldPromise)
                 }
 
                 fieldPromise = fieldPromise.then(function () {
@@ -1030,7 +1028,7 @@ class Form extends mix().with(StructuredViewMixin) {
      */
     clearApplied() {
         if (this.getState() === STATE_APPLIED) {
-            this.setState(this.STATE_NORMAL)
+            this.setState(STATE_NORMAL)
         }
     }
 

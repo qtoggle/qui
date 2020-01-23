@@ -14,11 +14,10 @@ class ColorComboField extends JQueryUIField {
     /**
      * @constructs qui.forms.commonfields.ColorComboField
      * @param {Boolean} [filterEnabled] set to `true` to enable filter input box
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({filterEnabled = false, ...params}) {
-        super({widgetAttrs: {filterEnabled: filterEnabled}, ...params})
+    constructor({filterEnabled = false, ...args}) {
+        super({widgetAttrs: {filterEnabled: filterEnabled}, ...args})
     }
 
     valueToWidget(value) {

@@ -16,10 +16,9 @@ class TextField extends JQueryUIField {
      * @param {Boolean} [autocomplete] enables or disables field autocomplete (enabled by default)
      * @param {?Number} [minLength] minimum required text length
      * @param {?Number} [maxLength] maximum allowed text length
-     * @param {Boolean} [continuousChange] set to `true` to enable change events at each key stroke
+     * @param {Boolean} [continuousChange] set to `false` to prevent triggering change events at each key stroke
      * @param {Object} [widgetAttrs] extra attributes to pass to underlying JQueryUI widget
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
+     * @param {...*} args parent class parameters
      */
     constructor({
         placeholder = null,
@@ -27,9 +26,9 @@ class TextField extends JQueryUIField {
         autocomplete = true,
         minLength = null,
         maxLength = null,
-        continuousChange = false,
+        continuousChange = true,
         widgetAttrs = {},
-        ...params
+        ...args
     }) {
         Object.assign(widgetAttrs, {
             placeholder: placeholder,
@@ -37,11 +36,10 @@ class TextField extends JQueryUIField {
             autocomplete: autocomplete,
             minLength: minLength,
             maxLength: maxLength,
-            continuousChange: continuousChange,
-            ...params
+            continuousChange: continuousChange
         })
 
-        super({widgetAttrs: widgetAttrs, ...params})
+        super({widgetAttrs: widgetAttrs, ...args})
     }
 
     getInputElement() {

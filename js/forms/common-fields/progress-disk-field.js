@@ -15,11 +15,10 @@ class ProgressDiskField extends JQueryUIField {
      * @param {Number} [min] the minimum value (defaults to `0`)
      * @param {Number} [max] the maximum value (defaults to `100`)
      * @param {String} [caption] the caption template displayed on top of the disk (defaults to `%s%%`)
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({radius = '1em', min = 0, max = 100, caption = '%s%%', ...params}) {
-        super({widgetAttrs: {radius: radius, min: min, max: max, caption: caption}, ...params})
+    constructor({radius = '1em', min = 0, max = 100, caption = '%s%%', ...args}) {
+        super({widgetAttrs: {radius: radius, min: min, max: max, caption: caption}, ...args})
     }
 
     // TODO add setters and getters for widget properties

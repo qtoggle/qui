@@ -17,15 +17,13 @@ class PageList extends mix(List).with(PageMixin) {
 
     /**
      * @constructs qui.lists.PageList
-     * @param [params]
-     * * see {@link qui.lists.List} for list parameters
-     * * see {@link qui.pages.PageMixin} for page parameters
+     * @param {...*} args parent class parameters
      */
-    constructor(params = {}) {
-        ObjectUtils.setDefault(params, 'transparent', false)
-        ObjectUtils.setDefault(params, 'topless', true)
+    constructor({...args} = {}) {
+        ObjectUtils.setDefault(args, 'transparent', false)
+        ObjectUtils.setDefault(args, 'topless', true)
 
-        super(params)
+        super(args)
     }
 
     prepareIcon(icon) {

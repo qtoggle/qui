@@ -21,10 +21,9 @@ class SimpleMessageForm extends MessageForm {
      * @param {String} type message type (`"info"`, `"warning"` or `"error"`)
      * @param {String} [buttonCaption] optional button caption (defaults to `"OK"`)
      * @param {qui.messages.MessageForm.Callback} [onClose] a dismiss callback
-     * @param params
-     * * see {@link qui.messages.MessageForm} for message form parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({type, buttonCaption = gettext('OK'), onClose = null, ...params}) {
+    constructor({type, buttonCaption = gettext('OK'), onClose = null, ...args}) {
         let variant = null
         let iconName = null
         switch (type) {
@@ -45,17 +44,17 @@ class SimpleMessageForm extends MessageForm {
         }
 
         if (variant) {
-            ObjectUtils.setDefault(params, 'icon', new StockIcon({name: iconName}))
-            if (params.icon instanceof StockIcon) {
-                params.icon = params.icon.alterDefault({variant: variant})
+            ObjectUtils.setDefault(args, 'icon', new StockIcon({name: iconName}))
+            if (args.icon instanceof StockIcon) {
+                args.icon = args.icon.alterDefault({variant: variant})
             }
         }
 
-        ObjectUtils.setDefault(params, 'buttons', [
+        ObjectUtils.setDefault(args, 'buttons', [
             new FormButton({id: 'ok', caption: buttonCaption, def: true})
         ])
 
-        super(params)
+        super(args)
 
         this._color = null
         if (variant) {

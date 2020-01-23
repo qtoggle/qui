@@ -24,10 +24,8 @@ class SliderField extends JQueryUIField {
      * @param {Number} [fastFactor] determines how fast the increase or decrease functions will work when using
      * page-up/page-down (defaults to `5`, which is 5 times faster)
      * @param {Number} [decimals] the number of decimals to display (defaults to `0`)
-     * @param {Boolean} [continuousChange] set to `true` to trigger a `change` event with every little slider move when
-     * this is `false` (the default), the `change` event will be triggered at the end of the move
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
+     * @param {Boolean} [continuousChange] set to `false` to only trigger a `change` event at the end of the slider move
+     * @param {...*} args parent class parameters
      */
     constructor({
         ticks = [],
@@ -38,8 +36,8 @@ class SliderField extends JQueryUIField {
         increment = 0.02,
         fastFactor = 5,
         decimals = 0,
-        continuousChange = false,
-        ...params
+        continuousChange = true,
+        ...args
     }) {
         super({
             widgetAttrs: {
@@ -53,7 +51,7 @@ class SliderField extends JQueryUIField {
                 decimals: decimals,
                 continuousChange: continuousChange
             },
-            ...params
+            ...args
         })
     }
 

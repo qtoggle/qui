@@ -13,11 +13,10 @@ class ChoiceButtonsField extends JQueryUIField {
      * @constructs qui.forms.commonfields.ChoiceButtonsField
      * @param {Object[]|Object[][]} choices choices or groups of choices (pairs/arrays of pairs of `label` and `value`)
      * @param {String} [onClass] the CSS class to add to buttons in *on* state (defaults to `on`)
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
+     * @param {...*} args parent class parameters
      */
-    constructor({choices, onClass = 'on', ...params}) {
-        super({widgetAttrs: {choices: choices, onClass: onClass}, ...params})
+    constructor({choices, onClass = 'on', ...args}) {
+        super({widgetAttrs: {choices: choices, onClass: onClass}, ...args})
     }
 
     // TODO add setters and getters for choices

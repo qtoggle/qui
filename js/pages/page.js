@@ -43,8 +43,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * @param {Boolean} [modal] indicates that the page should be modal, not allowing any external interaction
          * (defaults to `false`)
          * @param {Boolean} [transparent] indicates that the page should be transparent (defaults to `true`)
-         * @param [params]
-         * * see {@link qui.views.ViewMixin} for view parameters
+         * @param {...*} args parent class parameters
          */
         constructor({
             title = null,
@@ -53,9 +52,9 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             keepPrevVisible = false,
             modal = false,
             transparent = true,
-            ...params
-        }) {
-            super(params)
+            ...args
+        } = {}) {
+            super(args)
 
             this._title = title
             this._pathId = pathId

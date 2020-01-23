@@ -28,8 +28,7 @@ class FormButton extends mix().with(ViewMixin) {
      * @param {Boolean} [def] indicates that the button is the default form button (defaults to `false`)
      * @param {Boolean} [cancel] indicates that the button is the cancel form button (defaults to `false`)
      * @param {Function} [callback] called when button is pressed; will be called with the form as argument
-     * @param params
-     * * see {@link qui.views.ViewMixin} for view parameters
+     * @param {...*} args parent class parameters
      */
     constructor({
         id,
@@ -41,9 +40,9 @@ class FormButton extends mix().with(ViewMixin) {
         def = false,
         cancel = false,
         callback = null,
-        ...params
+        ...args
     }) {
-        super(params)
+        super(args)
 
         this._id = id
         this._caption = caption

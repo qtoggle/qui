@@ -18,9 +18,9 @@ class UpDownField extends JQueryUIField {
      * @param {Number} [step] the step value (defaults to `1`)
      * @param {Number} [fastFactor] determines the increment value when in fast mode (defaults to `10`)
      * @param {Number} [decimals] the number of decimals to display (defaults to `0`)
-     * @param {Boolean} [continuousChange] set to `false` to only trigger a `change` event when losing focus
-     * @param params
-     * * see {@link qui.forms.FormField} for form field parameters
+     * @param {Boolean} [continuousChange] set to `false` to prevent triggering `change` events with each value
+     * modificationwhen losing focus
+     * @param {...*} args parent class parameters
      */
     constructor({
         min = 0,
@@ -28,8 +28,8 @@ class UpDownField extends JQueryUIField {
         step = 1,
         fastFactor = 10,
         decimals = 0,
-        continuousChange = false,
-        ...params
+        continuousChange = true,
+        ...args
     }) {
         super({
             widgetAttrs: {
@@ -40,7 +40,7 @@ class UpDownField extends JQueryUIField {
                 decimals: decimals,
                 continuousChange: continuousChange
             },
-            ...params
+            ...args
         })
     }
 

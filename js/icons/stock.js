@@ -11,7 +11,7 @@ class Stock {
     /**
      * @constructs qui.icons.Stock
      * @param {String} src image source (normally a URL)
-     * @param {Number} unit unit of measurement for icon size (e.g. `"em"`, `"rem"`, `"px"`)
+     * @param {String} unit unit of measurement for icon size (e.g. `"em"`, `"rem"`, `"px"`)
      * @param {Number} size icon size with respect to the `unit` (the icon is assumed to be a square)
      * @param {Number} width the number of icons in a row present in the source
      * @param {Number} height the number of icon rows present in the source

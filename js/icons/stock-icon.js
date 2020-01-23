@@ -80,12 +80,12 @@ class StockIcon extends Icon {
 
     /**
      * Return a dictionary with attributes suitable to build a {@link qui.icons.MultiStateSpritesIcon}.
-     * @returns {qui.icons.MultiStateSpritesIcon}
+     * @returns {?qui.icons.MultiStateSpritesIcon}
      */
     toMultiStateSpritesIcon() {
         let stock = Stocks.get(this._stockName)
         if (!stock) {
-            return {}
+            return null
         }
 
         let attributes = {
