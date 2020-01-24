@@ -693,7 +693,7 @@ class FormField extends mix().with(ViewMixin) {
     }
 
     /**
-     * Wrap validate() into a try/catch and return a validation promise.
+     * Wrap validate() into a try/catch and return a validation promise. Also apply required and widget validation.
      * @private
      * @param {*} value the value to validate
      * @param {Object} data

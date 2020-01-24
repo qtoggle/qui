@@ -457,7 +457,9 @@ class Form extends mix().with(StructuredViewMixin) {
 
                 /* Schedule after pending validation */
                 if (cached instanceof Promise) {
-                    fieldPromise = cached.catch(() => {}).then(() => fieldPromise)
+                    fieldPromise = cached.catch(() => {}).then(function () {
+                        return this
+                    }.bind(fieldPromise))
                 }
 
                 fieldPromise = fieldPromise.then(function () {
@@ -526,9 +528,10 @@ class Form extends mix().with(StructuredViewMixin) {
                     formPromise = Promise.reject(cached)
                 }
             }
-            else {
-                /* Call form validation after the fields have been validated
-                 * this ensures that validate() is always called with valid field values */
+            else { /* We don't have a cached result available right away */
+
+                /* Call form validation after the fields have been validated; this ensures that validate() is always
+                 * called with valid field values */
 
                 formPromise = fieldsPromise.then(function () {
 
@@ -541,7 +544,7 @@ class Form extends mix().with(StructuredViewMixin) {
 
                 })
 
-                /* Schedule after pending validation */
+                /* Schedule current validation after cached (pending) validation */
                 if (cached instanceof Promise) {
                     let p = formPromise
                     formPromise = cached.catch(() => {}).then(() => p)
