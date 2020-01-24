@@ -29,9 +29,9 @@ class PushButtonField extends JQueryUIField {
         caption,
         onClick,
         style = 'interactive',
-        backgroundColor = null,
-        backgroundActiveColor = null,
-        foregroundColor = null,
+        backgroundColor = '@interactive-color',
+        backgroundActiveColor = '@interactive-active-color',
+        foregroundColor = '@foreground-active-color',
         ...args
     }) {
         super({
