@@ -544,7 +544,10 @@ export default Mixin((superclass = Object, rootclass) => {
          */
         isClosed() {
             /* Prefer root isClosed unless it's the one inherited from ViewMixin */
-            if (rootPrototype.isClosed && (rootPrototype.isClosed !== viewMixinPrototype.isClosed)) {
+            if (rootPrototype.isClosed &&
+                (rootPrototype.isClosed !== viewMixinPrototype.isClosed) &&
+                (rootPrototype.isClosed.toString() !== viewMixinPrototype.isClosed.toString())) {
+
                 return rootPrototype.isClosed.call(this)
             }
 
