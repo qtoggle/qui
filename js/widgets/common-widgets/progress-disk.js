@@ -2,7 +2,6 @@
 import $ from '$qui/lib/jquery.module.js'
 
 import * as Theme       from '$qui/theme.js'
-import * as Colors      from '$qui/utils/colors.js'
 import * as CSS         from '$qui/utils/css.js'
 import * as StringUtils from '$qui/utils/string.js'
 

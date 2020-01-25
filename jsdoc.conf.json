@@ -15,7 +15,6 @@
     },
     "opts": {
         "destination": "docs/jsdoc",
-        "recurse": true,
-        "template": "node_modules/jaguarjs-jsdoc"
+        "recurse": true
     }
 }

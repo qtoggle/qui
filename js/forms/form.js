@@ -7,6 +7,7 @@ import * as Theme            from '$qui/theme.js'
 import {asap}                from '$qui/utils/misc.js'
 import * as ObjectUtils      from '$qui/utils/object.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
+import {STATE_NORMAL}        from '$qui/views/view.js'
 import * as Window           from '$qui/window.js'
 
 import {ErrorMapping}    from './forms.js'
@@ -22,37 +23,49 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
  * A form.
  * @alias qui.forms.Form
  * @mixes qui.views.commonviews.StructuredViewMixin
- * @param {Object} params
- * * see {@link qui.views.commonviews.StructuredViewMixin} for structured view parameters
- * @param {Number|String} [params.width] a specific form width to be used instead of the default
- * @param {Boolean} [params.noBackground] indicates that the form should have transparent background (defaults to
- * `false`)
- * @param {Boolean} [params.compact] indicates that the form should be compact to better fit in smaller containers;
- * compact forms have field labels and values on separate lines, to reduce the overall form width (defaults to `false`)
- * @param {String} [params.fieldsAlignment] indicates how field labels and values are aligned:
- *  * `"center"` - aligns labels to the right and values to the left (default)
- *  * `"sides"` - aligns labels to the left and values to the right
- * @param {Number} [params.valuesWidth] sets the width of the values column, as percent, relative to the form body; when
- * set to `0` the width of each field's value will be computed automatically; this attribute is ignored for forms that
- * have `compact` set to `true` (defaults to `60`)
- * @param {Boolean} [params.continuousValidation] if set to `true`, each field will be validated upon change, instead of
- * when the form data is applied (using {@link qui.forms.Form#applyData}). Defaults to `false`
- * @param {Boolean} [params.closeOnApply] if set to `false`, the form will not automatically close when data is applied
- * (using {@link qui.forms.Form#applyData}). Defaults to `true`
- * @param {Boolean} [params.autoDisableDefaultButton] controls if the default button is automatically enabled and
- * disabled based on currently changed fields, their validity and applied state. Defaults to `true`
- * @param {qui.forms.FormField[]} [params.fields] fields to be added to the form
- * @param {qui.forms.FormButton[]} [params.buttons] buttons to be added to the form
- * @param {Object} [params.data] a dictionary with initial values for the fields
  */
-export default class Form extends mix().with(StructuredViewMixin) {
+class Form extends mix().with(StructuredViewMixin) {
 
+    /**
+     * @constructs
+     * @param {Number|String} [width] a specific form width to be used instead of the default
+     * @param {Boolean} [noBackground] indicates that the form should have transparent background (defaults to
+     * `false`)
+     * @param {Boolean} [compact] indicates that the form should be compact to better fit in smaller containers;
+     * compact forms have field labels and values on separate lines, to reduce the overall form width (defaults to
+     * `false`)
+     * @param {String} [fieldsAlignment] indicates how field labels and values are aligned:
+     *  * `"center"` - aligns labels to the right and values to the left (default)
+     *  * `"sides"` - aligns labels to the left and values to the right
+     * @param {Number} [valuesWidth] sets the width of the values column, as percent, relative to the form body; when
+     * set to `0` the width of each field's value will be computed automatically; this attribute is ignored for forms
+     * that have `compact` set to `true` (defaults to `60`)
+     * @param {Boolean} [continuousValidation] if set to `true`, each field will be validated upon change, instead of
+     * when the form data is applied (using {@link qui.forms.Form#applyData}). Defaults to `false`
+     * @param {Boolean} [closeOnApply] if set to `false`, the form will not automatically close when data is applied
+     * (using {@link qui.forms.Form#applyData}). Defaults to `true`
+     * @param {Boolean} [autoDisableDefaultButton] controls if the default button is automatically enabled and disabled
+     * based on currently changed fields, their validity and applied state. Defaults to `true`
+     * @param {qui.forms.FormField[]} [fields] fields to be added to the form
+     * @param {qui.forms.FormButton[]} [buttons] buttons to be added to the form
+     * @param {Object} [data] a dictionary with initial values for the fields
+     * @param {...*} args parent class parameters
+     */
     constructor({
-        width = null, noBackground = false, compact = false, fieldsAlignment = 'center', valuesWidth = 60,
-        continuousValidation = false, closeOnApply = true, autoDisableDefaultButton = true, fields = [], buttons = [],
-        data = null, ...params
-    }) {
-        super(params)
+        width = null,
+        noBackground = false,
+        compact = false,
+        fieldsAlignment = 'center',
+        valuesWidth = 60,
+        continuousValidation = false,
+        closeOnApply = true,
+        autoDisableDefaultButton = true,
+        fields = [],
+        buttons = [],
+        data = null,
+        ...args
+    } = {}) {
+        super(args)
 
         this._width = width
         this._noBackground = noBackground
@@ -375,7 +388,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
     /**
      * Return the index of the given field. If the field does not belong to this form, `-1` is returned.
-     * @param {qui.forms.Form|String} field the field or a field name
+     * @param {qui.forms.FormField|String} field the field or a field name
      * @returns {Number}
      */
     getFieldIndex(field) {
@@ -515,9 +528,10 @@ export default class Form extends mix().with(StructuredViewMixin) {
                     formPromise = Promise.reject(cached)
                 }
             }
-            else {
-                /* Call form validation after the fields have been validated
-                 * this ensures that validate() is always called with valid field values */
+            else { /* We don't have a cached result available right away */
+
+                /* Call form validation after the fields have been validated; this ensures that validate() is always
+                 * called with valid field values */
 
                 formPromise = fieldsPromise.then(function () {
 
@@ -530,7 +544,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
 
                 })
 
-                /* Schedule after pending validation */
+                /* Schedule current validation after cached (pending) validation */
                 if (cached instanceof Promise) {
                     let p = formPromise
                     formPromise = cached.catch(() => {}).then(() => p)
@@ -1017,7 +1031,7 @@ export default class Form extends mix().with(StructuredViewMixin) {
      */
     clearApplied() {
         if (this.getState() === STATE_APPLIED) {
-            this.setState(this.STATE_NORMAL)
+            this.setState(STATE_NORMAL)
         }
     }
 
@@ -1179,3 +1193,6 @@ export default class Form extends mix().with(StructuredViewMixin) {
     }
 
 }
+
+
+export default Form

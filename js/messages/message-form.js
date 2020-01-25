@@ -16,22 +16,26 @@ import * as ObjectUtils from '$qui/utils/object.js'
  * A base class for message forms.
  * @alias qui.messages.MessageForm
  * @extends qui.forms.PageForm
- * @param {Object} params
- * * see {@link qui.forms.PageForm} for page form parameters
- * @param {String} params.message the message
- * @param {qui.icons.Icon} [params.icon] an optional icon
  */
-export default class MessageForm extends PageForm {
+class MessageForm extends PageForm {
 
-    constructor({message, icon = null, ...params}) {
-        ObjectUtils.setDefault(params, 'modal', true)
-        ObjectUtils.setDefault(params, 'transparent', true)
-        ObjectUtils.setDefault(params, 'topless', true)
-        ObjectUtils.setDefault(params, 'width', '20em')
-        ObjectUtils.setDefault(params, 'valuesWidth', 100)
-        ObjectUtils.setDefault(params, 'title', params.message)
+    /**
+     * @constructs
+     * @param {String} message the message
+     * @param {qui.icons.Icon} [icon] an optional icon
+     * @param {...*} args parent class parameters
+     */
+    constructor({message, icon = null, ...args}) {
+        ObjectUtils.assignDefault(args, {
+            modal: true,
+            transparent: true,
+            topless: true,
+            width: '20em',
+            valuesWidth: 100,
+            title: args.message
+        })
 
-        super(params)
+        super(args)
 
         this._message = message
         this._icon = icon
@@ -67,3 +71,6 @@ export default class MessageForm extends PageForm {
     }
 
 }
+
+
+export default MessageForm

@@ -223,7 +223,7 @@ function updatePagesVisibility() {
         let html = page.getPageHTML()
         html.addClass('visible')
 
-        let l = null
+        let l
         let w = null
         /* The current modal page has special treatment and does not contribute to expanded width */
         if (page.isModal() && page === currentPage) {

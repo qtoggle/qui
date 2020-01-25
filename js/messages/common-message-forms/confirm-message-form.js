@@ -12,21 +12,25 @@ import MessageForm from '../message-form.js'
  * A message form asking the user for confirmation.
  * @alias qui.messages.commonmessageforms.ConfirmMessageForm
  * @extends qui.messages.MessageForm
- * @param {Object} params
- * * see {@link qui.messages.MessageForm} for message form parameters
- * @param {qui.messages.MessageForm.Callback} [params.onYes] an optional confirmation callback
- * @param {qui.messages.MessageForm.Callback} [params.onNo] an optional decline callback
  */
-export default class ConfirmMessageForm extends MessageForm {
+class ConfirmMessageForm extends MessageForm {
 
-    constructor({onYes = null, onNo = null, ...params} = {}) {
-        ObjectUtils.setDefault(params, 'icon', new StockIcon({name: 'qmark'}))
-        ObjectUtils.setDefault(params, 'buttons', [
-            new FormButton({id: 'no', caption: gettext('No'), cancel: true}),
-            new FormButton({id: 'yes', caption: gettext('Yes'), def: true})
-        ])
+    /**
+     * @constructs
+     * @param {qui.messages.MessageForm.Callback} [onYes] an optional confirmation callback
+     * @param {qui.messages.MessageForm.Callback} [onNo] an optional decline callback
+     * @param {...*} args parent class parameters
+     */
+    constructor({onYes = null, onNo = null, ...args}) {
+        ObjectUtils.assignDefault(args, {
+            icon: new StockIcon({name: 'qmark'}),
+            buttons: [
+                new FormButton({id: 'no', caption: gettext('No'), cancel: true}),
+                new FormButton({id: 'yes', caption: gettext('Yes'), def: true})
+            ]
+        })
 
-        super(params)
+        super(args)
 
         this._onYes = onYes
         this._onNo = onNo
@@ -72,3 +76,6 @@ export default class ConfirmMessageForm extends MessageForm {
     }
 
 }
+
+
+export default ConfirmMessageForm

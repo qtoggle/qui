@@ -13,15 +13,17 @@ import MessageForm from '../message-form.js'
  * A simple message form.
  * @alias qui.messages.commonmessageforms.SimpleMessageForm
  * @extends qui.messages.MessageForm
- * @param {Object} params
- * * see {@link qui.messages.MessageForm} for message form parameters
- * @param {String} params.type message type (`"info"`, `"warning"` or `"error"`)
- * @param {String} [params.buttonCaption] optional button caption (defaults to `"OK"`)
- * @param {qui.messages.MessageForm.Callback} [params.onClose] a dismiss callback
  */
-export default class SimpleMessageForm extends MessageForm {
+class SimpleMessageForm extends MessageForm {
 
-    constructor({type, buttonCaption = gettext('OK'), onClose = null, ...params}) {
+    /**
+     * @constructs
+     * @param {String} type message type (`"info"`, `"warning"` or `"error"`)
+     * @param {String} [buttonCaption] optional button caption (defaults to `"OK"`)
+     * @param {qui.messages.MessageForm.Callback} [onClose] a dismiss callback
+     * @param {...*} args parent class parameters
+     */
+    constructor({type, buttonCaption = gettext('OK'), onClose = null, ...args}) {
         let variant = null
         let iconName = null
         switch (type) {
@@ -42,17 +44,17 @@ export default class SimpleMessageForm extends MessageForm {
         }
 
         if (variant) {
-            ObjectUtils.setDefault(params, 'icon', new StockIcon({name: iconName}))
-            if (params.icon instanceof StockIcon) {
-                params.icon = params.icon.alterDefault({variant: variant})
+            ObjectUtils.setDefault(args, 'icon', new StockIcon({name: iconName}))
+            if (args.icon instanceof StockIcon) {
+                args.icon = args.icon.alterDefault({variant: variant})
             }
         }
 
-        ObjectUtils.setDefault(params, 'buttons', [
+        ObjectUtils.setDefault(args, 'buttons', [
             new FormButton({id: 'ok', caption: buttonCaption, def: true})
         ])
 
-        super(params)
+        super(args)
 
         this._color = null
         if (variant) {
@@ -78,3 +80,6 @@ export default class SimpleMessageForm extends MessageForm {
     }
 
 }
+
+
+export default SimpleMessageForm

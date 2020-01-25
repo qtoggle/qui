@@ -5,12 +5,8 @@ const ICON_DATA_ATTR = '_icon'
 /**
  * A base class for icons.
  * @alias qui.icons.Icon
- * @param {Object} params icon attributes
  */
-export default class Icon {
-
-    constructor(params) {
-    }
+class Icon {
 
     /**
      * Apply the icon to an HTML element.
@@ -34,3 +30,6 @@ export default class Icon {
     }
 
 }
+
+
+export default Icon

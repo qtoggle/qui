@@ -8,16 +8,18 @@ import FormField from '../form-field.js'
  * A form field composed by multiple subfields.
  * @alias qui.forms.commonfields.CompositeField
  * @extends qui.forms.FormField
- * @param {Object} params
- * * see {@link qui.forms.FormField} for form field parameters
- * @param {qui.forms.FormField[]} [params.fields] the list of subfields
- * @param {String} [params.layout] align subfield widgets vertically (`"vertical"`) or horizontally (`"horizontal"`,
- * default)
  */
-export default class CompositeField extends FormField {
+class CompositeField extends FormField {
 
-    constructor({fields, layout = 'horizontal', ...params}) {
-        super(params)
+    /**
+     * @constructs
+     * @param {qui.forms.FormField[]} fields the list of subfields
+     * @param {String} [layout] align subfield widgets vertically (`"vertical"`) or horizontally (`"horizontal"`,
+     * default)
+     * @param {...*} args parent class parameters
+     */
+    constructor({fields, layout = 'horizontal', ...args}) {
+        super(args)
 
         this._fields = fields
         this._layout = layout
@@ -90,3 +92,6 @@ export default class CompositeField extends FormField {
     }
 
 }
+
+
+export default CompositeField

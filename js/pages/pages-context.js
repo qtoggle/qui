@@ -9,8 +9,11 @@ import * as Window         from '$qui/window.js'
  * A page stack context.
  * @alias qui.pages.PagesContext
  */
-export default class PagesContext {
+class PagesContext {
 
+    /**
+     * @constructs
+     */
     constructor() {
 
         /**
@@ -29,11 +32,16 @@ export default class PagesContext {
          */
         this.popSignal = new Signal(this)
 
+        /**
+         * @type {qui.pages.PageMixin[]}
+         * @private
+         */
         this._stack = []
     }
 
     /**
      * Return the number of pages.
+     * @returns {Number}
      */
     getSize() {
         return this._stack.length
@@ -141,3 +149,6 @@ export default class PagesContext {
     }
 
 }
+
+
+export default PagesContext

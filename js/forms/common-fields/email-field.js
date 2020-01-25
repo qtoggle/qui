@@ -6,11 +6,16 @@ import TextField from './text-field.js'
  * An email text field. The value data type is `String`.
  * @alias qui.forms.commonfields.EmailField
  * @extends qui.forms.commonfields.TextField
- * @param {Object} params
- * * see {@link qui.forms.FormField} for form field parameters
- * * see {@link qui.forms.commonfields.TextField} for text field parameters
  */
-export default class EmailField extends TextField {
+class EmailField extends TextField {
+
+    /**
+     * @constructs
+     * @param {...*} args parent class parameters
+     */
+    constructor({...args}) {
+        super(args)
+    }
 
     validateWidget(value) {
         return null // TODO implement me
@@ -20,3 +25,6 @@ export default class EmailField extends TextField {
 
 // TODO es7 class fields
 EmailField.WIDGET_CLASS = 'emailinput'
+
+
+export default EmailField

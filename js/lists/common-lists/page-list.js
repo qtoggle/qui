@@ -12,17 +12,18 @@ import List from '../list.js'
  * @alias qui.lists.PageList
  * @extends qui.lists.List
  * @mixes qui.pages.PageMixin
- * @param {Object} [params]
- * * see {@link qui.lists.List} for list parameters
- * * see {@link qui.pages.PageMixin} for page parameters
  */
-export default class PageList extends mix(List).with(PageMixin) {
+class PageList extends mix(List).with(PageMixin) {
 
-    constructor({...params} = {}) {
-        ObjectUtils.setDefault(params, 'transparent', false)
-        ObjectUtils.setDefault(params, 'topless', true)
+    /**
+     * @constructs
+     * @param {...*} args parent class parameters
+     */
+    constructor({...args} = {}) {
+        ObjectUtils.setDefault(args, 'transparent', false)
+        ObjectUtils.setDefault(args, 'topless', true)
 
-        super(params)
+        super(args)
     }
 
     prepareIcon(icon) {
@@ -47,3 +48,6 @@ export default class PageList extends mix(List).with(PageMixin) {
     }
 
 }
+
+
+export default PageList

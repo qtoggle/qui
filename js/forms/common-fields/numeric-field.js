@@ -6,11 +6,16 @@ import TextField from './text-field.js'
  * A numeric text field. The value data type is `String`.
  * @alias qui.forms.commonfields.NumericField
  * @extends qui.forms.commonfields.TextField
- * @param {Object} params
- * * see {@link qui.forms.FormField} for form field parameters
- * * see {@link qui.forms.commonfields.TextField} for text field parameters
  */
-export default class NumericField extends TextField {
+class NumericField extends TextField {
+
+    /**
+     * @constructs
+     * @param {...*} args parent class parameters
+     */
+    constructor({...args}) {
+        super(args)
+    }
 
     widgetToValue() {
         let value = super.widgetToValue()
@@ -27,3 +32,6 @@ export default class NumericField extends TextField {
 
 // TODO es7 class fields
 NumericField.WIDGET_CLASS = 'numericinput'
+
+
+export default NumericField

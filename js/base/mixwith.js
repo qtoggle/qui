@@ -77,10 +77,13 @@ function BareMixin(mixin) {
 /**
  * A helper class capable of applying one or more mixins to a superclass.
  * @alias qui.base.mixwith.MixinBuilder
- * @param {typeof Object} superclass
  */
 export class MixinBuilder {
 
+    /**
+     * @constructs
+     * @param {typeof Object} superclass
+     */
     constructor(superclass) {
         this.superclass = superclass || Object
     }
@@ -110,7 +113,7 @@ export function Mixin(mixin) {
 /**
  * Apply a list of mixins to a superclass.
  *
- * ```javascript
+ * ```
  * class X extends mix(Object).with(A, B, C) {}
  * ```
  *
@@ -119,13 +122,14 @@ export function Mixin(mixin) {
  *
  * This is purely a convenience function. The above example is equivalent to:
  *
- * ```javascript
+ * ```
  * class X extends C(B(A(Object))) {}
  * ```
+ *
  * @alias qui.base.mixwith.mix
- * @param {typeof Object} [superclass=Object]
+ * @param {typeof Object} [superclass]
  * @returns {MixinBuilder}
  */
-export function mix(superclass) {
+export function mix(superclass = Object) {
     return new MixinBuilder(superclass)
 }

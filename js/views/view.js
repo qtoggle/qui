@@ -27,19 +27,23 @@ export const STATE_ERROR = 'error'
 export const STATE_PROGRESS = 'progress'
 
 
-export default Mixin((superclass = Object) => {
+/** @lends qui.views.ViewMixin */
+const ViewMixin = Mixin((superclass = Object) => {
 
     /**
      * A mixin to be used with classes that behave as views (have a visual HTML representation).
      * @alias qui.views.ViewMixin
      * @mixin
-     * @param {Object} [params]
-     * @param {String} [params.cssClass] additional CSS classes to set to the view element
      */
     class ViewMixin extends superclass {
 
-        constructor({cssClass = null, ...params} = {}) {
-            super(params)
+        /**
+         * @constructs
+         * @param {String} [cssClass] additional CSS classes to set to the view element
+         * @param {...*} args parent class parameters
+         */
+        constructor({cssClass = null, ...args} = {}) {
+            super(args)
 
             /* ViewMixin is prepared to be initialized multiple times along the inheritance path;
              * this may happen when inheriting ViewMixin more than once through mixins */
@@ -139,7 +143,6 @@ export default Mixin((superclass = Object) => {
         /**
          * Define the behavior of the view when entering states. Entering a state usually means showing a visual element
          * corresponding to that state.
-         *
          * @param {String} oldState
          * @param {String} newState
          */
@@ -165,7 +168,6 @@ export default Mixin((superclass = Object) => {
         /**
          * Define the behavior of the view when leaving states. Leaving a state usually means hiding a visual element
          * corresponding to that state.
-         *
          * @param {String} oldState
          * @param {String} newState
          */
@@ -452,3 +454,6 @@ export default Mixin((superclass = Object) => {
     return ViewMixin
 
 })
+
+
+export default ViewMixin

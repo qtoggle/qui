@@ -7,7 +7,11 @@ import {StructuredViewMixin} from '$qui/views/common-views.js'
 import PageMixin from '../page.js'
 
 
-export default Mixin((superclass = Object) => {
+const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
+
+
+/** @lends qui.pages.commonpages.StructuredPageMixin */
+const StructuredPageMixin = Mixin((superclass = Object) => {
 
     /**
      * A mixin that combines {@link qui.views.commonviews.StructuredViewMixin} and {@link qui.pages.PageMixin}.
@@ -15,14 +19,15 @@ export default Mixin((superclass = Object) => {
      * @mixin
      * @extends qui.views.commonviews.StructuredViewMixin
      * @mixes qui.pages.PageMixin
-     * @param {Object} [params]
-     * * see {@link qui.views.commonviews.StructuredViewMixin} for structured view parameters
-     * * see {@link qui.pages.PageMixin} for page parameters
      */
     class StructuredPageMixin extends mix(StructuredViewMixin(superclass)).with(PageMixin) {
 
-        constructor(...args) {
-            super(...args)
+        /**
+         * @constructs
+         * @param {...*} args parent class parameters
+         */
+        constructor({...args} = {}) {
+            super(args)
         }
 
         prepareIcon(icon) {
@@ -39,3 +44,6 @@ export default Mixin((superclass = Object) => {
     return StructuredPageMixin
 
 })
+
+
+export default StructuredPageMixin

@@ -8,17 +8,19 @@ import JQueryUIField from './jquery-ui-field.js'
  * A check box field. The value data type is `Boolean`.
  * @alias qui.forms.commonfields.CheckField
  * @extends qui.forms.commonfields.JQueryUIField
- * @param {Object} params
- * * see {@link qui.forms.FormField} for form field parameters
- * @param {String} [params.onClass] the CSS class to add to the check button in *on* state (defaults to `on`)
  */
-export default class CheckField extends JQueryUIField {
+class CheckField extends JQueryUIField {
 
-    constructor({...params}) {
+    /**
+     * @constructs
+     * @param {String} [onClass] the CSS class to add to the check button in *on* state (defaults to `on`)
+     * @param {...*} args parent class parameters
+     */
+    constructor({onClass = 'on', ...args}) {
         /* We always prefer having the check box on the same line with its label */
-        ObjectUtils.setDefault(params, 'forceOneLine', true)
+        ObjectUtils.setDefault(args, 'forceOneLine', true)
 
-        super(params)
+        super({widgetAttrs: {onClass: onClass}, ...args})
     }
 
     setForm(form) {
@@ -35,4 +37,6 @@ export default class CheckField extends JQueryUIField {
 
 // TODO es7 class fields
 CheckField.WIDGET_CLASS = 'checkbutton'
-CheckField.WIDGET_ATTRS = ['onClass']
+
+
+export default CheckField

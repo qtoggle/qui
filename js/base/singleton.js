@@ -2,7 +2,11 @@
 import {Mixin} from '$qui/base/mixwith.js'
 
 
-export default Mixin((superclass = Object) => {
+const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
+
+
+/** @lends qui.base.SingletonMixin */
+const SingletonMixin = Mixin((superclass = Object) => {
 
     /**
      * A mixin that helps implementing the singleton pattern.
@@ -15,6 +19,10 @@ export default Mixin((superclass = Object) => {
         // static _instance = null
         // static _args = null
 
+        /**
+         * @constructs
+         * @param {...*} args parent class parameters
+         */
         constructor(...args) {
             super(...args)
         }
@@ -56,3 +64,6 @@ export default Mixin((superclass = Object) => {
     return SingletonMixin
 
 })
+
+
+export default SingletonMixin

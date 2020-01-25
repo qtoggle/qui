@@ -1,20 +1,29 @@
 /**
  * A class holding the details of a URL.
  * @alias qui.utils.URL
- * @param {String} scheme
- * @param {String} [username]
- * @param {String} [password]
- * @param {String} host
- * @param {Number} [port]
- * @param {String} [path]
- * @param {Object} [query]
- * @param {String} [fragment]
  */
-export default class URL {
+class URL {
 
+    /**
+     * @constructs
+     * @param {String} scheme
+     * @param {String} [username]
+     * @param {String} [password]
+     * @param {String} host
+     * @param {Number} [port]
+     * @param {String} [path]
+     * @param {Object} [query]
+     * @param {String} [fragment]
+     */
     constructor({
-        scheme, username = '', password = '', host, port = null, path = '',
-        query = {}, fragment = ''
+        scheme,
+        username = '',
+        password = '',
+        host,
+        port = null,
+        path = '',
+        query = {},
+        fragment = ''
     }) {
         this.scheme = scheme
         this.username = username
@@ -173,3 +182,6 @@ URL.VALID_REGEX = new RegExp(
     '(?:[a-z\\u00a1-\\uffff]*)))|localhost)(?::\\d{1,5})?(?:(/|\\?|#)[^\\s]*)?$',
     'i'
 )
+
+
+export default URL

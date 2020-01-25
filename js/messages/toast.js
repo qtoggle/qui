@@ -21,7 +21,7 @@ let toastMessageShowingTimeoutHandle = null
  * Show a toast message for a limited period of time.
  * @alias qui.messages.toast.show
  * @param {?String|jQuery} message the message to show
- * @param {String} type message type (`"info"`, `"warning"` or `"error"`)
+ * @param {?String} type message type (`"info"`, `"warning"` or `"error"`)
  * @param {Number} [timeout] the message display timeout, in milliseconds (defaults to 5 seconds)
  * @param {Boolean} [closeable] whether the message can be closed by the user (defaults to `true`)
  */
@@ -137,7 +137,7 @@ export function init() {
     }).alter({scale: 0.75}).applyTo(closeButton)
 
     closeButton.on('click', function () {
-        show({message: null})
+        show({message: null, type: null})
     })
 
     /* Close when clicked anywhere */
@@ -158,6 +158,6 @@ export function init() {
             return /* Clicked on the message container itself */
         }
 
-        show({message: null})
+        show({message: null, type: null})
     })
 }

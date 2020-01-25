@@ -3,7 +3,11 @@ import {Mixin}          from '$qui/base/mixwith.js'
 import * as GlobalGlass from '$qui/global-glass.js'
 
 
-export default Mixin((superclass = Object) => {
+const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
+
+
+/** @lends qui.messages.StickyModalPageMixin */
+const StickyModalPageMixin = Mixin((superclass = Object) => {
 
     /**
      * A mixin for pages that are stuck to the global glass until explicitly removed.
@@ -12,8 +16,12 @@ export default Mixin((superclass = Object) => {
      */
     class StickyModalPageMixin extends superclass {
 
-        constructor(...args) {
-            super(...args)
+        /**
+         * @constructs
+         * @param {...*} args parent class parameters
+         */
+        constructor({...args} = {}) {
+            super(args)
 
             this._showCount = 0
         }
@@ -77,3 +85,6 @@ export default Mixin((superclass = Object) => {
     return StickyModalPageMixin
 
 })
+
+
+export default StickyModalPageMixin

@@ -10,14 +10,16 @@ import Form from '../form.js'
  * A form ready to be used with {@link qui.pages.PageMixin#makeOptionsBarContent}.
  * @alias qui.forms.commonforms.OptionsForm
  * @extends qui.forms.Form
- * @param {Object} params
- * @param {qui.pages.PageMixin} params.page the page associated to this options form
- * * see {@link qui.forms.Form} for form parameters
  */
-export default class OptionsForm extends Form {
+class OptionsForm extends Form {
 
-    constructor({page, ...params}) {
-        ObjectUtils.assignDefault(params, {
+    /**
+     * @constructs
+     * @param {qui.pages.PageMixin} page the page associated to this options form
+     * @param {...*} args parent class parameters
+     */
+    constructor({page, ...args}) {
+        ObjectUtils.assignDefault(args, {
             compact: true,
             width: 'auto',
             largeTop: false,
@@ -27,7 +29,7 @@ export default class OptionsForm extends Form {
             continuousValidation: true
         })
 
-        super(params)
+        super(args)
 
         this._page = page
     }
@@ -63,3 +65,6 @@ export default class OptionsForm extends Form {
     }
 
 }
+
+
+export default OptionsForm

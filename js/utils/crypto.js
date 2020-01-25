@@ -83,10 +83,13 @@ export function str2b64(str) {
 /**
  * A SHA256 digest implementation.
  * @alias qui.utils.crypto.SHA256
- * @param {String|Number[]} [data] the data to hash
  */
 export class SHA256 {
 
+    /**
+     * @constructs
+     * @param {String|Number[]} [data] the data to hash
+     */
     constructor(data = null) {
         this._blocks = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -311,12 +314,15 @@ SHA256._K = [
 /**
  * A SHA256 HMAC implementation.
  * @alias qui.utils.crypto.HMACSHA256
- * @param {String|Number[]} key the HMAC key
- * @param {String|Number[]} [data] the data to hash
  */
 
 export class HMACSHA256 {
 
+    /**
+     * @constructs
+     * @param {String|Number[]} key the HMAC key
+     * @param {String|Number[]} [data] the data to hash
+     */
     constructor(key, data = null) {
         if (typeof key === 'string') {
             key = str2arr(StringUtils.toUTF8(key))

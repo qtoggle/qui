@@ -5,20 +5,23 @@ import * as DefaultStock from './default-stock.js'
 /**
  * An icon stock.
  * @alias qui.icons.Stock
- * @param {Object} params
- * @param {String} params.src image source (normally a URL)
- * @param {Number} params.unit unit of measurement for icon size (e.g. `"em"`, `"rem"`, `"px"`)
- * @param {Number} params.size icon size with respect to the `unit` (the icon is assumed to be a square)
- * @param {Number} params.width the number of icons in a row present in the source
- * @param {Number} params.height the number of icon rows present in the source
- * @param {Object<String,Number>} params.names a mapping associating each icon name to its horizontal offset
- * @param {?Object<String,Number>} [params.variants] a mapping associating each icon variant to its vertical offset; the
- * variants of the default stock ({@link qui.icons.defaultstock} are used if not supplied
- * @param {Object<String,String>} [params.variants] an optional mapping of aliases to icon variants; the variant aliases
- * of the default stock ({@link qui.icons.defaultstock} are used if not supplied
  */
-export default class Stock {
+class Stock {
 
+    /**
+     * @constructs
+     * @param {String} src image source (normally a URL)
+     * @param {String} unit unit of measurement for icon size (e.g. `"em"`, `"rem"`, `"px"`)
+     * @param {Number} size icon size with respect to the `unit` (the icon is assumed to be a square)
+     * @param {Number} width the number of icons in a row present in the source
+     * @param {Number} height the number of icon rows present in the source
+     * @param {Object<String,Number>} names a mapping associating each icon name to its horizontal offset
+     * @param {?Object<String,Number>} [variants] a mapping associating each icon variant to its vertical offset; the
+     * variants of the default stock ({@link qui.icons.defaultstock} are used if not supplied
+     * @param {Object<String,String>} [variantAliases] an optional mapping of aliases to icon variants; the variant
+     * aliases of the default stock ({@link qui.icons.defaultstock} are used if not supplied
+     *
+     */
     constructor({src, unit, size, width, height, names, variants = null, variantAliases = {}}) {
         this.src = src
         this.unit = unit
@@ -86,3 +89,6 @@ export default class Stock {
     }
 
 }
+
+
+export default Stock

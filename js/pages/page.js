@@ -18,7 +18,8 @@ import {updateUI}          from './pages.js'
 const viewMixinPrototype = ViewMixin().prototype
 
 
-export default Mixin((superclass = Object, rootclass) => {
+/** @lends qui.pages.PageMixin */
+const PageMixin = Mixin((superclass = Object, rootclass) => {
 
     let rootPrototype = rootclass.prototype
 
@@ -28,26 +29,33 @@ export default Mixin((superclass = Object, rootclass) => {
      * @alias qui.pages.PageMixin
      * @mixin
      * @extends qui.views.ViewMixin
-     * @param {Object} params
-     * * see {@link qui.views.ViewMixin} for view parameters
-     * @param {?String} [params.title] page title
-     * @param {String} [params.pathId] identifies the page in the URL; leave this unset if the page should not be part
-     * of the URL or is the main page of a section
-     * @param {Boolean} [params.column] indicates that the page layout is a column and does not expand horizontally
-     * (defaults to `false`)
-     * @param {Boolean} [params.keepPrevVisible] indicates that the previous page should be kept visible while this page
-     * is the current one, to the extent possible (defaults to `false`)
-     * @param {Boolean} [params.modal] indicates that the page should be modal, not allowing any external interaction
-     * (defaults to `false`)
-     * @param {Boolean} [params.transparent] indicates that the page should be transparent (defaults to `true`)
      */
     class PageMixin extends ViewMixin(superclass) {
 
+        /**
+         * @constructs
+         * @param {?String} [title] page title
+         * @param {String} [pathId] identifies the page in the URL; leave this unset if the page should not be part
+         * of the URL or is the main page of a section
+         * @param {Boolean} [column] indicates that the page layout is a column and does not expand horizontally
+         * (defaults to `false`)
+         * @param {Boolean} [keepPrevVisible] indicates that the previous page should be kept visible while this page
+         * is the current one, to the extent possible (defaults to `false`)
+         * @param {Boolean} [modal] indicates that the page should be modal, not allowing any external interaction
+         * (defaults to `false`)
+         * @param {Boolean} [transparent] indicates that the page should be transparent (defaults to `true`)
+         * @param {...*} args parent class parameters
+         */
         constructor({
-            title, pathId = null, column = false, keepPrevVisible = false, modal = false, transparent = true,
-            ...params
-        }) {
-            super(params)
+            title = null,
+            pathId = null,
+            column = false,
+            keepPrevVisible = false,
+            modal = false,
+            transparent = true,
+            ...args
+        } = {}) {
+            super(args)
 
             this._title = title
             this._pathId = pathId
@@ -836,3 +844,6 @@ export default Mixin((superclass = Object, rootclass) => {
     return PageMixin
 
 })
+
+
+export default PageMixin

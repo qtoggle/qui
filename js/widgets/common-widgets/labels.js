@@ -7,8 +7,8 @@ import * as Theme from '$qui/theme.js'
 $.widget('qui.labels', {
 
     options: {
-        color: null,
-        background: null,
+        color: '@foreground-color',
+        background: '@background-color',
         disabled: false,
         chevrons: false,
         clickable: false,
@@ -16,12 +16,8 @@ $.widget('qui.labels', {
     },
 
     _create: function () {
-        if (!this.options.color) {
-            this.options.color = Theme.getVar('background-color')
-        }
-        if (!this.options.background) {
-            this.options.background = Theme.getVar('foreground-color')
-        }
+        this.options.color = Theme.getColor(this.options.color)
+        this.options.background = Theme.getColor(this.options.background)
 
         this.element.addClass('qui-labels-container')
         if (this.options.disabled) {

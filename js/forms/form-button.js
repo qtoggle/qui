@@ -9,34 +9,40 @@ import ViewMixin from '$qui/views/view.js'
  * A form button.
  * @alias qui.forms.FormButton
  * @mixes qui.views.ViewMixin
- * @param {Object} params
- * * see {@link qui.views.ViewMixin} for view parameters
- * @param {String} params.id button identifier
- * @param {String} params.caption button caption
- * @param {String} [params.style] button style:
- *  * `"interactive"`
- *  * `"highlight"`
- *  * `"danger"`
- *  * `"colored"`
- * @param {String} [params.backgroundColor] custom background color (ignored unless `style` is `"colored"`)
- * @param {String} [params.backgroundActiveColor] custom background active color (ignored unless `style` is
- *  `"colored"`)
- * @param {String} [params.foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
- * @param {Boolean} [params.def] indicates that the button is the default form button (defaults to `false`)
- * @param {Boolean} [params.cancel] indicates that the button is the cancel form button (defaults to `false`)
- * @param {Function} [params.callback] called when button is pressed; will be called with the form as argument
  */
-export default class FormButton extends mix().with(ViewMixin) {
+class FormButton extends mix().with(ViewMixin) {
 
+    /**
+     * @constructs
+     * @param {String} id button identifier
+     * @param {String} caption button caption
+     * @param {String} [style] button style:
+     *  * `"interactive"`
+     *  * `"highlight"`
+     *  * `"danger"`
+     *  * `"colored"`
+     * @param {String} [backgroundColor] custom background color (ignored unless `style` is `"colored"`)
+     * @param {String} [backgroundActiveColor] custom background active color (ignored unless `style` is
+     *  `"colored"`)
+     * @param {String} [foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
+     * @param {Boolean} [def] indicates that the button is the default form button (defaults to `false`)
+     * @param {Boolean} [cancel] indicates that the button is the cancel form button (defaults to `false`)
+     * @param {Function} [callback] called when button is pressed; will be called with the form as argument
+     * @param {...*} args parent class parameters
+     */
     constructor({
-        id, caption, style,
+        id,
+        caption,
+        style = null,
         backgroundColor = '@interactive-color',
         backgroundActiveColor = '@interactive-active-color',
         foregroundColor = '@foreground-active-color',
-        def = false, cancel = false, callback = null,
-        ...params
+        def = false,
+        cancel = false,
+        callback = null,
+        ...args
     }) {
-        super(params)
+        super(args)
 
         this._id = id
         this._caption = caption
@@ -170,3 +176,5 @@ export default class FormButton extends mix().with(ViewMixin) {
     }
 
 }
+
+export default FormButton

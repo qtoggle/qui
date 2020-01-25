@@ -8,10 +8,17 @@ import JQueryUIField from './jquery-ui-field.js'
  * A color combo field based on preconfigured combo choices. The value data type is `String`.
  * @alias qui.forms.commonfields.ColorComboField
  * @extends qui.forms.commonfields.JQueryUIField
- * @param {Object} params
- * * see {@link qui.forms.FormField} for form field parameters
  */
-export default class ColorComboField extends JQueryUIField {
+class ColorComboField extends JQueryUIField {
+
+    /**
+     * @constructs
+     * @param {Boolean} [filterEnabled] set to `true` to enable filter input box
+     * @param {...*} args parent class parameters
+     */
+    constructor({filterEnabled = false, ...args}) {
+        super({widgetAttrs: {filterEnabled: filterEnabled}, ...args})
+    }
 
     valueToWidget(value) {
         if (value && typeof value === 'string' && !value.startsWith('@')) {
@@ -25,4 +32,6 @@ export default class ColorComboField extends JQueryUIField {
 
 // TODO es7 class fields
 ColorComboField.WIDGET_CLASS = 'colorcombo'
-ColorComboField.WIDGET_ATTRS = ['filterEnabled']
+
+
+export default ColorComboField

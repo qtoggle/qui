@@ -1,6 +1,4 @@
 
-import * as ObjectUtils from '$qui/utils/object.js'
-
 import JQueryUIField from './jquery-ui-field.js'
 
 
@@ -8,28 +6,48 @@ import JQueryUIField from './jquery-ui-field.js'
  * A push button field. The value of this field will always be `null`.
  * @alias qui.forms.commonfields.PushButtonField
  * @extends qui.forms.commonfields.JQueryUIField
- * @param {Object} params
- * * see {@link qui.forms.FormField} for form field parameters
- * @param {String} params.caption the button caption
- * @param {Function} params.onClick function to be executed when the button is pushed (see
- * {@link qui.forms.commonfields.PushButtonField#onClick})
- * @param {String} [params.style] button style:
- *  * `"interactive"` (default)
- *  * `"highlight"`
- *  * `"danger"`,
- *  * `"colored"`
- * @param {String} [params.backgroundColor] custom background color (ignored unless `style` is `"colored"`)
- * @param {String} [params.backgroundActiveColor] custom background active color (ignored unless `style` is `"colored"`)
- * @param {String} [params.foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
  */
-export default class PushButtonField extends JQueryUIField {
+class PushButtonField extends JQueryUIField {
 
-    constructor({onClick, ...params}) {
-        ObjectUtils.setDefault(params, 'style', 'interactive')
+    /**
+     * @constructs
+     * @param {String} caption the button caption
+     * @param {Function} onClick function to be executed when the button is pushed (see
+     * {@link qui.forms.commonfields.PushButtonField#onClick})
+     * @param {String} caption button caption
+     * @param {String} [style] button style:
+     *  * `"interactive"` (default)
+     *  * `"highlight"`
+     *  * `"danger"`,
+     *  * `"colored"`
+     * @param {String} [backgroundColor] custom background color (ignored unless `style` is `"colored"`)
+     * @param {String} [backgroundActiveColor] custom background active color (ignored unless `style` is `"colored"`)
+     * @param {String} [foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
+     * @param {...*} args parent class parameters
+     */
+    constructor({
+        caption,
+        onClick,
+        style = 'interactive',
+        backgroundColor = '@interactive-color',
+        backgroundActiveColor = '@interactive-active-color',
+        foregroundColor = '@foreground-active-color',
+        ...args
+    }) {
+        super({
+            widgetAttrs: {
+                caption: caption,
+                style: style,
+                backgroundColor: backgroundColor,
+                backgroundActiveColor: backgroundActiveColor,
+                foregroundColor: foregroundColor
+            },
+            ...args
+        })
 
-        super(params)
-
-        this.onClick = onClick
+        if (onClick) {
+            this.onClick = onClick
+        }
     }
 
     makeWidget() {
@@ -38,7 +56,7 @@ export default class PushButtonField extends JQueryUIField {
         div.addClass('qui-form-push-button')
         div.on('click', () => this.onClick(this.getForm()))
 
-        if (this._valueWidth === 100) {
+        if (this.getValueWidth() === 100) {
             div.css('display', 'block')
         }
 
@@ -63,4 +81,6 @@ export default class PushButtonField extends JQueryUIField {
 
 // TODO es7 class fields
 PushButtonField.WIDGET_CLASS = 'pushbutton'
-PushButtonField.WIDGET_ATTRS = ['caption', 'style', 'backgroundColor', 'backgroundActiveColor', 'foregroundColor']
+
+
+export default PushButtonField

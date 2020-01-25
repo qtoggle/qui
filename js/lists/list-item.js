@@ -13,15 +13,17 @@ const logger = Logger.get('qui.lists.listitem')
  * A list item.
  * @alias qui.lists.ListItem
  * @mixes qui.views.ViewMixin
- * @param {Object} params
- * * see {@link qui.views.ViewMixin} for view parameters
- * @param {jQuery} params.content item content
- * @param {*} [params.data] user data associated with the item
  */
-export default class ListItem extends mix().with(ViewMixin) {
+class ListItem extends mix().with(ViewMixin) {
 
-    constructor({content = null, data = null, ...params}) {
-        super(params)
+    /**
+     * @constructs
+     * @param {jQuery} [content] item content
+     * @param {*} [data] user data associated with the item
+     * @param {...*} args parent class parameters
+     */
+    constructor({content = null, data = null, ...args} = {}) {
+        super(args)
 
         this._content = content
         this._data = data
@@ -112,3 +114,6 @@ export default class ListItem extends mix().with(ViewMixin) {
     }
 
 }
+
+
+export default ListItem

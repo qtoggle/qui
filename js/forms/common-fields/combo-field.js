@@ -6,14 +6,39 @@ import JQueryUIField from './jquery-ui-field.js'
  * A combo box field. The value data type can be anything.
  * @alias qui.forms.commonfields.ComboField
  * @extends qui.forms.commonfields.JQueryUIField
- * @param {Object} params
- * * see {@link qui.forms.FormField} for form field parameters
- * @param {Object[]} params.choices choices (pairs of `label` and `value`)
- * @param {Number} [params.fastFactor] determines how fast the page-up/page-down actions work (defaults to `5`)
  */
-export default class ComboField extends JQueryUIField {
+class ComboField extends JQueryUIField {
 
     // TODO add setters and getters for widget properties
+
+    /**
+     * @constructs
+     * @param {Object[]} [choices] choices (pairs of `label` and `value`)
+     * @param {Function} [makeChoices] a function that generates choices (see
+     * {@link qui.forms.commonfields.ComboField#makeChoices}))
+     * @param {Number} [fastFactor] determines how fast the page-up/page-down actions work (defaults to `5`)
+     * @param {Boolean} [filterEnabled] set to `true` to enable filter input box
+     * @param {...*} args parent class parameters
+     */
+
+    constructor({choices = [], makeChoices = null, fastFactor = null, filterEnabled = false, ...args}) {
+        let that
+
+        super({
+            widgetAttrs: {
+                choices: choices,
+                fastFactor: fastFactor,
+                filterEnabled: filterEnabled,
+                makeChoices: function () {
+                    return that.makeChoices()
+                }
+            },
+            ...args
+        })
+
+        /* "that" needs to be assigned here because we can't refer to "this" before super() */
+        that = this
+    }
 
     /**
      * Set the list of choices.
@@ -21,6 +46,10 @@ export default class ComboField extends JQueryUIField {
      */
     setChoices(choices) {
         this._widgetCall({choices: choices})
+    }
+
+    makeChoices() {
+        return []
     }
 
     /**
@@ -38,4 +67,6 @@ export default class ComboField extends JQueryUIField {
 
 // TODO es7 class fields
 ComboField.WIDGET_CLASS = 'combo'
-ComboField.WIDGET_ATTRS = ['makeChoices', 'choices', 'fastFactor', 'filterEnabled']
+
+
+export default ComboField

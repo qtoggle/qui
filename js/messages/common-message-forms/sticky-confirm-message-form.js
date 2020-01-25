@@ -10,9 +10,18 @@ import StickyModalPageMixin from '../sticky-modal-page.js'
  * @alias qui.messages.commonmessageforms.StickyConfirmMessageForm
  * @extends qui.messages.commonmessageforms.ConfirmMessageForm
  * @mixes qui.messages.StickyModalPageMixin
- * @param {Object} params
- * * see {@link qui.messages.commonmessageforms.ConfirmMessageForm} for confirm message form parameters
- * * see {@link qui.messages.StickyModalPageMixin} for sticky modal page parameters
  */
-export default class StickyConfirmMessageForm extends mix(ConfirmMessageForm).with(StickyModalPageMixin) {
+class StickyConfirmMessageForm extends mix(ConfirmMessageForm).with(StickyModalPageMixin) {
+
+    /**
+     * @constructs
+     * @param {...*} args parent class parameters
+     */
+    constructor({...args}) {
+        super(args)
+    }
+
 }
+
+
+export default StickyConfirmMessageForm
