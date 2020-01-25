@@ -65,6 +65,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             this._modal = modal
 
             this._pageHTML = null
+            this._closing = false
             this._closed = false
             this._attached = false
             this._context = null
@@ -482,7 +483,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * was rejected.
          */
         close(force = false) {
-            if (this._closed) {
+            if (this._closed || this._closing) {
                 throw new AssertionError('Attempt to close an already closed page')
             }
 
@@ -493,6 +494,8 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             if (index >= 0 && context && context.getSize() > index + 1) {
                 promise = context.getPageAt(index + 1).close()
             }
+
+            this._closing = true
 
             return promise.then(() => force || this.canClose()).then(function () {
                 if (rootPrototype.close) {
@@ -544,7 +547,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
         }
 
         /**
-         * Tell if the page has been closed.
+         * Tell if the page has been closed or is in the process of being closed.
          * @returns {Boolean}
          */
         isClosed() {
@@ -553,7 +556,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                 return rootPrototype.isClosed.call(this)
             }
 
-            return this._closed
+            return this._closed || this._closing
         }
 
         /**
@@ -736,6 +739,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             }
 
             this._closed = false
+            this._closing = false
 
             /* Attach the page to context */
             context.push(this)
