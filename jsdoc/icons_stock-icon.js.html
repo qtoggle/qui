@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: icons/stock-icon.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: icons/stock-icon.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+import * as ObjectUtils from '$qui/utils/object.js'
+
+import * as DefaultStock     from './default-stock.js'
+import Icon                  from './icon.js'
+import MultiStateSpritesIcon from './multi-state-sprites-icon.js'
+import * as Stocks           from './stocks.js'
+
+
+/**
+ * An icon defined by stock attributes.
+ * @alias qui.icons.StockIcon
+ * @extends qui.icons.Icon
+ */
+class StockIcon extends Icon {
+
+    /**
+     * @constructs
+     * @param {String} name the icon name (in normal state)
+     * @param {String} [stockName] the name of the stock (defaults to `qui`)
+     * @param {String} [variant] the icon variant (in normal state)
+     * @param {String} [activeName] the icon name in active state
+     * @param {String} [activeVariant] the icon variant in active state
+     * @param {String} [focusedName] the icon name in focused state
+     * @param {String} [focusedVariant] the icon variant in focused state
+     * @param {String} [selectedName] the icon name in selected state
+     * @param {String} [selectedVariant] the icon variant in selected state
+     * @param {Number} [scale] icon scaling factor (defaults to `1`)
+     * @param {String} [decoration] icon decoration
+     */
+    constructor({
+        name,
+        stockName = DefaultStock.NAME,
+        variant = null,
+        activeName = null,
+        activeVariant = null,
+        focusedName = null,
+        focusedVariant = null,
+        selectedName = null,
+        selectedVariant = null,
+        scale = 1,
+        decoration = null
+    }) {
+        super()
+
+        this._name = name
+        this._stockName = stockName
+        this._variant = variant
+        this._activeName = activeName
+        this._activeVariant = activeVariant
+        this._focusedName = focusedName
+        this._focusedVariant = focusedVariant
+        this._selectedName = selectedName
+        this._selectedVariant = selectedVariant
+        this._scale = scale
+        this._decoration = decoration
+
+        /* A variant is specified but no corresponding name */
+        if (this._activeVariant &amp;&amp; !this._activeName) {
+            this._activeName = this._name
+        }
+        if (this._focusedVariant &amp;&amp; !this._focusedName) {
+            this._focusedName = this._name
+        }
+        if (this._selectedVariant &amp;&amp; !this._selectedName) {
+            this._selectedName = this._name
+        }
+
+        /* A name is specified but no corresponding variant */
+        if (this._activeName &amp;&amp; !this._activeVariant) {
+            this._activeVariant = this._variant
+        }
+        if (this._focusedName &amp;&amp; !this._focusedVariant) {
+            this._focusedVariant = this._variant
+        }
+        if (this._selectedName &amp;&amp; !this._selectedVariant) {
+            this._selectedVariant = this._variant
+        }
+    }
+
+    /**
+     * Return a dictionary with attributes suitable to build a {@link qui.icons.MultiStateSpritesIcon}.
+     * @returns {?qui.icons.MultiStateSpritesIcon}
+     */
+    toMultiStateSpritesIcon() {
+        let stock = Stocks.get(this._stockName)
+        if (!stock) {
+            return null
+        }
+
+        let attributes = {
+            url: stock.src,
+            bgWidth: stock.width,
+            bgHeight: stock.height,
+            size: stock.size,
+            unit: stock.unit
+        }
+
+        let states = {}
+        let filterVariant
+
+        if (this._name) {
+            filterVariant = stock.parseVariant(this._variant)
+            states['normal'] = {
+                offsetX: stock.names[this._name],
+                offsetY: stock.variants[filterVariant.variant],
+                filter: filterVariant.filter
+            }
+        }
+
+        if (this._activeName) {
+            filterVariant = stock.parseVariant(this._activeVariant)
+            states['active'] = {
+                offsetX: stock.names[this._activeName],
+                offsetY: stock.variants[filterVariant.variant],
+                filter: filterVariant.filter
+            }
+        }
+
+        if (this._focusedName) {
+            filterVariant = stock.parseVariant(this._focusedVariant)
+            states['focused'] = {
+                offsetX: stock.names[this._focusedName],
+                offsetY: stock.variants[filterVariant.variant],
+                filter: filterVariant.filter
+            }
+        }
+
+        if (this._selectedName) {
+            filterVariant = stock.parseVariant(this._selectedVariant)
+            states['selected'] = {
+                offsetX: stock.names[this._selectedName],
+                offsetY: stock.variants[filterVariant.variant],
+                filter: filterVariant.filter
+            }
+        }
+
+        attributes.states = states
+
+        if (this._scale) {
+            attributes.scale = this._scale
+        }
+        if (this._decoration) {
+            attributes.decoration = this._decoration
+        }
+
+        return new MultiStateSpritesIcon(attributes)
+    }
+
+    /**
+     * Return an updated version of the icon by altering some of the attributes.
+     * @param {Object} attributes the attributes to alter
+     * @returns qui.icons.StockIcon
+     */
+    alter(attributes) {
+        let existingAttributes = {
+            stockName: this._stockName,
+            name: this._name,
+            variant: this._variant,
+            activeName: this._activeName,
+            activeVariant: this._activeVariant,
+            focusedName: this._focusedName,
+            focusedVariant: this._focusedVariant,
+            selectedName: this._selectedName,
+            selectedVariant: this._selectedVariant,
+            scale: this._scale,
+            decoration: this._decoration
+        }
+
+        return new this.constructor(ObjectUtils.combine(existingAttributes, attributes))
+    }
+
+    /**
+     * Return an updated version of the icon by altering some of the attributes only if they are unset (`null`).
+     *
+     * This method allows creating an icon by providing default attribute values.
+     *
+     * @param {Object} attributes the attributes to alter
+     * @returns qui.icons.StockIcon
+     */
+    alterDefault(attributes) {
+        /* Keep only attributes whose value is currently null */
+        attributes = ObjectUtils.filter(attributes, (key) => (this[`_${key}`] == null))
+
+        return this.alter(attributes)
+    }
+
+    _applyTo(element) {
+        this.toMultiStateSpritesIcon().applyTo(element)
+    }
+
+}
+
+
+export default StockIcon
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.lists.PageList.html">PageList</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickyConfirmMessageForm.html">StickyConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addCloseListener">addCloseListener</a></li><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#removeCloseListener">removeCloseListener</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Jan 25 2020 22:03:36 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

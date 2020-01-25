@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: window.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: window.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace qui.window
+ */
+
+import $      from '$qui/lib/jquery.module.js'
+import Logger from '$qui/lib/logger.module.js'
+
+import Signal     from '$qui/base/signal.js'
+import Icon       from '$qui/icons/icon.js'
+import StockIcon  from '$qui/icons/stock-icon.js'
+import * as Theme from '$qui/theme.js'
+import * as AJAX  from '$qui/utils/ajax.js'
+import {asap}     from '$qui/utils/misc.js'
+
+
+const SMALL_SCREEN_THRESHOLD = 700 /* Logical pixels */
+
+const logger = Logger.get('qui.window')
+
+let unloading = false
+let reloading = false
+let closeListeners = []
+
+
+/**
+ * jQuery-wrapped document object.
+ * @alias qui.window.$document
+ * @type {jQuery}
+ */
+export let $document = null
+
+/**
+ * jQuery-wrapped window object.
+ * @alias qui.window.$window
+ * @type {jQuery}
+ */
+export let $window = null
+
+/**
+ * jQuery-wrapped document body object.
+ * @alias qui.window.$body
+ * @type {jQuery}
+ */
+export let $body = null
+
+/**
+ * Emitted whenever the window is resized. Handlers are called with the following parameters:
+ *  * `width`, the new window width: `Number`
+ *  * `height`, the new window height: `Number`
+ * @alias qui.window.resizeSignal
+ */
+export let resizeSignal = new Signal()
+
+/**
+ * Emitted whenever the screen layout changes. Handlers are called with the following parameters:
+ *  * `smallScreen`, telling if the screen is small, as defined by {@link qui.window.isSmallScreen}: `Boolean`
+ *  * `landscape`, telling if the screen orientation is landscape: `Boolean`
+ * @alias qui.window.screenLayoutChangeSignal
+ */
+export let screenLayoutChangeSignal = new Signal()
+
+/**
+ * Emitted whenever the application enters or leaves full-screen mode. Handlers are called with the following
+ * parameters:
+ *  * `fullScreen`, telling if the application is currently in full-screen mode, nor not: `Boolean`
+ * @alias qui.window.fullScreenChangeSignal
+ */
+export let fullScreenChangeSignal = new Signal()
+
+/**
+ * Emitted whenever the application window becomes visible or is no longer visible. Handlers are called with the
+ * following parameters:
+ *  * `visible`, telling if the application is visible or not: `Boolean`
+ * @alias qui.window.visibilityChangeSignal
+ */
+export let visibilityChangeSignal = new Signal()
+
+
+/* Full screen */
+
+function handleEnterFullScreen() {
+    $body.addClass('full-screen')
+    logger.debug('entering full screen')
+}
+
+function handleExitFullScreen() {
+    $body.removeClass('full-screen')
+    logger.debug('full screen exited')
+}
+
+/**
+ * Put the window full-screen mode.
+ * @alias qui.window.enterFullScreen
+ */
+export function enterFullScreen() {
+    document.documentElement.requestFullscreen()
+}
+
+/**
+ * Tell whether the browser window is in full-screen mode or not.
+ * @alias qui.window.isFullScreen
+ * @returns {Boolean}
+ */
+export function isFullScreen() {
+    return document.fullscreenEnabled != null
+}
+
+
+/* Screen layout */
+
+function alterTopIcon(element, variant) {
+    let icon = Icon.getFromElement(element)
+    if (!icon) {
+        return
+    }
+
+    if (icon instanceof StockIcon) {
+        icon = icon.alter({variant: variant})
+    }
+
+    icon.applyTo(element)
+}
+
+function handleSmallScreen() {
+    logger.debug('small screen mode')
+
+    /* On small screens, we always want white icons on top bar buttons */
+    $('div.qui-top-bar > div.qui-top-button > div.qui-icon').each(function () {
+        alterTopIcon($(this), 'white')
+    })
+}
+
+function handleLargeScreen() {
+    logger.debug('large screen mode')
+
+    /* On large screens, we want interactive icons on top bar buttons */
+    $('div.qui-top-bar > div.qui-top-button > div.qui-icon').each(function () {
+        alterTopIcon($(this), 'interactive')
+    })
+}
+
+function handleLandscape() {
+    logger.debug('landscape mode')
+}
+
+function handlePortrait() {
+    logger.debug('portrait mode')
+}
+
+/**
+ * Tell whether the screen is small or not. A screen is considered small if its width is below a *small* threshold.
+ * @alias qui.window.isSmallScreen
+ * @param {Number} [width] the screen width; if not supplied, the current screen width is considered
+ * @param {Number} [height] the screen height; if not supplied, the current screen height is considered
+ * @returns {Boolean}
+ */
+export function isSmallScreen(width = null, height = null) {
+    if (width == null) {
+        width = $window.width()
+    }
+
+    if (height == null) {
+        height = $window.height()
+    }
+
+    return Math.min(width, height) &lt;= SMALL_SCREEN_THRESHOLD
+}
+
+/**
+ * Tell if the screen orientation is landscape (`true`) or portrait (`false`).
+ * @alias qui.window.isLandscape
+ * @returns {Boolean}
+ */
+export function isLandscape() {
+    return $window.width() >= $window.height()
+}
+
+
+/* Visibility */
+
+function handleBecomeVisible() {
+    $body.addClass('visible')
+    logger.debug('application is visible')
+}
+
+function handleBecomeHidden() {
+    $body.removeClass('visible')
+    logger.debug('application is hidden')
+}
+
+/**
+ * Tell whether the application is visible or not.
+ * @alias qui.window.isVisible
+ * @returns {Boolean}
+ */
+export function isVisible() {
+    return !document.hidden
+}
+
+
+/* Reloading &amp; closing */
+
+/**
+ * Reload the window.
+ * @alias qui.window.reload
+ * @param {String} [path] optional path to navigate
+ */
+export function reload(path) {
+    reloading = true
+
+    logger.debug('reloading')
+
+    asap(function () {
+        if (path) {
+            if (window.location.href === path) {
+                path = ''
+            }
+
+            window.location.href = path
+        }
+        else {
+            window.location.reload()
+        }
+    })
+}
+
+/**
+ * Tell if the window is currently closing.
+ * @alias qui.window.isClosing
+ * @returns {Boolean}
+ */
+export function isClosing() {
+    return unloading || reloading
+}
+
+/**
+ * Add a listener function to be called when the window is closed. If any of the close listeners returns `false`, window
+ * closing will be prevented, if possible.
+ * @param {Function} listener
+ */
+export function addCloseListener(listener) {
+    closeListeners.push(listener)
+}
+
+/**
+ * Remove a listener function from the listeners that are called when the window is closed.
+ * @param {Function} listener
+ */
+export function removeCloseListener(listener) {
+    let index = closeListeners.findIndex(function (l) {
+        return l === listener
+    })
+
+    if (index >= 0) {
+        closeListeners.splice(index, 1)
+    }
+}
+
+
+export function init() {
+    /* Wrap main objects in jQuery */
+    $document = $(document)
+    $window = $(window)
+    $body = $(document.body)
+
+    /* Window resize handling */
+    let initialResize = true
+    $window.on('resize', function () {
+        let width = $window.width()
+        let height = $window.height()
+        let smallScreen = isSmallScreen(width, height)
+        let landscape = width >= height
+        let changed = false
+
+        if (smallScreen &amp;&amp; !$body.hasClass('small-screen')) {
+            $body.addClass('small-screen')
+            handleSmallScreen()
+            changed = true
+        }
+        else if (!smallScreen &amp;&amp; $body.hasClass('small-screen')) {
+            $body.removeClass('small-screen')
+            handleLargeScreen()
+            changed = true
+        }
+        else if (initialResize) {
+            handleLargeScreen()
+        }
+
+        if (landscape &amp;&amp; !$body.hasClass('landscape')) {
+            $body.addClass('landscape')
+            handleLandscape()
+            changed = true
+        }
+        else if (!landscape &amp;&amp; $body.hasClass('landscape')) {
+            $body.removeClass('landscape')
+            handlePortrait()
+            changed = true
+        }
+        else if (initialResize) {
+            handlePortrait()
+        }
+
+        if (changed) {
+            screenLayoutChangeSignal.emit(smallScreen, landscape)
+        }
+
+        initialResize = false
+
+        resizeSignal.emit(width, height)
+    })
+
+    /* Window unload handling */
+    $window.on('beforeunload', function (e) {
+        unloading = true
+
+        logger.info('application unload requested')
+
+        /* These nested asap() calls allow us to detect if unloading has been cancelled */
+        asap(function () {
+            asap(function () {
+                logger.info('application unload cancelled')
+            })
+        })
+
+        let canUnload = true
+
+        /* Give a chance to any pending requests to complete */
+        let writePendingRequests = AJAX.getPendingRequests()
+                                   .filter(r => ['POST', 'PUT', 'PATCH', 'DELETE'].indexOf(r.details.method) >= 0)
+
+        if (writePendingRequests.length > 0) {
+            logger.warn(`application unload: there are ${writePendingRequests.length} write pending ajax requests`)
+            canUnload = false
+        }
+
+        if (canUnload) {
+            canUnload = !closeListeners.some(function (l) {
+                try {
+                    if (l() === false) {
+                        logger.warn('application unload prevented by close listener')
+                        return true
+                    }
+                }
+                catch (e) {
+                    logger.errorStack('close listener call failed', e)
+                }
+            })
+        }
+
+        if (!canUnload) {
+            e.preventDefault()
+            unloading = false
+            return false
+        }
+    })
+
+    /* Full screen handling */
+    $document.on('fullscreenchange', function () {
+        if (isFullScreen()) {
+            handleEnterFullScreen()
+        }
+        else {
+            handleExitFullScreen()
+        }
+
+        fullScreenChangeSignal.emit(isFullScreen())
+    })
+
+    /* Visibility handling */
+    $document.on('visibilitychange', function () {
+        if (this.hidden) {
+            handleBecomeHidden()
+        }
+        else {
+            handleBecomeVisible()
+        }
+
+        visibilityChangeSignal.emit(!this.hidden)
+    })
+
+    if (isVisible()) {
+        handleBecomeVisible()
+    }
+    else {
+        handleBecomeHidden()
+    }
+
+    $body.addClass('disable-transitions')
+
+    asap(function () {
+        /* Reset the scroll position of the body */
+        $body.scrollLeft(0)
+        $body.scrollTop(0)
+
+        /* Trigger an initial resize */
+        $window.resize()
+
+        Theme.afterTransition(function () {
+            $body.css('opacity', '1')
+            $body.removeClass('disable-transitions')
+        })
+    })
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.lists.PageList.html">PageList</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickyConfirmMessageForm.html">StickyConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addCloseListener">addCloseListener</a></li><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#removeCloseListener">removeCloseListener</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Jan 25 2020 22:03:36 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

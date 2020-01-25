@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: messages/toast.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: messages/toast.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace qui.messages.toast
+ */
+
+import $ from '$qui/lib/jquery.module.js'
+
+import StockIcon   from '$qui/icons/stock-icon.js'
+import * as Theme  from '$qui/theme.js'
+import {asap}      from '$qui/utils/misc.js'
+import * as Window from '$qui/window.js'
+
+
+const TOAST_MESSAGE_TIMEOUT = 5000 /* 5 seconds */
+
+let toastMessageTimeoutHandle = null
+let toastMessageContainer = null
+let toastMessageShowingTimeoutHandle = null
+
+
+/**
+ * Show a toast message for a limited period of time.
+ * @alias qui.messages.toast.show
+ * @param {?String|jQuery} message the message to show
+ * @param {?String} type message type (`"info"`, `"warning"` or `"error"`)
+ * @param {Number} [timeout] the message display timeout, in milliseconds (defaults to 5 seconds)
+ * @param {Boolean} [closeable] whether the message can be closed by the user (defaults to `true`)
+ */
+export function show({message, type, timeout = TOAST_MESSAGE_TIMEOUT, closeable = true}) {
+    let messageSpan = toastMessageContainer.find('span.qui-toast-message')
+
+    if (toastMessageTimeoutHandle) {
+        clearTimeout(toastMessageTimeoutHandle)
+        toastMessageTimeoutHandle = null
+    }
+
+    if (message) {
+        Window.$body.addClass('toast-message-visible')
+        toastMessageContainer.removeClass('info warning error multiline closeable')
+
+        messageSpan.html(message)
+        if (type) {
+            toastMessageContainer.addClass(type)
+        }
+
+        /* Test if the message wraps */
+        let normalHeight = messageSpan.height()
+        toastMessageContainer.find('div.qui-toast-message').css('white-space', 'normal')
+        let wrappedHeight = messageSpan.height()
+        toastMessageContainer.find('div.qui-toast-message').css('white-space', '')
+
+        if (normalHeight &lt; wrappedHeight) {
+            toastMessageContainer.addClass('multiline')
+        }
+
+        if (timeout !== 0) {
+            toastMessageTimeoutHandle = setTimeout(function () {
+                show({message: null, type: 'info'})
+            }, timeout)
+        }
+
+        if (closeable !== false) {
+            toastMessageContainer.addClass('closeable')
+        }
+
+        /* Showing flag timeout */
+        if (toastMessageShowingTimeoutHandle) {
+            clearTimeout(toastMessageShowingTimeoutHandle)
+        }
+
+        toastMessageShowingTimeoutHandle = asap(function () {
+            toastMessageShowingTimeoutHandle = null
+        })
+    }
+    else if (Window.$body.hasClass('toast-message-visible')) { /* Hide */
+        Window.$body.removeClass('toast-message-visible')
+        Theme.afterTransition(function () {
+            if (Window.$body.hasClass('toast-message-visible')) {
+                return /* Reshown in the meantime */
+            }
+
+            messageSpan.html('')
+            toastMessageContainer.removeClass('info warning error multiline')
+        })
+    }
+}
+
+/**
+ * Hide a currently displayed toast message.
+ * @alias qui.messages.toast.hide
+ */
+export function hide() {
+    show({message: null, type: 'info'})
+}
+
+/**
+ * Convenience function for {@link qui.messages.toast.show} with default timeout and type `"info"`.
+ * @alias qui.messages.toast.info
+ * @param {String|jQuery} message the message to show
+ */
+export function info(message) {
+    show({message: message, type: 'info'})
+}
+
+/**
+ * Convenience function for {@link qui.messages.toast.show} with default timeout and type `"warning"`.
+ * @alias qui.messages.toast.warning
+ * @param {String|jQuery} message the message to show
+ */
+export function warning(message) {
+    show({message: message, type: 'warning'})
+}
+
+/**
+ * Convenience function for {@link qui.messages.toast.show} with default timeout and type `"error"`.
+ * @alias qui.messages.toast.error
+ * @param {String|jQuery} message the message to show
+ */
+export function error(message) {
+    show({message: message, type: 'error'})
+}
+
+
+export function init() {
+    toastMessageContainer = $('&lt;div class="qui-toast-message-container">' +
+                                  '&lt;div class="qui-toast-message-icon">&lt;/div>' +
+                                  '&lt;div class="qui-toast-message">' +
+                                      '&lt;span class="qui-toast-message">&lt;/span>' +
+                                  '&lt;div class="qui-base-button qui-toast-message-close-button">&lt;/div>' +
+                              '&lt;/div>')
+
+    Window.$body.append(toastMessageContainer)
+
+    /* Close button */
+    let closeButton = toastMessageContainer.find('div.qui-toast-message-close-button')
+    new StockIcon({
+        name: 'close', variant: 'interactive', activeVariant: 'interactive-active'
+    }).alter({scale: 0.75}).applyTo(closeButton)
+
+    closeButton.on('click', function () {
+        show({message: null, type: null})
+    })
+
+    /* Close when clicked anywhere */
+    Window.$body.on('click', function (e) {
+        if (toastMessageShowingTimeoutHandle) {
+            return /* Showing is in progress */
+        }
+
+        if (!Window.$body.hasClass('toast-message-visible')) {
+            return /* Message not visible */
+        }
+
+        if (!toastMessageContainer.hasClass('closeable')) {
+            return /* Message not closeable */
+        }
+
+        if (toastMessageContainer.has(e.target).length) {
+            return /* Clicked on the message container itself */
+        }
+
+        show({message: null, type: null})
+    })
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.lists.PageList.html">PageList</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickyConfirmMessageForm.html">StickyConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addCloseListener">addCloseListener</a></li><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#removeCloseListener">removeCloseListener</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Jan 25 2020 22:03:36 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

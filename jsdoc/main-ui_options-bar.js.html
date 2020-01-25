@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main-ui/options-bar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main-ui/options-bar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace qui.mainui.optionsbar
+ */
+
+import $      from '$qui/lib/jquery.module.js'
+import Logger from '$qui/lib/logger.module.js'
+
+import {gettext}         from '$qui/base/i18n.js'
+import Signal            from '$qui/base/signal.js'
+import StockIcon         from '$qui/icons/stock-icon.js'
+import * as Theme        from '$qui/theme.js'
+import * as Gestures     from '$qui/utils/gestures.js'
+import {asap}            from '$qui/utils/misc.js'
+import * as PromiseUtils from '$qui/utils/promise.js'
+import * as Window       from '$qui/window.js'
+
+import * as MenuBar from './menu-bar.js'
+import * as TopBar  from './top-bar.js'
+
+
+const logger = Logger.get('qui.mainui.optionsbar')
+
+
+let barHTML = null
+let barContainer = null
+let optionsButton = null
+let updateHandle = null
+let opened = false
+let transitionPromise = Promise.resolve()
+
+/**
+ * Emitted whenever the options bar is opened or closed. Handlers are called with the following parameters:
+ *  * `opened`, the opened status: `Boolean`
+ * @alias qui.mainui.optionsbar.openCloseSignal
+ */
+export let openCloseSignal = new Signal(barHTML)
+
+
+/**
+ * Tell if the options bar is opened or not.
+ * @alias qui.mainui.optionsbar.isOpened
+ * @returns {Boolean}
+ */
+export function isOpened() {
+    return opened
+}
+
+/**
+ * Open the options bar.
+ * @alias qui.mainui.optionsbar.open
+ */
+export function open() {
+    if (opened) {
+        return
+    }
+    if (MenuBar.isOpened()) {
+        MenuBar.close()
+    }
+
+    opened = true
+    logger.debug('options bar opened')
+    openCloseSignal.emit(true)
+
+    transitionPromise = transitionPromise.then(function () {
+        barHTML.css('display', '')
+        optionsButton.addClass('selected')
+        return PromiseUtils.asap().then(function () {
+            Window.$body.addClass('options-bar-open')
+        })
+    })
+}
+
+/**
+ * Close the options bar.
+ * @alias qui.mainui.optionsbar.close
+ */
+export function close() {
+    if (!opened) {
+        return
+    }
+
+    opened = false
+    logger.debug('options bar closed')
+    openCloseSignal.emit(false)
+
+    transitionPromise = transitionPromise.then(function () {
+        Window.$body.removeClass('options-bar-open')
+        optionsButton.removeClass('selected')
+
+        return PromiseUtils.later(Theme.getTransitionDuration()).then(function () {
+            barHTML.css('display', 'none')
+        })
+    })
+}
+
+/**
+ * Set the content of the options bar.
+ * @alias qui.mainui.optionsbar.setContent
+ * @param {?jQuery} content the new options bar content; `null` closes/disables the options bar
+ */
+export function setContent(content) {
+    if (updateHandle) {
+        clearTimeout(updateHandle)
+    }
+
+    barHTML.addClass('updating')
+    updateHandle = asap(function () {
+        updateHandle = null
+
+        barContainer.children().detach()
+
+        if (content) {
+            /* Using detach + append prevents triggering remove/destroy on widgets */
+            barContainer.append(content)
+            optionsButton.removeClass('hidden')
+        }
+        else {
+            optionsButton.addClass('hidden')
+            close()
+        }
+
+        barHTML.removeClass('updating')
+    })
+}
+
+export function init() {
+    barHTML = $('&lt;div class="qui-options-bar">' +
+                    '&lt;div class="qui-options-bar-container">&lt;/div>' +
+                '&lt;/div>')
+    barContainer = barHTML.find('div.qui-options-bar-container')
+    optionsButton = TopBar.getHTML().find('div.qui-options-button')
+    new StockIcon({name: 'options', variant: 'interactive'}).applyTo(optionsButton.find('.qui-icon'))
+
+    optionsButton.attr('title', gettext('Options'))
+    optionsButton.on('click', function () {
+        if (isOpened()) {
+            close()
+        }
+        else {
+            open()
+        }
+    })
+
+    Gestures.enableDragging(
+        barHTML,
+        /* onMove = */ function (elemX, elemY, deltaX, deltaY, pageX, pageY) {
+            if (deltaX &lt; 0) {
+                return
+            }
+            barHTML.css('transition', 'none')
+            barHTML.css('right', -deltaX)
+        },
+        /* onBegin = */ function () {
+            if (!Window.isSmallScreen()) {
+                return false
+            }
+        },
+        /* onEnd = */ function (elemX, elemY, deltaX, deltaY, pageX, pageY) {
+            barHTML.css('transition', '')
+            barHTML.css('right', '')
+
+            if (Math.abs(deltaX) > Window.$window.width() / 5 &amp;&amp; deltaX > 0) {
+                close()
+            }
+        }
+    )
+
+    Window.$body.append(barHTML)
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.lists.PageList.html">PageList</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickyConfirmMessageForm.html">StickyConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addCloseListener">addCloseListener</a></li><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#removeCloseListener">removeCloseListener</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Jan 25 2020 22:03:36 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

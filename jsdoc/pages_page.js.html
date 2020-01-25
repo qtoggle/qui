@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/page.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/page.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+import $ from '$qui/lib/jquery.module.js'
+
+import {AssertionError} from '$qui/base/errors.js'
+import {Mixin}          from '$qui/base/mixwith.js'
+import * as GlobalGlass from '$qui/global-glass.js'
+import * as OptionsBar  from '$qui/main-ui/options-bar.js'
+import * as Navigation  from '$qui/navigation.js'
+import * as Theme       from '$qui/theme.js'
+import {asap}           from '$qui/utils/misc.js'
+import ViewMixin        from '$qui/views/view.js'
+import * as Window      from '$qui/window.js'
+
+import {getPagesContainer} from './pages.js'
+import {updateUI}          from './pages.js'
+
+
+const viewMixinPrototype = ViewMixin().prototype
+
+
+/** @lends qui.pages.PageMixin */
+const PageMixin = Mixin((superclass = Object, rootclass) => {
+
+    let rootPrototype = rootclass.prototype
+
+
+    /**
+     * A mixin that offers page behavior.
+     * @alias qui.pages.PageMixin
+     * @mixin
+     * @extends qui.views.ViewMixin
+     */
+    class PageMixin extends ViewMixin(superclass) {
+
+        /**
+         * @constructs
+         * @param {?String} [title] page title
+         * @param {String} [pathId] identifies the page in the URL; leave this unset if the page should not be part
+         * of the URL or is the main page of a section
+         * @param {Boolean} [column] indicates that the page layout is a column and does not expand horizontally
+         * (defaults to `false`)
+         * @param {Boolean} [keepPrevVisible] indicates that the previous page should be kept visible while this page
+         * is the current one, to the extent possible (defaults to `false`)
+         * @param {Boolean} [modal] indicates that the page should be modal, not allowing any external interaction
+         * (defaults to `false`)
+         * @param {Boolean} [transparent] indicates that the page should be transparent (defaults to `true`)
+         * @param {...*} args parent class parameters
+         */
+        constructor({
+            title = null,
+            pathId = null,
+            column = false,
+            keepPrevVisible = false,
+            modal = false,
+            transparent = true,
+            ...args
+        } = {}) {
+            super(args)
+
+            this._title = title
+            this._pathId = pathId
+            this._column = column
+            this._keepPrevVisible = keepPrevVisible
+            this._transparent = transparent
+            this._modal = modal
+
+            this._pageHTML = null
+            this._closing = false
+            this._closed = false
+            this._attached = false
+            this._context = null
+            this._optionsBarContent = null
+            this._optionsBarOpen = false /* Flag indicating the last known options bar status for this page */
+            this._whenLoaded = null
+        }
+
+        /**
+         * Override this method to customize navigation beyond this page. By default, it returns `null`, preventing
+         * further navigation.
+         *
+         * It is safe to assume that this page is visible and loaded when this method is called.
+         *
+         * @param {String} pathId the next path id
+         * @returns {?qui.pages.PageMixin|Promise&lt;qui.pages.PageMixin>} the next page or `null` if navigation to given
+         * path id is not possible; a promise that resolves to a page can also be returned
+         */
+        navigate(pathId) {
+            return null
+        }
+
+        /**
+         * Return the page title.
+         * @returns {?String}
+         */
+        getTitle() {
+            if (rootPrototype.getTitle) {
+                return rootPrototype.getTitle.call(this)
+            }
+
+            return this._title
+        }
+
+        /**
+         * Set the page title.
+         * @param {?String} title the new title
+         */
+        setTitle(title) {
+            if (rootPrototype.getTitle) {
+                rootPrototype.setTitle.call(this, title)
+            }
+
+            this._title = title
+            if (this.getContext() &amp;&amp; this.getContext().isCurrent()) {
+                updateUI()
+            }
+        }
+
+        /**
+         * Return the path id of the page.
+         * @returns {?String}
+         */
+        getPathId() {
+            return this._pathId
+        }
+
+        /**
+         * Update the path id of the page.
+         * @param {?String} pathId
+         */
+        setPathId(pathId) {
+            this._pathId = pathId
+            if (this.getContext() &amp;&amp; this.getContext().isCurrent()) {
+                Navigation.updateHistoryEntry()
+            }
+        }
+
+        /**
+         * Override this method to specify page state to be saved when page is saved into browser history.
+         *
+         * This state will later be restored by calling {@link qui.pages.PageMixin#restoreHistoryState}.
+         *
+         * @returns {*} the state
+         */
+        getHistoryState() {
+            return {}
+        }
+
+        /**
+         * Override this method to implement restoring page state from history.
+         *
+         * This method will be given as argument the state that has been previously created by
+         * {@link qui.pages.PageMixin#getHistoryState}.
+         *
+         * This method must be prepared to receive a `null` history state.
+         *
+         * @param {*} state
+         */
+        restoreHistoryState(state) {
+        }
+
+        /**
+         * Call this whenever the content of the history state changes.
+         */
+        updateHistoryState() {
+            if (this.getContext() &amp;&amp; this.getContext().isCurrent()) {
+                Navigation.updateHistoryEntry()
+            }
+        }
+
+        /**
+         * Ad a new entry to the browser history. This is just a convenience wrapper around
+         * {@link qui.navigation.addHistoryEntry}.
+         */
+        addHistoryEntry() {
+            Navigation.addHistoryEntry()
+        }
+
+        /**
+         * Override this to implement how the page is loaded.
+         *
+         * By default does nothing, returning a resolved promise.
+         *
+         * @returns {Promise}
+         */
+        load() {
+            return Promise.resolve()
+        }
+
+        /**
+         * Return a promise that settles as soon as the page is loaded.
+         *
+         * This method calls {@link qui.pages.PageMixin#load} once per page instance.
+         *
+         * @returns {Promise}
+         */
+        whenLoaded() {
+            if (!this._whenLoaded) {
+                this.setProgress()
+                this._whenLoaded = this.load()
+                this._whenLoaded.then(function () {
+                    this.clearProgress()
+                }.bind(this)).catch(function (error) {
+                    this.setError(error)
+                }.bind(this))
+            }
+
+            return this._whenLoaded
+        }
+
+        /**
+         * Create the page HTML wrapper. This method is called only once per page instance.
+         * @returns {jQuery}
+         */
+        makePageHTML() {
+            let html = $('&lt;div class="qui-page">&lt;/div>')
+
+            if (this._column) {
+                html.addClass('column')
+            }
+
+            if (this._transparent) {
+                html.addClass('transparent')
+            }
+
+            if (this._modal) {
+                html.addClass('modal')
+            }
+
+            /* Add a reference from HTML element to the page object */
+            html.data('page', this)
+
+            html.append(this.getHTML())
+
+            return html
+        }
+
+        /**
+         * Override this to further initialize the Page HTML wrapper.
+         * @param {jQuery} html the HTML wrapper to be initialized
+         */
+        initPageHTML(html) {
+        }
+
+        /**
+         * Return the page HTML wrapper. Calls {@link qui.pages.PageMixin#makePageHTML} at first invocation.
+         * @returns {jQuery}
+         */
+        getPageHTML() {
+            if (this._pageHTML == null) {
+                this._pageHTML = this.makePageHTML()
+                this.initPageHTML(this._pageHTML)
+            }
+
+            return this._pageHTML
+        }
+
+        /**
+         * Attach the page to the page container.
+         */
+        attach() {
+            if (this._attached) {
+                throw new AssertionError('Attempt to attach an already attached page')
+            }
+            // TODO following condition breaks sticky modal pages
+            // if (!this._context || !this._context.isCurrent()) {
+            //     throw new AssertionError('Attempt to attach a page belonging to a non-current context')
+            // }
+
+            let html = this.getPageHTML()
+            if (this.isModal()) {
+                GlobalGlass.addContent(html)
+            }
+            else {
+                getPagesContainer().append(html)
+            }
+
+            asap(function () {
+                this.getPageHTML().addClass('attached')
+            }.bind(this))
+
+            this._attached = true
+        }
+
+        /**
+         * Detach the page from the page container.
+         */
+        detach() {
+            if (!this._attached) {
+                throw new AssertionError('Attempt to detach an already detached page')
+            }
+
+            this._attached = false
+
+            this.getPageHTML().removeClass('attached')
+
+            Theme.afterTransition(function () {
+
+                if (this._attached) {
+                    /* Detaching cancelled by subsequent attach */
+                    return
+                }
+
+                this.getPageHTML().detach()
+
+            }.bind(this), this.getPageHTML())
+        }
+
+        /**
+         * Return the current vertical scroll parameters.
+         * @returns {{offset: Number, maxOffset: Number}} `offset` represents the current scroll offset and `maxOffset`
+         * is the maximum scroll offset (`0` if no scrolling is possible)
+         */
+        getVertScrollParams() {
+            let pageHTML = this.getPageHTML()
+
+            return {
+                offset: pageHTML[0].scrollTop,
+                maxOffset: pageHTML[0].scrollHeight - pageHTML[0].clientHeight
+            }
+        }
+
+        /**
+         * Called when the page is scrolled vertically.
+         * @param {Number} offset the vertical scroll offset
+         * @param {Number} maxOffset the maximum vertical scroll offset
+         */
+        onVertScroll(offset, maxOffset) {
+        }
+
+        /**
+         * Handle vertical scroll events. Internally calls {@link qui.pages.PageMixin#onVertScroll}.
+         */
+        handleVertScroll() {
+            let params = this.getVertScrollParams()
+
+            this.onVertScroll(params.offset, params.maxOffset)
+        }
+
+        /**
+         * Called when the page is resized.
+         */
+        onResize() {
+        }
+
+        /**
+         * Handle the resize events. Internally calls {@link qui.pages.PageMixin#onResize}.
+         */
+        handleResize() {
+            this.onResize()
+        }
+
+        _getIndex() {
+            if (!this._context) {
+                return -1
+            }
+
+            return this._context.getPages().indexOf(this)
+        }
+
+        /**
+         * Return the associated pages context.
+         * @returns {?qui.pages.PagesContext}
+         */
+        getContext() {
+            return this._context
+        }
+
+        /**
+         * Tell if this page is the current page within its context.
+         * @returns {Boolean}
+         */
+        isCurrent() {
+            if (!this._context) {
+                return false
+            }
+
+            return this._context.getCurrentPage() === this
+        }
+
+        /**
+         * Tell if the page is visible.
+         * @returns {Boolean}
+         */
+        isVisible() {
+            if (!this._context) {
+                return false
+            }
+
+            if (!this._context.isCurrent()) {
+                return false
+            }
+
+            if (this._context.getPages().indexOf(this) &lt; 0) {
+                return false /* Not part of current context */
+            }
+
+            if (Window.isSmallScreen() &amp;&amp; this._getIndex() &lt; this._context.getSize() - 1) {
+                return false /* On small screens, only the last page is actually visible */
+            }
+
+            return this._context.getVisiblePages().includes(this)
+        }
+
+        /**
+         * Tells if the page has a context, effectively indicating whether the page is currently added to a context, or
+         * not.
+         * @returns {Boolean}
+         */
+        hasContext() {
+            return !!this._context
+        }
+
+        /**
+         * Tell if the page is kept visible while the next page is current.
+         * @returns {Boolean}
+         */
+        isPrevKeptVisible() {
+            return this._keepPrevVisible
+        }
+
+        /**
+         * Set the *keep-prev-visible* flag, controlling if the page is kept visible while the next page is current.
+         * @param {Boolean} keepPrevVisible
+         */
+        setKeepPrevVisible(keepPrevVisible) {
+            this._keepPrevVisible = keepPrevVisible
+
+            if (this._context &amp;&amp; this._context.isCurrent()) {
+                updateUI()
+            }
+        }
+
+        /**
+         * Tell if the page is modal.
+         * @returns {Boolean}
+         */
+        isModal() {
+            return this._modal
+        }
+
+        /**
+         * Set the modal flag.
+         * @param {Boolean} modal
+         */
+        setModal(modal) {
+            let needsReattach = false
+            if (this._modal !== modal &amp;&amp; this._attached) {
+                needsReattach = true
+                this.detach()
+            }
+
+            this._modal = modal
+
+            if (needsReattach) {
+                this.attach()
+            }
+
+            this.getPageHTML().toggleClass('modal', modal)
+
+            if (this.getContext() &amp;&amp; this.getContext().isCurrent()) {
+                updateUI()
+            }
+        }
+
+        /**
+         * Called when the page is closed.
+         */
+        onClose() {
+        }
+
+        /**
+         * Called when the next page is closed.
+         * @param {qui.pages.PageMixin} next the next page that has just been closed
+         */
+        onCloseNext(next) {
+        }
+
+        /**
+         * Close the page. Calls {@link qui.pages.PageMixin#canClose} to determine if the page can be closed.
+         * @param {Boolean} [force] set to `true` to force page close without calling
+         * {@link qui.pages.PageMixin#canClose}
+         * @returns {Promise} a promise that is resolved as soon as the page is closed and is rejected if the page close
+         * was rejected.
+         */
+        close(force = false) {
+            if (this._closed || this._closing) {
+                throw new AssertionError('Attempt to close an already closed page')
+            }
+
+            /* Close all following pages */
+            let promise = Promise.resolve()
+            let index = this._getIndex()
+            let context = this.getContext()
+            if (index >= 0 &amp;&amp; context &amp;&amp; context.getSize() > index + 1) {
+                promise = context.getPageAt(index + 1).close()
+            }
+
+            this._closing = true
+
+            return promise.then(() => force || this.canClose()).then(function () {
+                if (rootPrototype.close) {
+                    rootPrototype.close.call(this)
+                }
+
+                /* Mark as closed */
+                this._closed = true
+
+                /* Pop this page from context */
+                if (context) {
+                    let currentPage = context.getCurrentPage()
+                    if (currentPage !== this) {
+                        throw new AssertionError('New page added to context while current page closing')
+                    }
+
+                    if (context.isCurrent()) {
+                        this.handleLeaveCurrent()
+                    }
+
+                    context.pop()
+                }
+
+                this.onClose()
+                this._context = null
+
+                /* Detach from DOM */
+                if (this._attached) {
+                    this.detach()
+                }
+
+                updateUI()
+
+                if (context) {
+                    let currentPage = context.getCurrentPage()
+                    if (currentPage) {
+                        // TODO it would make more sense to prevent calling currentPage.handleBecomeCurrent()
+                        //  and all other update function calls, if this page has only been closed to be replaced
+                        //  immediately by another one
+                        currentPage.onCloseNext(this)
+
+                        if (context.isCurrent()) {
+                            currentPage.handleBecomeCurrent()
+                            Navigation.updateHistoryEntry()
+                        }
+                    }
+                    else {
+                        if (context.isCurrent()) {
+                            OptionsBar.setContent(null)
+                        }
+                    }
+                }
+            }.bind(this))
+        }
+
+        /**
+         * Tell if the page has been closed or is in the process of being closed.
+         * @returns {Boolean}
+         */
+        isClosed() {
+            /* Prefer root isClosed unless it's the one inherited from ViewMixin */
+            if (rootPrototype.isClosed &amp;&amp;
+                (rootPrototype.isClosed !== viewMixinPrototype.isClosed) &amp;&amp;
+                (rootPrototype.isClosed.toString() !== viewMixinPrototype.isClosed.toString())) {
+
+                return rootPrototype.isClosed.call(this)
+            }
+
+            return this._closed || this._closing
+        }
+
+        /**
+         * Override this method to prevent accidental closing of the page, to the possible extent. Pages can be closed
+         * by default.
+         * @returns {Promise} a promise that, if rejected, will prevent the page close
+         */
+        canClose() {
+            return Promise.resolve()
+        }
+
+        /**
+         * Called when the page becomes the current page on the current context.
+         */
+        onBecomeCurrent() {
+        }
+
+        /**
+         * Handle the event of becoming the current page of the current context.
+         */
+        handleBecomeCurrent() {
+            this.onBecomeCurrent()
+            let context = this.getContext()
+            if (!context || !context.isCurrent()) {
+                throw new AssertionError('Attempt to call handleBecomeCurrent() on non-current context')
+            }
+
+            OptionsBar.setContent(this._prepareOptionsBarContent())
+            if (this._optionsBarOpen) {
+                OptionsBar.open()
+            }
+            else {
+                OptionsBar.close()
+            }
+        }
+
+        /**
+         * Called when the page is no longer the current page on the current context.
+         */
+        onLeaveCurrent() {
+        }
+
+        /**
+         * Handle the event of no longer being the current page of the current context.
+         */
+        handleLeaveCurrent() {
+            this.onLeaveCurrent()
+        }
+
+        /**
+         * Override this method to enable the options bar for this page.
+         * @returns {?jQuery|qui.views.ViewMixin}
+         */
+        makeOptionsBarContent() {
+            return null
+        }
+
+        /**
+         * Return the options bar content of this page.
+         * @returns {?jQuery|qui.views.ViewMixin}
+         */
+        getOptionsBarContent() {
+            if (!this._optionsBarContent) {
+                this._optionsBarContent = this.makeOptionsBarContent()
+            }
+
+            return this._optionsBarContent
+        }
+
+        /**
+         * Called when the page options change; the page options are defined by the options bar content.
+         *
+         * This currently works only when using an {@link qui.forms.OptionsForm} for the options bar content.
+         *
+         * @param {Object} options
+         */
+        onOptionsChange(options) {
+        }
+
+        _prepareOptionsBarContent() {
+            let content = this.getOptionsBarContent()
+            if (content) {
+                if (content instanceof ViewMixin) {
+                    content = content.getHTML()
+                }
+            }
+
+            return content
+        }
+
+        /**
+         * If this is the current page, open the options bar right away. Otherwise, the options bar will be
+         * automatically opened as soon as this page becomes current.
+         */
+        openOptionsBar() {
+            if (this.isCurrent()) {
+                OptionsBar.open()
+            }
+            else {
+                this._optionsBarOpen = true
+            }
+        }
+
+        /**
+         * If this is the current page, close the options bar right away. Otherwise, the options bar will remain closed
+         * as soon as this page becomes current.
+         */
+        closeOptionsBar() {
+            if (this.isCurrent()) {
+                OptionsBar.close()
+            }
+            else {
+                this._optionsBarOpen = false
+            }
+        }
+
+        /**
+         * Called when the page is pushed to a context.
+         */
+        onPush() {
+        }
+
+        /**
+         * Push a new page after this one. Any following pages will be closed. The new page is not guaranteed to be
+         * pushed by the time the function exists.
+         * @param {qui.pages.PageMixin} page the page to be pushed
+         * @param {Boolean} [addHistoryEntry] whether to create a new history entry for current page before adding the
+         * new page, or not (defaults to `true`)
+         * @returns {Promise} a promise that resolves as soon as the page is pushed, or rejected if the page cannot be
+         * pushed
+         */
+        pushPage(page, addHistoryEntry = true) {
+            let index = this._getIndex()
+            if (index &lt; 0) {
+                throw new AssertionError('Attempt to push from a contextless page')
+            }
+
+            let state = null
+            if (addHistoryEntry) {
+                state = Navigation.getCurrentHistoryEntryState()
+            }
+
+            let context = this.getContext()
+
+            /* Close any following page */
+            let promise
+            let nextPage = context.getPageAt(index + 1)
+            if (nextPage) {
+                promise = nextPage.close()
+            }
+            else {
+                promise = Promise.resolve()
+            }
+
+            return promise.then(function () {
+                if (addHistoryEntry) {
+                    Navigation.addHistoryEntry(state)
+                }
+
+                if (context.isCurrent()) {
+                    this.handleLeaveCurrent()
+                }
+
+                page.pushSelf(context)
+                page.whenLoaded() /* Start loading the page automatically when pushed */
+
+                if (context.isCurrent()) {
+                    Navigation.updateHistoryEntry()
+                }
+            }.bind(this))
+        }
+
+        /**
+         * Push this page to a context.
+         * @param {qui.pages.PagesContext} context
+         */
+        pushSelf(context) {
+            if (this._context) {
+                throw new AssertionError('Attempt to push page with context')
+            }
+
+            this._closed = false
+            this._closing = false
+
+            /* Attach the page to context */
+            context.push(this)
+            this._context = context
+
+            if (context.isCurrent()) {
+                this.attach()
+                updateUI()
+            }
+
+            this.onPush()
+
+            if (context.isCurrent()) {
+                this.handleBecomeCurrent()
+            }
+        }
+
+
+        /* Following methods are overridden so that versions from the rootclass are also taken into consideration */
+
+        makeHTML() {
+            if (rootPrototype.makeHTML) {
+                return rootPrototype.makeHTML.call(this)
+            }
+
+            return super.makeHTML()
+        }
+
+        initHTML(html) {
+            if (rootPrototype.initHTML) {
+                rootPrototype.initHTML.call(this, html)
+            }
+            else {
+                super.initHTML(html)
+            }
+        }
+
+        showProgress(percent) {
+            if (rootPrototype.showProgress) {
+                rootPrototype.showProgress.call(this, percent)
+            }
+            else {
+                super.showProgress(percent)
+            }
+        }
+
+        hideProgress() {
+            if (rootPrototype.hideProgress) {
+                rootPrototype.hideProgress.call(this)
+            }
+            else {
+                super.hideProgress()
+            }
+        }
+
+        showWarning(message) {
+            if (rootPrototype.showWarning) {
+                rootPrototype.showWarning.call(this, message)
+            }
+            else {
+                super.showWarning(message)
+            }
+        }
+
+        hideWarning() {
+            if (rootPrototype.hideWarning) {
+                rootPrototype.hideWarning.call(this)
+            }
+            else {
+                super.hideWarning()
+            }
+        }
+
+        showError(message) {
+            if (rootPrototype.showError) {
+                rootPrototype.showError.call(this, message)
+            }
+            else {
+                super.showError(message)
+            }
+        }
+
+        hideError() {
+            if (rootPrototype.hideError) {
+                rootPrototype.hideError.call(this)
+            }
+            else {
+                super.hideError()
+            }
+        }
+
+    }
+
+    return PageMixin
+
+})
+
+
+export default PageMixin
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.lists.PageList.html">PageList</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickyConfirmMessageForm.html">StickyConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addCloseListener">addCloseListener</a></li><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#removeCloseListener">removeCloseListener</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Jan 25 2020 22:03:36 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
