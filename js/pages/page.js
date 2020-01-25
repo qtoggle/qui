@@ -499,6 +499,11 @@ export default Mixin((superclass = Object, rootclass) => {
 
                 /* Pop this page from context */
                 if (context) {
+                    let currentPage = context.getCurrentPage()
+                    if (currentPage !== this) {
+                        throw new AssertionError('New page added to context while current page closing')
+                    }
+
                     if (context.isCurrent()) {
                         this.handleLeaveCurrent()
                     }
