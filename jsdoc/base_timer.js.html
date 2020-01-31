@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: icons/stock-icon.js</title>
+    <title>JSDoc: Source: base/timer.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: icons/stock-icon.js</h1>
+    <h1 class="page-title">Source: base/timer.js</h1>
 
     
 
@@ -27,200 +27,129 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>
-import * as ObjectUtils from '$qui/utils/object.js'
+import {AssertionError} from '$qui/base/errors.js'
 
-import * as DefaultStock     from './default-stock.js'
-import Icon                  from './icon.js'
-import MultiStateSpritesIcon from './multi-state-sprites-icon.js'
-import * as Stocks           from './stocks.js'
+
+const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
 
 
 /**
- * An icon defined by stock attributes.
- * @alias qui.icons.StockIcon
- * @extends qui.icons.Icon
+ * A convenience class that makes it easy to work with timeouts.
+ * @alias qui.base.Timer
  */
-class StockIcon extends Icon {
+class Timer {
 
     /**
      * @constructs
-     * @param {String} name the icon name (in normal state)
-     * @param {String} [stockName] the name of the stock (defaults to `qui`)
-     * @param {String} [variant] the icon variant (in normal state)
-     * @param {String} [activeName] the icon name in active state
-     * @param {String} [activeVariant] the icon variant in active state
-     * @param {String} [focusedName] the icon name in focused state
-     * @param {String} [focusedVariant] the icon variant in focused state
-     * @param {String} [selectedName] the icon name in selected state
-     * @param {String} [selectedVariant] the icon variant in selected state
-     * @param {Number} [scale] icon scaling factor (defaults to `1`)
-     * @param {String} [decoration] icon decoration
+     * @param {Number} [defaultTimeout] a default timeout, in milliseconds
+     * @param {Function} [onTimeout] am optional timeout callback
      */
-    constructor({
-        name,
-        stockName = DefaultStock.NAME,
-        variant = null,
-        activeName = null,
-        activeVariant = null,
-        focusedName = null,
-        focusedVariant = null,
-        selectedName = null,
-        selectedVariant = null,
-        scale = 1,
-        decoration = null
-    }) {
-        super()
+    constructor(defaultTimeout = null, onTimeout = null) {
+        this._defaultTimeout = defaultTimeout
+        this._onTimeout = onTimeout
 
-        this._name = name
-        this._stockName = stockName
-        this._variant = variant
-        this._activeName = activeName
-        this._activeVariant = activeVariant
-        this._focusedName = focusedName
-        this._focusedVariant = focusedVariant
-        this._selectedName = selectedName
-        this._selectedVariant = selectedVariant
-        this._scale = scale
-        this._decoration = decoration
-
-        /* A variant is specified but no corresponding name */
-        if (this._activeVariant &amp;&amp; !this._activeName) {
-            this._activeName = this._name
-        }
-        if (this._focusedVariant &amp;&amp; !this._focusedName) {
-            this._focusedName = this._name
-        }
-        if (this._selectedVariant &amp;&amp; !this._selectedName) {
-            this._selectedName = this._name
-        }
-
-        /* A name is specified but no corresponding variant */
-        if (this._activeName &amp;&amp; !this._activeVariant) {
-            this._activeVariant = this._variant
-        }
-        if (this._focusedName &amp;&amp; !this._focusedVariant) {
-            this._focusedVariant = this._variant
-        }
-        if (this._selectedName &amp;&amp; !this._selectedVariant) {
-            this._selectedVariant = this._variant
-        }
+        this._cancelled = false
+        this._startedTime = null
+        this._timeoutHandle = null
     }
 
     /**
-     * Return a dictionary with attributes suitable to build a {@link qui.icons.MultiStateSpritesIcon}.
-     * @returns {?qui.icons.MultiStateSpritesIcon}
+     * Start the timer.
+     * @param {Nunber} [timeout] a timeout, in milliseconds, that overrides the timer's `defaultTimeout`
      */
-    toMultiStateSpritesIcon() {
-        let stock = Stocks.get(this._stockName)
-        if (!stock) {
-            return null
+    start(timeout = null) {
+        if (this._timeoutHandle) {
+            throw new AssertionError('Timer already started')
         }
 
-        let attributes = {
-            url: stock.src,
-            bgWidth: stock.width,
-            bgHeight: stock.height,
-            size: stock.size,
-            unit: stock.unit
+        if (timeout == null) {
+            timeout = this._defaultTimeout
         }
 
-        let states = {}
-        let filterVariant
+        if (timeout == null) {
+            throw new AssertionError('Cannot start timer without timeout')
+        }
 
-        if (this._name) {
-            filterVariant = stock.parseVariant(this._variant)
-            states['normal'] = {
-                offsetX: stock.names[this._name],
-                offsetY: stock.variants[filterVariant.variant],
-                filter: filterVariant.filter
+        this._cancelled = false
+        this._startedTime = new Date().getTime()
+
+        this._timeoutHandle = setTimeout(function () {
+            this._timeoutHandle = null
+            if (this._onTimeout) {
+                this._onTimeout()
             }
-        }
-
-        if (this._activeName) {
-            filterVariant = stock.parseVariant(this._activeVariant)
-            states['active'] = {
-                offsetX: stock.names[this._activeName],
-                offsetY: stock.variants[filterVariant.variant],
-                filter: filterVariant.filter
-            }
-        }
-
-        if (this._focusedName) {
-            filterVariant = stock.parseVariant(this._focusedVariant)
-            states['focused'] = {
-                offsetX: stock.names[this._focusedName],
-                offsetY: stock.variants[filterVariant.variant],
-                filter: filterVariant.filter
-            }
-        }
-
-        if (this._selectedName) {
-            filterVariant = stock.parseVariant(this._selectedVariant)
-            states['selected'] = {
-                offsetX: stock.names[this._selectedName],
-                offsetY: stock.variants[filterVariant.variant],
-                filter: filterVariant.filter
-            }
-        }
-
-        attributes.states = states
-
-        if (this._scale) {
-            attributes.scale = this._scale
-        }
-        if (this._decoration) {
-            attributes.decoration = this._decoration
-        }
-
-        return new MultiStateSpritesIcon(attributes)
+        }.bind(this), timeout)
     }
 
     /**
-     * Return an updated version of the icon by altering some of the attributes.
-     * @param {Object} attributes the attributes to alter
-     * @returns qui.icons.StockIcon
+     * Cancel the timer.
      */
-    alter(attributes) {
-        let existingAttributes = {
-            stockName: this._stockName,
-            name: this._name,
-            variant: this._variant,
-            activeName: this._activeName,
-            activeVariant: this._activeVariant,
-            focusedName: this._focusedName,
-            focusedVariant: this._focusedVariant,
-            selectedName: this._selectedName,
-            selectedVariant: this._selectedVariant,
-            scale: this._scale,
-            decoration: this._decoration
+    cancel() {
+        if (!this._timeoutHandle) {
+            throw new AssertionError('Timer not started')
+        }
+        if (this._cancelled) {
+            throw new AssertionError('Timer already cancelled')
         }
 
-        return new this.constructor(ObjectUtils.combine(existingAttributes, attributes))
+        clearTimeout(this._timeoutHandle)
+        this._timeoutHandle = null
+        this._cancelled = true
+        this._startedTime = null
     }
 
     /**
-     * Return an updated version of the icon by altering some of the attributes only if they are unset (`null`).
-     *
-     * This method allows creating an icon by providing default attribute values.
-     *
-     * @param {Object} attributes the attributes to alter
-     * @returns qui.icons.StockIcon
+     * Start the timer if it's not currently running. Otherwise cancel and start it over.
+     * @param {Nunber} [timeout] a timeout, in milliseconds, that overrides the timer's `defaultTimeout`
      */
-    alterDefault(attributes) {
-        /* Keep only attributes whose value is currently null */
-        attributes = ObjectUtils.filter(attributes, (key) => (this[`_${key}`] == null))
+    restart(timeout = null) {
+        if (this.isRunning()) {
+            this.cancel()
+        }
 
-        return this.alter(attributes)
+        this.start(timeout)
     }
 
-    _applyTo(element) {
-        this.toMultiStateSpritesIcon().applyTo(element)
+    /**
+     * Tell if the timer is currently running.
+     * @returns {Boolean}
+     */
+    isRunning() {
+        return !!this._timeoutHandle
+    }
+
+    /**
+     * Tell if the timer has been cancelled.
+     * @returns {Boolean}
+     */
+    isCancelled() {
+        return this._cancelled
+    }
+
+    /**
+     * Tell if the timer has fired.
+     * @returns {Boolean}
+     */
+    isFired() {
+        return !this._timeoutHandle &amp;&amp; !!this._startedTime
+    }
+
+    /**
+     * Tell the remaining time, in milliseconds.
+     * @returns {Number}
+     */
+    getRemainingTime() {
+        if (this.isRunning()) {
+            throw new AssertionError('Timer not started')
+        }
+
+        return new Date().getTime() - this._startedTime
     }
 
 }
 
 
-export default StockIcon
+export default Timer
 </code></pre>
         </article>
     </section>
