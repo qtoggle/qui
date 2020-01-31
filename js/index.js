@@ -36,6 +36,7 @@ import '$qui/base/mixwith.js'
 import '$qui/base/require-js-compat.js'
 import '$qui/base/signal.js'
 import '$qui/base/singleton.js'
+import '$qui/base/timer.js'
 
 import '$qui/config.js'
 
