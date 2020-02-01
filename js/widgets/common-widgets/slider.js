@@ -246,8 +246,15 @@ $.widget('qui.slider', {
         this._curVal = this._posToVal(pos)
 
         /* Update cursor caption */
-        let captionVal = this._curVal.toFixed(this.options.decimals)
-        let caption = StringUtils.formatPercent(this.options.caption, captionVal)
+        let caption
+        let tick = this.options.ticks.find(t => t.value === this._curVal)
+        if (tick) {
+            caption = tick.label
+        }
+        else {
+            let captionVal = this._curVal.toFixed(this.options.decimals)
+            caption = StringUtils.formatPercent(this.options.caption, captionVal)
+        }
         this._cursorLabel.html(caption)
 
         /* Hide overlapping tick labels */
