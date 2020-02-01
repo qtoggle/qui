@@ -227,6 +227,8 @@ $.widget('qui.slider', {
         /* Update the position and the current value */
         this._curVal = Math.min(this._maxVal, Math.max(this._minVal, this._curVal))
         this._setPos(this._valToPos(this._curVal))
+
+        this._cursorLabel.toggleClass('overlappable', this.options.ticksStep > 1)
     },
 
     _getWidth: function () {
@@ -259,7 +261,7 @@ $.widget('qui.slider', {
 
         /* Hide overlapping tick labels */
         let cursorLabelLeft = parseInt(this._cursorLabel[0].style.left) /* Percent */
-        let overlapWidth = 15 /* Percent */
+        let overlapWidth = this.options.ticksStep > 1 ? 15 /* Percent */ : 0
 
         this._labels.children('span.qui-slider-label:NOT(.qui-slider-cursor-label)').each(function () {
             let labelElement = $(this)
