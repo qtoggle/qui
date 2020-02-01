@@ -36,7 +36,8 @@ export function getVar(name, def) {
 }
 
 /**
- * Resolve a color name and normalizes it using {@link qui.utils.colors.normalize}.
+ * Resolve a color name and normalize it using {@link qui.utils.colors.normalize}.
+ *
  * A color name can be an HTML color (e.g. `teal`) or a color theme variable name starting with an `@` (e.g.
  * `@background-color`).
  *

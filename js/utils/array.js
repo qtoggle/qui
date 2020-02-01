@@ -164,3 +164,31 @@ export function distinct(array, equalsFunc = null, thisArg = null) {
 
     return uniqueElements
 }
+
+/**
+ * Remove all occurrences of an element from an array, in place.
+ * @alias qui.utils.array.remove
+ * @param {Array} array
+ * @param {*} element the element to remove
+ */
+export function remove(array, element) {
+    let index;
+    while ((index = array.indexOf(element)) >= 0) {
+        array.splice(index, 1)
+    }
+}
+
+/**
+ * Remove all occurrences of a set of elements from an array, in place.
+ * @alias qui.utils.array.removeMany
+ * @param {Array} array
+ * @param {Array} elements the set of elements to remove
+ */
+export function removeMany(array, elements) {
+    let index;
+    elements.forEach(function (element) {
+        while ((index = array.indexOf(element)) >= 0) {
+            array.splice(index, 1)
+        }
+    })
+}
