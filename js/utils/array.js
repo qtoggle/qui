@@ -172,7 +172,7 @@ export function distinct(array, equalsFunc = null, thisArg = null) {
  * @param {*} element the element to remove
  */
 export function remove(array, element) {
-    let index;
+    let index
     while ((index = array.indexOf(element)) >= 0) {
         array.splice(index, 1)
     }
@@ -185,7 +185,7 @@ export function remove(array, element) {
  * @param {Array} elements the set of elements to remove
  */
 export function removeMany(array, elements) {
-    let index;
+    let index
     elements.forEach(function (element) {
         while ((index = array.indexOf(element)) >= 0) {
             array.splice(index, 1)
