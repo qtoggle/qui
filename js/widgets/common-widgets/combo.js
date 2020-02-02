@@ -1,10 +1,12 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
-import {gettext}        from '$qui/base/i18n.js'
-import {asap}           from '$qui/utils/misc.js'
-import * as StringUtils from '$qui/utils/string.js'
-import * as Window      from '$qui/window.js'
+import {gettext}         from '$qui/base/i18n.js'
+import * as Theme        from '$qui/theme.js'
+import {asap}            from '$qui/utils/misc.js'
+import * as PromiseUtils from '$qui/utils/promise.js'
+import * as StringUtils  from '$qui/utils/string.js'
+import * as Window       from '$qui/window.js'
 
 
 $.widget('qui.combo', {
@@ -52,6 +54,18 @@ $.widget('qui.combo', {
         this._itemContainer = $('<div class="qui-combo-item-container"></div>')
         this._itemContainer.on('mousedown', function () {
             return false
+        })
+
+        /* Ensure the combo element is on view port when focused (opened) */
+        this.element.on('focus', function () {
+            if (this.scrollIntoView) {
+                let transitionDuration = parseFloat(Theme.getVar('transition-duration')) * 1000
+                PromiseUtils.later(transitionDuration * 1.1).then(() => this.scrollIntoView({
+                    behavior:'smooth',
+                    block: 'center',
+                    inline: 'center'
+                }))
+            }
         })
 
         this.element.append(this._itemContainer)
