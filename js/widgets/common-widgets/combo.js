@@ -61,9 +61,9 @@ $.widget('qui.combo', {
             if (this.scrollIntoView) {
                 let transitionDuration = parseFloat(Theme.getVar('transition-duration')) * 1000
                 PromiseUtils.later(transitionDuration * 1.1).then(() => this.scrollIntoView({
-                    behavior:'smooth',
+                    behavior: 'smooth',
                     block: 'center',
-                    inline: 'center'
+                    inline: 'nearest'
                 }))
             }
         })
