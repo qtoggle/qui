@@ -143,6 +143,18 @@ class Section extends mix().with(SingletonMixin) {
     }
 
     /**
+     * Override this method to prevent accidental closing of the section, to the possible extent. Sections can be closed
+     * by default.
+     *
+     * A section is closed only when application window is closed or reloaded.
+     *
+     * @returns {Boolean}
+     */
+    canClose() {
+        return true
+    }
+
+    /**
      * This method is called when {@link qui.sections.register} is called on this section and is responsible of section
      * setting up after registration.
      */

@@ -234,7 +234,7 @@ export function isClosing() {
 }
 
 /**
- * Add a listener function to be called when the window is closed. If any of the close listeners returns `false`, window
+ * Add a listener function to be called when the window is closed. If the close listeners returns `false`, window
  * closing will be prevented, if possible.
  * @param {Function} listener
  */

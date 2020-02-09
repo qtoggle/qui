@@ -211,6 +211,11 @@ export function getHome() {
 export function init() {
     attachSectionEventRelays()
 
+    /* Prevent unwanted section closing when window is closed */
+    Window.addCloseListener(function () {
+        return !sectionsList.some(s => !s.canClose())
+    })
+
     /* Export some stuff to global scope */
     let qui = (window.qui = window.qui || {})
     qui.getCurrentSection = getCurrent
