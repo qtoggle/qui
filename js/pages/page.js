@@ -504,6 +504,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
 
                 /* Mark as closed */
                 this._closed = true
+                this._closing = false
 
                 /* Pop this page from context */
                 if (context) {
@@ -548,7 +549,14 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                         }
                     }
                 }
+            }.bind(this)).catch(function (e) {
+
+                /* Clear closing flag if close cancelled */
+                this._closing = false
+                throw e
+
             }.bind(this))
+
         }
 
         /**
