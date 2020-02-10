@@ -76,6 +76,8 @@ $.widget('qui.combo', {
 
         let widget = this
 
+        this._cachedChoices = null
+
         this._makeItems()
         this._updateFiltered()
 
@@ -392,6 +394,10 @@ $.widget('qui.combo', {
         }
 
         this._prevItemDiv = null
+
+        if (this.options.filterEnabled) {
+            this._filterInput.val('')
+        }
     },
 
     makeChoices: function () {
@@ -410,8 +416,9 @@ $.widget('qui.combo', {
 
     _makeItems: function () {
         let widget = this
+        let choices = this._getChoices()
 
-        this._getChoices().forEach(function (choice, i) {
+        choices.forEach(function (choice, i) {
             let itemDiv = $('<div class="qui-combo-item"><div>')
 
             if (choice.label instanceof $) {
@@ -446,9 +453,11 @@ $.widget('qui.combo', {
     },
 
     _getChoices: function () {
-        let choices = this.makeChoices()
+        if (!this._cachedChoices) {
+            this._cachedChoices = this.makeChoices().concat(this.options.choices)
+        }
 
-        return choices.concat(this.options.choices)
+        return this._cachedChoices
     },
 
     _getItemDivByValue: function (value) {
@@ -535,9 +544,11 @@ $.widget('qui.combo', {
             })
         }
 
-        this._itemContainer.children('div.qui-combo-item').removeClass('hidden odd even')
 
         let filter = this._filterInput.val().trim().toLowerCase()
+        let children = this._itemContainer.children('div.qui-combo-item')
+
+        children.removeClass('hidden odd even')
 
         this._getChoices().forEach(function (choice, i) {
 
@@ -560,7 +571,7 @@ $.widget('qui.combo', {
                 }
             }
 
-            this._itemContainer.children(`div.qui-combo-item:eq(${i})`).addClass('hidden')
+            children[i].classList.add('hidden')
 
         }, this)
 
@@ -595,6 +606,7 @@ $.widget('qui.combo', {
 
             case 'choices':
                 this._itemContainer.children().detach()
+                this._cachedChoices = null
                 this._makeItems()
                 this.setSelectedIndex(-1)
                 this._updateFiltered()
