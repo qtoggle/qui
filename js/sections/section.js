@@ -290,8 +290,8 @@ class Section extends mix().with(SingletonMixin) {
      * @returns {qui.pages.PagesContext}
      */
     getPagesContext() {
-        /* A hidden section has its pages context stored in _savedPagesContext.
-         * A visible (current) section owns the current pages context. */
+        /* A hidden section has its pages context stored in _savedPagesContext. A visible (current) section owns the
+         * current pages context. */
 
         return this._savedPagesContext || getCurrentContext()
     }

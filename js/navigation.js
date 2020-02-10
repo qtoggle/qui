@@ -211,11 +211,7 @@ export function pathToURL(path) {
  * @param {*} [pageState] optional history state to pass to {@link qui.navigation.PageMixin#restoreHistoryState}
  * @returns {Promise} a promise that settles as soon as the navigation ends, being rejected in case of any error
  */
-export function navigate(path, handleErrors, pageState) {
-    if (handleErrors === undefined) {
-        handleErrors = true
-    }
-
+export function navigate(path, handleErrors = true, pageState = null) {
     /* Normalize path */
     if (typeof path === 'string') {
         path = path.split('/')
@@ -245,7 +241,7 @@ export function navigate(path, handleErrors, pageState) {
         }
     }
 
-    logger.debug(`navigating to "${pathStr}", pageState = "${JSON.stringify(pageState || null)}"`)
+    logger.debug(`navigating to "${pathStr}", pageState = "${JSON.stringify(pageState)}"`)
 
     if (!path.length) { /* Empty path means home */
         section = Sections.getHome()
@@ -361,7 +357,7 @@ export function navigate(path, handleErrors, pageState) {
             path = path.slice(commonPathLen)
             currIndex += commonPathLen
 
-            let page = currentContext.getPageAt(commonPathLen)
+            let page = currentContext.getPageAt(commonPathLen + 1)
             if (page) {
                 promise = page.close().then(() => currentContext.getCurrentPage())
                 promise.catch(function () {
@@ -371,9 +367,11 @@ export function navigate(path, handleErrors, pageState) {
         }
 
         return promise.then(function (currentPage) {
+
             return currentPage.whenLoaded().then(function () {
                 return currentPage
             })
+
         })
 
     }).then(function (currentPage) {
@@ -381,6 +379,7 @@ export function navigate(path, handleErrors, pageState) {
         if (sectionRedirected) {
             return
         }
+
         return navigateNext(currentPage)
 
     }).then(function () {
