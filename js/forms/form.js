@@ -764,7 +764,7 @@ class Form extends mix().with(StructuredViewMixin) {
                 return
             }
 
-            field.valueToWidget(value)
+            field.setValue(value)
 
         }, this)
 

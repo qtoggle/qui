@@ -186,7 +186,7 @@ class FormField extends mix().with(ViewMixin) {
 
         /* Initial value */
         if (this._initialValue != null) {
-            this.valueToWidget(this._initialValue)
+            this.setValue(this._initialValue)
         }
 
         return html
@@ -312,6 +312,15 @@ class FormField extends mix().with(ViewMixin) {
      */
     getValue() {
         return this.widgetToValue()
+    }
+
+
+    /**
+     * Update the current field value.
+     * @param {*} value
+     */
+    setValue(value) {
+        this.valueToWidget(value)
     }
 
 
