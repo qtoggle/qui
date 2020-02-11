@@ -2,6 +2,7 @@
  * @namespace qui.navigation
  */
 
+import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
 import {gettext}           from '$qui/base/i18n.js'
@@ -200,6 +201,27 @@ export function pathToURL(path) {
     }
 
     return Config.navigationBasePrefix + path
+}
+
+/**
+ * Create an anchor element that represents a link to an internal path.
+ * @alias qui.navigation.makeInternalAnchor
+ * @param {String|String[]} path
+ * @param {jQuery|String} content
+ */
+export function makeInternalAnchor(path, content) {
+    let url = pathToURL(path)
+
+    let anchor = $(`<a href="${url}"></a>`)
+    anchor.html(content)
+
+    anchor.on('click', function (e) {
+        /* Prevent browser navigation, handle navigation internally */
+        e.preventDefault()
+        navigate(path)
+    })
+
+    return anchor
 }
 
 /**
