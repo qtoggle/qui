@@ -419,7 +419,7 @@ class Form extends mix().with(StructuredViewMixin) {
 
         /* Gather raw form data for validation */
         let data = ObjectUtils.mapValue(this._fieldsByName, function (field) {
-            return field.widgetToValue()
+            return field.getValue()
         })
 
         let promisesDict = {}
@@ -722,7 +722,7 @@ class Form extends mix().with(StructuredViewMixin) {
             return null
         }
 
-        return field.widgetToValue()
+        return field.getValue()
     }
 
     /**
@@ -740,7 +740,7 @@ class Form extends mix().with(StructuredViewMixin) {
      */
     getUnvalidatedData() {
         return ObjectUtils.mapValue(this._fieldsByName, function (field) {
-            return field.widgetToValue()
+            return field.getValue()
         })
     }
 
@@ -885,7 +885,7 @@ class Form extends mix().with(StructuredViewMixin) {
         if (!this._continuousValidation) {
             /* Gather raw (unvalidated) form data */
             let data = ObjectUtils.mapValue(this._fieldsByName, function (field) {
-                return field.widgetToValue()
+                return field.getValue()
             })
 
             this.onChange(data, name)
@@ -921,7 +921,7 @@ class Form extends mix().with(StructuredViewMixin) {
 
             /* Gather raw (unvalidated) form data */
             let data = ObjectUtils.mapValue(this._fieldsByName, function (field) {
-                return field.widgetToValue()
+                return field.getValue()
             })
 
             this.onChange(data, name)
