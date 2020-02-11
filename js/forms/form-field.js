@@ -89,6 +89,9 @@ class FormField extends mix().with(ViewMixin) {
 
         this._form = null
         this._widget = null
+        this._descriptionDiv = null
+        this._warningDiv = null
+        this._errorDiv = null
         this._labelDiv = null
         this._valueDiv = null
         this._sideIcon = null
@@ -112,94 +115,44 @@ class FormField extends mix().with(ViewMixin) {
             valueWidth = this._form._valuesWidth
         }
 
+        let useOneLine = !this._form.isCompact() || this._forceOneLine
+
         /* Description */
-        let descDiv = $('<div class="qui-form-field-description"></div>')
-        let descLabel = $('<div class="qui-form-field-description-label"></div>')
-        let descIcon = $('<span class="qui-form-field-description-icon"></span>')
-        let descText = $('<span class="qui-form-field-description-text"></span>')
-
-        descLabel.append(descIcon).append(descText)
-        descDiv.append(descLabel)
-        html.append(descDiv)
-
+        this._descriptionDiv = this.makeDescriptionHTML()
+        html.append(this._descriptionDiv)
         if (this._description) {
-            descText.html(this._description)
             html.addClass('has-description')
         }
 
         /* Warning */
-        let warningDiv = $('<div class="qui-form-field-warning"></div>')
-        let warningLabel = $('<div class="qui-form-field-warning-label"></div>')
-        let warningText = $('<span class="qui-form-field-warning-text"></span>')
-        warningLabel.append(warningText)
-        warningDiv.append(warningLabel)
-        html.append(warningDiv)
+        this._warningDiv = this.makeWarningHTML()
+        html.append(this._warningDiv)
 
         /* Error */
-        let errorDiv = $('<div class="qui-form-field-error"></div>')
-        let errorLabel = $('<div class="qui-form-field-error-label"></div>')
-        let errorText = $('<span class="qui-form-field-error-text"></span>')
-        errorLabel.append(errorText)
-        errorDiv.append(errorLabel)
-        html.append(errorDiv)
+        this._errorDiv = this.makeErrorHTML()
+        html.append(this._errorDiv)
 
         /* Label */
-        let labelDiv = $('<div class="qui-form-field-label"></div>')
-        labelDiv.html(this._label)
-        if (!this._label) {
-            labelDiv.css('display', 'none')
-        }
-
-        let useOneLine = !this._form.isCompact() || this._forceOneLine
+        this._labelDiv = this.makeLabelHTML()
+        html.append(this._labelDiv)
         if (useOneLine) {
             if (valueWidth) {
-                labelDiv.css('width', `${(100 - valueWidth)}%`)
+                this._labelDiv.css('width', `${(100 - valueWidth)}%`)
             }
             else {
                 html.addClass('auto-width')
             }
         }
 
-        labelDiv.on('click', function () {
-            if (this._description) {
-                this.setDescriptionVisible(!this.isDescriptionVisible())
-            }
-        }.bind(this))
-
-        html.append(labelDiv)
-        this._labelDiv = labelDiv
-
         /* Value */
-        let valueDiv = $('<div class="qui-form-field-value"></div>')
+        this._valueDiv = this.makeValueHTML()
+        html.append(this._valueDiv)
         if (valueWidth && useOneLine) {
-            valueDiv.css('width', `${valueWidth}%`)
-        }
-        html.append(valueDiv)
-        this._valueDiv = valueDiv
-
-        /* Value widget */
-        let widget = this.getWidget()
-
-        widget.on('change', function () {
-            this.clearApplied()
-            this.getForm()._handleFieldChange(this)
-            this.onChange(this.widgetToValue(), this.getForm())
-        }.bind(this))
-
-        widget.on('focus', () => this._handleFocus())
-        widget.on('blur', () => this._handleBlur())
-
-        /* Add widget to value div, but only if it hasn't already been added to another container; this allows fields
-         * like CompositeField to use the widget directly inside their container. */
-        if (!widget.parent().length) {
-            valueDiv.append(widget)
+            this._valueDiv.css('width', `${valueWidth}%`)
         }
 
         /* Side icon */
-        this._sideIcon = new StockIcon({name: 'success', scale: 0.75})
-        this._sideIconDiv = $('<div class="qui-base-button qui-form-field-side-icon"></div>')
-        this._sideIcon.applyTo(this._sideIconDiv)
-
+        this._sideIconDiv = this.makeSideIconHTML()
         html.append(this._sideIconDiv)
 
         /* Other attributes */
@@ -237,6 +190,117 @@ class FormField extends mix().with(ViewMixin) {
         }
 
         return html
+    }
+
+    /**
+     * Create the description HTML element.
+     * @returns {jQuery}
+     */
+    makeDescriptionHTML() {
+        let descDiv = $('<div class="qui-form-field-description"></div>')
+        let descLabel = $('<div class="qui-form-field-description-label"></div>')
+        let descIcon = $('<span class="qui-form-field-description-icon"></span>')
+        let descText = $('<span class="qui-form-field-description-text"></span>')
+
+        descLabel.append(descIcon).append(descText)
+        descDiv.append(descLabel)
+
+        if (this._description) {
+            descText.html(this._description)
+        }
+
+        return descDiv
+    }
+
+    /**
+     * Create the warning HTML element.
+     * @returns {jQuery}
+     */
+    makeWarningHTML() {
+        let warningDiv = $('<div class="qui-form-field-warning"></div>')
+        let warningLabel = $('<div class="qui-form-field-warning-label"></div>')
+        let warningText = $('<span class="qui-form-field-warning-text"></span>')
+
+        warningLabel.append(warningText)
+        warningDiv.append(warningLabel)
+
+        return warningDiv
+    }
+
+    /**
+     * Create the error HTML element.
+     * @returns {jQuery}
+     */
+    makeErrorHTML() {
+        let errorDiv = $('<div class="qui-form-field-error"></div>')
+        let errorLabel = $('<div class="qui-form-field-error-label"></div>')
+        let errorText = $('<span class="qui-form-field-error-text"></span>')
+
+        errorLabel.append(errorText)
+        errorDiv.append(errorLabel)
+
+        return errorDiv
+    }
+
+    /**
+     * Create the label HTML element.
+     * @returns {jQuery}
+     */
+    makeLabelHTML() {
+        let labelDiv = $('<div class="qui-form-field-label"></div>')
+        labelDiv.html(this._label)
+        if (!this._label) {
+            labelDiv.css('display', 'none')
+        }
+
+        labelDiv.on('click', function () {
+            if (this._description) {
+                this.setDescriptionVisible(!this.isDescriptionVisible())
+            }
+        }.bind(this))
+
+        return labelDiv
+    }
+
+    /**
+     * Create the value HTML element.
+     * @returns {jQuery}
+     */
+    makeValueHTML() {
+        let valueDiv = $('<div class="qui-form-field-value"></div>')
+
+        /* Value widget */
+        let widget = this.getWidget()
+
+        widget.on('change', function () {
+            this.clearApplied()
+            this.getForm()._handleFieldChange(this)
+            this.onChange(this.widgetToValue(), this.getForm())
+        }.bind(this))
+
+        widget.on('focus', () => this._handleFocus())
+        widget.on('blur', () => this._handleBlur())
+
+        /* Add widget to value div, but only if it hasn't already been added to another container; this allows fields
+         * like CompositeField to use the widget directly inside their container. */
+        if (!widget.parent().length) {
+            valueDiv.append(widget)
+        }
+
+        return valueDiv
+    }
+
+    /**
+     * Create the side icon HTML element.
+     * @returns {jQuery}
+     */
+    makeSideIconHTML() {
+        let sideIconDiv = $('<div class="qui-base-button qui-form-field-side-icon"></div>')
+
+        this._sideIcon = new StockIcon({name: 'success', scale: 0.75})
+        this._sideIcon.applyTo(sideIconDiv)
+
+        return sideIconDiv
     }
 
 
