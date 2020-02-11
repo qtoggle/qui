@@ -257,7 +257,7 @@ $.widget('qui.choicebuttons', {
             let widget = this
             let choices = this.options.choices
             if (choices.length) {
-                if (!(choices[0] instanceof Array)) {
+                if (!Array.isArray(choices[0])) {
                     choices = [choices]
                 }
 

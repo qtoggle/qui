@@ -207,7 +207,7 @@ export function copy(orig, deep = false) {
 
             return orig
         }
-        else if (orig instanceof Array) {
+        else if (Array.isArray(orig)) {
             return orig.map(e => copy(e, /* deep = */ true))
         }
         else if (orig instanceof Object) {
@@ -273,8 +273,8 @@ export function deepEquals(obj1, obj2) {
         return false
     }
 
-    if (obj1 instanceof Array) {
-        if (!(obj2 instanceof Array)) {
+    if (Array.isArray(obj1)) {
+        if (!Array.isArray(obj2)) {
             return false
         }
 

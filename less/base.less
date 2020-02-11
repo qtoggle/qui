@@ -20,7 +20,7 @@
     /* fading is needed as a workaround for Chrome */
     background: fade(@interactive-color, 99%);
     color: @background-color;
-} 
+}
 
 ::-moz-selection {
     background: @interactive-color;
@@ -45,6 +45,7 @@ ul {
 a {
     color: @interactive-color;
     transition: color ease @transition-duration;
+    text-decoration: none;
 }
 
 a:ACTIVE {
@@ -78,7 +79,7 @@ body.disable-transitions * {
 
 
 /* fonts */
-    
+
 @font-face {
     font-family: 'DejaVuSans';
     src: url('@{qui_font_path}/dejavusans-regular.woff') format('woff');

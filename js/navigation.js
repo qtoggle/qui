@@ -195,7 +195,7 @@ export function getCurrentQuery() {
  * @returns {String}
  */
 export function pathToURL(path) {
-    if (path instanceof Array) {
+    if (Array.isArray(path)) {
         path = `/${path.join('/')}`
     }
 
