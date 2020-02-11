@@ -145,18 +145,20 @@ class MultiStateSpritesIcon extends Icon {
             if (existingStateElements.length) {
                 stateDiv.addClass('qui-icon-hidden')
             }
-            stateDiv.css('background-image', `url("${this._url}")`)
-            stateDiv.css(
-                'background-position',
-                `${(-offsetX * size)}${this._unit} ${(-offsetY * size)}${this._unit}`
-            )
+
+            let css = {
+                'background-image': `url("${this._url}")`,
+                'background-position': `${(-offsetX * size)}${this._unit} ${(-offsetY * size)}${this._unit}`
+            }
             if (bgWidth && bgHeight) {
-                stateDiv.css('background-size', `${bgWidth} ${bgHeight}`)
+                css['background-size'] = `${bgWidth} ${bgHeight}`
             }
 
             if (details.filter) {
-                stateDiv.css('filter', details.filter)
+                css['filter'] = details.filter
             }
+
+            stateDiv.css(css)
 
             element.append(stateDiv)
             newElements = newElements.add(stateDiv)
@@ -176,9 +178,8 @@ class MultiStateSpritesIcon extends Icon {
             }
         }, this)
 
-        this.constructor.KNOWN_STATES.forEach(s => element.removeClass(`top-${s}`))
+        element.removeClass(this.constructor.KNOWN_STATES.map(s => `top-${s}`).join(' '))
         element.addClass(`top-${topState}`)
-
 
         /* Decoration */
 
@@ -197,19 +198,23 @@ class MultiStateSpritesIcon extends Icon {
         }
 
         if (decorationDiv) {
-            decorationDiv.css('background', this._decoration)
+            let css = {
+                'background': this._decoration
+            }
 
             let bgColor = this._findBgColor(element)
             let bgRGB = Colors.str2rgba(bgColor)
             let decoRGB = Colors.str2rgba(this._decoration)
             if (Colors.contrast(bgRGB, decoRGB) > 1.5) {
-                decorationDiv.css('border-color', bgColor)
+                css['border-color'] = bgColor
             }
             else {
                 this._findIconColor(element).then(function (color) {
-                    decorationDiv.css('border-color', color)
+                    css['border-color'] = color
                 })
             }
+
+            decorationDiv.css(css)
         }
     }
 
