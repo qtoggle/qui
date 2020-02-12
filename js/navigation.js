@@ -335,11 +335,14 @@ export function navigate(path, handleErrors = true, pageState = null) {
         })
     }
 
-    let s = section.navigate(origPath)
-    if (s !== section) {
-        logger.debug(`section "${section.getId()}" redirected to section "${s.getId()}"`)
-        sectionRedirected = true
-        section = s
+    /* Call section.navigate() to determine possible redirects */
+    if (Sections.getCurrent() !== section) {
+        let s = section.navigate(origPath)
+        if (s !== section) {
+            logger.debug(`section "${section.getId()}" redirected to section "${s.getId()}"`)
+            sectionRedirected = true
+            section = s
+        }
     }
 
     return section.whenPreloaded().then(function () {
