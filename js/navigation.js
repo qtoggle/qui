@@ -219,6 +219,7 @@ export function makeInternalAnchor(path, content) {
         /* Prevent browser navigation, handle navigation internally */
         e.preventDefault()
         navigate(path)
+        addHistoryEntry()
     })
 
     return anchor
@@ -364,7 +365,8 @@ export function navigate(path, handleErrors = true, pageState = null) {
             return
         }
 
-        /* Count the number of path elements that are common between old and new paths */
+        /* Count the number of path elements that are common between old and new paths.
+         * commonPathLen doesn't take into account section id */
         let commonPathLen = 0
         while ((oldPath.length > commonPathLen + 1) &&
                (path.length > commonPathLen) &&
@@ -374,18 +376,25 @@ export function navigate(path, handleErrors = true, pageState = null) {
         }
 
         let currentContext = getCurrentContext()
-        let promise = Promise.resolve(section.getMainPage())
+        let promise
         if (commonPathLen) { /* We have a common path part */
             path = path.slice(commonPathLen)
             currIndex += commonPathLen
 
-            let page = currentContext.getPageAt(commonPathLen + 1)
-            if (page) {
+            /* Context size also contains the section id, while commonPathLen does not */
+            if (currentContext.getSize() > commonPathLen + 1) {
+                let page = currentContext.getPageAt(commonPathLen + 1)
                 promise = page.close().then(() => currentContext.getCurrentPage())
                 promise.catch(function () {
                     logger.debug('page close rejected')
                 })
             }
+            else { /* Common path, but no page to close */
+                promise = Promise.resolve(currentContext.getCurrentPage())
+            }
+        }
+        else { /* No common path */
+            promise = Promise.resolve(section.getMainPage())
         }
 
         return promise.then(function (currentPage) {
