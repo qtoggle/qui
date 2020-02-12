@@ -217,7 +217,7 @@ body.menu-bar-open:NOT(.no-top-bar) > div.qui-menu-bar {
 
 body.menu-bar-open > div.qui-main-container,
 body.menu-bar-open > div.qui-toast-message-container {
-    filter: brightness(@modal-background-brightness);
+    filter: @modal-background-filter;
 }
 
 div.qui-menu-bar-button {
@@ -315,7 +315,7 @@ div.qui-options-bar.updating > div.options-bar-container {
 
 body.options-bar-open > div.qui-main-container,
 body.options-bar-open > div.qui-toast-message-container {
-    filter: brightness(@modal-background-brightness);
+    filter: @modal-background-filter blur(0);
 }
 
 
