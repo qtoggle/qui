@@ -24,6 +24,7 @@ function initMainContainer() {
 
     messageContainer = $('div.qui-toast-message-container')
 
+    /* Close menu and option bars when clicking on main container glass */
     mainContainer.find('div.qui-main-container-glass').on('click', function () {
         MenuBar.close()
         OptionsBar.close()

@@ -199,7 +199,7 @@ class MultiStateSpritesIcon extends Icon {
 
         if (decorationDiv) {
             let css = {
-                'background': this._decoration
+                background: this._decoration
             }
 
             let bgColor = this._findBgColor(element)
