@@ -21,6 +21,7 @@ let unloading = false
 let reloading = false
 let closeListeners = []
 let smallScreenThreshold = DEFAULT_SMALL_SCREEN_THRESHOLD
+let scalingFactor = 1
 
 
 /**
@@ -164,7 +165,16 @@ export function isSmallScreen(width = null, height = null) {
         height = $window.height()
     }
 
-    return Math.min(width, height) <= smallScreenThreshold
+    return Math.min(width, height) <= smallScreenThreshold * scalingFactor
+}
+
+/**
+ * Tell the current small screen threshold.
+ * @alias qui.window.getSmallScreenThreshold
+ * @returns {Number}
+ */
+export function getSmallScreenThreshold() {
+    return smallScreenThreshold
 }
 
 /**
@@ -179,6 +189,9 @@ export function isSmallScreen(width = null, height = null) {
 export function setSmallScreenThreshold(threshold) {
     logger.debug(`setting small screen threshold to ${threshold} pixels`)
     smallScreenThreshold = threshold
+    if (smallScreenThreshold == null) {
+        smallScreenThreshold = DEFAULT_SMALL_SCREEN_THRESHOLD
+    }
 
     let smallScreen = isSmallScreen()
 
@@ -199,6 +212,42 @@ export function setSmallScreenThreshold(threshold) {
  */
 export function isLandscape() {
     return $window.width() >= $window.height()
+}
+
+/**
+ * Tell the current scaling factor.
+ * @returns {Number}
+ */
+export function getScalingFactor() {
+    return scalingFactor
+}
+
+/**
+ * Set the root scaling factor. Use `1` to disable scaling.
+ * @param {Number} factor
+ */
+export function setScalingFactor(factor) {
+    logger.debug(`setting scaling factor to ${factor}`)
+    scalingFactor = factor
+
+    if (scalingFactor === 1) {
+        $body.css('zoom', '')
+    }
+    else {
+        $body.css('zoom', `${factor * 100}%`)
+    }
+
+    /* Reevaluate the small screen condition, as it might have changed */
+    let smallScreen = isSmallScreen()
+
+    if (smallScreen && !$body.hasClass('small-screen')) {
+        $body.addClass('small-screen')
+        handleSmallScreen()
+    }
+    else if (!smallScreen && $body.hasClass('small-screen')) {
+        $body.removeClass('small-screen')
+        handleLargeScreen()
+    }
 }
 
 
