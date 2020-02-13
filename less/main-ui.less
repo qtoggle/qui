@@ -52,7 +52,8 @@ div.qui-top-bar {
     background: @background-color;
     height: 3em;
     transition: top @transition-duration ease,
-                box-shadow @transition-duration ease;
+                box-shadow @transition-duration ease,
+                filter @transition-duration linear;
     white-space: nowrap;
     border-color: @border-color;
     border-style: solid;
@@ -194,7 +195,7 @@ div.qui-menu-bar {
     display: flex;
     flex-direction: column;
     position: absolute;
-    left: -15em;
+    left: -16em;
     top: 3.0625em;
     bottom: 0;
     width: 15em;
@@ -202,7 +203,8 @@ div.qui-menu-bar {
     background: @background-color;
     transition: left @transition-duration ease,
                 box-shadow @transition-duration ease,
-                opacity @transition-duration ease;
+                opacity @transition-duration ease,
+                filter @transition-duration linear;
     z-index: 16;
     opacity: 1;
     touch-action: none;
@@ -287,7 +289,8 @@ div.qui-options-bar {
     border-left-width: 0.0625em;
     transition: right @transition-duration ease,
                 box-shadow @transition-duration ease,
-                opacity @transition-duration ease;
+                opacity @transition-duration ease,
+                filter @transition-duration linear;
     z-index: 15;
     touch-action: none;
 }

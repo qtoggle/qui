@@ -22,10 +22,6 @@ function show() {
         globalGlassTimeoutHandle = null
     }
 
-    /* Disable main container transitions while global glass is visible,
-     * because blur filter transitions create some unwanted effects */
-    mainContainer.css('transition', 'none')
-
     /* Glass itself */
     globalGlass.removeClass('hidden')
     globalGlassTimeoutHandle = asap(function () {
@@ -42,14 +38,12 @@ function hide() {
         globalGlassTimeoutHandle = null
     }
 
-    Window.$body.removeClass('global-glass-visible')
     glassContainer.removeClass('visible')
+    Window.$body.removeClass('global-glass-visible')
     globalGlassTimeoutHandle = Theme.afterTransition(function () {
 
         globalGlassTimeoutHandle = null
         globalGlass.addClass('hidden')
-
-        mainContainer.css('transition', '')
 
     })
 }

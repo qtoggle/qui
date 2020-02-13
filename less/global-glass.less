@@ -14,36 +14,45 @@ div.qui-global-glass {
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
 
-div.qui-global-glass.hidden {
-    display: none;
-    width: 0;
-    height: 0;
-    right: auto;
-    bottom: auto;
-}
+    &.hidden {
+        display: none;
+        width: 0;
+        height: 0;
+        right: auto;
+        bottom: auto;
+    }
 
-body.global-glass-visible > div.qui-global-glass {
-    opacity: 1;
-}
+    body.global-glass-visible > & {
+        opacity: 1;
+    }
 
-div.qui-global-glass-container.hidden {
-    display: none;
-}
+    & > div.qui-global-glass-container {
 
-div.qui-global-glass-container.visible {
-    display: block;
-}
+        & .hidden {
+            display: none;
+        }
 
-/* Hide all but last children */
-div.qui-global-glass-container > :NOT(:LAST-CHILD) {
-    opacity: 0 !important;
-}
+        &.visible {
+            display: block;
+        }
 
-/* Ensure sticky children are at the top of the stack */
-div.qui-global-glass-container > .sticky {
-    z-index: 1000 !important;
+        & > div.qui-page {
+            border: 0;
+        }
+
+        /* Hide all but last children */
+        & > :NOT(:LAST-CHILD) {
+            opacity: 0 !important;
+        }
+
+        /* Ensure sticky children are at the top of the stack */
+        & > .sticky {
+            z-index: 1000 !important;
+        }
+
+    }
+
 }
 
 body.global-glass-visible {
