@@ -13,13 +13,14 @@ import * as AJAX  from '$qui/utils/ajax.js'
 import {asap}     from '$qui/utils/misc.js'
 
 
-const SMALL_SCREEN_THRESHOLD = 700 /* Logical pixels */
+const DEFAULT_SMALL_SCREEN_THRESHOLD = 700 /* Logical pixels */
 
 const logger = Logger.get('qui.window')
 
 let unloading = false
 let reloading = false
 let closeListeners = []
+let smallScreenThreshold = DEFAULT_SMALL_SCREEN_THRESHOLD
 
 
 /**
@@ -163,7 +164,32 @@ export function isSmallScreen(width = null, height = null) {
         height = $window.height()
     }
 
-    return Math.min(width, height) <= SMALL_SCREEN_THRESHOLD
+    return Math.min(width, height) <= smallScreenThreshold
+}
+
+/**
+ * Set the small screen threshold. Defaults to `700` logical pixels.
+ *
+ * You can set the threshold to `0` to disable small screen mode; setting it to a large number (e.g. `1e6`) ensures that
+ * small screen mode is always active.
+ *
+ * @alias qui.window.setSmallScreenThreshold
+ * @param {?Number} threshold small screen threshold, in logical pixels; passing `null` will reset to default
+ */
+export function setSmallScreenThreshold(threshold) {
+    logger.debug(`setting small screen threshold to ${threshold} pixels`)
+    smallScreenThreshold = threshold
+
+    let smallScreen = isSmallScreen()
+
+    if (smallScreen && !$body.hasClass('small-screen')) {
+        $body.addClass('small-screen')
+        handleSmallScreen()
+    }
+    else if (!smallScreen && $body.hasClass('small-screen')) {
+        $body.removeClass('small-screen')
+        handleLargeScreen()
+    }
 }
 
 /**
