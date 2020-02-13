@@ -5,6 +5,7 @@
 import * as Colors from '$qui/utils/colors.js'
 import * as CSS    from '$qui/utils/css.js'
 import {asap}      from '$qui/utils/misc.js'
+import * as Window from '$qui/window.js'
 
 
 let themeVars = null
@@ -93,4 +94,22 @@ export function afterTransition(func, element) {
     return setTimeout(function () {
         func.call(thisArg)
     }, getTransitionDuration())
+}
+
+/**
+ * Enable transitions, animations, blur filters and other effects. Use this function to re-enable effects disabled by
+ * {@link qui.theme.disableEffects}.
+ * @alias qui.theme.enableEffects
+ */
+export function enableEffects() {
+    Window.$body.removeClass('effects-disabled')
+}
+
+/**
+ * Disable transitions, animations, blur filters and other effects. Use {@link qui.theme.enableEffects} to re-enable
+ * effects.
+ * @alias qui.theme.disableEffects
+ */
+export function disableEffects() {
+    Window.$body.addClass('effects-disabled')
 }

@@ -52,9 +52,10 @@ export function getStyleLinkElement(filename) {
  * Create and add a style rule.
  * @alias qui.utils.css.addRule
  * @param {String} selector a CSS selector (e.g. `"div.my-class > div.my-sub-class"`)
- * @param {CSSStyleDeclaration|String} style style declaration (e.g. `"{ text-align: left; padding: 5px; }"`)
+ * @param {CSSStyleDeclaration|String} style style declaration (e.g. `"text-align: left; padding: 5px;"`)
  * @param {HTMLStyleElement} [styleElement] an optional style element to add the rule to; by default, rules are added to
  * a common custom style element
+ * @returns {Number} the index of the rule within the style element rules list
  */
 export function addRule(selector, style, styleElement = null) {
     if (style instanceof window.CSSStyleDeclaration) {
@@ -62,7 +63,7 @@ export function addRule(selector, style, styleElement = null) {
     }
 
     styleElement = styleElement || getCustomStyleElement()
-    styleElement.sheet.insertRule(`${selector} { ${style} }`, styleElement.sheet.cssRules.length)
+    return styleElement.sheet.insertRule(`${selector} { ${style} }`, styleElement.sheet.cssRules.length)
 }
 
 /**

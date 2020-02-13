@@ -24,7 +24,7 @@ export function asap(func) {
  * Ensure that a URL has a query argument named `h`, representing the build hash.
  * @alias qui.utils.misc.appendBuildHash
  * @param {String} strURL
- * @return {String}
+ * @returns {String}
  */
 export function appendBuildHash(strURL) {
     let url = URL.parse(strURL)
