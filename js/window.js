@@ -6,8 +6,6 @@ import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
 import Signal     from '$qui/base/signal.js'
-import Icon       from '$qui/icons/icon.js'
-import StockIcon  from '$qui/icons/stock-icon.js'
 import * as Theme from '$qui/theme.js'
 import * as AJAX  from '$qui/utils/ajax.js'
 import {asap}     from '$qui/utils/misc.js'
