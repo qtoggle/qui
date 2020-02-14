@@ -16,6 +16,8 @@ const STATUS_LOCK_TIMEOUT = 500
 let statusIndicator = null
 let pendingStatusParams = null
 let statusLockTimeoutHandle = null
+let lastStatus = null
+let lastMessage = null
 
 
 /**
@@ -30,7 +32,7 @@ let statusLockTimeoutHandle = null
  *  * `"ok"`
  * @param {String} [message] an optional status message
  */
-export function set(status, message) {
+export function set(status, message = null) {
     if (statusLockTimeoutHandle) {
         pendingStatusParams = {
             status: status,
@@ -39,6 +41,9 @@ export function set(status, message) {
 
         return
     }
+
+    lastStatus = status
+    lastMessage = message
 
     statusLockTimeoutHandle = setTimeout(function () {
 
@@ -144,7 +149,9 @@ export function init() {
         Toast.show({message: message, type: type})
     })
 
-    new StockIcon({name: 'check', variant: 'interactive'}).applyTo(statusIndicator.find('.qui-icon'))
+    Window.screenLayoutChangeSignal.connect(function () {
+        set(lastStatus, lastMessage)
+    })
 
     set('ok')
 }

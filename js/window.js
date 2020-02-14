@@ -110,35 +110,12 @@ export function isFullScreen() {
 
 /* Screen layout */
 
-function alterTopIcon(element, variant) {
-    let icon = Icon.getFromElement(element)
-    if (!icon) {
-        return
-    }
-
-    if (icon instanceof StockIcon) {
-        icon = icon.alter({variant: variant})
-    }
-
-    icon.applyTo(element)
-}
-
 function handleSmallScreen() {
     logger.debug('small screen mode')
-
-    /* On small screens, we always want white icons on top bar buttons */
-    $('div.qui-top-bar > div.qui-top-button > div.qui-icon').each(function () {
-        alterTopIcon($(this), 'white')
-    })
 }
 
 function handleLargeScreen() {
     logger.debug('large screen mode')
-
-    /* On large screens, we want interactive icons on top bar buttons */
-    $('div.qui-top-bar > div.qui-top-button > div.qui-icon').each(function () {
-        alterTopIcon($(this), 'interactive')
-    })
 }
 
 function handleLandscape() {

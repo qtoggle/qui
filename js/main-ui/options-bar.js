@@ -151,6 +151,7 @@ export function init() {
             barHTML.css('right', -deltaX)
         },
         /* onBegin = */ function () {
+            /* Allow closing the options bar with touch drag, but only on small screens */
             if (!Window.isSmallScreen()) {
                 return false
             }

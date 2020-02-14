@@ -114,6 +114,7 @@ export function init() {
             barHTML.css('left', elemX)
         },
         /* onBegin = */ function () {
+            /* Allow closing the menu bar with touch drag, but only on small screens */
             if (!Window.isSmallScreen()) {
                 return false
             }
