@@ -124,21 +124,47 @@ function handlePortrait() {
     logger.debug('portrait mode')
 }
 
-/**
- * Tell whether the screen is small or not. A screen is considered small if its width is below a *small* threshold.
- * @alias qui.window.isSmallScreen
- * @param {Number} [width] the screen width; if not supplied, the current screen width is considered
- * @param {Number} [height] the screen height; if not supplied, the current screen height is considered
- * @returns {Boolean}
- */
-export function isSmallScreen(width = null, height = null) {
-    if (width == null) {
-        width = $window.width()
+function evaluateScreenLayout() {
+    let smallScreen = isSmallScreen()
+    let landscape = isLandscape()
+    let changed = false
+
+    if (smallScreen && !$body.hasClass('small-screen')) {
+        $body.addClass('small-screen')
+        handleSmallScreen()
+        changed = true
+    }
+    else if (!smallScreen && $body.hasClass('small-screen')) {
+        $body.removeClass('small-screen')
+        handleLargeScreen()
+        changed = true
     }
 
-    if (height == null) {
-        height = $window.height()
+    if (landscape && !$body.hasClass('landscape')) {
+        $body.addClass('landscape')
+        handleLandscape()
+        changed = true
     }
+    else if (!landscape && $body.hasClass('landscape')) {
+        $body.removeClass('landscape')
+        handlePortrait()
+        changed = true
+    }
+
+    if (changed) {
+        screenLayoutChangeSignal.emit(smallScreen, landscape)
+    }
+}
+
+/**
+ * Tell whether the screen is small or not. A screen is considered small if its width or height are below a *small*
+ * threshold.
+ * @alias qui.window.isSmallScreen
+ * @returns {Boolean}
+ */
+export function isSmallScreen() {
+    let width = $window.width()
+    let height = $window.height()
 
     return Math.min(width, height) <= smallScreenThreshold * scalingFactor
 }
@@ -168,24 +194,7 @@ export function setSmallScreenThreshold(threshold) {
         smallScreenThreshold = DEFAULT_SMALL_SCREEN_THRESHOLD
     }
 
-    let smallScreen = isSmallScreen()
-    let landscape = isLandscape()
-    let changed = false
-
-    if (smallScreen && !$body.hasClass('small-screen')) {
-        $body.addClass('small-screen')
-        handleSmallScreen()
-        changed = true
-    }
-    else if (!smallScreen && $body.hasClass('small-screen')) {
-        $body.removeClass('small-screen')
-        handleLargeScreen()
-        changed = true
-    }
-
-    if (changed) {
-        screenLayoutChangeSignal.emit(smallScreen, landscape)
-    }
+    evaluateScreenLayout()
 }
 
 /**
@@ -199,6 +208,7 @@ export function isLandscape() {
 
 /**
  * Tell the current scaling factor.
+ * @alias qui.window.getScalingFactor
  * @returns {Number}
  */
 export function getScalingFactor() {
@@ -207,6 +217,7 @@ export function getScalingFactor() {
 
 /**
  * Set the root scaling factor. Use `1` to disable scaling.
+ * @alias qui.window.setScalingFactor
  * @param {Number} factor
  */
 export function setScalingFactor(factor) {
@@ -220,25 +231,7 @@ export function setScalingFactor(factor) {
         $body.css('zoom', `${factor * 100}%`)
     }
 
-    /* Reevaluate the small screen condition, as it might have changed */
-    let smallScreen = isSmallScreen()
-    let landscape = isLandscape()
-    let changed = false
-
-    if (smallScreen && !$body.hasClass('small-screen')) {
-        $body.addClass('small-screen')
-        handleSmallScreen()
-        changed = true
-    }
-    else if (!smallScreen && $body.hasClass('small-screen')) {
-        $body.removeClass('small-screen')
-        handleLargeScreen()
-        changed = true
-    }
-
-    if (changed) {
-        screenLayoutChangeSignal.emit(smallScreen, landscape)
-    }
+    evaluateScreenLayout()
 }
 
 
@@ -330,49 +323,12 @@ export function init() {
     $body = $(document.body)
 
     /* Window resize handling */
-    let initialResize = true
     $window.on('resize', function () {
         let width = $window.width()
         let height = $window.height()
-        let smallScreen = isSmallScreen(width, height)
-        let landscape = width >= height
-        let changed = false
-
-        if (smallScreen && !$body.hasClass('small-screen')) {
-            $body.addClass('small-screen')
-            handleSmallScreen()
-            changed = true
-        }
-        else if (!smallScreen && $body.hasClass('small-screen')) {
-            $body.removeClass('small-screen')
-            handleLargeScreen()
-            changed = true
-        }
-        else if (initialResize) {
-            handleLargeScreen()
-        }
-
-        if (landscape && !$body.hasClass('landscape')) {
-            $body.addClass('landscape')
-            handleLandscape()
-            changed = true
-        }
-        else if (!landscape && $body.hasClass('landscape')) {
-            $body.removeClass('landscape')
-            handlePortrait()
-            changed = true
-        }
-        else if (initialResize) {
-            handlePortrait()
-        }
-
-        if (changed) {
-            screenLayoutChangeSignal.emit(smallScreen, landscape)
-        }
-
-        initialResize = false
 
         resizeSignal.emit(width, height)
+        evaluateScreenLayout()
     })
 
     /* Window unload handling */
