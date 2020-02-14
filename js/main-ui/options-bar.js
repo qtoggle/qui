@@ -166,5 +166,10 @@ export function init() {
         }
     )
 
+    /* Automatically update options icon according to small screen state */
+    Window.screenLayoutChangeSignal.connect(function (smallScreen, landscape) {
+        TopBar.alterTopIcon(optionsButton.find('div.qui-icon'), smallScreen ? 'white' : 'interactive')
+    })
+
     Window.$body.append(barHTML)
 }

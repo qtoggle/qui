@@ -4,6 +4,8 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
+import Icon        from '$qui/icons/icon.js'
+import StockIcon   from '$qui/icons/stock-icon.js'
 import * as Window from '$qui/window.js'
 
 
@@ -35,6 +37,21 @@ export function addButton(button) {
  */
 export function setTitle(title) {
     barHTML.children('div.qui-top-bar-title-container').html(title || '')
+}
+
+// TODO jsdoc
+export function alterTopIcon(element, variant) {
+    let icon = Icon.getFromElement(element)
+    if (!icon) {
+        return
+    }
+
+    if (!(icon instanceof StockIcon)) {
+        return;
+    }
+
+    icon = icon.alter({variant: variant})
+    icon.applyTo(element)
 }
 
 export function init() {

@@ -6,9 +6,8 @@ import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
 import {AssertionError} from '$qui/base/errors.js'
-import Icon             from '$qui/icons/icon.js'
-import StockIcon        from '$qui/icons/stock-icon.js'
 import * as OptionsBar  from '$qui/main-ui/options-bar.js'
+import * as TopBar      from '$qui/main-ui/top-bar.js'
 import * as Navigation  from '$qui/navigation.js'
 import * as Window      from '$qui/window.js'
 
@@ -219,22 +218,10 @@ export function init() {
         return !sectionsList.some(s => !s.canClose())
     })
 
+    /* Automatically update top icon buttons according to small screen state */
     Window.screenLayoutChangeSignal.connect(function (smallScreen, landscape) {
-        /* On small screens, we want white icons on top bar buttons;
-         * on large screens, we want interactive icons on top bar buttons */
         $('div.qui-top-bar > div.qui-top-button.qui-section-button > div.qui-icon').each(function () {
-            let element = $(this)
-            let icon = Icon.getFromElement(element)
-            if (!icon) {
-                return
-            }
-
-            if (!(icon instanceof StockIcon)) {
-                return
-            }
-
-            icon = icon.alter({variant: smallScreen ? 'white' : 'interactive'})
-            icon.applyTo(element)
+            TopBar.alterTopIcon($(this), smallScreen ? 'white' : 'interactive')
         })
     })
 
