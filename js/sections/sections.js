@@ -210,6 +210,14 @@ export function getHome() {
     return homeSection
 }
 
+/**
+ * Reset all sections.
+ * @returns {Promise} a promise that is settled as soon as all sections have been reset
+ */
+export function reset() {
+    return Promise.all(sectionsList.map(s => s.reset()))
+}
+
 
 export function init() {
     attachSectionEventRelays()
@@ -219,11 +227,21 @@ export function init() {
         return !sectionsList.some(s => !s.canClose())
     })
 
-    /* Automatically update top icon buttons according to small screen state */
     Window.screenLayoutChangeSignal.connect(function (smallScreen, landscape) {
+        /* Automatically update top icon buttons according to small screen state */
         $('div.qui-top-bar > div.qui-top-button.qui-section-button > div.qui-icon').each(function () {
             StockIcon.alterElement($(this), {variant: smallScreen ? 'white' : 'interactive'})
         })
+
+        /* Reset sections */
+        if (currentSection) {
+            let currentPath = Navigation.getCurrentPath()
+
+            logger.debug('soft reloading due to screen layout change')
+            reset().then(function () {
+                return Navigation.navigate(currentPath)
+            })
+        }
     })
 
     /* Export some stuff to global scope */

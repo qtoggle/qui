@@ -124,6 +124,10 @@ function handlePortrait() {
     logger.debug('portrait mode')
 }
 
+/**
+ * @private
+ * @returns {Boolean}
+ */
 function evaluateScreenLayout() {
     let smallScreen = isSmallScreen()
     let landscape = isLandscape()
@@ -154,6 +158,8 @@ function evaluateScreenLayout() {
     if (changed) {
         screenLayoutChangeSignal.emit(smallScreen, landscape)
     }
+
+    return changed
 }
 
 /**
@@ -183,6 +189,8 @@ export function getSmallScreenThreshold() {
  *
  * You can set the threshold to `0` to disable small screen mode; setting it to a large number (e.g. `1e6`) ensures that
  * small screen mode is always active.
+ *
+ * This function may force-close current pages and re-navigate to the current path, if screen layout is changed.
  *
  * @alias qui.window.setSmallScreenThreshold
  * @param {?Number} threshold small screen threshold, in logical pixels; passing `null` will reset to default
@@ -217,6 +225,9 @@ export function getScalingFactor() {
 
 /**
  * Set the root scaling factor. Use `1` to disable scaling.
+ *
+ * This function may force-close current pages and re-navigate to the current path, if screen layout is changed.
+ *
  * @alias qui.window.setScalingFactor
  * @param {Number} factor
  */

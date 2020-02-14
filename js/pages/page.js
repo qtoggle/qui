@@ -492,7 +492,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             let index = this._getIndex()
             let context = this.getContext()
             if (index >= 0 && context && context.getSize() > index + 1) {
-                promise = context.getPageAt(index + 1).close()
+                promise = context.getPageAt(index + 1).close(force)
             }
 
             this._closing = true
