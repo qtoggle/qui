@@ -194,14 +194,22 @@ export function setSmallScreenThreshold(threshold) {
     }
 
     let smallScreen = isSmallScreen()
+    let landscape = isLandscape()
+    let changed = false
 
     if (smallScreen && !$body.hasClass('small-screen')) {
         $body.addClass('small-screen')
         handleSmallScreen()
+        changed = true
     }
     else if (!smallScreen && $body.hasClass('small-screen')) {
         $body.removeClass('small-screen')
         handleLargeScreen()
+        changed = true
+    }
+
+    if (changed) {
+        screenLayoutChangeSignal.emit(smallScreen, landscape)
     }
 }
 
@@ -239,14 +247,22 @@ export function setScalingFactor(factor) {
 
     /* Reevaluate the small screen condition, as it might have changed */
     let smallScreen = isSmallScreen()
+    let landscape = isLandscape()
+    let changed = false
 
     if (smallScreen && !$body.hasClass('small-screen')) {
         $body.addClass('small-screen')
         handleSmallScreen()
+        changed = true
     }
     else if (!smallScreen && $body.hasClass('small-screen')) {
         $body.removeClass('small-screen')
         handleLargeScreen()
+        changed = true
+    }
+
+    if (changed) {
+        screenLayoutChangeSignal.emit(smallScreen, landscape)
     }
 }
 
