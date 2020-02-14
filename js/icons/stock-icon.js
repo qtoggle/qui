@@ -1,4 +1,5 @@
 
+import {AssertionError} from '$qui/base/errors.js'
 import * as ObjectUtils from '$qui/utils/object.js'
 
 import * as DefaultStock     from './default-stock.js'
@@ -183,6 +184,25 @@ class StockIcon extends Icon {
         attributes = ObjectUtils.filter(attributes, (key) => (this[`_${key}`] == null))
 
         return this.alter(attributes)
+    }
+
+    /**
+     * Alter a stock icon that has already been applied to an element, in place.
+     * @param {jQuery} element
+     * @param {Object} attributes the attributes to alter
+     */
+    static alterElement(element, attributes) {
+        let icon = Icon.getFromElement(element)
+        if (!icon) {
+            throw new AssertionError('Attempt to alter element without icon')
+        }
+
+        if (!(icon instanceof StockIcon)) {
+            throw new AssertionError('Attempt to alter an icon that is not StockIcon')
+        }
+
+        icon = icon.alter(attributes)
+        icon.applyTo(element)
     }
 
     _applyTo(element) {

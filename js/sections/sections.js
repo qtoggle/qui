@@ -6,10 +6,11 @@ import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
 import {AssertionError} from '$qui/base/errors.js'
+import StockIcon        from '$qui/icons/stock-icon.js'
 import * as OptionsBar  from '$qui/main-ui/options-bar.js'
-import * as TopBar      from '$qui/main-ui/top-bar.js'
 import * as Navigation  from '$qui/navigation.js'
 import * as Window      from '$qui/window.js'
+
 
 
 /**
@@ -221,7 +222,7 @@ export function init() {
     /* Automatically update top icon buttons according to small screen state */
     Window.screenLayoutChangeSignal.connect(function (smallScreen, landscape) {
         $('div.qui-top-bar > div.qui-top-button.qui-section-button > div.qui-icon').each(function () {
-            TopBar.alterTopIcon($(this), smallScreen ? 'white' : 'interactive')
+            StockIcon.alterElement($(this), {variant: smallScreen ? 'white' : 'interactive'})
         })
     })
 

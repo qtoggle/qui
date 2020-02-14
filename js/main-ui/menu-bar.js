@@ -131,7 +131,7 @@ export function init() {
 
     /* Automatically update menu icon according to small screen state */
     Window.screenLayoutChangeSignal.connect(function (smallScreen, landscape) {
-        TopBar.alterTopIcon(menuButton.find('div.qui-icon'), smallScreen ? 'white' : 'interactive')
+        StockIcon.alterElement(menuButton.find('div.qui-icon'), {variant: smallScreen ? 'white' : 'interactive'})
     })
 
     Window.$body.append(barHTML)
