@@ -28,14 +28,26 @@ div.qui-slider {
                 color: @interactive-color;
             }
 
-            &.qui-slider-cursor-label.overlappable {
+            &.overlapped {
+                opacity: 0;
+            }
+
+        }
+
+        &:NOT(.all-ticks-visible) {
+
+            & > span.qui-slider-cursor-label {
                 background: linear-gradient(to right,
                                             transparent 0%, @background-color 25%,
                                             @background-color 75%, transparent 100%);
             }
 
-            &.overlapping {
-                opacity: 0;
+        }
+
+        &.all-ticks-visible {
+
+            & > span.qui-slider-label {
+                transition: none;
             }
 
         }
@@ -87,7 +99,7 @@ div.qui-slider {
 
         & > div.qui-slider-labels {
 
-            & > span.qui-slider-label.overlapping {
+            & > span.qui-slider-label.overlapped:NOT(.completely-overlapped) {
                 opacity: 1;
             }
 

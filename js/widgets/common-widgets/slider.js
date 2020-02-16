@@ -14,14 +14,10 @@ $.widget('qui.slider', {
         value: 0,
         ticks: [{label: 0, value: 0}, {label: 50, value: 50}, {label: 100, value: 100}],
         ticksStep: 1,
-        snapMode: 0,
         continuousChange: true,
         equidistant: false,
-        increment: 0.02,
         fastFactor: 5,
-        snapDistance: 0.02,
         caption: '%s',
-        decimals: 0,
         readonly: false,
         disabled: false
     },
@@ -228,7 +224,7 @@ $.widget('qui.slider', {
         this._curVal = Math.min(this._maxVal, Math.max(this._minVal, this._curVal))
         this._setPos(this._valToPos(this._curVal))
 
-        this._cursorLabel.toggleClass('overlappable', this.options.ticksStep > 1)
+        this._labels.toggleClass('all-ticks-visible', this.options.ticksStep === 1)
     },
 
     _getWidth: function () {
@@ -241,34 +237,38 @@ $.widget('qui.slider', {
 
     _setPos: function (pos) {
         pos = Math.max(0, Math.min(1, pos))
+        let val = this._posToVal(pos)
+
+        /* Find matching tick */
+        let tick = this.options.ticks.find(t => t.value === val)
+        if (!tick) {
+            return
+        }
+
+        /* Update cursor caption */
+        this._cursorLabel.html(tick.label)
 
         /* Update cursor position */
         this._cursor.css('left', `${(pos * 100)}%`)
         this._cursorLabel.css('left', `${(pos * 100 - 15)}%`)
-        this._curVal = this._posToVal(pos)
+        this._curVal = val
 
-        /* Update cursor caption */
-        let caption
-        let tick = this.options.ticks.find(t => t.value === this._curVal)
-        if (tick) {
-            caption = tick.label
-        }
-        else {
-            let captionVal = this._curVal.toFixed(this.options.decimals)
-            caption = StringUtils.formatPercent(this.options.caption, captionVal)
-        }
-        this._cursorLabel.html(caption)
 
-        /* Hide overlapping tick labels */
+        /* Hide overlapped tick labels */
         let cursorLabelLeft = parseInt(this._cursorLabel[0].style.left) /* Percent */
-        let overlapWidth = this.options.ticksStep > 1 ? 15 /* Percent */ : 0
+
+        /* Cursor overlaps neighbors only if not all ticks are visible */
+        let overlapWidth = this.options.ticksStep === 1 ? 0 : 15 /* Percent */
 
         this._labels.children('span.qui-slider-label:NOT(.qui-slider-cursor-label)').each(function () {
             let labelElement = $(this)
             let labelLeft = parseInt(this.style.left) /* Percent */
 
-            let noOverlap = cursorLabelLeft > labelLeft + overlapWidth || cursorLabelLeft + overlapWidth < labelLeft
-            labelElement.toggleClass('overlapping', !noOverlap)
+            let overlapped = (cursorLabelLeft <= labelLeft + overlapWidth) &&
+                             (cursorLabelLeft + overlapWidth >= labelLeft)
+            let completelyOverlapped = Math.abs(cursorLabelLeft - labelLeft) / Math.abs(cursorLabelLeft) < 0.01
+            labelElement.toggleClass('overlapped', overlapped)
+            labelElement.toggleClass('completely-overlapped', completelyOverlapped)
         })
     },
 
@@ -303,22 +303,20 @@ $.widget('qui.slider', {
     _bestPos: function (pos) {
         pos = Math.max(0, Math.min(1, pos))
 
-        if (this.options.snapMode > 0) {
-            let minDif = Infinity
-            let bp = null
-            for (let i = 0; i < this.options.ticks.length; i++) {
-                let tick = this.options.ticks[i]
-                let p = this._valToPos(tick.value)
-                let dif = Math.abs(p - pos)
-                if ((dif < minDif) && (this.options.snapMode === 1 || dif < this.options.snapDistance)) {
-                    minDif = dif
-                    bp = p
-                }
+        let minDif = Infinity
+        let bp = null
+        for (let i = 0; i < this.options.ticks.length; i++) {
+            let tick = this.options.ticks[i]
+            let p = this._valToPos(tick.value)
+            let dif = Math.abs(p - pos)
+            if (dif < minDif) {
+                minDif = dif
+                bp = p
             }
+        }
 
-            if (bp != null) {
-                pos = bp
-            }
+        if (bp != null) {
+            pos = bp
         }
 
         return pos
@@ -335,7 +333,7 @@ $.widget('qui.slider', {
                 return true
             }
         }
-        else if (this.options.snapMode === 1) {
+        else {
             index = this.options.ticks.findIndex(function (tick) {
                 return tick.value === this._curVal
             }, this)
@@ -347,17 +345,6 @@ $.widget('qui.slider', {
             if (index < this.options.ticks.length - 1) {
                 index++
                 this._setPos(this._valToPos(this.options.ticks[index].value))
-
-                return true
-            }
-        }
-        else {
-            let oldPos = this._getPos()
-            let newPos = oldPos + Math.max(this.options.increment, this.options.snapDistance + 0.01)
-            newPos = this._bestPos(newPos)
-
-            if (Math.abs(newPos - oldPos) > 10e-6) {
-                this._setPos(newPos)
 
                 return true
             }
@@ -377,7 +364,7 @@ $.widget('qui.slider', {
                 return true
             }
         }
-        else if (this.options.snapMode === 1) {
+        else {
             index = this.options.ticks.findIndex(function (tick) {
                 return tick.value === this._curVal
             }, this)
@@ -389,17 +376,6 @@ $.widget('qui.slider', {
             if (index > 0) {
                 index--
                 this._setPos(this._valToPos(this.options.ticks[index].value))
-
-                return true
-            }
-        }
-        else {
-            let oldPos = this._getPos()
-            let newPos = oldPos - Math.max(this.options.increment, this.options.snapDistance + 0.01)
-            newPos = this._bestPos(newPos)
-
-            if (Math.abs(newPos - oldPos) > 10e-6) {
-                this._setPos(newPos)
 
                 return true
             }

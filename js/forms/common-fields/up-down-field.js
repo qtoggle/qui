@@ -19,7 +19,7 @@ class UpDownField extends JQueryUIField {
      * @param {Number} [fastFactor] determines the increment value when in fast mode (defaults to `10`)
      * @param {Number} [decimals] the number of decimals to display (defaults to `0`)
      * @param {Boolean} [continuousChange] set to `false` to prevent triggering `change` events with each value
-     * modificationwhen losing focus
+     * modification when losing focus
      * @param {...*} args parent class parameters
      */
     constructor({
