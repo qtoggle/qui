@@ -106,7 +106,7 @@ export function isFullScreen() {
 }
 
 
-/* Screen layout */
+/* Screen size & layout */
 
 function handleSmallScreen() {
     logger.debug('small screen mode')
@@ -242,7 +242,26 @@ export function setScalingFactor(factor) {
         $body.css('zoom', `${factor * 100}%`)
     }
 
-    evaluateScreenLayout()
+    /* Changing scaling factor will effectively change the perceived size of the window */
+    $window.trigger('resize')
+}
+
+/**
+ * Tell the current application window width.
+ * @alias qui.window.getWidth
+ * @returns {Number}
+ */
+export function getWidth() {
+    return $window.width() / scalingFactor
+}
+
+/**
+ * Tell the current application window height.
+ * @alias qui.window.getHeight
+ * @returns {Number}
+ */
+export function getHeight() {
+    return $window.height() / scalingFactor
 }
 
 
@@ -335,8 +354,8 @@ export function init() {
 
     /* Window resize handling */
     $window.on('resize', function () {
-        let width = $window.width()
-        let height = $window.height()
+        let width = $window.width() / scalingFactor
+        let height = $window.height() / scalingFactor
 
         resizeSignal.emit(width, height)
         evaluateScreenLayout()

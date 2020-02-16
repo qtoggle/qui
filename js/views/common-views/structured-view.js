@@ -104,7 +104,7 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
             if (this._minimizable) {
                 if (this._minimized) {
                     html.addClass('minimized')
-                    this._bodyDiv.css('max-height', Window.$window.height())
+                    this._bodyDiv.css('max-height', Window.getHeight())
                 }
                 else if (this._topDiv) {
                     this._topDiv.addClass('selected')

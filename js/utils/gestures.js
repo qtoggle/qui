@@ -55,6 +55,10 @@ export function enableDragging(element, onMove, onBegin, onEnd, direction) {
         beginElemX = elemOffset.left
         beginElemY = elemOffset.top
 
+        let scalingFactor = Window.getScalingFactor()
+        e.pageX /= scalingFactor
+        e.pageY /= scalingFactor
+
         beginPageX = e.pageX
         beginPageY = e.pageY
 
@@ -71,6 +75,10 @@ export function enableDragging(element, onMove, onBegin, onEnd, direction) {
     function pointerUp(e) {
         Window.$body.off('pointermove', pointerMove)
                     .off('pointerup pointercancel pointerleave', pointerUp)
+
+        let scalingFactor = Window.getScalingFactor()
+        e.pageX /= scalingFactor
+        e.pageY /= scalingFactor
 
         if (direction === 'x') { /* Constrain moving to horizontal axis */
             e.pageY = beginPageY
@@ -94,6 +102,10 @@ export function enableDragging(element, onMove, onBegin, onEnd, direction) {
     }
 
     function pointerMove(e) {
+        let scalingFactor = Window.getScalingFactor()
+        e.pageX /= scalingFactor
+        e.pageY /= scalingFactor
+
         if (direction === 'x') { /* Constrain moving to horizontal axis */
             e.pageY = beginPageY
         }

@@ -160,7 +160,7 @@ export function init() {
             barHTML.css('transition', '')
             barHTML.css('right', '')
 
-            if (Math.abs(deltaX) > Window.$window.width() / 5 && deltaX > 0) {
+            if (deltaX > 0 && deltaX > barHTML.width() / 2) {
                 close()
             }
         }

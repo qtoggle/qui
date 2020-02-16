@@ -123,7 +123,7 @@ export function init() {
             barHTML.css('transition', '')
             barHTML.css('left', '')
 
-            if (Math.abs(deltaX) > Window.$window.width() / 5 && deltaX < 0) {
+            if (deltaX < 0 && Math.abs(deltaX) > barHTML.width() / 2) {
                 close()
             }
         }
