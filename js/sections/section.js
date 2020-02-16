@@ -478,6 +478,8 @@ class Section extends mix().with(SingletonMixin) {
             promise = this._mainPage.close(/* force = */ true)
         }
 
+        this.onReset()
+
         return promise.then(function () {
             this._mainPage = null
             if (this.isCurrent()) {
@@ -488,6 +490,12 @@ class Section extends mix().with(SingletonMixin) {
                 }.bind(this))
             }
         }.bind(this))
+    }
+
+    /**
+     * Called whenever the section is reset.
+     */
+    onReset() {
     }
 
     /**
