@@ -12,7 +12,6 @@ import * as Navigation  from '$qui/navigation.js'
 import * as Window      from '$qui/window.js'
 
 
-
 /**
  * @alias qui.sections.BUTTON_TYPE_MENU_BAR
  */
