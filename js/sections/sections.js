@@ -223,7 +223,7 @@ export function init() {
     attachSectionEventRelays()
 
     /* Prevent unwanted section closing when window is closed */
-    Window.addCloseListener(function () {
+    Window.closeSignal.connect(function () {
         return !sectionsList.some(s => !s.canClose())
     })
 

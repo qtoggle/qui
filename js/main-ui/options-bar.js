@@ -33,7 +33,7 @@ let transitionPromise = Promise.resolve()
  *  * `opened`, the opened status: `Boolean`
  * @alias qui.mainui.optionsbar.openCloseSignal
  */
-export let openCloseSignal = new Signal(barHTML)
+export const openCloseSignal = new Signal(barHTML)
 
 
 /**

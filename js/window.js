@@ -17,7 +17,6 @@ const logger = Logger.get('qui.window')
 
 let unloading = false
 let reloading = false
-let closeListeners = []
 let smallScreenThreshold = DEFAULT_SMALL_SCREEN_THRESHOLD
 let scalingFactor = 1
 
@@ -49,7 +48,7 @@ export let $body = null
  *  * `height`, the new window height: `Number`
  * @alias qui.window.resizeSignal
  */
-export let resizeSignal = new Signal()
+export const resizeSignal = new Signal()
 
 /**
  * Emitted whenever the screen layout changes. Handlers are called with the following parameters:
@@ -57,7 +56,7 @@ export let resizeSignal = new Signal()
  *  * `landscape`, telling if the screen orientation is landscape: `Boolean`
  * @alias qui.window.screenLayoutChangeSignal
  */
-export let screenLayoutChangeSignal = new Signal()
+export const screenLayoutChangeSignal = new Signal()
 
 /**
  * Emitted whenever the application enters or leaves full-screen mode. Handlers are called with the following
@@ -65,7 +64,7 @@ export let screenLayoutChangeSignal = new Signal()
  *  * `fullScreen`, telling if the application is currently in full-screen mode, nor not: `Boolean`
  * @alias qui.window.fullScreenChangeSignal
  */
-export let fullScreenChangeSignal = new Signal()
+export const fullScreenChangeSignal = new Signal()
 
 /**
  * Emitted whenever the application window becomes visible or is no longer visible. Handlers are called with the
@@ -73,7 +72,14 @@ export let fullScreenChangeSignal = new Signal()
  *  * `visible`, telling if the application is visible or not: `Boolean`
  * @alias qui.window.visibilityChangeSignal
  */
-export let visibilityChangeSignal = new Signal()
+export const visibilityChangeSignal = new Signal()
+
+/**
+ * Emitted when the application window is about to be closed. Handlers are called with no parameters. If any of the
+ * handlers returns `false`, window closing will be prevented, if possible.
+ * @alias qui.window.closeSignal
+ */
+export const closeSignal = new Signal()
 
 
 /* Full screen */
@@ -322,30 +328,6 @@ export function isClosing() {
     return unloading || reloading
 }
 
-/**
- * Add a listener function to be called when the window is closed. If the close listeners returns `false`, window
- * closing will be prevented, if possible.
- * @param {Function} listener
- */
-export function addCloseListener(listener) {
-    closeListeners.push(listener)
-}
-
-/**
- * Remove a listener function from the listeners that are called when the window is closed.
- * @param {Function} listener
- */
-export function removeCloseListener(listener) {
-    let index = closeListeners.findIndex(function (l) {
-        return l === listener
-    })
-
-    if (index >= 0) {
-        closeListeners.splice(index, 1)
-    }
-}
-
-
 export function init() {
     /* Wrap main objects in jQuery */
     $document = $(document)
@@ -385,18 +367,10 @@ export function init() {
             canUnload = false
         }
 
-        if (canUnload) {
-            canUnload = !closeListeners.some(function (l) {
-                try {
-                    if (l() === false) {
-                        logger.warn('application unload prevented by close listener')
-                        return true
-                    }
-                }
-                catch (e) {
-                    logger.errorStack('close listener call failed', e)
-                }
-            })
+        let closeSignalResult = closeSignal.emit()
+        if (closeSignalResult === false) {
+            logger.warn('application unload prevented by close signal handler')
+            canUnload = false
         }
 
         if (!canUnload) {

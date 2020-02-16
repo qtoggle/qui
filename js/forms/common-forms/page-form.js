@@ -88,7 +88,7 @@ class PageForm extends mix(Form).with(PageMixin) {
     }
 
     static init() {
-        Window.addCloseListener(function () {
+        Window.closeSignal.connect(function () {
             /* Go through all current pages and collect page forms. Then see if they have changed fields and, if any of
              * them does and has preventUnappliedClose flag set, try to prevent navigating away from the page */
 

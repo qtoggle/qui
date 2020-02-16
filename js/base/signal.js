@@ -54,19 +54,19 @@ class Signal {
     }
 
     /**
-     * Emit the signal. All the handler functions will be called in the order of binding,
-     * until one of them returns `false`.
+     * Emit the signal. All the handler functions will be called in the order of binding, until one of them returns
+     * `false`.
      *
      * Any additional arguments to this function will be passed to the handlers.
      *
      * The handler functions are called with `this` set to the owner object of the signal.
      *
      * @params {...*} args arguments to be passed to the handlers
-     * @returns {*} the last non-`false` value returned by the handlers
+     * @returns {*} the value returned by the last called handler
      */
     emit(...args) {
         // eslint-disable-next-line no-undef-init
-        let globalResult = undefined
+        let result = undefined
 
         this._handlers.some(function ({handler, once}) {
 
@@ -74,20 +74,15 @@ class Signal {
                 this.disconnect(handler)
             }
 
-            let result = handler.apply(this._object, args)
-            if (result !== false) {
-                globalResult = result
-            }
-
+            result = handler.apply(this._object, args)
             if (result === false) {
-                /* Returning false from a handler will stop
-                 * the signal from being handled any further */
+                /* Returning false from a handler will stop the signal from being handled any further */
                 return true
             }
 
         }, this)
 
-        return globalResult
+        return result
     }
 
 }
