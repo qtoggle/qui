@@ -6,18 +6,19 @@
  * Return the value of a cookie.
  * @alias qui.utils.cookies.get
  * @param {String} name cookie name
+ * @param {*} def default value to return if cookie not found
  * @returns {?String}
  */
-export function get(name) {
+export function get(name, def = null) {
     let cookie = document.cookie.substring(0)
 
     if (cookie.length <= 0) {
-        return null
+        return def
     }
 
     let start = cookie.indexOf(`${name}=`)
     if (start === -1) {
-        return null
+        return def
     }
 
     start = start + name.length + 1
