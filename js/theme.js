@@ -53,31 +53,43 @@ export function setCurrent(theme) {
 
     logger.debug(`setting theme to ${theme}`)
 
-    /* Update disabled attribute of CSS link elements */
-    $('link[theme]').each(function () {
-        let $link = $(this)
-        let linkTheme = $link.attr('theme')
-        if (linkTheme === theme) {
-            $link.removeAttr('disabled')
-        }
-        else {
-            $link.attr('disabled', '')
-        }
-    })
+    /* Fade out body during 500ms */
+    Window.$body.css('opacity', '')
 
-    /* Allow 500ms for the browser to apply the stylesheets */
-    // TODO this simply assumes that CSS is applied within 500 milliseconds
-    //      find a way to detect when new theme CSS is actually applied
-    //      P.S. onload doesn't seem to work since resources are already loaded, but disabled
     return PromiseUtils.later(500).then(function () {
 
-        logger.debug(`theme set to ${theme}`)
+        /* Update disabled attribute of CSS link elements */
+        $('link[theme]').each(function () {
+            let $link = $(this)
+            let linkTheme = $link.attr('theme')
+            if (linkTheme === theme) {
+                $link.removeAttr('disabled')
+            }
+            else {
+                $link.attr('disabled', '')
+            }
+        })
 
-        /* Invalidate theme vars */
-        themeVars = null
+        /* Allow 500ms for the browser to apply the stylesheets */
+        // TODO this simply assumes that CSS is applied within 500 milliseconds
+        //      find a way to detect when new theme CSS is actually applied
+        //      P.S. onload doesn't seem to work since resources are already loaded, but disabled
+        return PromiseUtils.later(500).then(function () {
 
-        /* Finally, emit change signal */
-        changeSignal.emit(theme)
+            logger.debug(`theme set to ${theme}`)
+
+            /* Invalidate theme vars */
+            themeVars = null
+
+            /* Finally, emit change signal */
+            changeSignal.emit(theme)
+
+            /* Fade in body, but allow another 500ms for section soft reload */
+            setTimeout(function () {
+                Window.$body.css('opacity', '1')
+            }, 500)
+
+        })
 
     })
 }
@@ -152,7 +164,7 @@ export function getTransitionDuration() {
  * visible, `func` will be called asap; if supplied, will be used as `this` argument for `func`
  * @returns {Number} a timeout handle
  */
-export function afterTransition(func, element) {
+export function afterTransition(func, element = null) {
     let thisArg = element || window
 
     if (element && !element.is(':visible')) {
@@ -164,6 +176,27 @@ export function afterTransition(func, element) {
     return setTimeout(function () {
         func.call(thisArg)
     }, getTransitionDuration())
+}
+
+/**
+ * Create a promise that resolves after a timeout equal to a transition duration,
+ * @alias qui.theme.afterTransitionPromise
+ * @param {?jQuery} [element] an optional HTML element whose visibility will be tested; if element is not currently
+ * visible, promise is resolved asap
+ * @returns {Promise}
+ */
+export function afterTransitionPromise(element = null) {
+    return new Promise(function (resolve, reject) {
+
+        if (element && !element.is(':visible')) {
+            resolve()
+        }
+        else {
+            afterTransition(function () {
+                resolve()
+            }, element)
+        }
+    })
 }
 
 /**
