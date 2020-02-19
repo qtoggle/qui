@@ -107,6 +107,10 @@ export function findRules(selectorRe) {
     let matchedRules = []
     let styleSheets = [...document.styleSheets]
     styleSheets.forEach(function (sheet) {
+        if (sheet.disabled) {
+            return
+        }
+
         let rules = [...sheet.cssRules]
         let mRules = rules.filter(r => r.selectorText && r.selectorText.match(selectorRe)).map(function (rule) {
             return {

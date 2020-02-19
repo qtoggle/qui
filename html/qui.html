@@ -1,3 +1,13 @@
+
+{% macro css_devel_file(theme, path) -%}
+    <link rel="stylesheet"
+          type="text/css"
+          href="{{ static_url }}/css/{{ theme }}/{{ path }}"
+          disabled
+          theme="{{ theme }}"/>
+{%- endmacro %}
+
+
 <!DOCTYPE HTML>
 
 <html lang="en">
@@ -19,44 +29,59 @@
         {% block meta %}{% endblock %}
 
         {% block _style %}
-            <style>html {background: {{ background_color }};}</style>
-            {% if debug %}
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/base.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/main-ui.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/no-effects.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/icons.css" />
+            <style>
+                html {
+                    background: #888888;
+                }
+                body {
+                    opacity: 0;
+                }
+            </style>
+            {% for theme in themes %}
+                {% if debug %}
+                    {{ css_devel_file(theme, "base.css") }}
+                    {{ css_devel_file(theme, "main-ui.css") }}
+                    {{ css_devel_file(theme, "no-effects.css") }}
+                    {{ css_devel_file(theme, "icons.css") }}
 
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/check-button.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/choice-buttons.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/color-combo.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/combo.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/common.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/common-buttons.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/labels.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/progress-disk.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/slider.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/text-input.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/updown.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/widgets/various.css" />
+                    {{ css_devel_file(theme, "widgets/check-button.css") }}
+                    {{ css_devel_file(theme, "widgets/choice-buttons.css") }}
+                    {{ css_devel_file(theme, "widgets/color-combo.css") }}
+                    {{ css_devel_file(theme, "widgets/combo.css") }}
+                    {{ css_devel_file(theme, "widgets/common.css") }}
+                    {{ css_devel_file(theme, "widgets/common-buttons.css") }}
+                    {{ css_devel_file(theme, "widgets/labels.css") }}
+                    {{ css_devel_file(theme, "widgets/progress-disk.css") }}
+                    {{ css_devel_file(theme, "widgets/slider.css") }}
+                    {{ css_devel_file(theme, "widgets/text-input.css") }}
+                    {{ css_devel_file(theme, "widgets/updown.css") }}
+                    {{ css_devel_file(theme, "widgets/various.css") }}
 
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/messages.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/global-glass.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/structured-view.css" />
+                    {{ css_devel_file(theme, "messages.css") }}
+                    {{ css_devel_file(theme, "global-glass.css") }}
+                    {{ css_devel_file(theme, "structured-view.css") }}
 
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/pages/breadcrumbs.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/pages/common-pages.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/pages/page.css" />
+                    {{ css_devel_file(theme, "pages/breadcrumbs.css") }}
+                    {{ css_devel_file(theme, "pages/common-pages.css") }}
+                    {{ css_devel_file(theme, "pages/page.css") }}
 
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/forms/common-fields.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/forms/common-forms.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/forms/form.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/forms/form-button.css" />
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/forms/form-field.css" />
+                    {{ css_devel_file(theme, "forms/common-fields.css") }}
+                    {{ css_devel_file(theme, "forms/common-forms.css") }}
+                    {{ css_devel_file(theme, "forms/form.css") }}
+                    {{ css_devel_file(theme, "forms/form-button.css") }}
+                    {{ css_devel_file(theme, "forms/form-field.css") }}
 
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/lists.css" />
+                    {{ css_devel_file(theme, "lists.css") }}
 
-                <link rel="stylesheet" type="text/css" href="{{ static_url }}/css/{{ theme }}/theme.css" />
-            {% endif %}
+                    {{ css_devel_file(theme, "theme.css") }}
+                {% else %}
+                    <link rel="stylesheet"
+                          type="text/css"
+                          href="{{ static_url }}/{{ name }}-bundle-{{ theme }}.css"
+                          disabled
+                          theme="{{ theme }}"/>
+                {% endif %}
+            {% endfor %}
         {% endblock %}
         {% block style %}{% endblock %}
 
@@ -66,7 +91,6 @@
             <script type="module"
                     src="{{ static_url }}{% if debug %}/js/index.js{% else %}/{{ name }}-bundle.js{% endif %}"
                     data-debug="{{ debug }}"
-                    data-theme-name="{{ theme }}"
                     data-navigation-base-prefix="{{ navigation_base_prefix }}"></script>
         {% endblock %}
     </head>

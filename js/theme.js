@@ -2,15 +2,85 @@
  * @namespace qui.theme
  */
 
-import * as Colors from '$qui/utils/colors.js'
-import * as CSS    from '$qui/utils/css.js'
-import {asap}      from '$qui/utils/misc.js'
-import * as Window from '$qui/window.js'
+import $      from '$qui/lib/jquery.module.js'
+import Logger from '$qui/lib/logger.module.js'
+
+import Signal            from '$qui/base/signal.js'
+import Config            from '$qui/config.js'
+import * as Colors       from '$qui/utils/colors.js'
+import * as CSS          from '$qui/utils/css.js'
+import {asap}            from '$qui/utils/misc.js'
+import * as PromiseUtils from '$qui/utils/promise.js'
+import * as Window       from '$qui/window.js'
 
 
+const logger = Logger.get('qui.theme')
+
+let currentTheme = null
 let themeVars = null
 let transitionDuration = null
 
+
+/**
+ * Emitted whenever the theme is changed. Handlers are called with the following parameters:
+ *  * `theme`, the new theme: `String`
+ * @alias qui.theme.changeSignal
+ */
+export const changeSignal = new Signal()
+
+
+/**
+ * Tell the current theme.
+ * @alias qui.theme.getCurrent
+ * @returns {String}
+ */
+export function getCurrent() {
+    return currentTheme
+}
+
+/**
+ * Change the theme.
+ * @alias qui.theme.setCurrent
+ * @param {String} theme
+ * @returns {Promise} a promise that resolves as soon as the theme has been set
+ */
+export function setCurrent(theme) {
+    if (currentTheme === theme) {
+        return Promise.resolve()
+    }
+
+    currentTheme = theme
+
+    logger.debug(`setting theme to ${theme}`)
+
+    /* Update disabled attribute of CSS link elements */
+    $('link[theme]').each(function () {
+        let $link = $(this)
+        let linkTheme = $link.attr('theme')
+        if (linkTheme === theme) {
+            $link.removeAttr('disabled')
+        }
+        else {
+            $link.attr('disabled', '')
+        }
+    })
+
+    /* Allow 500ms for the browser to apply the stylesheets */
+    // TODO this simply assumes that CSS is applied within 500 milliseconds
+    //      find a way to detect when new theme CSS is actually applied
+    //      P.S. onload doesn't seem to work since resources are already loaded, but disabled
+    return PromiseUtils.later(500).then(function () {
+
+        logger.debug(`theme set to ${theme}`)
+
+        /* Invalidate theme vars */
+        themeVars = null
+
+        /* Finally, emit change signal */
+        changeSignal.emit(theme)
+
+    })
+}
 
 /**
  * Return the value of a theme variable.
@@ -112,4 +182,29 @@ export function enableEffects() {
  */
 export function disableEffects() {
     Window.$body.addClass('effects-disabled')
+}
+
+
+/**
+ * Initialize the theme subsystem.
+ * @alias qui.theme.init
+ * @returns {Promise} a promise that is resolved when theme subsystem has been initialized
+ */
+export function init() {
+    if (Config.defaultEffectsDisabled) {
+        disableEffects()
+    }
+    else {
+        enableEffects()
+    }
+
+    return setCurrent(Config.defaultTheme).then(function () {
+
+        /* Now that the theme is loaded, we can fade in the body */
+        Window.$body.removeClass('disable-transitions')
+        asap(function () {
+            Window.$body.css('opacity', '1')
+        })
+
+    })
 }

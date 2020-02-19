@@ -9,6 +9,7 @@ import {AssertionError} from '$qui/base/errors.js'
 import StockIcon        from '$qui/icons/stock-icon.js'
 import * as OptionsBar  from '$qui/main-ui/options-bar.js'
 import * as Navigation  from '$qui/navigation.js'
+import * as Theme       from '$qui/theme.js'
 import * as Window      from '$qui/window.js'
 
 
@@ -57,6 +58,26 @@ function attachSectionEventRelays() {
         currentSection.onOptionsBarOpenClose(opened)
     })
 }
+
+/**
+ * @private
+ * @returns {Promise}
+ */
+function softReload() {
+    logger.debug('soft reloading')
+
+    /* Reset sections */
+    if (currentSection) {
+        let currentPath = Navigation.getCurrentPath()
+
+        return reset().then(function () {
+            return Navigation.navigate(currentPath)
+        })
+    }
+
+    return  Promise.resolve()
+}
+
 
 /**
  * Register a section class.
@@ -232,15 +253,13 @@ export function init() {
             StockIcon.alterElement($(this), {variant: smallScreen ? 'white' : 'interactive'})
         })
 
-        /* Reset sections */
-        if (currentSection) {
-            let currentPath = Navigation.getCurrentPath()
+        logger.debug('soft reloading due to screen layout change')
+        softReload()
+    })
 
-            logger.debug('soft reloading due to screen layout change')
-            reset().then(function () {
-                return Navigation.navigate(currentPath)
-            })
-        }
+    Theme.changeSignal.connect(function (theme) {
+        logger.debug('soft reloading due to theme change')
+        softReload()
     })
 
     /* Export some stuff to global scope */

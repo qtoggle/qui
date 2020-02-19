@@ -153,5 +153,9 @@ export function init() {
         set(lastStatus, lastMessage)
     })
 
+    Theme.changeSignal.connect(function () {
+        set(lastStatus, lastMessage)
+    })
+
     set('ok')
 }

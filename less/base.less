@@ -63,14 +63,14 @@ html {
     font-size: 16px;
     line-height: 1.15em;
     overflow-x: hidden;
+    transition: background (@transition-duration * 2) linear;
 }
 
 body {
     position: relative;
     height: 100%;
     overflow-x: hidden;
-    transition: opacity @transition-duration ease;
-    opacity: 0;
+    transition: opacity @transition-duration linear;
 }
 
 body.disable-transitions * {
@@ -85,6 +85,7 @@ body.disable-transitions * {
     src: url('@{qui_font_path}/dejavusans-regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -92,6 +93,7 @@ body.disable-transitions * {
     src: url('@{qui_font_path}/dejavusans-bold.woff') format('woff');
     font-weight: bold;
     font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
@@ -99,6 +101,7 @@ body.disable-transitions * {
     src: url('@{qui_font_path}/dejavusans-italic.woff') format('woff');
     font-weight: normal;
     font-style: italic;
+    font-display: swap;
 }
 
 @font-face {
@@ -106,6 +109,7 @@ body.disable-transitions * {
     src: url('@{qui_font_path}/dejavusans-bolditalic.woff') format('woff');
     font-weight: bold;
     font-style: italic;
+    font-display: swap;
 }
 
 

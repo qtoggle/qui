@@ -4,10 +4,22 @@
 
 import Logger from '$qui/lib/logger.module.js'
 
+import * as Theme from '$qui/theme.js'
+
 
 const logger = Logger.get('qui.icons')
+
 let stocks = {}
 let stockMakers = []
+
+
+function makeStocks() {
+    Object.values(stockMakers).forEach(function ({name, stockMaker}) {
+        logger.debug(`making stock "${name}"`)
+        let stock = stocks[name] = stockMaker()
+        stock.prepare()
+    })
+}
 
 
 /**
@@ -31,10 +43,15 @@ export function register(name, stockMaker) {
     logger.debug(`registering stock "${name}"`)
 }
 
-
+/**
+ * Initialize icon stocks.
+ * @alias qui.icons.stocks.init
+ */
 export function init() {
-    Object.values(stockMakers).forEach(function ({name, stockMaker}) {
-        let stock = stocks[name] = stockMaker()
-        stock.prepare()
+    makeStocks()
+
+    Theme.changeSignal.connect(function () {
+        stocks = {}
+        makeStocks()
     })
 }

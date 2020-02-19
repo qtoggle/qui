@@ -16,9 +16,6 @@ $.widget('qui.labels', {
     },
 
     _create: function () {
-        this.options.color = Theme.getColor(this.options.color)
-        this.options.background = Theme.getColor(this.options.background)
-
         this.element.addClass('qui-labels-container')
         if (this.options.disabled) {
             this.element.addClass('disabled')
@@ -34,6 +31,9 @@ $.widget('qui.labels', {
     },
 
     _makeLabel: function (labelInfo) {
+        let color = Theme.getColor(this.options.color)
+        let backgroundColor = Theme.getColor(this.options.background)
+
         let text = labelInfo
         let background = null
         if (typeof text !== 'string') {
@@ -44,9 +44,9 @@ $.widget('qui.labels', {
         let labelSpan = $('<span class="qui-label"></span>')
         labelSpan.html(text)
         labelSpan.css({
-            'color': this.options.color,
-            'background': background || this.options.background,
-            'border-color': background || this.options.background
+            'color': color,
+            'background': background || backgroundColor,
+            'border-color': background || backgroundColor
         })
 
         if (background) {

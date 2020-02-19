@@ -11,21 +11,22 @@ import '$qui/lib/jquery.mousewheel.js'
 import '$qui/lib/jquery.longpress.js'
 import '$qui/lib/pep.js'
 
-import Config             from '$qui/config.js'
-import * as Forms         from '$qui/forms/forms.js'
-import * as GlobalGlass   from '$qui/global-glass.js'
-import * as Icons         from '$qui/icons/icons.js'
-import * as MainUI        from '$qui/main-ui/main-ui.js'
-import * as Status        from '$qui/main-ui/status.js'
-import * as Messages      from '$qui/messages/messages.js'
-import * as Navigation    from '$qui/navigation.js'
-import * as Pages         from '$qui/pages/pages.js'
-import * as Sections      from '$qui/sections/sections.js'
-import * as ArrayUtils    from '$qui/utils/array.js'
-import * as DateUtils     from '$qui/utils/date.js'
-import * as ObjectUtils   from '$qui/utils/object.js'
-import * as Widgets       from '$qui/widgets/widgets.js'
-import * as Window        from '$qui/window.js'
+import Config           from '$qui/config.js'
+import * as Forms       from '$qui/forms/forms.js'
+import * as GlobalGlass from '$qui/global-glass.js'
+import * as Icons       from '$qui/icons/icons.js'
+import * as MainUI      from '$qui/main-ui/main-ui.js'
+import * as Status      from '$qui/main-ui/status.js'
+import * as Messages    from '$qui/messages/messages.js'
+import * as Navigation  from '$qui/navigation.js'
+import * as Pages       from '$qui/pages/pages.js'
+import * as Sections    from '$qui/sections/sections.js'
+import * as Theme       from '$qui/theme.js'
+import * as ArrayUtils  from '$qui/utils/array.js'
+import * as DateUtils   from '$qui/utils/date.js'
+import * as ObjectUtils from '$qui/utils/object.js'
+import * as Widgets     from '$qui/widgets/widgets.js'
+import * as Window      from '$qui/window.js'
 
 /* Import all modules, just to make sure they are included in bundle */
 import '$qui/base/base.js'
@@ -244,6 +245,7 @@ function logCurrentConfig() {
 /**
  * Initialize the QUI library.
  * @alias qui.init
+ * @returns {Promise} a promise that resolves when QUI is initialized and ready
  */
 export function init() {
     RequireJSCompat.cleanup()
@@ -252,17 +254,20 @@ export function init() {
     configureLogging()
     logCurrentConfig()
 
-    Window.init()
-    Icons.init()
-    MainUI.init()
-    Status.init()
-    Widgets.init()
-    Messages.init()
-    GlobalGlass.init()
-    Sections.init()
-    Pages.init()
-    Navigation.init()
-    Forms.init()
-
-    logger.debug('QUI is ready')
+    return Promise.resolve()
+    .then(() => Window.init())
+    .then(() => Theme.init())
+    .then(() => Icons.init())
+    .then(() => MainUI.init())
+    .then(() => Status.init())
+    .then(() => Widgets.init())
+    .then(() => Messages.init())
+    .then(() => GlobalGlass.init())
+    .then(() => Sections.init())
+    .then(() => Pages.init())
+    .then(() => Navigation.init())
+    .then(() => Forms.init())
+    .then(function () {
+        logger.debug('QUI is ready')
+    })
 }

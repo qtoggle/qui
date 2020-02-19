@@ -92,7 +92,8 @@ export function addButton(button) {
 export function init() {
     barHTML = $('<div class="qui-menu-bar"></div>')
     menuButton = TopBar.getHTML().find('div.qui-menu-button')
-    new StockIcon({name: 'menu', variant: 'interactive'}).applyTo(menuButton.find('.qui-icon'))
+    let variant = Window.isSmallScreen() ? 'white' : 'interactive'
+    new StockIcon({name: 'menu', variant: variant}).applyTo(menuButton.find('.qui-icon'))
 
     menuButton.attr('title', gettext('Menu'))
     menuButton.on('click', function () {

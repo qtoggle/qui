@@ -6,19 +6,17 @@ import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
 import Signal     from '$qui/base/signal.js'
-import * as Theme from '$qui/theme.js'
+import Config     from '$qui/config.js'
 import * as AJAX  from '$qui/utils/ajax.js'
 import {asap}     from '$qui/utils/misc.js'
 
-
-const DEFAULT_SMALL_SCREEN_THRESHOLD = 700 /* Logical pixels */
 
 const logger = Logger.get('qui.window')
 
 let unloading = false
 let reloading = false
-let smallScreenThreshold = DEFAULT_SMALL_SCREEN_THRESHOLD
-let scalingFactor = 1
+let smallScreenThreshold = null
+let scalingFactor = null
 
 
 /**
@@ -205,7 +203,7 @@ export function setSmallScreenThreshold(threshold) {
     logger.debug(`setting small screen threshold to ${threshold} pixels`)
     smallScreenThreshold = threshold
     if (smallScreenThreshold == null) {
-        smallScreenThreshold = DEFAULT_SMALL_SCREEN_THRESHOLD
+        smallScreenThreshold = Config.defaultSmallScreenThreshold
     }
 
     evaluateScreenLayout()
@@ -329,6 +327,9 @@ export function isClosing() {
 }
 
 export function init() {
+    smallScreenThreshold = Config.defaultSmallScreenThreshold
+    scalingFactor = Config.defaultScalingFactor
+
     /* Wrap main objects in jQuery */
     $document = $(document)
     $window = $(window)
@@ -411,8 +412,6 @@ export function init() {
         handleBecomeHidden()
     }
 
-    $body.addClass('disable-transitions')
-
     asap(function () {
         /* Reset the scroll position of the body */
         $body.scrollLeft(0)
@@ -420,10 +419,5 @@ export function init() {
 
         /* Trigger an initial resize */
         $window.resize()
-
-        Theme.afterTransition(function () {
-            $body.css('opacity', '1')
-            $body.removeClass('disable-transitions')
-        })
     })
 }

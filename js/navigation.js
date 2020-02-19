@@ -138,14 +138,18 @@ function updateCurrentURL() {
     currentURLQuery = details.queryStr
 }
 
-function navigateInitial() {
+/**
+ * Navigate to initial browser path. Call this function after all sections have been registered.
+ * @returns {Promise} a promise that settles as soon as the navigation ends, being rejected in case of any error
+ */
+export function navigateInitial() {
     if (initialURLPath) {
         logger.debug(`initial navigation to ${initialURLPath}`)
-        navigate(initialURLPath)
+        return navigate(initialURLPath)
     }
     else {
         logger.debug('initial navigation to home')
-        Sections.showHome()
+        return Sections.showHome()
     }
 }
 
@@ -362,8 +366,8 @@ export function navigate(path, handleErrors = true, pageState = null) {
             sectionRedirected = true
         }
 
-        /* If we've been redirected by Section.navigate() to another section, discard the rest of the path,
-         * since it doesn't make sense anymore. */
+        /* If we've been redirected by Section.navigate() to another section, discard the rest of the path, since it
+         * doesn't make sense anymore. */
         if (sectionRedirected) {
             return
         }
@@ -545,7 +549,4 @@ export function init() {
     initialURLQuery = currentURLQuery
 
     initHistory()
-
-    /* Using asap() here allows registering sections right after init() and using them for initial navigation */
-    asap(navigateInitial)
 }

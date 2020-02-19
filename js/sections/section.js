@@ -480,6 +480,9 @@ class Section extends mix().with(SingletonMixin) {
 
         this.onReset()
 
+        /* Also re-apply button icon, as theme might have been changed */
+        this._applyIcon()
+
         return promise.then(function () {
             this._mainPage = null
             if (this.isCurrent()) {

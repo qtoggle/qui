@@ -74,11 +74,32 @@ const Config = {
     appIndexName: '',
 
     /**
-     * The current (active) theme name.
+     * The theme to be initially loaded, by default.
      * @memberof qui.config
      * @type String
      */
-    themeName: 'light',
+    defaultTheme: 'dark',
+
+    /**
+     * Flag that indicates whether effects are enabled or disabled by default when app is loaded.
+     * @memberof qui.config
+     * @type Boolean
+     */
+    defaultEffectsDisabled: false,
+
+    /**
+     * Default small screen threshold to use when app is loaded.
+     * @memberof qui.config
+     * @type Number
+     */
+    defaultSmallScreenThreshold: 700,
+
+    /**
+     * Default scaling factor to use when app is loaded.
+     * @memberof qui.config
+     * @type Number
+     */
+    defaultScalingFactor: 1,
 
     /**
      * Return a configuration item value.
