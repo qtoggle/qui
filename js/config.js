@@ -95,6 +95,13 @@ const Config = {
     defaultTheme: 'dark',
 
     /**
+     * The list of comma-separated available themes.
+     * @memberof qui.config
+     * @type String
+     */
+    themes: 'dark,light',
+
+    /**
      * Flag that indicates whether effects are enabled or disabled by default when app is loaded.
      * @memberof qui.config
      * @type Boolean

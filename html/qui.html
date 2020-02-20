@@ -15,6 +15,7 @@
             data-app-display-name="{{ display_name }}"
             data-debug="{{ debug|lower }}"
             data-navigation-base-prefix="{{ navigation_base_prefix }}"
+            data-themes="{{ themes|join(',') }}"
             {% for n, v in params.items() -%}
                 {{ n }}="{{ v }}"
             {%- endfor %}>

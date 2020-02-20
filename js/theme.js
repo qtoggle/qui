@@ -5,12 +5,15 @@
 import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
+import {gettext}         from '$qui/base/i18n.js'
 import Signal            from '$qui/base/signal.js'
 import Config            from '$qui/config.js'
 import * as Colors       from '$qui/utils/colors.js'
 import * as CSS          from '$qui/utils/css.js'
 import {asap}            from '$qui/utils/misc.js'
+import * as ObjectUtils  from '$qui/utils/object.js'
 import * as PromiseUtils from '$qui/utils/promise.js'
+import * as StringUtils  from '$qui/utils/string.js'
 import * as Window       from '$qui/window.js'
 
 
@@ -92,6 +95,17 @@ export function setCurrent(theme) {
         })
 
     })
+}
+
+/**
+ * Return the available themes.
+ * @alias qui.theme.getAvailable
+ * @returns {Object<String,String>} a dictionary with theme names as keys and display names as values
+ */
+export function getAvailable() {
+    return ObjectUtils.fromEntries(Config.themes.split(',').map(function (theme) {
+        return [theme, gettext(StringUtils.title(theme))]
+    }))
 }
 
 /**
