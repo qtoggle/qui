@@ -348,11 +348,7 @@ export function navigate(path, handleErrors = true, pageState = null) {
         }
     }
 
-    return section.whenPreloaded().then(function () {
-
-        return Sections.switchTo(section, /* source = */ 'navigate')
-
-    }).catch(function (error) {
+    return Sections.switchTo(section, /* source = */ 'navigate').catch(function (error) {
 
         logger.errorStack(`could not navigate to section "${section.getId()}"`, error)
 

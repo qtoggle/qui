@@ -167,27 +167,29 @@ export function switchTo(section, source) {
         return currentSection.whenLoaded()
     }
 
-    let oldSection = currentSection
-    let s = section.navigate([])
-    if (s !== section) {
-        logger.debug(`section "${section.getId()}" redirected to section "${s.getId()}"`)
-        return switchTo(s, source)
-    }
+    return section.whenPreloaded().then(function () {
+        let oldSection = currentSection
+        let s = section.navigate([])
+        if (s !== section) {
+            logger.debug(`section "${section.getId()}" redirected to section "${s.getId()}"`)
+            return switchTo(s, source)
+        }
 
-    currentSection = section
+        currentSection = section
 
-    if (source === undefined) {
-        source = 'program'
-    }
+        if (source === undefined) {
+            source = 'program'
+        }
 
-    logger.debug(`switching to section "${section.getId()}" (source: ${source})`)
+        logger.debug(`switching to section "${section.getId()}" (source: ${source})`)
 
-    if (oldSection) {
-        oldSection._hide()
-    }
+        if (oldSection) {
+            oldSection._hide()
+        }
 
-    return section._show(source, oldSection).then(function () {
-        Navigation.updateHistoryEntry()
+        return section._show(source, oldSection).then(function () {
+            Navigation.updateHistoryEntry()
+        })
     })
 }
 
