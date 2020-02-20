@@ -1,11 +1,11 @@
 {
     "lang": "en-US",
-    "short_name": "{{ pretty_name }}",
-    "name": "{{ pretty_name }}",
-    "description": "{{ description }}",
-    "version": "{{ version }}",
-    "theme_color": "{{ theme_color }}",
-    "background_color": "{{ background_color }}",
+    {% if display_short_name -%}"short_name": "{{ display_short_name }}",{%- endif %}
+    {% if display_name -%}"name": "{{ display_name }}",{%- endif %}
+    {% if description -%}"description": "{{ description }}",{%- endif %}
+    {% if version -%}"version": "{{ version }}",{%- endif %}
+    {% if theme_color -%}"theme_color": "{{ theme_color }}",{%- endif %}
+    {% if background_color -%}"background_color": "{{ background_color }}",{%- endif %}
     "icons": [
         {"src": "{{ static_url }}/img/launcher-icon-16.png",  "sizes": "16x16",   "type": "image/png"},
         {"src": "{{ static_url }}/img/launcher-icon-32.png",  "sizes": "32x32",   "type": "image/png"},

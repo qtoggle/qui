@@ -7,12 +7,25 @@
           theme="{{ theme }}"/>
 {%- endmacro %}
 
+{% macro main_script_file(params={}) -%}
+    <script type="module"
+            src="{{ static_url }}{% if debug %}/js/index.js{% else %}/{{ name }}-bundle.js{% endif %}"
+            data-app-name="{{ name }}"
+            data-app-version="{{ version }}"
+            data-app-display-name="{{ display_name }}"
+            data-debug="{{ debug|lower }}"
+            data-navigation-base-prefix="{{ navigation_base_prefix }}"
+            {% for n, v in params.items() -%}
+                {{ n }}="{{ v }}"
+            {%- endfor %}>
+    </script>
+{%- endmacro %}
 
 <!DOCTYPE HTML>
 
 <html lang="en">
     <head>
-        <title>{% block title %}{{ pretty_name }}{% endblock %}</title>
+        <title>{% block title %}{{ display_name }}{% endblock %}</title>
 
         <link rel="manifest">
         <link rel="icon" href="{{ static_url }}/img/launcher-icon-32.png">
@@ -88,10 +101,7 @@
         <noscript>This application requires JavaScript!</noscript>
 
         {% block script %}
-            <script type="module"
-                    src="{{ static_url }}{% if debug %}/js/index.js{% else %}/{{ name }}-bundle.js{% endif %}"
-                    data-debug="{{ debug }}"
-                    data-navigation-base-prefix="{{ navigation_base_prefix }}"></script>
+            {{ main_script_file() }}
         {% endblock %}
     </head>
     <body></body>

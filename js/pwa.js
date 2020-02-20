@@ -7,6 +7,7 @@ import Logger from '$qui/lib/logger.module.js'
 import {AssertionError}  from '$qui/base/errors.js'
 import Signal            from '$qui/base/signal.js'
 import Config            from '$qui/config.js'
+import * as Theme        from '$qui/theme.js'
 import {appendBuildHash} from '$qui/utils/misc.js'
 import URL               from '$qui/utils/url.js'
 import * as Window       from '$qui/window.js'
@@ -19,7 +20,8 @@ const MANIFEST_FILE = 'manifest.json'
 
 const logger = Logger.get('qui.pwa')
 
-let manifestURL /* undefined, by default */
+let manifestCustomURL = false
+let manifestParams = {}
 let serviceWorker = null
 let serviceWorkerUpdateCalled = false /* duplicate call protection */
 
@@ -169,7 +171,15 @@ export function sendServiceWorkerMessage(message) {
     serviceWorker.postMessage(message)
 }
 
-function setManifestURL(url = null, prettyName = null, description = null) {
+function setManifestURL({
+    url = null,
+    displayName = null,
+    displayShortName = null,
+    description = null,
+    version = null,
+    themeColor = null,
+    backgroundColor = null
+} = {}) {
     let manifest = Window.$document.find('link[rel=manifest]')
     if (!manifest.length) {
         throw new Error('Manifest link element not found')
@@ -185,16 +195,26 @@ function setManifestURL(url = null, prettyName = null, description = null) {
         url = appendBuildHash(url)
     }
 
-    if (prettyName != null || description != null) {
-        url = URL.parse(url)
-        if (prettyName != null) {
-            url.query['pretty_name'] = prettyName
-        }
-        if (description != null) {
-            url.query['description'] = description
-        }
-        url = url.toString()
+    url = URL.parse(url)
+    if (displayName != null) {
+        url.query['display_name'] = displayName
     }
+    if (displayShortName != null) {
+        url.query['display_short_name'] = displayShortName
+    }
+    if (description != null) {
+        url.query['description'] = description
+    }
+    if (version != null) {
+        url.query['version'] = version
+    }
+    if (themeColor != null) {
+        url.query['theme_color'] = themeColor
+    }
+    if (backgroundColor != null) {
+        url.query['background_color'] = backgroundColor
+    }
+    url = url.toString()
 
     manifest.attr('href', url)
 
@@ -207,15 +227,40 @@ function setManifestURL(url = null, prettyName = null, description = null) {
  * @alias qui.pwa.setupManifest
  * @param {String} [url] the URL where the manifest file lives; the current browser location path + `"/manifest.json"`
  * will be used if not specified
- * @param {String} [prettyName] an optional pretty name to append to the URL as a query argument (must be handled by the
- * template rendering engine on the server side)
+ * @param {String} [displayName] an optional display name to append to the URL as a query argument (must be handled by
+ * the template rendering engine on the server side)
+ * @param {String} [displayShortName] an optional short display name to append to the URL as a query argument (must be
+ * handled by the template rendering engine on the server side)
  * @param {String} [description] an optional description to append to the URL as a query argument (must be handled by
  * the template rendering engine on the server side)
+ * @param {String} [version] an optional version to append to the URL as a query argument (must be handled by the
+ * template rendering engine on the server side)
+ * @param {String} [themeColor] an optional theme color to append to the URL as a query argument (must be handled by the
+ * template rendering engine on the server side)
+ * @param {String} [backgroundColor] an optional background color to append to the URL as a query argument (must be
+ * handled by the template rendering engine on the server side)
  */
-export function setupManifest(url = null, prettyName = null, description = null) {
-    manifestURL = url
+export function setupManifest({
+    url = null,
+    displayName = null,
+    displayShortName = null,
+    description = null,
+    version = null,
+    themeColor = null,
+    backgroundColor = null
+} = {}) {
+    manifestCustomURL = url != null
+    manifestParams = {
+        url,
+        displayName,
+        displayShortName,
+        description,
+        version,
+        themeColor,
+        backgroundColor,
+    }
 
-    setManifestURL(url, prettyName, description)
+    setManifestURL(manifestParams)
 }
 
 /**
@@ -225,11 +270,14 @@ export function setupManifest(url = null, prettyName = null, description = null)
  * @alias qui.pwa.updateManifest
  */
 export function updateManifest() {
-    if (manifestURL !== null) {
+    if (manifestCustomURL) {
         return
     }
 
-    let prettyName = document.title
+    manifestParams.displayName = document.title
+    manifestParams.displayShortName = Config.appDisplayName
+    manifestParams.themeColor = Theme.getColor('@interactive-color')
+    manifestParams.backgroundColor = Theme.getColor('@background-color')
 
-    setManifestURL(/* url = */ null, /* prettyName = */ prettyName)
+    setManifestURL(manifestParams)
 }

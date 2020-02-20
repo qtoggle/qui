@@ -46,6 +46,20 @@ const Config = {
     appName: '',
 
     /**
+     * Application display name.
+     * @memberof qui.config
+     * @type String
+     */
+    appDisplayName: '',
+
+    /**
+     * Application version.
+     * @memberof qui.config
+     * @type String
+     */
+    appVersion: '',
+
+    /**
      * QUI static base URL.
      * @memberof qui.config
      * @type String

@@ -139,7 +139,7 @@ function initConfig() {
         appName = appName.slice(0, -7)
     }
     if (appName === 'index') { /* development mode */
-        appName = 'qui-app' // TODO deduce app name in development mode
+        appName = 'qui-app'
     }
     Config.appName = appName
 

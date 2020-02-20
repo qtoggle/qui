@@ -2,6 +2,7 @@
 import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
+import Config          from '$qui/config.js'
 import * as MenuBar    from '$qui/main-ui/menu-bar.js'
 import * as OptionsBar from '$qui/main-ui/options-bar.js'
 import * as TopBar     from '$qui/main-ui/top-bar.js'
@@ -54,11 +55,11 @@ export function update() {
     breadcrumb.addClass('last')
 
     /* Update window title */
-    let windowTitle = ''
+    let windowTitle = Config.appDisplayName
     if (currentContext.getSize()) {
         let currentPage = currentContext.getCurrentPage()
         if (currentPage.getTitle()) {
-            windowTitle = currentPage.getTitle()
+            windowTitle += ` - ${currentPage.getTitle()}`
         }
     }
 
