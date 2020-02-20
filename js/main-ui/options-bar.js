@@ -129,7 +129,8 @@ export function init() {
                 '</div>')
     barContainer = barHTML.find('div.qui-options-bar-container')
     optionsButton = TopBar.getHTML().find('div.qui-options-button')
-    new StockIcon({name: 'options', variant: 'interactive'}).applyTo(optionsButton.find('.qui-icon'))
+    let variant = Window.isSmallScreen() ? 'white' : 'interactive'
+    new StockIcon({name: 'options', variant: variant}).applyTo(optionsButton.find('.qui-icon'))
 
     optionsButton.attr('title', gettext('Options'))
     optionsButton.on('click', function () {
