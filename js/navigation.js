@@ -152,7 +152,6 @@ export function navigateInitial() {
     }
 }
 
-
 /**
  * Return the current path as an array of path ids.
  * @alias qui.navigation.getCurrentPath

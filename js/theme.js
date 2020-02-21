@@ -59,6 +59,30 @@ export function setCurrent(theme) {
     /* Fade out body during 500ms */
     Window.$body.css('opacity', '')
 
+    function isLoaded() {
+        return CSS.findRules('^br.-theme-name$').some(function (rule) {
+            let parts = rule.declaration.split(':', 2)
+            if (parts.length < 2) {
+                return
+            }
+
+            let value = parts[1].split(';')[0].trim()
+            value = value.replace(/"/g, '') /* Remove quotation marks */
+
+            return value === theme
+        })
+    }
+
+    function loadedOrLater() {
+        if (isLoaded()) {
+            return Promise.resolve()
+        }
+        else {
+            return PromiseUtils.later(100).then(() => loadedOrLater())
+        }
+    }
+
+    /* Allow 500ms for fading-out */
     return PromiseUtils.later(500).then(function () {
 
         /* Update disabled attribute of CSS link elements */
@@ -73,11 +97,7 @@ export function setCurrent(theme) {
             }
         })
 
-        /* Allow 500ms for the browser to apply the stylesheets */
-        // TODO this simply assumes that CSS is applied within 500 milliseconds
-        //      find a way to detect when new theme CSS is actually applied
-        //      P.S. onload doesn't seem to work since resources are already loaded, but disabled
-        return PromiseUtils.later(500).then(function () {
+        return loadedOrLater().then(function () {
 
             logger.debug(`theme set to ${theme}`)
 
