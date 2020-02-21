@@ -21,6 +21,7 @@ const logger = Logger.get('qui.lists.list')
  * @returns {Boolean} `true` if the item matches the condition, `false` otherwise
  */
 
+
 /**
  * A list view.
  * @alias qui.lists.List
@@ -252,8 +253,13 @@ class List extends mix().with(StructuredViewMixin) {
             promise = promise || Promise.resolve()
             promise.then(function () {
                 this.getBody().children('.qui-list-child.item').removeClass('selected')
-            }.bind(this)).catch(function () {
-                logger.debug('add rejected')
+            }.bind(this)).catch(function (e) {
+                if (e == null) {
+                    logger.debug('add rejected')
+                }
+                else {
+                    throw e
+                }
             })
 
         }.bind(this))
@@ -263,7 +269,7 @@ class List extends mix().with(StructuredViewMixin) {
 
     /**
      * Override this to define the behavior of the list when the add button is pressed.
-     * @returns {?Promise} an optional promise which, if rejected, will cancel adding
+     * @returns {?Promise} an optional promise which, if rejected with no argument, will cancel adding
      */
     onAdd() {
     }
@@ -443,7 +449,7 @@ class List extends mix().with(StructuredViewMixin) {
      * @param {Number} newIndex the new selected index (can be `-1`)
      * @param {qui.lists.ListItem} oldItem the previously selected item (can be `null`)
      * @param {Number} oldIndex the previously selected index (can be `-1`)
-     * @returns {?Promise} an optional promise which, if rejected, will cancel the selection change
+     * @returns {?Promise} an optional promise which, if rejected with no argument, will cancel the selection change
      */
     onSelectionChange(newItem, newIndex, oldItem, oldIndex) {
     }

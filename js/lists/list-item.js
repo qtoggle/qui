@@ -51,8 +51,13 @@ class ListItem extends mix().with(ViewMixin) {
             promise.then(function () {
                 this._list.getBody().children('.qui-list-child.item').removeClass('selected')
                 html.addClass('selected')
-            }.bind(this)).catch(function () {
-                logger.debug('selection change rejected')
+            }.bind(this)).catch(function (e) {
+                if (e == null) {
+                    logger.debug('selection change rejected')
+                }
+                else {
+                    throw e
+                }
             })
 
         }.bind(this))
