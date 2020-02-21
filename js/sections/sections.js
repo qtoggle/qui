@@ -75,7 +75,7 @@ function softReload() {
         })
     }
 
-    return  Promise.resolve()
+    return Promise.resolve()
 }
 
 

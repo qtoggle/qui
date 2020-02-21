@@ -82,7 +82,7 @@ class PushButtonField extends JQueryUIField {
      * @param {String} style
      */
     setStyle(style) {
-        this._widgetCall({'style': style})
+        this._widgetCall({style: style})
     }
 
     /**
@@ -90,7 +90,7 @@ class PushButtonField extends JQueryUIField {
      * @param {String} caption
      */
     setCaption(caption) {
-        this._widgetCall({'caption': caption})
+        this._widgetCall({caption: caption})
     }
 
     /**
@@ -98,7 +98,7 @@ class PushButtonField extends JQueryUIField {
      * @param {String} color
      */
     setBackgroundColor(color) {
-        this._widgetCall({'backgroundColor': color})
+        this._widgetCall({backgroundColor: color})
     }
 
     /**
@@ -106,7 +106,7 @@ class PushButtonField extends JQueryUIField {
      * @param {String} color
      */
     setBackgroundActiveColor(color) {
-        this._widgetCall({'backgroundActiveColor': color})
+        this._widgetCall({backgroundActiveColor: color})
     }
 
     /**
@@ -114,7 +114,7 @@ class PushButtonField extends JQueryUIField {
      * @param {String} color
      */
     setForegroundColor(color) {
-        this._widgetCall({'foregroundColor': color})
+        this._widgetCall({foregroundColor: color})
     }
 
 }

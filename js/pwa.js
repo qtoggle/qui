@@ -257,7 +257,7 @@ export function setupManifest({
         description,
         version,
         themeColor,
-        backgroundColor,
+        backgroundColor
     }
 
     setManifestURL(manifestParams)
