@@ -182,6 +182,7 @@ class FormField extends mix().with(ViewMixin) {
         if (this._hidden) {
             html.addClass('hidden')
             html.css('display', 'none')
+            this.getWidget().addClass('hidden')
         }
 
         /* Initial value */
@@ -566,6 +567,7 @@ class FormField extends mix().with(ViewMixin) {
         this.getHTML().css('display', '')
         asap(function () {
             this.getHTML().removeClass('hidden')
+            this.getWidget().removeClass('hidden')
         }.bind(this))
 
         if (this._form._continuousValidation) {
@@ -586,6 +588,7 @@ class FormField extends mix().with(ViewMixin) {
         this._hidden = true
 
         this.getHTML().addClass('hidden')
+        this.getWidget().addClass('hidden')
         Theme.afterTransition(function () {
             this.css('display', 'none')
         }, this.getHTML())
