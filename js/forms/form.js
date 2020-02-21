@@ -224,29 +224,6 @@ class Form extends mix().with(StructuredViewMixin) {
 
     /* Buttons */
 
-    updateButtonsState() {
-        if (this._autoDisableDefaultButton) {
-            let defaultButton = this._buttons.find(b => b.isDefault())
-            if (defaultButton) {
-                let enabled
-                if (this._continuousValidation) {
-                    enabled = this._isValid !== false
-                }
-                else {
-                    enabled = (Object.keys(this._changedFields).length > 0) ||
-                              (Object.keys(this._fieldsByName).length === 0)
-                }
-
-                if (enabled) {
-                    defaultButton.enable()
-                }
-                else {
-                    defaultButton.disable()
-                }
-            }
-        }
-    }
-
     /**
      * Add a button to the form.
      * @param {Number} index the index where the button should be added; `-1` will add the button at the end
@@ -307,6 +284,32 @@ class Form extends mix().with(StructuredViewMixin) {
     onButtonPress(button) {
     }
 
+    /**
+     * Update internal form state related to buttons.
+     */
+    updateButtonsState() {
+        if (this._autoDisableDefaultButton) {
+            let defaultButton = this._buttons.find(b => b.isDefault())
+            if (defaultButton) {
+                let enabled
+                if (this._continuousValidation) {
+                    enabled = this._isValid !== false
+                }
+                else {
+                    enabled = (Object.keys(this._changedFields).length > 0) ||
+                              (Object.keys(this._fieldsByName).length === 0)
+                }
+
+                if (enabled) {
+                    defaultButton.enable()
+                }
+                else {
+                    defaultButton.disable()
+                }
+            }
+        }
+    }
+
 
     /* Fields */
 
@@ -340,6 +343,7 @@ class Form extends mix().with(StructuredViewMixin) {
         this._clearValidationCache('')
 
         this.updateButtonsState()
+        this.updateFieldsState()
     }
 
     /**
@@ -375,6 +379,7 @@ class Form extends mix().with(StructuredViewMixin) {
         this._clearValidationCache(name)
 
         this.updateButtonsState()
+        this.updateFieldsState()
     }
 
     /**
@@ -406,6 +411,31 @@ class Form extends mix().with(StructuredViewMixin) {
      */
     getFields() {
         return this._fields.slice()
+    }
+
+    /**
+     * Update internal form state related to fields.
+     */
+    updateFieldsState() {
+        /* Update {first-last}-visible CSS classes */
+        let firstVisible = false
+        let lastVisibleIndex = -1
+        this._fields.forEach(function (field, i) {
+            let html = field.getHTML()
+            html.removeClass('first-visible last-visible')
+
+            if (!field.isHidden()) {
+                if (!firstVisible) {
+                    firstVisible = true
+                    html.addClass('first-visible')
+                }
+                lastVisibleIndex = i
+            }
+        })
+
+        if (lastVisibleIndex >= 0) {
+            this._fields[lastVisibleIndex].getHTML().addClass('last-visible')
+        }
     }
 
 
@@ -654,6 +684,7 @@ class Form extends mix().with(StructuredViewMixin) {
                 this._isValid = true
                 this.onValid(data)
                 this.updateButtonsState()
+                this.updateFieldsState()
             }
 
             if (extraErrors && Object.keys(extraErrors).length) {
@@ -696,6 +727,7 @@ class Form extends mix().with(StructuredViewMixin) {
                 this._isValid = false
                 this.onInvalid()
                 this.updateButtonsState()
+                this.updateFieldsState()
             }
 
         }.bind(this))
@@ -890,6 +922,7 @@ class Form extends mix().with(StructuredViewMixin) {
 
             this.onChange(data, name)
             this.updateButtonsState()
+            this.updateFieldsState()
 
             return
         }
@@ -1156,6 +1189,7 @@ class Form extends mix().with(StructuredViewMixin) {
                 this.setApplied()
                 this._changedFields = {}
                 this.updateButtonsState()
+                this.updateFieldsState()
 
                 if (this._closeOnApply) {
                     if (!this.isClosed()) {

@@ -575,6 +575,8 @@ class FormField extends mix().with(ViewMixin) {
             this._form._clearValidationCache(this._name)
             this._form.updateValidationState()
         }
+
+        this._form.updateFieldsState()
     }
 
     /**
@@ -598,6 +600,8 @@ class FormField extends mix().with(ViewMixin) {
             this._form._clearValidationCache(this._name)
             this._form.updateValidationState()
         }
+
+        this._form.updateFieldsState()
     }
 
 

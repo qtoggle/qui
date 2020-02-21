@@ -9,11 +9,11 @@ div.qui-form-field {
     position: relative;
 }
 
-div.qui-form-field:FIRST-CHILD {
+div.qui-form-field.first-visible {
     padding-top: 0;
 }
 
-div.qui-form-field:LAST-CHILD {
+div.qui-form-field.last-visible {
     padding-bottom: 0;
 }
 
@@ -21,7 +21,7 @@ div.qui-form-field.hidden {
     opacity: 0;
 }
 
-div.qui-form-field.separator:NOT(:FIRST-CHILD) {
+div.qui-form-field.separator:NOT(.first-visible) {
     border-top: 0.0625em solid @border-color;
     margin-top: 0.5em;
     padding-top: 0.5em;
@@ -33,7 +33,7 @@ form.qui-form.compact > div.qui-form-body {
         white-space: normal;
     }
 
-    & > div.qui-form-field.separator:NOT(:FIRST-CHILD) {
+    & > div.qui-form-field.separator:NOT(.first-visible) {
         margin-top: 0.25em;
         padding-top: 0.25em;
     }
@@ -207,7 +207,7 @@ form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-li
         width: 100%;
     }
 
-    &:LAST-CHILD > div.qui-form-field-value {
+    &.last-visible > div.qui-form-field-value {
         padding-bottom: 0;
     }
 
