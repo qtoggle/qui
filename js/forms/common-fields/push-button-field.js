@@ -77,6 +77,46 @@ class PushButtonField extends JQueryUIField {
         return null
     }
 
+    /**
+     * Update button style.
+     * @param {String} style
+     */
+    setStyle(style) {
+        this._widgetCall({'style': style})
+    }
+
+    /**
+     * Update button caption.
+     * @param {String} caption
+     */
+    setCaption(caption) {
+        this._widgetCall({'caption': caption})
+    }
+
+    /**
+     * Update background color.
+     * @param {String} color
+     */
+    setBackgroundColor(color) {
+        this._widgetCall({'backgroundColor': color})
+    }
+
+    /**
+     * Update background active color.
+     * @param {String} color
+     */
+    setBackgroundActiveColor(color) {
+        this._widgetCall({'backgroundActiveColor': color})
+    }
+
+    /**
+     * Update foreground color.
+     * @param {String} color
+     */
+    setForegroundColor(color) {
+        this._widgetCall({'foregroundColor': color})
+    }
+
 }
 
 // TODO es7 class fields
