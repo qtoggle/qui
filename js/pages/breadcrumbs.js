@@ -56,10 +56,12 @@ export function update() {
 
     /* Update window title */
     let windowTitle = Config.appDisplayName
+    let currentPageTitle = null
     if (currentContext.getSize()) {
         let currentPage = currentContext.getCurrentPage()
         if (currentPage.getTitle()) {
-            windowTitle += ` - ${currentPage.getTitle()}`
+            currentPageTitle = currentPage.getTitle()
+            windowTitle += ` - ${currentPageTitle}`
         }
     }
 
@@ -72,12 +74,7 @@ export function update() {
     menuButton.toggleClass('hidden', !menuButtonVisible)
 
     /* Update top bar title */
-    if (Window.isSmallScreen()) {
-        TopBar.setTitle(windowTitle)
-    }
-    else {
-        TopBar.setTitle(null)
-    }
+    TopBar.setTitle(currentPageTitle)
 
     /* Update document title */
     document.title = HTML.plainText(windowTitle)
