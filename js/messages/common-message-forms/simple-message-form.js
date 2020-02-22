@@ -2,7 +2,6 @@
 import {gettext}        from '$qui/base/i18n.js'
 import FormButton       from '$qui/forms/form-button.js'
 import StockIcon        from '$qui/icons/stock-icon.js'
-import * as Theme       from '$qui/theme.js'
 import {asap}           from '$qui/utils/misc.js'
 import * as ObjectUtils from '$qui/utils/object.js'
 
@@ -56,21 +55,7 @@ class SimpleMessageForm extends MessageForm {
 
         super(args)
 
-        this._color = null
-        if (variant) {
-            this._color = Theme.getColor(`@${variant}-color`)
-        }
-
         this._onClose = onClose
-    }
-
-    makeMessageBody() {
-        let body = super.makeMessageBody()
-        if (this._color) {
-            body.css('color', this._color)
-        }
-
-        return body
     }
 
     onClose() {

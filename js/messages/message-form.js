@@ -30,7 +30,7 @@ class MessageForm extends PageForm {
             modal: true,
             transparent: true,
             topless: true,
-            width: '20em',
+            width: '30em',
             valuesWidth: 100,
             title: args.message
         })
