@@ -11,7 +11,7 @@ import StickyModalPageMixin from '../sticky-modal-page.js'
  * @extends qui.messages.commonmessageforms.SimpleMessageForm
  * @mixes qui.messages.StickyModalPageMixin
  */
-class StickyConfirmMessageForm extends mix(SimpleMessageForm).with(StickyModalPageMixin) {
+class StickySimpleMessageForm extends mix(SimpleMessageForm).with(StickyModalPageMixin) {
 
     /**
      * @constructs
@@ -24,4 +24,4 @@ class StickyConfirmMessageForm extends mix(SimpleMessageForm).with(StickyModalPa
 }
 
 
-export default StickyConfirmMessageForm
+export default StickySimpleMessageForm

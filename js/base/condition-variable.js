@@ -9,6 +9,7 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
  * An asynchronous implementation of condition variables based on promises. Due to the fact that promises cannot be
  * easily extended, this class actually wraps a promise.
  * @alias qui.base.ConditionVariable
+ * @extends Promise
  */
 class ConditionVariable {
 

@@ -42,15 +42,12 @@ class SimpleMessageForm extends MessageForm {
                 break
         }
 
-        if (variant) {
-            ObjectUtils.setDefault(args, 'icon', new StockIcon({name: iconName}))
-            if (args.icon instanceof StockIcon) {
-                args.icon = args.icon.alterDefault({variant: variant})
-            }
+        if (iconName && variant && args.icon == null) {
+            args.icon = new StockIcon({name: iconName, variant: variant})
         }
 
         ObjectUtils.setDefault(args, 'buttons', [
-            new FormButton({id: 'ok', caption: buttonCaption, def: true})
+            new FormButton({id: 'ok', caption: buttonCaption, def: true, style: 'interactive'})
         ])
 
         super(args)
