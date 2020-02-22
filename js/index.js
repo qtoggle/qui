@@ -11,22 +11,24 @@ import '$qui/lib/jquery.mousewheel.js'
 import '$qui/lib/jquery.longpress.js'
 import '$qui/lib/pep.js'
 
-import Config           from '$qui/config.js'
-import * as Forms       from '$qui/forms/forms.js'
-import * as GlobalGlass from '$qui/global-glass.js'
-import * as Icons       from '$qui/icons/icons.js'
-import * as MainUI      from '$qui/main-ui/main-ui.js'
-import * as Status      from '$qui/main-ui/status.js'
-import * as Messages    from '$qui/messages/messages.js'
-import * as Navigation  from '$qui/navigation.js'
-import * as Pages       from '$qui/pages/pages.js'
-import * as Sections    from '$qui/sections/sections.js'
-import * as Theme       from '$qui/theme.js'
-import * as ArrayUtils  from '$qui/utils/array.js'
-import * as DateUtils   from '$qui/utils/date.js'
-import * as ObjectUtils from '$qui/utils/object.js'
-import * as Widgets     from '$qui/widgets/widgets.js'
-import * as Window      from '$qui/window.js'
+import {gettext}                 from '$qui/base/i18n.js'
+import Config                    from '$qui/config.js'
+import * as Forms                from '$qui/forms/forms.js'
+import * as GlobalGlass          from '$qui/global-glass.js'
+import * as Icons                from '$qui/icons/icons.js'
+import * as MainUI               from '$qui/main-ui/main-ui.js'
+import * as Status               from '$qui/main-ui/status.js'
+import {StickySimpleMessageForm} from '$qui/messages/common-message-forms.js'
+import * as Messages             from '$qui/messages/messages.js'
+import * as Navigation           from '$qui/navigation.js'
+import * as Pages                from '$qui/pages/pages.js'
+import * as Sections             from '$qui/sections/sections.js'
+import * as Theme                from '$qui/theme.js'
+import * as ArrayUtils           from '$qui/utils/array.js'
+import * as DateUtils            from '$qui/utils/date.js'
+import * as ObjectUtils          from '$qui/utils/object.js'
+import * as Widgets              from '$qui/widgets/widgets.js'
+import * as Window               from '$qui/window.js'
 
 /* Import all modules, just to make sure they are included in bundle */
 import '$qui/base/base.js'
@@ -220,8 +222,8 @@ function configureLogging() {
 
     /* Inject errorStack logger method */
     Object.getPrototypeOf(logger).errorStack = function (msg, error) {
-        this.error(`${msg}: ${error.toString()}`)
-        if (error.stack) {
+        this.error(`${msg}: ${error ? error.toString() : '(no error supplied)'}`)
+        if (error && error.stack) {
             this.error(error.stack)
         }
     }
@@ -238,6 +240,22 @@ function logCurrentConfig() {
         }
 
         logger.debug(`using Config.${key} = ${JSON.stringify(value)}`)
+    })
+}
+
+function configureGlobalErrorHandling() {
+    window.addEventListener('unhandledrejection', function (e) {
+        logger.error(`unhandled promise rejection: ${e.reason || '<unspecified reason>'}`)
+        if (e.reason != null) {
+            logger.error(e.reason)
+        }
+        logger.error(e.promise)
+
+        let msg = gettext('An unexpected error occurred.')
+        msg += '<br>'
+        msg += gettext('Application reloading is recommended.')
+        new StickySimpleMessageForm({type: 'error', message: msg}).show()
+        e.preventDefault()
     })
 }
 
@@ -267,6 +285,7 @@ export function init() {
     .then(() => Pages.init())
     .then(() => Navigation.init())
     .then(() => Forms.init())
+    .then(() => configureGlobalErrorHandling())
     .then(function () {
         logger.debug('QUI is ready')
     })
