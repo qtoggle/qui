@@ -45,7 +45,7 @@
         {% block _style %}
             <style>
                 html {
-                    background: #888888;
+                    background: #444444;
                 }
                 body {
                     opacity: 0;
@@ -98,6 +98,12 @@
             {% endfor %}
         {% endblock %}
         {% block style %}{% endblock %}
+
+        <script type="text/javascript">
+            if (localStorage) {
+                document.documentElement.style.background = localStorage.getItem('theme.background-color') || ''
+            }
+        </script>
 
         <noscript>This application requires JavaScript!</noscript>
 

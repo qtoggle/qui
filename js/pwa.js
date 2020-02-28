@@ -65,6 +65,9 @@ function handleServiceWorkerUpdate(sw, updateHandler) {
             }
         }
     }
+    else {
+        provisionServiceWorker(sw)
+    }
 }
 
 function handleServiceWorkerReady(sw) {

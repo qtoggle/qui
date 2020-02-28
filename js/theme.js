@@ -17,6 +17,8 @@ import * as StringUtils  from '$qui/utils/string.js'
 import * as Window       from '$qui/window.js'
 
 
+const STORAGE_BACKGROUND_COLOR_KEY = 'theme.background-color'
+
 const logger = Logger.get('qui.theme')
 
 let currentTheme = null
@@ -112,6 +114,8 @@ export function setCurrent(theme) {
                 Window.$body.css('opacity', '1')
             }, 500)
 
+            /* Set current background color in local storage, to be used at next app reload */
+            localStorage.setItem(STORAGE_BACKGROUND_COLOR_KEY, getVar('background-color'))
         })
 
     })
