@@ -115,7 +115,7 @@ export function setCurrent(theme) {
             }, 500)
 
             /* Set current background color in local storage, to be used at next app reload */
-            localStorage.setItem(STORAGE_BACKGROUND_COLOR_KEY, getVar('background-color'))
+            window.localStorage.setItem(STORAGE_BACKGROUND_COLOR_KEY, getVar('background-color'))
         })
 
     })
