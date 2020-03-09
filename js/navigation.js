@@ -10,7 +10,6 @@ import Config              from '$qui/config.js'
 import * as Toast          from '$qui/messages/toast.js'
 import PageMixin           from '$qui/pages/page.js'
 import {getCurrentContext} from '$qui/pages/pages.js'
-import * as PWA            from '$qui/pwa.js'
 import * as Sections       from '$qui/sections/sections.js'
 import * as StringUtils    from '$qui/utils/string.js'
 import URL                 from '$qui/utils/url.js'
@@ -502,7 +501,6 @@ export function addHistoryEntry(state = null) {
 export function updateHistoryEntry(state = null) {
     state = state || getCurrentHistoryEntryState()
     setHistoryEntry(/* addUpdate = */ 'update', state)
-    PWA.updateManifest()
 }
 
 function initHistory() {
