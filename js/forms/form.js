@@ -786,9 +786,6 @@ class Form extends mix().with(StructuredViewMixin) {
 
         this._clearValidationCache()
 
-        /* Also clear changed flags */
-        this._changedFields = {}
-
         ObjectUtils.forEach(data, function (name, value) {
 
             let field = this._fieldsByName[name]
@@ -798,7 +795,10 @@ class Form extends mix().with(StructuredViewMixin) {
 
             field.setValue(value)
 
-        }, this)
+            /* Also clear changed flags */
+            delete this._changedFields[name]
+
+        }.bind(this))
 
         if (this._continuousValidation) {
             this.updateValidationState()
@@ -811,17 +811,6 @@ class Form extends mix().with(StructuredViewMixin) {
      */
     getChangedFields() {
         return Object.keys(this._changedFields)
-    }
-
-    /**
-     * Clear the changed state of a field.
-     * @param {String} name the field name
-     */
-    markFieldUnchanged(name) {
-        delete this._changedFields[name]
-        if (this._continuousValidation) {
-            this.updateValidationState()
-        }
     }
 
     /**
