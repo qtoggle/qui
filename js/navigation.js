@@ -16,6 +16,16 @@ import URL                 from '$qui/utils/url.js'
 import * as Window         from '$qui/window.js'
 
 
+/**
+ * @alias qui.navigation.BACK_MODE_HISTORY
+ */
+const BACK_MODE_HISTORY = 'history'
+
+/**
+ * @alias qui.navigation.BACK_MODE_CLOSE
+ */
+const BACK_MODE_CLOSE = 'close'
+
 const logger = Logger.get('qui.navigation')
 
 let basePath = ''
@@ -23,6 +33,7 @@ let initialURLPath = null
 let initialURLQuery = null
 let currentURLPath = null
 let currentURLQuery = null
+let backMode = BACK_MODE_CLOSE
 
 
 /**
@@ -134,6 +145,19 @@ function updateCurrentURL() {
 
     currentURLPath = details.path.substring(basePath.length)
     currentURLQuery = details.queryStr
+}
+
+
+/**
+ * Set the function of the back button:
+ *  * {@link qui.navigation.BACK_MODE_CLOSE} makes back button close the current page (default)
+ *  * {@link qui.navigation.BACK_MODE_HISTORY} makes back button go back through history
+ * @alias qui.navigation.setBackMode
+ * @param {String} mode
+ */
+export function setBackMode(mode) {
+    backMode = mode
+    logger.debug(`back mode set to "${backMode}"`)
 }
 
 /**
@@ -520,12 +544,39 @@ function initHistory() {
             return
         }
 
-        updateCurrentURL()
-        logger.debug(`pop-state: going through history to "${currentURLPath}"`)
+        if (backMode === BACK_MODE_CLOSE) {
+            let context = getCurrentContext()
+            let currentPage = context.getCurrentPage()
 
-        navigate(currentURLPath, /* handleErrors = */ true, /* pageState = */ oe.state.pageState).catch(function () {
-            addHistoryEntry(oe.state)
-        })
+            if (context.getSize() === 1) {
+                /* A context size of 1 indicates that only current section's main page is present; instead of closing
+                 * the main page, we close the app, by going back through history for as long as we have control */
+                logger.debug('pop-state: closing app')
+
+                function goBack() {
+                    window.history.back()
+                    setTimeout(goBack, 100)
+                }
+
+                goBack()
+            }
+            else {
+                logger.debug('pop-state: closing current page')
+                currentPage.close()
+            }
+        }
+        else {
+            updateCurrentURL()
+            logger.debug(`pop-state: going through history to "${currentURLPath}"`)
+
+            navigate(
+                currentURLPath,
+                /* handleErrors = */ true,
+                /* pageState = */ oe.state.pageState
+            ).catch(function () {
+                addHistoryEntry(oe.state)
+            })
+        }
     })
 }
 
