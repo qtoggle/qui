@@ -273,14 +273,9 @@ class FormField extends mix().with(ViewMixin) {
         /* Value widget */
         let widget = this.getWidget()
 
-        widget.on('change', function () {
-            this.clearApplied()
-            this.getForm()._handleFieldChange(this)
-            this.onChange(this.getValue(), this.getForm())
-        }.bind(this))
-
-        widget.on('focus', () => this._handleFocus())
-        widget.on('blur', () => this._handleBlur())
+        widget.on('change', () => this.handleChange(this.getValue()))
+        widget.on('focus', () => this.handleFocus())
+        widget.on('blur', () => this.handleBlur())
 
         /* Add widget to value div, but only if it hasn't already been added to another container; this allows fields
          * like CompositeField to use the widget directly inside their container. */
@@ -322,6 +317,18 @@ class FormField extends mix().with(ViewMixin) {
      */
     setValue(value) {
         this.valueToWidget(value)
+    }
+
+    /**
+     * Handle change events.
+     * @param {*} value new value
+     */
+    handleChange(value) {
+        let form = this.getForm()
+
+        this.clearApplied()
+        this.onChange(value, form)
+        form._handleFieldChange(this)
     }
 
 
@@ -631,15 +638,21 @@ class FormField extends mix().with(ViewMixin) {
      * Focus the field.
      */
     focus() {
-        this.getWidget().focus() // TODO implement focus on various custom widgets
+        this.getWidget().focus()
     }
 
-    _handleFocus() {
+    /**
+     * Handle focus events.
+     */
+    handleFocus() {
         this._focused = true
         this.onFocus()
     }
 
-    _handleBlur() {
+    /**
+     * Handle blur events.
+     */
+    handleBlur() {
         this._focused = false
         this.onBlur()
     }
