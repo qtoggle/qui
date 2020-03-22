@@ -300,10 +300,9 @@ class Section extends mix().with(SingletonMixin) {
     /* Title, icon & button */
 
     _makeSectionButton() {
-        let button = $('<div class="qui-base-button qui-section-button">' +
-                           '<div class="qui-icon"></div>' +
-                           '<span class="label"></span>' +
-                       '</div>')
+        let button = $('<div></div>', {class: 'qui-base-button qui-section-button'})
+        button.append($('<div></div>', {class: 'qui-icon'}))
+        button.append($('<span></span>', {class: 'label'}))
 
         button.addClass(this._id)
         button.css('order', this._index * 10)

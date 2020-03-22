@@ -140,7 +140,7 @@ class MultiStateSpritesIcon extends Icon {
                 return
             }
 
-            let stateDiv = $(`<div class="qui-icon-${state}"></div>`)
+            let stateDiv = $('<div></div>', {class: `qui-icon-${state}`})
             /* If no existing elements, display the new element directly, w/o any effect */
             if (existingStateElements.length) {
                 stateDiv.addClass('qui-icon-hidden')
@@ -189,7 +189,7 @@ class MultiStateSpritesIcon extends Icon {
         }
 
         if (!decorationDiv && this._decoration) {
-            decorationDiv = $('<div class="qui-icon-decoration"></div>')
+            decorationDiv = $('<div></div>', {class: 'qui-icon-decoration'})
             element.prepend(decorationDiv)
         }
         else if (decorationDiv && !this._decoration) {

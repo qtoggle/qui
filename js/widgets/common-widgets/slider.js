@@ -36,19 +36,19 @@ $.widget('qui.slider', {
             this.element.attr('tabIndex', 0) /* Make the container focusable */
         }
 
-        this._labels = $('<div class="qui-slider-labels"></div>')
+        this._labels = $('<div></div>', {class: 'qui-slider-labels'})
         this.element.append(this._labels)
 
-        this._barContainer = $('<div class="qui-slider-bar-container"></div>')
+        this._barContainer = $('<div></div>', {class: 'qui-slider-bar-container'})
         this.element.append(this._barContainer)
 
-        this._bar = $('<div class="qui-slider-bar"></div>')
+        this._bar = $('<div></div>', {class: 'qui-slider-bar'})
         this._barContainer.append(this._bar)
 
-        this._cursor = $('<div class="qui-slider-cursor qui-base-button"></div>')
+        this._cursor = $('<div></div>', {class: 'qui-slider-cursor qui-base-button'})
         this._bar.append(this._cursor)
 
-        this._cursorLabel = $('<span class="qui-slider-label qui-slider-cursor-label"></span>')
+        this._cursorLabel = $('<span></span>', {class: 'qui-slider-label qui-slider-cursor-label'})
         this._labels.append(this._cursorLabel)
 
         this._temporaryShowValueHandle = null
@@ -389,7 +389,8 @@ $.widget('qui.slider', {
 
         for (let i = 0; i < this.options.ticks.length; i += this.options.ticksStep) {
             let tick = this.options.ticks[i]
-            let span = $(`<span class="qui-slider-label">${tick.label}</span>`)
+            let span = $('<span></span>', {class: 'qui-slider-label'})
+            span.text(tick.label)
             this._cursorLabel.before(span)
 
             /* Determine the position */

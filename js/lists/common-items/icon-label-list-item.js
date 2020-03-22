@@ -29,8 +29,8 @@ class IconLabelListItem extends ListItem {
     }
 
     _makeContent(icon, label) {
-        let iconElement = $('<div class="qui-icon"></div>')
-        let labelElement = $('<span class="label"></span>')
+        let iconElement = $('<div></div>', {class: 'qui-icon'})
+        let labelElement = $('<span></span>', {class: 'label'})
 
         this._applyIcon(icon, iconElement)
         this._setLabel(label, labelElement)

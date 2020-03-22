@@ -25,7 +25,7 @@ $.widget('qui.textinput', {
     _create: function () {
         this.element.addClass('text-input')
 
-        this._input = $(`<input type="${this.type}">`)
+        this._input = $('<input>', {type: this.type})
         this.element.append(this._input)
 
         if (this.options.name) {

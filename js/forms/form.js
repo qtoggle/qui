@@ -108,7 +108,7 @@ class Form extends mix().with(StructuredViewMixin) {
     /* HTML */
 
     makeHTML() {
-        return $('<form class="qui-form"></form>')
+        return $('<form></form>', {class: 'qui-form'})
     }
 
     initHTML(html) {
@@ -129,9 +129,9 @@ class Form extends mix().with(StructuredViewMixin) {
         html.addClass(`fields-alignment-${this._fieldsAlignment}`)
 
         /* Progress */
-        this._progressWidget = $('<div class="qui-form-progress-widget"></div>').progressdisk({radius: '2em'})
+        this._progressWidget = $('<div></div>', {class: 'qui-form-progress-widget'}).progressdisk({radius: '2em'})
         this._progressWidget.css('display', 'none')
-        this._glassDiv = $('<div class="qui-form-glass"></div>')
+        this._glassDiv = $('<div></div>', {class: 'qui-form-glass'})
 
         html.append(this._glassDiv)
         html.append(this._progressWidget)
@@ -192,13 +192,13 @@ class Form extends mix().with(StructuredViewMixin) {
 
     makeBody() {
         /* Body element */
-        let bodyDiv = $('<div class="qui-form-body"></div>')
+        let bodyDiv = $('<div></div>', {class: 'qui-form-body'})
 
         /* Error */
-        this._errorDiv = $('<div class="qui-form-error"></div>')
-        let errorLabel = $('<div class="qui-form-error-label"></div>')
-        let errorIcon = $('<span class="qui-form-error-icon"></span>')
-        let errorText = $('<span class="qui-form-error-text"></span>')
+        this._errorDiv = $('<div></div>', {class: 'qui-form-error'})
+        let errorLabel = $('<div></div>', {class: 'qui-form-error-label'})
+        let errorIcon = $('<span></span>', {class: 'qui-form-error-icon'})
+        let errorText = $('<span></span>', {class: 'qui-form-error-text'})
         errorLabel.append(errorIcon).append(errorText)
         this._errorDiv.append(errorLabel)
 
@@ -208,7 +208,7 @@ class Form extends mix().with(StructuredViewMixin) {
     }
 
     makeBottom() {
-        return $('<div class="qui-form-bottom"></div>')
+        return $('<div></div>', {class: 'qui-form-bottom'})
     }
 
     _updateBottom() {

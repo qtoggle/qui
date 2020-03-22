@@ -21,7 +21,7 @@ $.widget('qui.combo', {
     },
 
     _create: function () {
-        this._buttonDiv = $('<div class="qui-base-button qui-combo-button"></div>')
+        this._buttonDiv = $('<div></div>', {class: 'qui-base-button qui-combo-button'})
         this._opened = false
         this._searchStr = ''
         this._prevItemDiv = null
@@ -40,18 +40,18 @@ $.widget('qui.combo', {
 
         this.element.append(this._buttonDiv)
 
-        this._currentEntryDiv = $('<div class="qui-combo-current-label">&nbsp;</div>')
+        this._currentEntryDiv = $('<div></div>', {class: 'qui-combo-current-label'})
         this._buttonDiv.append(this._currentEntryDiv)
         this._buttonDiv.css('text-align', 'left')
 
-        this._buttonDiv.append($('<span class="qui-combo-arrow-separator"></span>'))
-        this._buttonDiv.append($('<span class="qui-combo-arrow"></span>'))
+        this._buttonDiv.append($('<span></span>', {class: 'qui-combo-arrow-separator'}))
+        this._buttonDiv.append($('<span></span>', {class: 'qui-combo-arrow'}))
 
         let searchMsg = gettext('search...')
-        this._filterInput = $(`<input type="text" class="qui-combo-filter" placeholder="${searchMsg}">`)
+        this._filterInput = $('<input>', {type: 'text', class: 'qui-combo-filter', placeholder: searchMsg})
         this._buttonDiv.after(this._filterInput)
 
-        this._itemContainer = $('<div class="qui-combo-item-container"></div>')
+        this._itemContainer = $('<div></div>', {class: 'qui-combo-item-container'})
         this._itemContainer.on('mousedown', function () {
             return false
         })
@@ -419,7 +419,7 @@ $.widget('qui.combo', {
         let choices = this._getChoices()
 
         choices.forEach(function (choice, i) {
-            let itemDiv = $('<div class="qui-combo-item"><div>')
+            let itemDiv = $('<div></div>', {class: 'qui-combo-item'})
 
             if (choice.label instanceof $) {
                 itemDiv.html(choice.label)

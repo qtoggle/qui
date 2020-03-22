@@ -50,13 +50,13 @@ class MessageForm extends PageForm {
      * @returns {jQuery}
      */
     makeMessageBody() {
-        let bodyDiv = $('<div class="qui-message-form-body"></div>')
-        let labelSpan = $('<div class="qui-message-form-label"></div>')
+        let bodyDiv = $('<div></div>', {class: 'qui-message-form-body'})
+        let labelSpan = $('<div></div>', {class: 'qui-message-form-label'})
 
         labelSpan.html(this._message)
 
         if (this._icon) {
-            let iconDiv = $('<div class="qui-icon qui-message-form-icon"></div>')
+            let iconDiv = $('<div></div>', {class: 'qui-icon qui-message-form-icon'})
             let icon = this._icon
             if (icon instanceof StockIcon) {
                 icon = icon.alterDefault({variant: 'foreground'})

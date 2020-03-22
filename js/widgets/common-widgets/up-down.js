@@ -19,11 +19,15 @@ $.widget('qui.updown', {
     },
 
     _create: function () {
-        this._input = $('<input type="text" class="qui-updown-input">')
-        this._downButton = $(`<div class="qui-base-button qui-interactive-button qui-updown-button down"
-                                   title="${gettext('decrease')}"></div>`)
-        this._upButton = $(`<div class="qui-base-button qui-interactive-button qui-updown-button up"
-                                 title="${gettext('increase')}"></div>`)
+        this._input = $('<input>', {type: 'text', class: 'qui-updown-input'})
+        this._downButton = $(
+            '<div></div>',
+            {class: 'qui-base-button qui-interactive-button qui-updown-button down', title: gettext('decrease')}
+        )
+        this._upButton = $(
+            '<div></div>',
+            {class: 'qui-base-button qui-interactive-button qui-updown-button up', title: gettext('increase')}
+        )
 
         this._curVal = this.options.min
         this._input.val(this.options.min.toFixed(this.options.decimals))

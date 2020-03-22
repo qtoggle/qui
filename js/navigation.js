@@ -213,7 +213,7 @@ export function pathToURL(path) {
 export function makeInternalAnchor(path, content) {
     let url = pathToURL(path)
 
-    let anchor = $(`<a href="${url}"></a>`)
+    let anchor = $('<a></a>', {href: url})
     anchor.html(content)
 
     anchor.on('click', function (e) {

@@ -90,7 +90,7 @@ export function addButton(button) {
 }
 
 export function init() {
-    barHTML = $('<div class="qui-menu-bar"></div>')
+    barHTML = $('<div></div>', {class: 'qui-menu-bar'})
     menuButton = TopBar.getHTML().find('div.qui-menu-button')
     let variant = Window.isSmallScreen() ? 'white' : 'interactive'
     new StockIcon({name: 'menu', variant: variant}).applyTo(menuButton.find('.qui-icon'))

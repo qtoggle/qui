@@ -86,7 +86,7 @@ export function init() {
 
     /* Create placeholders for breadcrumbs */
     ArrayUtils.range(0, MAX_BREADCRUMBS).forEach(function (i) {
-        let breadcrumb = $('<div class="qui-base-button qui-breadcrumb"></div>')
+        let breadcrumb = $('<div></div>', {class: 'qui-base-button qui-breadcrumb'})
         breadcrumb.attr('data-index', i)
         breadcrumbsContainer.append(breadcrumb)
 

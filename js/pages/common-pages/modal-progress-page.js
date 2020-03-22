@@ -35,17 +35,17 @@ class ModalProgressPage extends mix().with(PageMixin) {
     }
 
     makeHTML() {
-        let panelDiv = $('<div class="qui-modal-progress-page-panel"></div>')
-        let containerDiv = $('<div class="qui-modal-progress-page-container"></div>')
+        let panelDiv = $('<div></div>', {class: 'qui-modal-progress-page-panel'})
+        let containerDiv = $('<div></div>', {class: 'qui-modal-progress-page-container'})
         containerDiv.append(panelDiv)
 
         let progressOptions = ObjectUtils.copy(this._progressOptions)
         ObjectUtils.setDefault(progressOptions, 'radius', '2em')
-        this._progressWidget = $('<div class="qui-modal-progress-page-progress-widget"></div>')
+        this._progressWidget = $('<div></div>', {class: 'qui-modal-progress-page-progress-widget'})
         this._progressWidget.progressdisk(progressOptions)
         this._progressWidget.progressdisk('setValue', this._progressPercent)
 
-        this._messageContainer = $('<div class="qui-modal-progress-page-message"></div>')
+        this._messageContainer = $('<div></div>', {class: 'qui-modal-progress-page-message'})
         this._messageContainer.html(this._message)
         this._messageContainer.toggleClass('empty', !this._message)
 
