@@ -104,7 +104,7 @@ class FormField extends mix().with(ViewMixin) {
             throw new AssertionError('makeHTML() called before assigning to a form')
         }
 
-        let html = $('<div></div>', {class: 'qui-form-field', 'data-name': this._name})
+        let html = $('<div></div>', {'class': 'qui-form-field', 'data-name': this._name})
 
         if (this._forceOneLine) {
             html.addClass('force-one-line')
