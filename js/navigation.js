@@ -553,7 +553,7 @@ function initHistory() {
                  * the main page, we close the app, by going back through history for as long as we have control */
                 logger.debug('pop-state: closing app')
 
-                function goBack() {
+                let goBack = function () {
                     window.history.back()
                     setTimeout(goBack, 100)
                 }
