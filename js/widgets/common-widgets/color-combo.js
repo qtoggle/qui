@@ -88,9 +88,10 @@ $.widget('qui.colorcombo', $.qui.combo, {
             color = Theme.getVar(color.substring(1))
         }
 
-        let labelDiv = $('<div class="qui-color-combo-entry-label"></div>')
-        let colorDiv = $(`<div class="qui-color-combo-entry-color" style="background: ${color};"></div>`)
-        let textSpan = $(`<span class="qui-color-combo-entry-text">${text}</span>`)
+        let labelDiv = $('<div></div>', {class: 'qui-color-combo-entry-label'})
+        let colorDiv = $('<div></div>', {class: 'qui-color-combo-entry-color', style: `background: ${color};`})
+        let textSpan = $('<span></span>', {class: 'qui-color-combo-entry-text'})
+        textSpan.text(text)
 
         labelDiv.append(colorDiv).append(textSpan)
 

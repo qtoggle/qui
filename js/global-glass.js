@@ -81,9 +81,8 @@ export function addContent(content) {
 }
 
 export function init() {
-    globalGlass = $('<div class="qui-global-glass hidden">' +
-                        '<div class="qui-global-glass-container"></div>' +
-                    '</div>')
+    globalGlass = $('<div></div>', {class: 'qui-global-glass hidden'})
+    globalGlass.append($('<div></div>', {class: 'qui-global-glass-container'}))
 
     Window.$body.append(globalGlass)
 

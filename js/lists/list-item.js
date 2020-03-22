@@ -32,7 +32,7 @@ class ListItem extends mix().with(ViewMixin) {
     }
 
     makeHTML() {
-        let html = $('<div class="qui-base-button qui-list-child item"></div>')
+        let html = $('<div></div>', {class: 'qui-base-button qui-list-child item'})
 
         html.on('click', function () {
 

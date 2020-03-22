@@ -17,10 +17,9 @@ let messageContainer = null
 
 
 function initMainContainer() {
-    mainContainer = $('<div class="qui-main-container">' +
-                          '<div class="qui-pages-container"></div>' +
-                          '<div class="qui-main-container-glass"></div>' +
-                      '</div>')
+    mainContainer = $('<div></div>', {class: 'qui-main-container'})
+    mainContainer.append($('<div></div>', {class: 'qui-pages-container'}))
+    mainContainer.append($('<div></div>', {class: 'qui-main-container-glass'}))
 
     messageContainer = $('div.qui-toast-message-container')
 

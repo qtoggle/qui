@@ -197,7 +197,7 @@ export function divValue(value, operand) {
  * @returns {Number}
  */
 export function em2px(em, elem = Window.$body) {
-    let dummyDiv = $('<div style="width: 1em"></div>')
+    let dummyDiv = $('<div></div>', {style: 'width: 1em'})
     elem.append(dummyDiv)
 
     let width = dummyDiv.width() * em

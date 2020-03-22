@@ -32,7 +32,7 @@ $.widget('qui.progressdisk', {
         this._svg.appendChild(this._cursor)
 
         /* Label */
-        this._label = $('<div class="qui-progress-disk-label"></div>')
+        this._label = $('<div></div>', {class: 'qui-progress-disk-label'})
 
         this._curVal = 0
         this._setValue(this._curVal)

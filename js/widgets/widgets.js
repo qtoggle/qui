@@ -35,9 +35,9 @@ function initButtons() {
  * @returns {jQuery}
  */
 export function makeIconTextCaption(icon, text) {
-    let containerDiv = $('<div class="qui-icon-text-caption-container"></div>')
-    let iconDiv = $('<div class="qui-icon-text-caption-icon"></div>')
-    let textSpan = $('<span class="qui-icon-text-caption-text"></span>')
+    let containerDiv = $('<div></div>', {class: 'qui-icon-text-caption-container'})
+    let iconDiv = $('<div></div>', {class: 'qui-icon-text-caption-icon'})
+    let textSpan = $('<span></span>', {class: 'qui-icon-text-caption-text'})
 
     if (icon instanceof StockIcon) {
         icon = icon.alterDefault({variant: 'white', scale: 0.75})

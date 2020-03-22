@@ -119,19 +119,20 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
         }
 
         _makeTop() {
-            let topDiv = $('<div class="qui-structured-view-top"></div>')
-            let iconDiv = $('<div class="qui-structured-view-icon"></div>')
+            let topDiv = $('<div></div>', {class: 'qui-structured-view-top'})
+            let iconDiv = $('<div></div>', {class: 'qui-structured-view-icon'})
             topDiv.append(iconDiv)
 
             if (this._icon) {
                 this.prepareIcon(this._icon).applyTo(iconDiv)
             }
 
-            let titleSpan = $(`<span class="qui-structured-view-title">${this._title || ''}</span>`)
+            let titleSpan = $('<span></span>', {class: 'qui-structured-view-title'})
+            titleSpan.text(this._title || '')
             topDiv.append(titleSpan)
 
             if (this._minimizable) {
-                let minimizeIconDiv = $('<div class="qui-structured-view-minimize-button"></div>')
+                let minimizeIconDiv = $('<div></div>', {class: 'qui-structured-view-minimize-button'})
 
                 new StockIcon({
                     name: 'fat-arrow', variant: 'interactive', activeVariant: 'white', selectedVariant: 'white'
@@ -141,7 +142,7 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
             }
 
             if (this._closable && !this._minimizable) {
-                let closeIconDiv = $('<div class="qui-base-button qui-structured-view-close-button"></div>')
+                let closeIconDiv = $('<div></div>', {class: 'qui-base-button qui-structured-view-close-button'})
 
                 new StockIcon({
                     name: 'close', variant: 'interactive',

@@ -75,7 +75,7 @@ class FormButton extends mix().with(ViewMixin) {
             foregroundColor: this._foregroundColor
         }
 
-        let html = $('<div class="qui-form-button"></div>').pushbutton(attrs)
+        let html = $('<div></div>', {class: 'qui-form-button'}).pushbutton(attrs)
 
         html.on('click', function () {
             this.handlePressed(this._form)

@@ -124,9 +124,9 @@ export function setContent(content) {
 }
 
 export function init() {
-    barHTML = $('<div class="qui-options-bar">' +
-                    '<div class="qui-options-bar-container"></div>' +
-                '</div>')
+    barHTML = $('<div></div>', {class: 'qui-options-bar'})
+    barHTML.append($('<div></div>', {class: 'qui-options-bar-container'}))
+
     barContainer = barHTML.find('div.qui-options-bar-container')
     optionsButton = TopBar.getHTML().find('div.qui-options-button')
     let variant = Window.isSmallScreen() ? 'white' : 'interactive'

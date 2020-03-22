@@ -38,19 +38,22 @@ export function setTitle(title) {
 }
 
 export function init() {
-    barHTML = $('<div class="qui-top-bar">' +
-                    '<div class="qui-base-button qui-top-button qui-menu-button">' +
-                        '<div class="qui-icon"></div>' +
-                    '</div>' +
-                    '<div class="qui-breadcrumbs-container"></div>' +
-                    '<div class="qui-top-bar-title-container"></div>' +
-                    '<div class="qui-base-button qui-top-button qui-options-button hidden">' +
-                        '<div class="qui-icon"></div>' +
-                    '</div>' +
-                    '<div class="qui-base-button qui-top-button qui-status-indicator">' +
-                        '<div class="qui-icon"></div>' +
-                    '</div>' +
-                '</div>')
+    barHTML = $('<div></div>', {class: 'qui-top-bar'})
+
+    let menuButton = $('<div></div>', {class: 'qui-base-button qui-top-button qui-menu-button'})
+    menuButton.append($('<div></div>', {class: 'qui-icon'}))
+    barHTML.append(menuButton)
+
+    barHTML.append($('<div></div>', {class: 'qui-breadcrumbs-container'}))
+    barHTML.append($('<div></div>', {class: 'qui-top-bar-title-container'}))
+
+    let optionsButton = $('<div></div>', {class: 'qui-base-button qui-top-button qui-options-button hidden'})
+    optionsButton.append($('<div></div>', {class: 'qui-icon'}))
+    barHTML.append(optionsButton)
+
+    let statusIndicator = $('<div></div>', {class: 'qui-base-button qui-top-button qui-status-indicator'})
+    statusIndicator.append($('<div></div>', {class: 'qui-icon'}))
+    barHTML.append(statusIndicator)
 
     Window.$body.append(barHTML)
 }

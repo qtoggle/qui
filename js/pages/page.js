@@ -212,7 +212,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * @returns {jQuery}
          */
         makePageHTML() {
-            let html = $('<div class="qui-page"></div>')
+            let html = $('<div></div>', {class: 'qui-page'})
 
             if (this._column) {
                 html.addClass('column')

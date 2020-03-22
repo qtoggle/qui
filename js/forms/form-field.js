@@ -104,7 +104,7 @@ class FormField extends mix().with(ViewMixin) {
             throw new AssertionError('makeHTML() called before assigning to a form')
         }
 
-        let html = $(`<div class="qui-form-field" data-name="${this._name}"></div>`)
+        let html = $('<div></div>', {class: 'qui-form-field', 'data-name': this._name})
 
         if (this._forceOneLine) {
             html.addClass('force-one-line')
@@ -157,8 +157,8 @@ class FormField extends mix().with(ViewMixin) {
 
         /* Other attributes */
         if (this._unit) {
-            let unitSpan = $('<span class="qui-form-field-unit"></span>')
-            unitSpan.html(` (${this._unit})`)
+            let unitSpan = $('<span></span>', {class: 'qui-form-field-unit'})
+            unitSpan.text(` (${this._unit})`)
             html.children('div.qui-form-field-label').append(unitSpan)
         }
 
@@ -198,10 +198,10 @@ class FormField extends mix().with(ViewMixin) {
      * @returns {jQuery}
      */
     makeDescriptionHTML() {
-        let descDiv = $('<div class="qui-form-field-description"></div>')
-        let descLabel = $('<div class="qui-form-field-description-label"></div>')
-        let descIcon = $('<span class="qui-form-field-description-icon"></span>')
-        let descText = $('<span class="qui-form-field-description-text"></span>')
+        let descDiv = $('<div></div>', {class: 'qui-form-field-description'})
+        let descLabel = $('<div></div>', {class: 'qui-form-field-description-label'})
+        let descIcon = $('<span></span>', {class: 'qui-form-field-description-icon'})
+        let descText = $('<span></span>', {class: 'qui-form-field-description-text'})
 
         descLabel.append(descIcon).append(descText)
         descDiv.append(descLabel)
@@ -218,9 +218,9 @@ class FormField extends mix().with(ViewMixin) {
      * @returns {jQuery}
      */
     makeWarningHTML() {
-        let warningDiv = $('<div class="qui-form-field-warning"></div>')
-        let warningLabel = $('<div class="qui-form-field-warning-label"></div>')
-        let warningText = $('<span class="qui-form-field-warning-text"></span>')
+        let warningDiv = $('<div></div>', {class: 'qui-form-field-warning'})
+        let warningLabel = $('<div></div>', {class: 'qui-form-field-warning-label'})
+        let warningText = $('<span></span>', {class: 'qui-form-field-warning-text'})
 
         warningLabel.append(warningText)
         warningDiv.append(warningLabel)
@@ -233,9 +233,9 @@ class FormField extends mix().with(ViewMixin) {
      * @returns {jQuery}
      */
     makeErrorHTML() {
-        let errorDiv = $('<div class="qui-form-field-error"></div>')
-        let errorLabel = $('<div class="qui-form-field-error-label"></div>')
-        let errorText = $('<span class="qui-form-field-error-text"></span>')
+        let errorDiv = $('<div></div>', {class: 'qui-form-field-error'})
+        let errorLabel = $('<div></div>', {class: 'qui-form-field-error-label'})
+        let errorText = $('<span></span>', {class: 'qui-form-field-error-text'})
 
         errorLabel.append(errorText)
         errorDiv.append(errorLabel)
@@ -248,7 +248,7 @@ class FormField extends mix().with(ViewMixin) {
      * @returns {jQuery}
      */
     makeLabelHTML() {
-        let labelDiv = $('<div class="qui-form-field-label"></div>')
+        let labelDiv = $('<div></div>', {class: 'qui-form-field-label'})
         labelDiv.html(this._label)
         if (!this._label) {
             labelDiv.css('display', 'none')
@@ -268,7 +268,7 @@ class FormField extends mix().with(ViewMixin) {
      * @returns {jQuery}
      */
     makeValueHTML() {
-        let valueDiv = $('<div class="qui-form-field-value"></div>')
+        let valueDiv = $('<div></div>', {class: 'qui-form-field-value'})
 
         /* Value widget */
         let widget = this.getWidget()
@@ -291,7 +291,7 @@ class FormField extends mix().with(ViewMixin) {
      * @returns {jQuery}
      */
     makeSideIconHTML() {
-        let sideIconDiv = $('<div class="qui-base-button qui-form-field-side-icon"></div>')
+        let sideIconDiv = $('<div></div>', {class: 'qui-base-button qui-form-field-side-icon'})
 
         this._sideIcon = new StockIcon({name: 'success', scale: 0.75})
         this._sideIcon.applyTo(sideIconDiv)
@@ -447,8 +447,8 @@ class FormField extends mix().with(ViewMixin) {
         this.getHTML().children('div.qui-form-field-label').children('span.qui-form-field-unit').remove()
 
         if (unit) {
-            let unitSpan = $('<span class="qui-form-field-unit"></span>')
-            unitSpan.html(` (${this._unit})`)
+            let unitSpan = $('<span></span>', {class: 'qui-form-field-unit'})
+            unitSpan.text(` (${this._unit})`)
             this.getHTML().children('div.qui-form-field-label').append(unitSpan)
         }
     }

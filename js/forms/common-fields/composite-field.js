@@ -31,8 +31,7 @@ class CompositeField extends FormField {
     }
 
     makeWidget() {
-        let div = $('<div class="qui-composite-field-container"></div>')
-        div.addClass(`layout-${this._layout}`)
+        let div = $('<div></div>', {class: `qui-composite-field-container layout-${this._layout}`})
 
         this._fields.forEach(function (field) {
             field.getHTML()

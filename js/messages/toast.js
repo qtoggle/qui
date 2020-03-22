@@ -121,12 +121,13 @@ export function error(message) {
 
 
 export function init() {
-    toastMessageContainer = $('<div class="qui-toast-message-container">' +
-                                  '<div class="qui-toast-message-icon"></div>' +
-                                  '<div class="qui-toast-message">' +
-                                      '<span class="qui-toast-message"></span>' +
-                                  '<div class="qui-base-button qui-toast-message-close-button"></div>' +
-                              '</div>')
+    toastMessageContainer = $('<div></div>', {class: 'qui-toast-message-container'})
+    toastMessageContainer.append($('<div></div>', {class: 'qui-toast-message-icon'}))
+
+    let messageDiv = $('<div></div>', {class: 'qui-toast-message'})
+    messageDiv.append($('<span></span>', {class: 'qui-toast-message'}))
+    messageDiv.append($('<div></div>', {class: 'qui-base-button qui-toast-message-close-button'}))
+    toastMessageContainer.append(messageDiv)
 
     Window.$body.append(toastMessageContainer)
 

@@ -41,7 +41,7 @@ $.widget('qui.labels', {
             background = labelInfo.background
         }
 
-        let labelSpan = $('<span class="qui-label"></span>')
+        let labelSpan = $('<span></span>', {class: 'qui-label'})
         labelSpan.html(text)
         labelSpan.css({
             'color': color,

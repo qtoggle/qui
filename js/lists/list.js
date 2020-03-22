@@ -52,16 +52,16 @@ class List extends mix().with(StructuredViewMixin) {
     }
 
     makeHTML() {
-        return $('<div class="qui-list"></div>')
+        return $('<div></div>', {class: 'qui-list'})
     }
 
     initHTML(html) {
         super.initHTML(html)
 
         /* Progress */
-        this._progressWidget = $('<div class="qui-list-progress-widget"></div>').progressdisk({radius: '2em'})
+        this._progressWidget = $('<div></div>', {class: 'qui-list-progress-widget'}).progressdisk({radius: '2em'})
         this._progressWidget.css('display', 'none')
-        this._glassDiv = $('<div class="qui-list-glass"></div>')
+        this._glassDiv = $('<div></div>', {class: 'qui-list-glass'})
 
         html.append(this._glassDiv)
         html.append(this._progressWidget)
@@ -73,7 +73,7 @@ class List extends mix().with(StructuredViewMixin) {
     }
 
     makeBody() {
-        let bodyDiv = $('<div class="list-body"></div>')
+        let bodyDiv = $('<div></div>', {class: 'list-body'})
 
         if (this._searchEnabled) {
             this._enableSearch(bodyDiv)
@@ -241,9 +241,9 @@ class List extends mix().with(StructuredViewMixin) {
     }
 
     _makeAddElem() {
-        let addElem = $('<div class="qui-base-button qui-list-child add"></div>')
+        let addElem = $('<div></div>', {class: 'qui-base-button qui-list-child add'})
 
-        let addIcon = $('<div class="qui-icon"></div>')
+        let addIcon = $('<div></div>', {class: 'qui-icon'})
         addElem.append(addIcon)
         new StockIcon({name: 'plus', variant: 'interactive'}).applyTo(addIcon)
 
@@ -280,16 +280,16 @@ class List extends mix().with(StructuredViewMixin) {
     _makeSearchElem() {
         let list = this
 
-        let searchElem = $('<div class="qui-list-child search"></div>')
+        let searchElem = $('<div></div>', {class: 'qui-list-child search'})
 
-        let searchInput = $('<input type="text">')
+        let searchInput = $('<input>', {type: 'text'})
         searchInput.attr('placeholder', gettext('search...'))
 
-        let searchWrapper = $('<div class="qui-list-search-wrapper"></div>')
+        let searchWrapper = $('<div></div>', {class: 'qui-list-search-wrapper'})
         searchWrapper.append(searchInput)
         searchElem.append(searchWrapper)
 
-        let searchIcon = $('<div class="qui-icon"></div>')
+        let searchIcon = $('<div></div>', {class: 'qui-icon'})
         new StockIcon({
             name: 'magnifier', variant: 'interactive',
             activeName: 'magnifier', activeVariant: 'interactive',

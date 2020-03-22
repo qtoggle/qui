@@ -43,14 +43,14 @@ $.widget('qui.passwordinput', $.qui.textinput, {
     },
 
     _makeClearButton: function () {
-        let clearIcon = $('<div class="qui-icon qui-password-input-clear-icon"></div>')
+        let clearIcon = $('<div></div>', {class: 'qui-icon qui-password-input-clear-icon'})
         new StockIcon({
             name: 'close', variant: 'interactive',
             activeName: 'close', activeVariant: 'background',
             scale: 0.5
         }).applyTo(clearIcon)
 
-        let clearButton = $('<div class="qui-base-button qui-password-input-clear-button"></div>')
+        let clearButton = $('<div></div>', {class: 'qui-base-button qui-password-input-clear-button'})
         clearButton.append(clearIcon)
 
         clearButton.on('click', function () {
