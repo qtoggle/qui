@@ -17,4 +17,5 @@ export {default as ProgressDiskField}  from './common-fields/progress-disk-field
 export {default as PushButtonField}    from './common-fields/push-button-field.js'
 export {default as SliderField}        from './common-fields/slider-field.js'
 export {default as TextField}          from './common-fields/text-field.js'
+export {default as TextAreaField}      from './common-fields/text-area-field.js'
 export {default as UpDownField}        from './common-fields/up-down-field.js'
