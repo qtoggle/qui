@@ -35,11 +35,8 @@ $.widget('qui.textarea', $.qui.textinput, {
 
         switch (key) {
             case 'columns':
-                this._input.attr('cols', value || '')
-                break
-
             case 'rows':
-                this._input.attr('rows', value || '')
+                this._input.attr(key, value || '')
                 break
 
             case 'wrap':

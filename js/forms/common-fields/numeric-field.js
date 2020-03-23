@@ -11,10 +11,12 @@ class NumericField extends TextField {
 
     /**
      * @constructs
+     * @param {Number} [min] minimum value
+     * @param {Number} [max] maximum value
      * @param {...*} args parent class parameters
      */
-    constructor({...args}) {
-        super(args)
+    constructor({min = null, max = null, ...args}) {
+        super({widgetAttrs: {min, max}, ...args})
     }
 
     widgetToValue() {

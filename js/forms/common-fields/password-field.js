@@ -16,7 +16,7 @@ class PasswordField extends TextField {
      * @param {...*} args parent class parameters
      */
     constructor({clearEnabled = false, revealOnFocus = false, ...args}) {
-        super({widgetAttrs: {clearEnabled: clearEnabled, revealOnFocus: revealOnFocus}, ...args})
+        super({widgetAttrs: {clearEnabled, revealOnFocus}, ...args})
     }
 
 }
