@@ -12,16 +12,37 @@ class ProgressDiskField extends JQueryUIField {
     /**
      * @constructs
      * @param {Number|String} [radius] the disk radius (defaults to `1em`)
-     * @param {Number} [min] the minimum value (defaults to `0`)
-     * @param {Number} [max] the maximum value (defaults to `100`)
      * @param {String} [caption] the caption template displayed on top of the disk (defaults to `%s%%`)
+     * @param {String} [color] the color (defaults to `@interactive-color`)
      * @param {...*} args parent class parameters
      */
-    constructor({radius = '1em', min = 0, max = 100, caption = '%s%%', ...args}) {
-        super({widgetAttrs: {radius: radius, min: min, max: max, caption: caption}, ...args})
+    constructor({radius = '1em', caption = '%s%%', color = '@interactive-color', ...args}) {
+        super({widgetAttrs: {radius, caption, color}, ...args})
     }
 
-    // TODO add setters and getters for widget properties
+    /**
+     * Set radius.
+     * @param {String} radius
+     */
+    setRadius(radius) {
+        this._widgetCall({radius})
+    }
+
+    /**
+     * Set caption.
+     * @param {String} caption
+     */
+    setCaption(caption) {
+        this._widgetCall({caption})
+    }
+
+    /**
+     * Set color.
+     * @param {String} color
+     */
+    setColor(color) {
+        this._widgetCall({color})
+    }
 
 }
 
