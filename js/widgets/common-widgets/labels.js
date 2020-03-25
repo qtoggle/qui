@@ -31,27 +31,33 @@ $.widget('qui.labels', {
     },
 
     _makeLabel: function (labelInfo) {
-        let color = Theme.getColor(this.options.color)
-        let backgroundColor = Theme.getColor(this.options.background)
+        let labelSpan = $('<span></span>', {class: 'qui-label'})
+
+        let defColor = Theme.getColor(this.options.color)
+        let defBackground = Theme.getColor(this.options.background)
+
+        let color = defColor
+        let background = defBackground
 
         let text = labelInfo
-        let background = null
-        if (typeof text !== 'string') {
+        if (typeof labelInfo !== 'string') {
             text = labelInfo.text
-            background = labelInfo.background
+            if (labelInfo.color) {
+                color = labelInfo.color
+                labelSpan.data('custom-color', true)
+            }
+            if (labelInfo.background) {
+                background = labelInfo.background
+                labelSpan.data('custom-background', true)
+            }
         }
 
-        let labelSpan = $('<span></span>', {class: 'qui-label'})
         labelSpan.html(text)
         labelSpan.css({
             'color': color,
-            'background': background || backgroundColor,
-            'border-color': background || backgroundColor
+            'background': background,
+            'border-color': background
         })
-
-        if (background) {
-            labelSpan.data('custom-background', true)
-        }
 
         if (this.options.clickable) {
             labelSpan.addClass('qui-base-button')
@@ -88,7 +94,11 @@ $.widget('qui.labels', {
 
         switch (key) {
             case 'color':
-                this.element.children('span.qui-label').css('color', value)
+                this._labels.forEach(function (label) {
+                    if (!label.data('custom-background')) {
+                        label.css('color', value)
+                    }
+                })
                 break
 
             case 'background':

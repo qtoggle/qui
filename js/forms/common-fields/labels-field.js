@@ -3,8 +3,8 @@ import JQueryUIField from './jquery-ui-field.js'
 
 
 /**
- * A field backed by colored labels. The value data type is `String[]` (a list of labels) or `Object` (a dictionary with
- * labels as keys and background colors as values).
+ * A field backed by colored labels. The value data type is `String[]` (a list of labels) or `Object[]` (a list of
+ * objects with `text`, `color` and `background` fields).
  * @alias qui.forms.commonfields.LabelsField
  * @extends qui.forms.commonfields.JQueryUIField
  */
