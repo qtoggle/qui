@@ -21,9 +21,9 @@ export class ValidationError extends Error {
 
     /**
      * @constructs
-     * @param {String} message the error message to be displayed to the user
+     * @param {String} [message] the error message to be displayed to the user
      */
-    constructor(message) {
+    constructor(message = null) {
         super(message)
     }
 
