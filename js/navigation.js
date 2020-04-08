@@ -150,8 +150,8 @@ function updateCurrentURL() {
 
 /**
  * Set the function of the back button:
- *  * {@link qui.navigation.BACK_MODE_CLOSE} makes back button close the current page (default)
- *  * {@link qui.navigation.BACK_MODE_HISTORY} makes back button go back through history
+ *  * {@link qui.navigation.BACK_MODE_CLOSE} makes back button close the current page (default on small screens)
+ *  * {@link qui.navigation.BACK_MODE_HISTORY} makes back button go back through history (default on large screens)
  * @alias qui.navigation.setBackMode
  * @param {String} mode
  */
@@ -585,6 +585,11 @@ export function init() {
     /* Deduce base path from base URL */
     if (Config.navigationBasePrefix) {
         basePath = URL.parse(Config.navigationBasePrefix).path
+    }
+
+    /* On desktop, use the browser history when going back, by default */
+    if (!Window.isSmallScreen()) {
+        backMode = BACK_MODE_HISTORY
     }
 
     updateCurrentURL()
