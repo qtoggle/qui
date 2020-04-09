@@ -517,7 +517,11 @@ $.widget('qui.combo', {
         return false
     },
 
-    _selectItemDiv: function (itemDiv, scroll) {
+    _selectItemDiv: function (itemDiv, scroll = false) {
+        if (itemDiv && itemDiv.hasClass('selected')) {
+            return /* Already selected */
+        }
+
         this._itemContainer.children('div.qui-combo-item.selected').removeClass('selected')
 
         if (itemDiv) {
