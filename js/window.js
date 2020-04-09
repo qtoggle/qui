@@ -173,8 +173,8 @@ function evaluateScreenLayout() {
  * @returns {Boolean}
  */
 export function isSmallScreen() {
-    let width = $window.width()
-    let height = $window.height()
+    let width = document.documentElement.clientWidth
+    let height = document.documentElement.clientHeight
 
     return Math.min(width, height) <= smallScreenThreshold * scalingFactor
 }
@@ -215,7 +215,10 @@ export function setSmallScreenThreshold(threshold) {
  * @returns {Boolean}
  */
 export function isLandscape() {
-    return $window.width() >= $window.height()
+    let width = document.documentElement.clientWidth
+    let height = document.documentElement.clientHeight
+
+    return width >= height
 }
 
 /**
@@ -256,7 +259,7 @@ export function setScalingFactor(factor) {
  * @returns {Number}
  */
 export function getWidth() {
-    return $window.width() / scalingFactor
+    return document.documentElement.clientWidth / scalingFactor
 }
 
 /**
@@ -265,7 +268,7 @@ export function getWidth() {
  * @returns {Number}
  */
 export function getHeight() {
-    return $window.height() / scalingFactor
+    return document.documentElement.clientHeight / scalingFactor
 }
 
 
@@ -337,8 +340,8 @@ export function init() {
 
     /* Window resize handling */
     $window.on('resize', function () {
-        let width = $window.width() / scalingFactor
-        let height = $window.height() / scalingFactor
+        let width = getWidth()
+        let height = getHeight()
 
         resizeSignal.emit(width, height)
         evaluateScreenLayout()
