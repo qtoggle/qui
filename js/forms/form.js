@@ -82,6 +82,7 @@ class Form extends mix().with(StructuredViewMixin) {
         /* Last known validity state */
         this._isValid = null
         this._validationCache = {}
+        this._updateValidationStateASAPHandle = null
 
         /* Tells whether a field has been changed or not, since the last setData() or ever */
         this._changedFields = {}
@@ -673,7 +674,7 @@ class Form extends mix().with(StructuredViewMixin) {
      * @returns {Promise<Object>} a promise that is resolved with form data, if the form is valid (the promise is never
      * rejected)
      */
-    updateValidationState(extraErrors) {
+    updateValidationState(extraErrors = null) {
         let hasExtraErrorsSentinel = new Error()
 
         return this._validateData().then(function (data) {
@@ -729,6 +730,22 @@ class Form extends mix().with(StructuredViewMixin) {
                 this.updateButtonsState()
                 this.updateFieldsState()
             }
+
+        }.bind(this))
+    }
+
+    /**
+     * Calls {@link qui.forms.Form#updateValidationState} asap, preventing multiple unnecessary successive calls.
+     */
+    updateValidationStateASAP() {
+        if (this._updateValidationStateASAPHandle) {
+            clearTimeout(this._updateValidationStateASAPHandle)
+        }
+
+        this._updateValidationStateASAPHandle = asap(function () {
+
+            this._updateValidationStateASAPHandle = null
+            this.updateValidationState()
 
         }.bind(this))
     }

@@ -590,7 +590,7 @@ class FormField extends mix().with(ViewMixin) {
         if (this._form._continuousValidation) {
             /* We need to revalidate the form upon field show, since hidden fields are considered always valid */
             this._form._clearValidationCache(this._name)
-            this._form.updateValidationState()
+            this._form.updateValidationStateASAP()
         }
 
         this._form.updateFieldsState()
@@ -615,7 +615,7 @@ class FormField extends mix().with(ViewMixin) {
         if (this._form._continuousValidation) {
             /* We need to revalidate the form upon field hide, since hidden fields are considered always valid */
             this._form._clearValidationCache(this._name)
-            this._form.updateValidationState()
+            this._form.updateValidationStateASAP()
         }
 
         this._form.updateFieldsState()
