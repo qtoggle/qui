@@ -8,6 +8,9 @@
 /* eslint-disable no-multi-spaces */
 
 
+let cachedColorsRGBAByName = {}
+
+
 /**
  * Convert a tuple of (*hue*, *saturation*, *value*) components into (*red*, *green*, *blue*) equivalent.
  *
@@ -159,6 +162,11 @@ export function str2rgba(strColor) {
         }
     }
     else { /* A color name */
+        let colorRGBA = cachedColorsRGBAByName[strColor]
+        if (colorRGBA) {
+            return colorRGBA
+        }
+
         let div = document.createElement('div')
         div.style.display = 'none'
         div.style.color = strColor
@@ -169,6 +177,7 @@ export function str2rgba(strColor) {
 
         document.body.removeChild(div)
 
+        cachedColorsRGBAByName[strColor] = result
         return result
     }
 
