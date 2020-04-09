@@ -10,6 +10,7 @@ import * as Window from '$qui/window.js'
 const CSS_VALUE_RE = new RegExp('([\\d.]+)(.*)')
 
 let customStyleElement = null
+let cachedBodyEmPx = null
 
 
 function getCustomStyleElement() {
@@ -197,11 +198,19 @@ export function divValue(value, operand) {
  * @returns {Number}
  */
 export function em2px(em, elem = Window.$body) {
+    if (elem === Window.$body && cachedBodyEmPx != null) {
+        return cachedBodyEmPx
+    }
+
     let dummyDiv = $('<div></div>', {style: 'width: 1em'})
     elem.append(dummyDiv)
 
-    let width = dummyDiv.width() * em
+    let width = dummyDiv[0].clientWidth * em
     dummyDiv.remove()
+
+    if (elem === Window.$body) {
+        cachedBodyEmPx = width
+    }
 
     return width
 }
