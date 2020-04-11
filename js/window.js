@@ -17,6 +17,9 @@ let unloading = false
 let reloading = false
 let smallScreenThreshold = null
 let scalingFactor = null
+let lastBecomeHiddenTime = 0
+let lastBecomeVisibleTime = 0
+let appVisible = false
 
 
 /**
@@ -275,13 +278,31 @@ export function getHeight() {
 /* Visibility */
 
 function handleBecomeVisible() {
+    let now = new Date().getTime()
+    if (now - lastBecomeVisibleTime < 1000) {
+        return /* Skip successive events as they probably indicate the same action coming from different sources */
+    }
+
+    lastBecomeVisibleTime = now
+
     $body.addClass('visible')
     logger.debug('application is visible')
+    appVisible = true
+    visibilityChangeSignal.emit(true)
 }
 
 function handleBecomeHidden() {
+    let now = new Date().getTime()
+    if (now - lastBecomeHiddenTime < 1000) {
+        return /* Skip successive events as they probably indicate the same action coming from different sources */
+    }
+
+    lastBecomeHiddenTime = now
+
     $body.removeClass('visible')
     logger.debug('application is hidden')
+    appVisible = false
+    visibilityChangeSignal.emit(false)
 }
 
 /**
@@ -290,7 +311,7 @@ function handleBecomeHidden() {
  * @returns {Boolean}
  */
 export function isVisible() {
-    return !document.hidden
+    return appVisible
 }
 
 
@@ -398,17 +419,17 @@ export function init() {
 
     /* Visibility handling */
     $document.on('visibilitychange', function () {
-        if (this.hidden) {
-            handleBecomeHidden()
-        }
-        else {
+        if (this.visibilityState === 'visible') {
             handleBecomeVisible()
         }
-
-        visibilityChangeSignal.emit(!this.hidden)
+        else {
+            handleBecomeHidden()
+        }
     })
+    $window.on('pageshow focus', () => handleBecomeVisible())
+    $window.on('pagehide blur', () => handleBecomeHidden())
 
-    if (isVisible()) {
+    if (document.visibilityState === 'visible') {
         handleBecomeVisible()
     }
     else {
