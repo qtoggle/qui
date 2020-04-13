@@ -18,7 +18,7 @@ class TextField extends JQueryUIField {
      * @param {Boolean} [autocomplete] enables or disables field autocomplete (enabled by default)
      * @param {?Number} [minLength] minimum required text length
      * @param {?Number} [maxLength] maximum allowed text length
-     * @param {?String} [pattern] a regular expression used to validate the value
+     * @param {?String|RegExp} [pattern] a regular expression used to validate the value
      * @param {Boolean} [continuousChange] set to `false` to prevent triggering change events at each key stroke
      * @param {Object} [widgetAttrs] extra attributes to pass to underlying JQueryUI widget
      * @param {...*} args parent class parameters
@@ -45,6 +45,10 @@ class TextField extends JQueryUIField {
 
         super({widgetAttrs: widgetAttrs, ...args})
 
+        if (typeof pattern === 'string') {
+            pattern = new RegExp(pattern)
+        }
+
         this._pattern = pattern
     }
 
@@ -60,7 +64,7 @@ class TextField extends JQueryUIField {
 
         /* Apply pattern validation, if supplied */
         if (this._pattern) {
-            let match = value.match(new RegExp(this._pattern))
+            let match = value.match(this._pattern)
             if (match == null) {
                 return gettext('Value does not match required pattern.')
             }

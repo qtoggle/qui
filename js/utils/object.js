@@ -201,16 +201,17 @@ export function combine(...objs) {
  */
 export function copy(orig, deep = false) {
     if (deep) {
+        let type = typeof orig
         if (orig === undefined || orig === null ||
-            typeof orig === 'number' || typeof orig === 'string' ||
-            typeof orig === 'boolean' || typeof orig === 'function') {
+            type === 'number' || type === 'string' ||
+            type === 'boolean' || type === 'function') {
 
             return orig
         }
         else if (Array.isArray(orig)) {
             return orig.map(e => copy(e, /* deep = */ true))
         }
-        else if (orig instanceof Object) {
+        else if (orig.constructor === Object) { /* Plain object */
             return map(orig, (k, v) => [k, copy(v, /* deep = */ true)])
         }
         else {
