@@ -181,9 +181,12 @@ function initConfig() {
         Config.appStaticURL = Config.appStaticURL.split('/').slice(0, -1).join('/')
     }
 
-    /* Use build hash supplied by webpack at build time */
+    /* Use details supplied by webpack at build time */
     if (window.__quiBuildHash) {
         Config.buildHash = window.__quiBuildHash
+    }
+    if (window.__quiAppVersion) {
+        Config.appCurrentVersion = window.__quiAppVersion
     }
 
     /* Export Config to global scope  */

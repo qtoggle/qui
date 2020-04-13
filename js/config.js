@@ -53,11 +53,18 @@ const Config = {
     appDisplayName: '',
 
     /**
-     * Application version.
+     * Latest application version, indicated by the server.
      * @memberof qui.config
      * @type String
      */
-    appVersion: '',
+    appLatestVersion: '',
+
+    /**
+     * Current application version, indicated by the frontend.
+     * @memberof qui.config
+     * @type String
+     */
+    appCurrentVersion: 'unknown-version',
 
     /**
      * QUI static base URL.

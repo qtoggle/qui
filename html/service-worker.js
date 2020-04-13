@@ -6,6 +6,7 @@
 
 const MESSAGE_ACTIVATE = 'qui-activate'
 const DEF_APP_NAME = 'qui-app'
+const DEF_APP_VERSION = 'unknown-version'
 const DEF_BUILD_HASH = 'dev'
 const DEF_CACHE_URL_REGEX = '.*\\.(svg|png|gif|jpg|jpe?g|ico|woff|html|json|js|css)$'
 const DEF_NO_CACHE_URL_REGEX = ('(\\?h=dev)|(&h=dev)')
@@ -14,6 +15,7 @@ const DEF_NO_CACHE_URL_REGEX = ('(\\?h=dev)|(&h=dev)')
 let cacheName
 let devMode = false
 let appName = '__app_name_placeholder__'
+let appVersion = '__app_version_placeholder__'
 let buildHash = '__build_hash_placeholder__'
 let cacheURLRegex = '__cache_url_regex_placeholder__'
 let noCacheURLRegex = '__no_cache_url_regex_placeholder__'
@@ -23,6 +25,9 @@ function setup() {
     /* If webpack did not replace the placeholder... */
     if (appName.startsWith('__app_name_')) {
         appName = DEF_APP_NAME
+    }
+    if (appName.startsWith('__app_version_')) {
+        appVersion = DEF_APP_VERSION
     }
     if (buildHash.startsWith('__build_hash_')) {
         buildHash = DEF_BUILD_HASH

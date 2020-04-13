@@ -11,7 +11,7 @@
     <script type="module"
             src="{{ static_url }}{% if debug %}/js/index.js{% else %}/{{ name }}-bundle.js{% endif %}"
             data-app-name="{{ name }}"
-            data-app-version="{{ version }}"
+            data-app-latest-version="{{ version }}"
             data-app-display-name="{{ display_name }}"
             data-debug="{{ debug|lower }}"
             data-navigation-base-prefix="{{ navigation_base_prefix }}"

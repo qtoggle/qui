@@ -29,15 +29,13 @@ jobs:
     steps:
       - name: Source Code Checkout
         uses: actions/checkout@v1
-      - name: Parse Ref
-        id: parse_ref
-        run: |
-          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
-          echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
-          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
-          echo ::set-output name=SOURCE_VERSION::${GITHUB_REF#refs/tags/version-}
+      - name: Extract version from tag
+        id: tagName
+        uses: olegtarasov/get-tag@v2
+        with:
+          tagRegex: "version-(.*)"
       - name: Update Source Version
-        run: sed -i "s/unknown-version/${{ steps.parse_ref.outputs.SOURCE_VERSION }}/" package.json
+        run: sed -i "s/unknown-version/${{ steps.tagName.outputs.tag }}/" package.json
       - name: Install
         run: |
           npm install && rm -rf docs/* js/lib/* && npx jsdoc -c jsdoc.conf.json
@@ -48,24 +46,22 @@ jobs:
           BRANCH: gh-pages
           FOLDER: docs
   publish:
-    name: Publish to NPM
+    name: Publish to npm
     runs-on: ubuntu-latest
     needs:
       - lint
       - jsdoc
     steps:
-      - name: Source Code Checkout
+      - name: Source code checkout
         uses: actions/checkout@v1
-      - name: Parse Ref
-        id: parse_ref
-        run: |
-          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
-          echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
-          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
-          echo ::set-output name=SOURCE_VERSION::${GITHUB_REF#refs/tags/version-}
+      - name: Extract version from tag
+        id: tagName
+        uses: olegtarasov/get-tag@v2
+        with:
+          tagRegex: "version-(.*)"
       - name: Update Source Version
-        run: sed -i "s/unknown-version/${{ steps.parse_ref.outputs.SOURCE_VERSION }}/" package.json
-      - name: NPM Publish
+        run: sed -i "s/unknown-version/${{ steps.tagName.outputs.tag }}/" package.json
+      - name: Publish to npm
         run: |
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
           npm publish

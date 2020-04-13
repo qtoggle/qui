@@ -232,6 +232,9 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
         shellCommands.push(makeLauncherIconsCmd(appFullPath, distFullPath))
     }
 
+    let packageJSON = require(path.resolve(appFullPath, 'package.json'))
+    let appVersion = packageJSON.version
+
     return {
         entry: entries,
         resolve: {
@@ -258,7 +261,8 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
                 makeStaticCopyRule(FONT_REGEX, FONT_DIR),
                 makeStaticCopyRule(HTML_REGEX, HTML_DIR, [
                     ['__build_hash_placeholder__', quiBuildHash],
-                    ['__app_name_placeholder__', appName]
+                    ['__app_name_placeholder__', appName],
+                    ['__app_version_placeholder__', appVersion]
                 ])
             ]
         },
@@ -266,7 +270,8 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
             new MiniCssExtractPlugin(),
             new InjectPlugin(
                 function () {
-                    return `window.__quiBuildHash='${quiBuildHash}'`
+                    return (`window.__quiBuildHash='${quiBuildHash}';` +
+                            `window.__quiAppVersion='${appVersion}';`)
                 },
                 {
                     entryName: mainEntryName,
