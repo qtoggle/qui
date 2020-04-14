@@ -186,9 +186,33 @@ class Section extends mix().with(SingletonMixin) {
     }
 
     /**
+     * Handle the event of section becoming visible.
+     * @param {String} source (see {@link qui.sections.Section#onShow})
+     * @param {?qui.sections.Section} prevSection the previous section
+     */
+    handleShow(source, prevSection) {
+        /* Inform all pages of event */
+        let context = this.getPagesContext()
+        context.getPages().forEach(page => page.handleSectionShow())
+
+        this.onShow(source, prevSection)
+    }
+
+    /**
      * Called whenever the section is hidden.
      */
     onHide() {
+    }
+
+    /**
+     * Handle the event of section becoming hidden.
+     */
+    handleHide() {
+        /* Inform all pages of event */
+        let context = this.getPagesContext()
+        context.getPages().forEach(page => page.handleSectionHide())
+
+        this.onHide()
     }
 
     /**
@@ -249,7 +273,7 @@ class Section extends mix().with(SingletonMixin) {
         }
 
         this._button.addClass('selected')
-        this.onShow(source, prevSection)
+        this.handleShow(source, prevSection)
 
         return this.whenLoaded().then(function () {
 
@@ -261,7 +285,7 @@ class Section extends mix().with(SingletonMixin) {
 
     _hide() {
         this.logger.debug('hiding section')
-        this.onHide()
+        this.handleHide()
 
         this._savedPagesContext = getCurrentContext()
         this._button.removeClass('selected')

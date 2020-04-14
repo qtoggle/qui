@@ -623,6 +623,34 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
         }
 
         /**
+         * Called when the section to which page belongs is shown.
+         */
+        onSectionShow() {
+
+        }
+
+        /**
+         * Handle the event of owning section becoming visible.
+         */
+        handleSectionShow() {
+            this.onSectionShow()
+        }
+
+        /**
+         * Called when the section to which page belongs is hidden.
+         */
+        onSectionHide() {
+
+        }
+
+        /**
+         * Handle the event of owning section becoming hidden.
+         */
+        handleSectionHide() {
+            this.onSectionHide()
+        }
+
+        /**
          * Override this method to enable the options bar for this page.
          * @returns {?jQuery|qui.views.ViewMixin}
          */
