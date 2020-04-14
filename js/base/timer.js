@@ -14,11 +14,13 @@ class Timer {
     /**
      * @constructs
      * @param {Number} [defaultTimeout] a default timeout, in milliseconds
-     * @param {Function} [onTimeout] am optional timeout callback
+     * @param {Function} [onTimeout] an optional timeout callback
+     * @param {Boolean} [repeat] set to `true` to automatically restart timer on timeout
      */
-    constructor(defaultTimeout = null, onTimeout = null) {
+    constructor(defaultTimeout = null, onTimeout = null, repeat = false) {
         this._defaultTimeout = defaultTimeout
         this._onTimeout = onTimeout
+        this._repeat = repeat
 
         this._cancelled = false
         this._startedTime = null
@@ -47,6 +49,9 @@ class Timer {
 
         this._timeoutHandle = setTimeout(function () {
             this._timeoutHandle = null
+            if (this._repeat) {
+                this.start(timeout)
+            }
             if (this._onTimeout) {
                 this._onTimeout()
             }
