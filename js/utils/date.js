@@ -56,6 +56,10 @@ const WEEK_DAY_NAMES = [
  * @returns {String} the formatted date
  */
 export function formatPercent(date, format, trans = true) {
+    if (!date || isNaN(date.getTime())) {
+        return ''
+    }
+
     let weekDay = date.getDay()
     let monthDay = date.getDate()
     let month = date.getMonth()
