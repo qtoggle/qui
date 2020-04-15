@@ -1032,6 +1032,12 @@ class Form extends mix().with(StructuredViewMixin) {
             this._errorDiv.find('span.qui-form-error-text').html(message)
             this.getHTML().addClass('has-error')
         }
+
+        this._errorDiv[0].scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest'
+        })
     }
 
     hideError() {
