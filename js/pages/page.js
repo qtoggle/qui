@@ -390,7 +390,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                 return false
             }
 
-            if (this._context.getPages().indexOf(this) < 0) {
+            if (!this._context.getPages().includes(this)) {
                 return false /* Not part of current context */
             }
 

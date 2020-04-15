@@ -385,7 +385,7 @@ export function init() {
 
         /* Give a chance to any pending requests to complete */
         let writePendingRequests = AJAX.getPendingRequests()
-                                   .filter(r => ['POST', 'PUT', 'PATCH', 'DELETE'].indexOf(r.details.method) >= 0)
+                                   .filter(r => ['POST', 'PUT', 'PATCH', 'DELETE'].includes(r.details.method))
 
         if (writePendingRequests.length > 0) {
             logger.warn(`application unload: there are ${writePendingRequests.length} write pending ajax requests`)

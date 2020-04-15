@@ -183,7 +183,7 @@ export function fromUTF8(s) {
  */
 export function intelliSearch(s, search) {
     let rexStr = Array.prototype.map.call(search, function (c) {
-        return `${(REGEX_ESCAPE_CHARS.indexOf(c) >= 0 ? '\\' : '')}${c}.*`
+        return `${REGEX_ESCAPE_CHARS.includes(c) ? '\\' : ''}${c}.*`
     }).join('')
 
     let rex = new RegExp(rexStr, 'i')
