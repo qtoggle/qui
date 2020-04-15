@@ -937,7 +937,7 @@ class Form extends mix().with(StructuredViewMixin) {
                 field.setProgress()
                 whenApplied.then(function () {
                     field.setApplied()
-                }.bind(this))
+                })
 
                 return whenApplied
             }
