@@ -85,7 +85,6 @@ class Form extends mix().with(StructuredViewMixin) {
         this._updateValidationStateASAPHandle = null
 
         /* Tells whether a field has been changed or not, since the last setData() or ever */
-        this._changedFields = {}
         this._fieldsByName = {}
 
         this._glassDiv = null // TODO generalize glass div & progress into a mixin
@@ -297,8 +296,8 @@ class Form extends mix().with(StructuredViewMixin) {
                     enabled = this._isValid !== false
                 }
                 else {
-                    enabled = (Object.keys(this._changedFields).length > 0) ||
-                              (Object.keys(this._fieldsByName).length === 0)
+                    enabled = (this.getChangedFieldNames().length > 0) ||
+                              (this._fields.length === 0)
                 }
 
                 if (enabled) {
@@ -710,14 +709,14 @@ class Form extends mix().with(StructuredViewMixin) {
             ObjectUtils.forEach(errors, function (name, error) {
 
                 /* Do not show error messages for unchanged fields */
-                if (name && !this._changedFields[name]) {
+                if (name && !this._fields[name].isChanged()) {
                     errors[name] = ''
                 }
 
             }, this)
 
             /* Do not show form error unless at least one field has been changed */
-            if (Object.keys(this._changedFields).length === 0) {
+            if (this.getChangedFieldNames().length === 0) {
                 delete errors['']
             }
 
@@ -812,9 +811,6 @@ class Form extends mix().with(StructuredViewMixin) {
 
             field.setValue(value)
 
-            /* Also clear changed flags */
-            delete this._changedFields[name]
-
         }.bind(this))
 
         if (this._continuousValidation) {
@@ -826,8 +822,8 @@ class Form extends mix().with(StructuredViewMixin) {
      * Return the names of the fields whose values have been changed.
      * @returns {String[]}
      */
-    getChangedFields() {
-        return Object.keys(this._changedFields)
+    getChangedFieldNames() {
+        return this._fields.filter(f => f.isChanged()).map(f => f.getName())
     }
 
     /**
@@ -916,9 +912,6 @@ class Form extends mix().with(StructuredViewMixin) {
     _handleFieldChange(field) {
         let name = field.getName()
 
-        /* Set field changed flag */
-        this._changedFields[name] = true
-
         /* If continuous validation is disabled, simply call onChange with corresponding arguments and return */
         if (!this._continuousValidation) {
             /* Gather raw (unvalidated) form data */
@@ -944,7 +937,6 @@ class Form extends mix().with(StructuredViewMixin) {
                 field.setProgress()
                 whenApplied.then(function () {
                     field.setApplied()
-                    delete this._changedFields[name]
                 }.bind(this))
 
                 return whenApplied
@@ -1193,7 +1185,7 @@ class Form extends mix().with(StructuredViewMixin) {
             whenApplied.then(function () {
 
                 this.setApplied()
-                this._changedFields = {}
+                this._fields.forEach(f => f.clearChanged())
                 this.updateButtonsState()
                 this.updateFieldsState()
 

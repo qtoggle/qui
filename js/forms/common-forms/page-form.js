@@ -45,7 +45,7 @@ class PageForm extends mix(Form).with(PageMixin) {
             return super.canClose()
         }
 
-        let changedFields = this.getChangedFields()
+        let changedFields = this.getChangedFieldNames()
         if (!changedFields.length) {
             return super.canClose()
         }
@@ -101,7 +101,7 @@ class PageForm extends mix(Form).with(PageMixin) {
             let pages = context.getPages()
             let pageForms = pages.filter(p => p instanceof PageForm)
 
-            if (pageForms.some(f => f.getChangedFields().length > 0 && f._preventUnappliedClose)) {
+            if (pageForms.some(f => f.getChangedFieldNames().length > 0 && f._preventUnappliedClose)) {
                 return false
             }
         })

@@ -98,6 +98,7 @@ class FormField extends mix().with(ViewMixin) {
         this._sideIconDiv = null
         this._focused = false
         this._origValue = null
+        this._changed = false
     }
 
     makeHTML() {
@@ -317,6 +318,7 @@ class FormField extends mix().with(ViewMixin) {
      */
     setValue(value) {
         this._origValue = value
+        this._changed = false
         this.valueToWidget(value)
     }
 
@@ -328,8 +330,25 @@ class FormField extends mix().with(ViewMixin) {
         let form = this.getForm()
 
         this.clearApplied()
+        this._changed = true
         this.onChange(value, form)
         form._handleFieldChange(this)
+    }
+
+    /**
+     * Tell if field has been changed since the last time it was applied.
+     * @returns {boolean}
+     */
+    isChanged() {
+        return this._changed
+    }
+
+    /**
+     * Clear the changed flag.
+     */
+    clearChanged() {
+        this._origValue = this.getValue()
+        this._changed = false
     }
 
     /**
@@ -734,10 +753,11 @@ class FormField extends mix().with(ViewMixin) {
     /* Applied state */
 
     /**
-     * Put the field in the applied state. The view state is set to {@link qui.forms.STATE_APPLIED}.
+     * Optionally put the field in the applied state {@link qui.forms.STATE_APPLIED}.
      */
     setApplied() {
         this._origValue = this.getValue()
+        this._changed = false
         this.setState(STATE_APPLIED)
     }
 
