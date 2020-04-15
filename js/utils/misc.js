@@ -70,7 +70,7 @@ export function isClass(c) {
 
     let s
     try {
-        s = Function.prototype.toString.call(f)
+        s = Function.prototype.toString.call(c)
     }
     catch {
         /* Definitely not a class */
