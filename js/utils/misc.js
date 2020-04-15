@@ -35,3 +35,47 @@ export function appendBuildHash(strURL) {
     url = url.alter({query: ObjectUtils.combine(url.query, {h: Config.buildHash})})
     return url.toString()
 }
+
+/**
+ * Tell if argument is a function and not a class.
+ * @param {*} f
+ * @returns {Boolean}
+ */
+export function isFunction(f) {
+    if (typeof f !== 'function') {
+        return false
+    }
+
+    let s
+    try {
+        s = Function.prototype.toString.call(f)
+    }
+    catch {
+        /* Definitely not a function */
+        return false
+    }
+
+    return !/^class\s/.test(s)
+}
+
+/**
+ * Tell if argument is a class.
+ * @param {*} c
+ * @returns {Boolean}
+ */
+export function isClass(c) {
+    if (typeof c !== 'function') {
+        return false
+    }
+
+    let s
+    try {
+        s = Function.prototype.toString.call(f)
+    }
+    catch {
+        /* Definitely not a class */
+        return false
+    }
+
+    return /^class\s/.test(s)
+}

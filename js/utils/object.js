@@ -17,7 +17,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 /**
- * Tells if a value is a pure object.
+ * Tell if a value is a pure object.
  * @param {*} value value to test
  * @returns {Boolean}
  */
