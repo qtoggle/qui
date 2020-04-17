@@ -53,7 +53,7 @@ export function formatPercent(text, ...args) {
         return text
     }
 
-    let keywords = args[0]
+    let keywords = args[0] || {}
 
     ObjectUtils.forEach(keywords, function (key, value) {
         text = text.replace(new RegExp(`%\\(${key}\\)s`, 'g'), value.toString())

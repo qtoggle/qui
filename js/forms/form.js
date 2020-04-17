@@ -709,7 +709,7 @@ class Form extends mix().with(StructuredViewMixin) {
             ObjectUtils.forEach(errors, function (name, error) {
 
                 /* Do not show error messages for unchanged fields */
-                if (name && !this._fields[name].isChanged()) {
+                if (name && !this._fieldsByName[name].isChanged()) {
                     errors[name] = ''
                 }
 
