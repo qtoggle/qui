@@ -626,7 +626,6 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * Called when the section to which page belongs is shown.
          */
         onSectionShow() {
-
         }
 
         /**
@@ -640,7 +639,6 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * Called when the section to which page belongs is hidden.
          */
         onSectionHide() {
-
         }
 
         /**

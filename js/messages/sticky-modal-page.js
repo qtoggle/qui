@@ -55,6 +55,8 @@ const StickyModalPageMixin = Mixin((superclass = Object) => {
                 this.attach()
                 this.getPageHTML().addClass('visible')
                 GlobalGlass.updateVisibility()
+
+                this.handleBecomeCurrent()
             }
 
             this._showCount++
@@ -75,9 +77,18 @@ const StickyModalPageMixin = Mixin((superclass = Object) => {
             if (this._showCount === 0) {
                 this.detach()
                 this.getPageHTML().removeClass('visible')
-
                 GlobalGlass.updateVisibility()
+
+                this.handleLeaveCurrent()
             }
+        }
+
+        handleBecomeCurrent() {
+            this.onBecomeCurrent()
+        }
+
+        handleLeaveCurrent() {
+            this.onLeaveCurrent()
         }
 
     }
