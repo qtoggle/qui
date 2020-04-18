@@ -3,6 +3,7 @@ import $ from '$qui/lib/jquery.module.js'
 
 import {PageForm}       from '$qui/forms/common-forms.js'
 import StockIcon        from '$qui/icons/stock-icon.js'
+import {asap}           from '$qui/utils/misc.js'
 import * as ObjectUtils from '$qui/utils/object.js'
 
 
@@ -70,6 +71,17 @@ class MessageForm extends PageForm {
         return bodyDiv
     }
 
+    handleBecomeCurrent() {
+        super.handleBecomeCurrent()
+
+        /* Focus the default button */
+        asap(function() {
+            let button = this.getButtons().find(b => b.isDefault())
+            if (button) {
+                button.focus()
+            }
+        }.bind(this))
+    }
 }
 
 
