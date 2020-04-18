@@ -114,7 +114,12 @@ class FormField extends mix().with(ViewMixin) {
 
         let valueWidth = this._valueWidth
         if (valueWidth == null) {
-            valueWidth = this._form._valuesWidth
+            if (this._label) {
+                valueWidth = this._form._valuesWidth
+            }
+            else {
+                valueWidth = 0
+            }
         }
 
         let useOneLine = !this._form.isCompact() || this._forceOneLine

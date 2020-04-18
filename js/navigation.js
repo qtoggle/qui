@@ -232,7 +232,7 @@ export function pathToURL(path) {
  * Create an anchor element that represents a link to an internal path.
  * @alias qui.navigation.makeInternalAnchor
  * @param {String|String[]} path
- * @param {jQuery|String} content
+ * @param {String|jQuery} content
  */
 export function makeInternalAnchor(path, content) {
     let url = pathToURL(path)
