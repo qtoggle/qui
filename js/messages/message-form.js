@@ -1,8 +1,10 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
+import {AssertionError} from '$qui/base/errors.js'
 import {PageForm}       from '$qui/forms/common-forms.js'
 import StockIcon        from '$qui/icons/stock-icon.js'
+import * as Sections    from '$qui/sections/sections.js'
 import {asap}           from '$qui/utils/misc.js'
 import * as ObjectUtils from '$qui/utils/object.js'
 
@@ -75,13 +77,30 @@ class MessageForm extends PageForm {
         super.handleBecomeCurrent()
 
         /* Focus the default button */
-        asap(function() {
+        asap(function () {
             let button = this.getButtons().find(b => b.isDefault())
             if (button) {
                 button.focus()
             }
         }.bind(this))
     }
+
+    /**
+     * Show the message form by pushing it onto the current section context.
+     * @returns {qui.messages.MessageForm} this form
+     */
+
+    show() {
+        let currentSection = Sections.getCurrent()
+        if (!currentSection) {
+            throw new AssertionError('Attempt to show message form while no current section')
+        }
+
+        currentSection.pushPage(this)
+
+        return this
+    }
+
 }
 
 
