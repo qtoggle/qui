@@ -278,6 +278,14 @@ class Form extends mix().with(StructuredViewMixin) {
     }
 
     /**
+     * Return all form buttons.
+     * @returns {qui.forms.FormButton[]}
+     */
+    getButtons() {
+        return this._buttons.slice()
+    }
+
+    /**
      * Called when one of the form buttons is pressed.
      * @param {qui.forms.FormButton} button
      */

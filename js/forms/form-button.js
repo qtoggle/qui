@@ -127,6 +127,21 @@ class FormButton extends mix().with(ViewMixin) {
     }
 
     /**
+     * Tell if the button is focused or not.
+     * @returns {Boolean}
+     */
+    isFocused() {
+        return this.getHTML().is(':focus')
+    }
+
+    /**
+     * Focus the button.
+     */
+    focus() {
+        this.getHTML().focus()
+    }
+
+    /**
      * Return the button caption.
      * @returns {String}
      */
