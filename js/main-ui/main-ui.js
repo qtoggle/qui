@@ -4,8 +4,9 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
-import URL         from '$qui/utils/url.js'
-import * as Window from '$qui/window.js'
+import URL               from '$qui/utils/url.js'
+import VisibilityManager from '$qui/utils/visibility-manager.js'
+import * as Window       from '$qui/window.js'
 
 import * as MenuBar    from './menu-bar.js'
 import * as OptionsBar from './options-bar.js'
@@ -13,13 +14,19 @@ import * as TopBar     from './top-bar.js'
 
 
 let mainContainer = null
+let mainContainerGlass = null
+let mainContainerGlassVisibilityManager = null
+
 let messageContainer = null
 
 
 function initMainContainer() {
     mainContainer = $('<div></div>', {class: 'qui-main-container'})
     mainContainer.append($('<div></div>', {class: 'qui-pages-container'}))
-    mainContainer.append($('<div></div>', {class: 'qui-main-container-glass'}))
+
+    mainContainerGlass = $('<div></div>', {class: 'qui-main-container-glass', style: 'display: none;'})
+    mainContainerGlassVisibilityManager = new VisibilityManager({element: mainContainerGlass})
+    mainContainer.append(mainContainerGlass)
 
     messageContainer = $('div.qui-toast-message-container')
 
@@ -39,6 +46,13 @@ function fixDefaultFavicon() {
     })
 }
 
+export function showMainContainerGlass() {
+    mainContainerGlassVisibilityManager.showElement()
+}
+
+export function hideMainContainerGlass() {
+    mainContainerGlassVisibilityManager.hideElement()
+}
 
 export function init() {
     initMainContainer()

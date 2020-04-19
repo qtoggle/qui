@@ -10,23 +10,9 @@ body.effects-disabled {
         transition: none !important;
     }
 
-    &.global-glass-visible {
-
-        div.qui-top-bar,
-        div.qui-toast-message-container,
-        div.qui-main-container,
-        div.qui-menu-bar,
-        div.qui-options-bar {
-            filter: @modal-background-filter-no-effects;
-        }
-
-    }
-
-    &.menu-bar-open > div.qui-main-container,
-    &.menu-bar-open > div.qui-toast-message-container,
-    &.options-bar-open > div.qui-main-container,
-    &.options-bar-open > div.qui-toast-message-container {
-        filter: @modal-background-filter-no-effects;
+    div.qui-global-glass,
+    div.qui-main-container-glass {
+        backdrop-filter: @modal-background-filter-no-effects;
     }
 
     div.qui-progress-disk-container > svg,

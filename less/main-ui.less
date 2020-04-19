@@ -13,8 +13,7 @@ div.qui-main-container {
     bottom: 0;
     transition: top @transition-duration ease,
                 margin @transition-duration ease,
-                opacity @transition-duration linear,
-                filter @transition-duration linear;
+                opacity @transition-duration linear;
     overflow: hidden;
 }
 
@@ -22,18 +21,14 @@ div.qui-main-container-glass {
     z-index: 100;
     position: absolute;
     top: 0;
+    right: 0;
+    bottom: 0;
     left: 0;
-    width: 0;
-    height: 0;
-    transition: background @transition-duration ease;
+    transition: backdrop-filter @transition-duration linear;
 }
 
 div.qui-main-container-glass.visible {
-    right: 0;
-    bottom: 0;
-    width: auto;
-    height: auto;
-    background: fade(@background-color, @glass-opacity);
+    backdrop-filter: @modal-background-filter;
 }
 
 div.qui-pages-container {
@@ -45,15 +40,14 @@ div.qui-pages-container {
 
 div.qui-top-bar {
     position: absolute;
-    z-index: 14;
+    z-index: 100;
     top: 0;
     left: 0;
     right: 0;
     background: @background-color;
     height: 3em;
     transition: top @transition-duration ease,
-                box-shadow @transition-duration ease,
-                filter @transition-duration linear;
+                box-shadow @transition-duration ease;
     white-space: nowrap;
     border-color: @border-color;
     border-style: solid;
@@ -203,9 +197,8 @@ div.qui-menu-bar {
     background: @background-color;
     transition: left @transition-duration ease,
                 box-shadow @transition-duration ease,
-                opacity @transition-duration ease,
-                filter @transition-duration linear;
-    z-index: 16;
+                opacity @transition-duration ease;
+    z-index: 100;
     opacity: 1;
     touch-action: none;
     overflow: auto;
@@ -215,11 +208,6 @@ body.menu-bar-open:NOT(.no-top-bar) > div.qui-menu-bar {
     left: 0;
     opacity: 1;
     box-shadow: 0 0.3em 0.5em @bar-shadow-color;
-}
-
-body.menu-bar-open > div.qui-main-container,
-body.menu-bar-open > div.qui-toast-message-container {
-    filter: @modal-background-filter;
 }
 
 div.qui-menu-bar-button {
@@ -263,14 +251,6 @@ div.qui-menu-bar-button > .label {
     vertical-align: middle;
 }
 
-body.menu-bar-open > div.qui-main-container > div.qui-main-container-glass,
-body.options-bar-open > div.qui-main-container > div.qui-main-container-glass {
-    right: 0;
-    bottom: 0;
-    width: auto;
-    height: auto;
-}
-
 
 /* options bar */
 
@@ -289,9 +269,8 @@ div.qui-options-bar {
     border-left-width: 0.0625em;
     transition: right @transition-duration ease,
                 box-shadow @transition-duration ease,
-                opacity @transition-duration ease,
-                filter @transition-duration linear;
-    z-index: 15;
+                opacity @transition-duration ease;
+    z-index: 100;
     touch-action: none;
 }
 
@@ -314,11 +293,6 @@ div.qui-options-bar > div.options-bar-container {
 
 div.qui-options-bar.updating > div.options-bar-container {
     opacity: 0;
-}
-
-body.options-bar-open > div.qui-main-container,
-body.options-bar-open > div.qui-toast-message-container {
-    filter: @modal-background-filter;
 }
 
 

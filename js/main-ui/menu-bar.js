@@ -10,6 +10,7 @@ import StockIcon     from '$qui/icons/stock-icon.js'
 import * as Gestures from '$qui/utils/gestures.js'
 import * as Window   from '$qui/window.js'
 
+import * as MainUI     from './main-ui.js'
 import * as OptionsBar from './options-bar.js'
 import * as TopBar     from './top-bar.js'
 
@@ -52,6 +53,8 @@ export function open() {
         OptionsBar.close()
     }
 
+    MainUI.showMainContainerGlass()
+
     opened = true
     logger.debug('menu bar opened')
 
@@ -69,6 +72,8 @@ export function close() {
     if (!opened) {
         return
     }
+
+    MainUI.hideMainContainerGlass()
 
     opened = false
     logger.debug('menu bar closed')

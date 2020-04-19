@@ -9,11 +9,13 @@ div.qui-global-glass {
     left: 0;
     right: 0;
     bottom: 0;
-    transition: opacity @transition-duration ease;
+    transition: opacity @transition-duration ease,
+                backdrop-filter @transition-duration linear;
     opacity: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    backdrop-filter: @modal-background-filter;
 
     &.hidden {
         display: none;
@@ -51,18 +53,6 @@ div.qui-global-glass {
             z-index: 1000 !important;
         }
 
-    }
-
-}
-
-body.global-glass-visible {
-
-    div.qui-top-bar,
-    div.qui-toast-message-container,
-    div.qui-main-container,
-    div.qui-menu-bar,
-    div.qui-options-bar {
-        filter: @modal-background-filter;
     }
 
 }

@@ -14,6 +14,7 @@ import {asap}            from '$qui/utils/misc.js'
 import * as PromiseUtils from '$qui/utils/promise.js'
 import * as Window       from '$qui/window.js'
 
+import * as MainUI  from './main-ui.js'
 import * as MenuBar from './menu-bar.js'
 import * as TopBar  from './top-bar.js'
 
@@ -57,6 +58,8 @@ export function open() {
         MenuBar.close()
     }
 
+    MainUI.showMainContainerGlass()
+
     opened = true
     logger.debug('options bar opened')
     openCloseSignal.emit(true)
@@ -78,6 +81,8 @@ export function close() {
     if (!opened) {
         return
     }
+
+    MainUI.hideMainContainerGlass()
 
     opened = false
     logger.debug('options bar closed')
