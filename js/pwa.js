@@ -11,6 +11,7 @@ import * as Theme        from '$qui/theme.js'
 import {appendBuildHash} from '$qui/utils/misc.js'
 import URL               from '$qui/utils/url.js'
 import * as Window       from '$qui/window.js'
+import * as QUI          from '$qui/index.js'
 
 
 const SERVICE_WORKER_SCRIPT = 'service-worker.js'
@@ -23,6 +24,9 @@ const logger = Logger.get('qui.pwa')
 let manifestParams = {}
 let serviceWorker = null
 let serviceWorkerUpdateCalled = false /* duplicate call protection */
+let installElementHandler = null
+let installResponseHandler = null
+let installPrompted = false
 
 /**
  * Emitted when a service worker becomes active and starts controlling this client. Handlers are called with the
@@ -93,6 +97,7 @@ function handleServiceWorkerMessage(message) {
 
 /**
  * Enable the service worker functionality.
+ *
  * @param {String} [url] URL at which the service worker lives; {@link qui.config.navigationBasePrefix} +
  * `"/service-worker.js"` will be used by default
  * @param {Function} [updateHandler] a function to be called when the service worker is updated; should return a promise
@@ -174,6 +179,33 @@ export function sendServiceWorkerMessage(message) {
 }
 
 /**
+ * A handler function responsible for providing a clickable element that prompts user for app installation.
+ * @callback qui.pwa.InstallElementHandler
+ * @returns {Promise<jQuery>} a promise that resolves to a clickable element that prompts for app installation upon
+ * click
+ */
+
+/**
+ * A handler function called after the user responds to installation prompt.
+ * @callback qui.pwa.InstallResponseHandler
+ * @param {Boolean} accepted indicates whether user accepted installation or not
+ */
+
+/**
+ * Configures the handler functions for the app installation.
+ *
+ * This must be called before {@link qui.init}.
+ *
+ * @alias qui.pwa.setInstallHandlers
+ * @param {qui.pwa.InstallElementHandler} elementHandler
+ * @param {?qui.pwa.InstallResponseHandler} [responseHandler]
+ */
+export function setInstallHandlers(elementHandler, responseHandler = null) {
+    installElementHandler = elementHandler
+    installResponseHandler = responseHandler
+}
+
+/**
  * Setup the web app manifest.
  * @alias qui.pwa.setupManifest
  * @param {String} [url] the URL where the manifest file lives; {@link qui.config.navigationBasePrefix} +
@@ -241,4 +273,48 @@ export function setupManifest({
     manifest.attr('href', url)
 
     logger.debug(`manifest setup with URL = "${url}"`)
+}
+
+export function init() {
+    Window.$window.on('beforeinstallprompt', function (e) {
+        logger.debug('received install prompt event')
+        if (installElementHandler) {
+            if (installPrompted) {
+                logger.debug('ignoring subsequent install prompt event')
+                return
+            }
+
+            installPrompted = true
+
+            let promptEvent = e.originalEvent
+            promptEvent.preventDefault()
+
+            /* Don't call the install handler before QUI is ready, as it will probably use UI elements that need to be
+             * initialized first */
+            QUI.whenReady.then(function () {
+                logger.debug('calling install handler')
+                installElementHandler().then(function (element) {
+                    element.on('click', function clickHandler() {
+                        element.off('click', clickHandler) /* Don't prompt again */
+
+                        promptEvent.prompt()
+                        promptEvent.userChoice.then(function (choiceResult) {
+                            if (choiceResult.outcome === 'accepted') {
+                                logger.info('user accepted installation')
+                                if (installResponseHandler) {
+                                    installResponseHandler(true)
+                                }
+                            }
+                            else {
+                                logger.info('user rejected installation')
+                                if (installResponseHandler) {
+                                    installResponseHandler(false)
+                                }
+                            }
+                        })
+                    })
+                })
+            })
+        }
+    })
 }

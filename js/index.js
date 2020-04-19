@@ -286,6 +286,7 @@ export function init() {
 
     return Promise.resolve()
     .then(() => Window.init())
+    .then(() => PWA.init())
     .then(() => Theme.init())
     .then(() => Icons.init())
     .then(() => MainUI.init())
