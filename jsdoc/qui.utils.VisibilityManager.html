@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ErrorMapping</title>
+    <title>JSDoc: Class: VisibilityManager</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ErrorMapping</h1>
+    <h1 class="page-title">Class: VisibilityManager</h1>
 
     
 
@@ -29,9 +29,10 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.forms.html">.forms</a></span>ErrorMapping<span class="signature">(errors)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.utils.html">.utils</a>.</span>VisibilityManager<span class="signature">(element, visibleDisplay<span class="signature-attributes">opt</span>, hiddenDisplay<span class="signature-attributes">opt</span>, visibleClass<span class="signature-attributes">opt, nullable</span>, hiddenClass<span class="signature-attributes">opt, nullable</span>, transitionDuration<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>A mapping of form errors associated to their corresponding field names.</p></div>
+            <div class="class-description"><p>A class that resolves the problem of waiting an async iteration before applying styles with transitions, after
+changing the <code>display</code> style property.</p></div>
         
     
 </header>
@@ -46,7 +47,7 @@
     
 
     
-    <h4 class="name" id="ErrorMapping"><span class="type-signature"></span>new ErrorMapping<span class="signature">(errors)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="VisibilityManager"><span class="type-signature"></span>new VisibilityManager<span class="signature">(element, visibleDisplay<span class="signature-attributes">opt</span>, hiddenDisplay<span class="signature-attributes">opt</span>, visibleClass<span class="signature-attributes">opt, nullable</span>, hiddenClass<span class="signature-attributes">opt, nullable</span>, transitionDuration<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -74,6 +75,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -86,34 +89,202 @@
 
         <tr>
             
-                <td class="name"><code>errors</code></td>
+                <td class="name"><code>element</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Error</span>
-|
-
-<span class="param-type">Object.&lt;String, Error></span>
-|
-
-<span class="param-type"><a href="qui.forms.ErrorMapping.html">qui.forms.ErrorMapping</a></span>
+<span class="param-type">jQuery</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>one of:</p>
-<ul>
-<li>a single error that will be associated to the form itself</li>
-<li>a dictionary with errors mapped to field names which will be used as is</li>
-<li>another error mapping object from which errors will be copied</li>
-</ul></td>
+            <td class="description last"><p>the element to be managed</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>visibleDisplay</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the display style property when element is visible; by default will be taken
+from current element's display</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hiddenDisplay</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the display style property when element is hidden; defaults to <code>&quot;none&quot;</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>visibleClass</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the class(es) to add to element when it's visible; defaults to <code>&quot;visible&quot;</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hiddenClass</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the class(es) to add to element when it's hidden; defaults to <code>null</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>transitionDuration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the duration of the transition, in milliseconds; defaults to
+<a href="qui.theme.html#.getTransitionDuration"><code>qui.theme.getTransitionDuration</code></a></p></td>
         </tr>
 
     
@@ -154,7 +325,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_forms.js.html">forms/forms.js</a>, <a href="forms_forms.js.html#line50">line 50</a>
+        <a href="utils_visibility-manager.js.html">utils/visibility-manager.js</a>, <a href="utils_visibility-manager.js.html#line27">line 27</a>
     </li></ul></dd>
     
 
@@ -186,17 +357,6 @@
 
     
     </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li>Error</li>
-    </ul>
-
 
     
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ErrorMapping</title>
+    <title>JSDoc: Source: utils/visibility-manager.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,209 +17,103 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ErrorMapping</h1>
+    <h1 class="page-title">Source: utils/visibility-manager.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.forms.html">.forms</a></span>ErrorMapping<span class="signature">(errors)</span><span class="type-signature"></span></h2>
-        
-            <div class="class-description"><p>A mapping of form errors associated to their corresponding field names.</p></div>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-    <h2>Constructor</h2>
-    
-
-    
-    <h4 class="name" id="ErrorMapping"><span class="type-signature"></span>new ErrorMapping<span class="signature">(errors)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>errors</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Error</span>
-|
-
-<span class="param-type">Object.&lt;String, Error></span>
-|
-
-<span class="param-type"><a href="qui.forms.ErrorMapping.html">qui.forms.ErrorMapping</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>one of:</p>
-<ul>
-<li>a single error that will be associated to the form itself</li>
-<li>a dictionary with errors mapped to field names which will be used as is</li>
-<li>another error mapping object from which errors will be copied</li>
-</ul></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_forms.js.html">forms/forms.js</a>, <a href="forms_forms.js.html#line50">line 50</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li>Error</li>
-    </ul>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+import * as Theme from '$qui/theme.js'
+import {asap}     from '$qui/utils/misc.js'
+
+
+const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
+
+
+/**
+ * A class that resolves the problem of waiting an async iteration before applying styles with transitions, after
+ * changing the `display` style property.
+ * @alias qui.utils.VisibilityManager
+ */
+class VisibilityManager {
+
+    /**
+     * @constructs
+     * @param {jQuery} element the element to be managed
+     * @param {String} [visibleDisplay] the display style property when element is visible; by default will be taken
+     * from current element's display
+     * @param {String} [hiddenDisplay] the display style property when element is hidden; defaults to `"none"`
+     * @param {?String} [visibleClass] the class(es) to add to element when it's visible; defaults to `"visible"`
+     * @param {?String} [hiddenClass] the class(es) to add to element when it's hidden; defaults to `null`
+     * @param {Number} [transitionDuration] the duration of the transition, in milliseconds; defaults to
+     * {@link qui.theme.getTransitionDuration}
+     */
+    constructor({
+        element,
+        visibleDisplay = null,
+        hiddenDisplay = 'none',
+        visibleClass = 'visible',
+        hiddenClass = null,
+        transitionDuration = Theme.getTransitionDuration()
+    }) {
+
+        this._element = element
+        this._visibleDisplay = visibleDisplay != null ? visibleDisplay : window.getComputedStyle(element[0]).display
+        this._hiddenDisplay = hiddenDisplay
+        this._visibleClass = visibleClass
+        this._hiddenClass = hiddenClass
+        this._transitionDuration = transitionDuration
+
+        this._visibleAfterTransition = element.hasClass(visibleClass)
+        this._timeoutHandle = null
+    }
+
+    showElement() {
+        if (this._visibleAfterTransition) {
+            return
+        }
+        this._visibleAfterTransition = true
+
+        if (this._timeoutHandle) {
+            clearTimeout(this._timeoutHandle)
+        }
+
+        this._element.css('display', this._visibleDisplay)
+        this._timeoutHandle = asap(function () {
+            this._timeoutHandle = null
+            this._element.addClass(this._visibleClass || '')
+            this._element.removeClass(this._hiddenClass || '')
+        }.bind(this))
+    }
+
+    hideElement() {
+        if (!this._visibleAfterTransition) {
+            return
+        }
+        this._visibleAfterTransition = false
+
+        if (this._timeoutHandle) {
+            clearTimeout(this._timeoutHandle)
+        }
+
+        this._element.removeClass(this._visibleClass || '')
+        this._element.addClass(this._hiddenClass || '')
+        this._timeoutHandle = setTimeout(function () {
+            this._timeoutHandle = null
+            this._element.css('display', this._hiddenDisplay)
+        }.bind(this), this._transitionDuration)
+    }
+
+}
+
+export default VisibilityManager
+</code></pre>
+        </article>
+    </section>
 
 
 
@@ -233,7 +127,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Apr 19 2020 18:47:54 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Apr 19 2020 18:47:53 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

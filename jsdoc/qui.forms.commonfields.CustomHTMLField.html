@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: TextField</title>
+    <title>JSDoc: Class: CustomHTMLField</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: TextField</h1>
+    <h1 class="page-title">Class: CustomHTMLField</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.forms.html">.forms</a><a href="qui.forms.commonfields.html">.commonfields</a>.</span>TextField<span class="signature">(placeholder<span class="signature-attributes">opt, nullable</span>, clearPlaceholder<span class="signature-attributes">opt</span>, autocomplete<span class="signature-attributes">opt</span>, minLength<span class="signature-attributes">opt, nullable</span>, maxLength<span class="signature-attributes">opt, nullable</span>, pattern<span class="signature-attributes">opt</span>, continuousChange<span class="signature-attributes">opt</span>, widgetAttrs<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.forms.html">.forms</a><a href="qui.forms.commonfields.html">.commonfields</a>.</span>CustomHTMLField<span class="signature">(content, &hellip;args)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>A simple text field. The value data type is <code>String</code>.</p></div>
+            <div class="class-description"><p>A form field whose widget's HTML content is supplied by user.</p></div>
         
     
 </header>
@@ -46,7 +46,7 @@
     
 
     
-    <h4 class="name" id="TextField"><span class="type-signature"></span>new TextField<span class="signature">(placeholder<span class="signature-attributes">opt, nullable</span>, clearPlaceholder<span class="signature-attributes">opt</span>, autocomplete<span class="signature-attributes">opt</span>, minLength<span class="signature-attributes">opt, nullable</span>, maxLength<span class="signature-attributes">opt, nullable</span>, pattern<span class="signature-attributes">opt</span>, continuousChange<span class="signature-attributes">opt</span>, widgetAttrs<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="CustomHTMLField"><span class="type-signature"></span>new CustomHTMLField<span class="signature">(content, &hellip;args)</span><span class="type-signature"></span></h4>
     
 
     
@@ -88,178 +88,7 @@
 
         <tr>
             
-                <td class="name"><code>placeholder</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                    &lt;nullable><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>an empty-text placeholder</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>clearPlaceholder</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>set to <code>true</code> to clear the placeholder on first change (defaults to <code>false</code>)</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>autocomplete</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>enables or disables field autocomplete (enabled by default)</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>minLength</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                    &lt;nullable><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>minimum required text length</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>maxLength</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                    &lt;nullable><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>maximum allowed text length</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>pattern</code></td>
+                <td class="name"><code>content</code></td>
             
 
             <td class="type">
@@ -268,7 +97,7 @@
 <span class="param-type">String</span>
 |
 
-<span class="param-type">RegExp</span>
+<span class="param-type">jQuery</span>
 
 
             
@@ -276,8 +105,6 @@
 
             
                 <td class="attributes">
-                
-                    &lt;optional><br>
                 
 
                 
@@ -288,73 +115,7 @@
 
             
 
-            <td class="description last"><p>a regular expression used to validate the value</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>continuousChange</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>set to <code>false</code> to prevent triggering change events at each key stroke</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>widgetAttrs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>extra attributes to pass to underlying JQueryUI widget</p></td>
+            <td class="description last"><p>the HTML content</p></td>
         </tr>
 
     
@@ -428,7 +189,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_common-fields_text-field.js.html">forms/common-fields/text-field.js</a>, <a href="forms_common-fields_text-field.js.html#line26">line 26</a>
+        <a href="forms_common-fields_custom-html-field.js.html">forms/common-fields/custom-html-field.js</a>, <a href="forms_common-fields_custom-html-field.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -468,7 +229,7 @@
 
 
     <ul>
-        <li><a href="qui.forms.commonfields.JQueryUIField.html">qui.forms.commonfields.JQueryUIField</a></li>
+        <li><a href="qui.forms.FormField.html">qui.forms.FormField</a></li>
     </ul>
 
 
@@ -529,7 +290,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#clearApplied">qui.forms.commonfields.JQueryUIField#clearApplied</a>
+        <a href="qui.forms.FormField.html#clearApplied">qui.forms.FormField#clearApplied</a>
     </li></ul></dd>
     
 
@@ -622,7 +383,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#clearChanged">qui.forms.commonfields.JQueryUIField#clearChanged</a>
+        <a href="qui.forms.FormField.html#clearChanged">qui.forms.FormField#clearChanged</a>
     </li></ul></dd>
     
 
@@ -715,7 +476,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#disable">qui.forms.commonfields.JQueryUIField#disable</a>
+        <a href="qui.forms.FormField.html#disable">qui.forms.FormField#disable</a>
     </li></ul></dd>
     
 
@@ -809,7 +570,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#disableWidget">qui.forms.commonfields.JQueryUIField#disableWidget</a>
+        <a href="qui.forms.FormField.html#disableWidget">qui.forms.FormField#disableWidget</a>
     </li></ul></dd>
     
 
@@ -902,7 +663,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#enable">qui.forms.commonfields.JQueryUIField#enable</a>
+        <a href="qui.forms.FormField.html#enable">qui.forms.FormField#enable</a>
     </li></ul></dd>
     
 
@@ -996,7 +757,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#enableWidget">qui.forms.commonfields.JQueryUIField#enableWidget</a>
+        <a href="qui.forms.FormField.html#enableWidget">qui.forms.FormField#enableWidget</a>
     </li></ul></dd>
     
 
@@ -1089,7 +850,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#focus">qui.forms.commonfields.JQueryUIField#focus</a>
+        <a href="qui.forms.FormField.html#focus">qui.forms.FormField#focus</a>
     </li></ul></dd>
     
 
@@ -1182,7 +943,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#getDescription">qui.forms.commonfields.JQueryUIField#getDescription</a>
+        <a href="qui.forms.FormField.html#getDescription">qui.forms.FormField#getDescription</a>
     </li></ul></dd>
     
 
@@ -1293,7 +1054,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#getForm">qui.forms.commonfields.JQueryUIField#getForm</a>
+        <a href="qui.forms.FormField.html#getForm">qui.forms.FormField#getForm</a>
     </li></ul></dd>
     
 
@@ -1404,7 +1165,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#getLabel">qui.forms.commonfields.JQueryUIField#getLabel</a>
+        <a href="qui.forms.FormField.html#getLabel">qui.forms.FormField#getLabel</a>
     </li></ul></dd>
     
 
@@ -1515,7 +1276,7 @@
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#getName">qui.forms.commonfields.JQueryUIField#getName</a>
+        <a href="qui.forms.FormField.html#getName">qui.forms.FormField#getName</a>
     </li></ul></dd>
     
 
@@ -1627,7 +1388,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#getOrigValue">qui.forms.commonfields.JQueryUIField#getOrigValue</a>
+        <a href="qui.forms.FormField.html#getOrigValue">qui.forms.FormField#getOrigValue</a>
     </li></ul></dd>
     
 
@@ -1738,7 +1499,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#getUnit">qui.forms.commonfields.JQueryUIField#getUnit</a>
+        <a href="qui.forms.FormField.html#getUnit">qui.forms.FormField#getUnit</a>
     </li></ul></dd>
     
 
@@ -1849,7 +1610,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#getValue">qui.forms.commonfields.JQueryUIField#getValue</a>
+        <a href="qui.forms.FormField.html#getValue">qui.forms.FormField#getValue</a>
     </li></ul></dd>
     
 
@@ -1960,7 +1721,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#getValueWidth">qui.forms.commonfields.JQueryUIField#getValueWidth</a>
+        <a href="qui.forms.FormField.html#getValueWidth">qui.forms.FormField#getValueWidth</a>
     </li></ul></dd>
     
 
@@ -2071,7 +1832,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#getWidget">qui.forms.commonfields.JQueryUIField#getWidget</a>
+        <a href="qui.forms.FormField.html#getWidget">qui.forms.FormField#getWidget</a>
     </li></ul></dd>
     
 
@@ -2182,7 +1943,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#handleBlur">qui.forms.commonfields.JQueryUIField#handleBlur</a>
+        <a href="qui.forms.FormField.html#handleBlur">qui.forms.FormField#handleBlur</a>
     </li></ul></dd>
     
 
@@ -2324,7 +2085,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#handleChange">qui.forms.commonfields.JQueryUIField#handleChange</a>
+        <a href="qui.forms.FormField.html#handleChange">qui.forms.FormField#handleChange</a>
     </li></ul></dd>
     
 
@@ -2417,7 +2178,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#handleFocus">qui.forms.commonfields.JQueryUIField#handleFocus</a>
+        <a href="qui.forms.FormField.html#handleFocus">qui.forms.FormField#handleFocus</a>
     </li></ul></dd>
     
 
@@ -2510,7 +2271,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#hasSeparator">qui.forms.commonfields.JQueryUIField#hasSeparator</a>
+        <a href="qui.forms.FormField.html#hasSeparator">qui.forms.FormField#hasSeparator</a>
     </li></ul></dd>
     
 
@@ -2621,7 +2382,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#hide">qui.forms.commonfields.JQueryUIField#hide</a>
+        <a href="qui.forms.FormField.html#hide">qui.forms.FormField#hide</a>
     </li></ul></dd>
     
 
@@ -2764,7 +2525,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#initWidget">qui.forms.commonfields.JQueryUIField#initWidget</a>
+        <a href="qui.forms.FormField.html#initWidget">qui.forms.FormField#initWidget</a>
     </li></ul></dd>
     
 
@@ -2857,7 +2618,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#isApplied">qui.forms.commonfields.JQueryUIField#isApplied</a>
+        <a href="qui.forms.FormField.html#isApplied">qui.forms.FormField#isApplied</a>
     </li></ul></dd>
     
 
@@ -2968,7 +2729,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#isChanged">qui.forms.commonfields.JQueryUIField#isChanged</a>
+        <a href="qui.forms.FormField.html#isChanged">qui.forms.FormField#isChanged</a>
     </li></ul></dd>
     
 
@@ -3079,7 +2840,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#isDescriptionVisible">qui.forms.commonfields.JQueryUIField#isDescriptionVisible</a>
+        <a href="qui.forms.FormField.html#isDescriptionVisible">qui.forms.FormField#isDescriptionVisible</a>
     </li></ul></dd>
     
 
@@ -3190,7 +2951,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#isDisabled">qui.forms.commonfields.JQueryUIField#isDisabled</a>
+        <a href="qui.forms.FormField.html#isDisabled">qui.forms.FormField#isDisabled</a>
     </li></ul></dd>
     
 
@@ -3301,7 +3062,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#isFocused">qui.forms.commonfields.JQueryUIField#isFocused</a>
+        <a href="qui.forms.FormField.html#isFocused">qui.forms.FormField#isFocused</a>
     </li></ul></dd>
     
 
@@ -3412,7 +3173,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#isForceOneLine">qui.forms.commonfields.JQueryUIField#isForceOneLine</a>
+        <a href="qui.forms.FormField.html#isForceOneLine">qui.forms.FormField#isForceOneLine</a>
     </li></ul></dd>
     
 
@@ -3523,7 +3284,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#isHidden">qui.forms.commonfields.JQueryUIField#isHidden</a>
+        <a href="qui.forms.FormField.html#isHidden">qui.forms.FormField#isHidden</a>
     </li></ul></dd>
     
 
@@ -3634,7 +3395,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#isReadonly">qui.forms.commonfields.JQueryUIField#isReadonly</a>
+        <a href="qui.forms.FormField.html#isReadonly">qui.forms.FormField#isReadonly</a>
     </li></ul></dd>
     
 
@@ -3745,7 +3506,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#isRequired">qui.forms.commonfields.JQueryUIField#isRequired</a>
+        <a href="qui.forms.FormField.html#isRequired">qui.forms.FormField#isRequired</a>
     </li></ul></dd>
     
 
@@ -3856,7 +3617,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#makeDescriptionHTML">qui.forms.commonfields.JQueryUIField#makeDescriptionHTML</a>
+        <a href="qui.forms.FormField.html#makeDescriptionHTML">qui.forms.FormField#makeDescriptionHTML</a>
     </li></ul></dd>
     
 
@@ -3967,7 +3728,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#makeErrorHTML">qui.forms.commonfields.JQueryUIField#makeErrorHTML</a>
+        <a href="qui.forms.FormField.html#makeErrorHTML">qui.forms.FormField#makeErrorHTML</a>
     </li></ul></dd>
     
 
@@ -4078,7 +3839,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#makeLabelHTML">qui.forms.commonfields.JQueryUIField#makeLabelHTML</a>
+        <a href="qui.forms.FormField.html#makeLabelHTML">qui.forms.FormField#makeLabelHTML</a>
     </li></ul></dd>
     
 
@@ -4189,7 +3950,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#makeSideIconHTML">qui.forms.commonfields.JQueryUIField#makeSideIconHTML</a>
+        <a href="qui.forms.FormField.html#makeSideIconHTML">qui.forms.FormField#makeSideIconHTML</a>
     </li></ul></dd>
     
 
@@ -4300,7 +4061,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#makeValueHTML">qui.forms.commonfields.JQueryUIField#makeValueHTML</a>
+        <a href="qui.forms.FormField.html#makeValueHTML">qui.forms.FormField#makeValueHTML</a>
     </li></ul></dd>
     
 
@@ -4411,7 +4172,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#makeWarningHTML">qui.forms.commonfields.JQueryUIField#makeWarningHTML</a>
+        <a href="qui.forms.FormField.html#makeWarningHTML">qui.forms.FormField#makeWarningHTML</a>
     </li></ul></dd>
     
 
@@ -4523,7 +4284,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#makeWidget">qui.forms.commonfields.JQueryUIField#makeWidget</a>
+        <a href="qui.forms.FormField.html#makeWidget">qui.forms.FormField#makeWidget</a>
     </li></ul></dd>
     
 
@@ -4634,7 +4395,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#onBlur">qui.forms.commonfields.JQueryUIField#onBlur</a>
+        <a href="qui.forms.FormField.html#onBlur">qui.forms.FormField#onBlur</a>
     </li></ul></dd>
     
 
@@ -4799,7 +4560,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#onChange">qui.forms.commonfields.JQueryUIField#onChange</a>
+        <a href="qui.forms.FormField.html#onChange">qui.forms.FormField#onChange</a>
     </li></ul></dd>
     
 
@@ -4892,7 +4653,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#onFocus">qui.forms.commonfields.JQueryUIField#onFocus</a>
+        <a href="qui.forms.FormField.html#onFocus">qui.forms.FormField#onFocus</a>
     </li></ul></dd>
     
 
@@ -4985,7 +4746,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setApplied">qui.forms.commonfields.JQueryUIField#setApplied</a>
+        <a href="qui.forms.FormField.html#setApplied">qui.forms.FormField#setApplied</a>
     </li></ul></dd>
     
 
@@ -5127,7 +4888,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setDescription">qui.forms.commonfields.JQueryUIField#setDescription</a>
+        <a href="qui.forms.FormField.html#setDescription">qui.forms.FormField#setDescription</a>
     </li></ul></dd>
     
 
@@ -5269,7 +5030,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setForm">qui.forms.commonfields.JQueryUIField#setForm</a>
+        <a href="qui.forms.FormField.html#setForm">qui.forms.FormField#setForm</a>
     </li></ul></dd>
     
 
@@ -5411,7 +5172,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setLabel">qui.forms.commonfields.JQueryUIField#setLabel</a>
+        <a href="qui.forms.FormField.html#setLabel">qui.forms.FormField#setLabel</a>
     </li></ul></dd>
     
 
@@ -5553,7 +5314,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setReadonly">qui.forms.commonfields.JQueryUIField#setReadonly</a>
+        <a href="qui.forms.FormField.html#setReadonly">qui.forms.FormField#setReadonly</a>
     </li></ul></dd>
     
 
@@ -5695,7 +5456,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setRequired">qui.forms.commonfields.JQueryUIField#setRequired</a>
+        <a href="qui.forms.FormField.html#setRequired">qui.forms.FormField#setRequired</a>
     </li></ul></dd>
     
 
@@ -5837,7 +5598,7 @@ applied.</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setSeparator">qui.forms.commonfields.JQueryUIField#setSeparator</a>
+        <a href="qui.forms.FormField.html#setSeparator">qui.forms.FormField#setSeparator</a>
     </li></ul></dd>
     
 
@@ -6033,7 +5794,7 @@ be called with the field as <code>this</code> argument</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setSideIcon">qui.forms.commonfields.JQueryUIField#setSideIcon</a>
+        <a href="qui.forms.FormField.html#setSideIcon">qui.forms.FormField#setSideIcon</a>
     </li></ul></dd>
     
 
@@ -6175,7 +5936,7 @@ be called with the field as <code>this</code> argument</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setUnit">qui.forms.commonfields.JQueryUIField#setUnit</a>
+        <a href="qui.forms.FormField.html#setUnit">qui.forms.FormField#setUnit</a>
     </li></ul></dd>
     
 
@@ -6317,7 +6078,7 @@ be called with the field as <code>this</code> argument</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setValue">qui.forms.commonfields.JQueryUIField#setValue</a>
+        <a href="qui.forms.FormField.html#setValue">qui.forms.FormField#setValue</a>
     </li></ul></dd>
     
 
@@ -6471,7 +6232,7 @@ be called with the field as <code>this</code> argument</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setValueWidth">qui.forms.commonfields.JQueryUIField#setValueWidth</a>
+        <a href="qui.forms.FormField.html#setValueWidth">qui.forms.FormField#setValueWidth</a>
     </li></ul></dd>
     
 
@@ -6614,7 +6375,7 @@ be called with the field as <code>this</code> argument</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#setWidgetReadonly">qui.forms.commonfields.JQueryUIField#setWidgetReadonly</a>
+        <a href="qui.forms.FormField.html#setWidgetReadonly">qui.forms.FormField#setWidgetReadonly</a>
     </li></ul></dd>
     
 
@@ -6707,7 +6468,7 @@ be called with the field as <code>this</code> argument</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#show">qui.forms.commonfields.JQueryUIField#show</a>
+        <a href="qui.forms.FormField.html#show">qui.forms.FormField#show</a>
     </li></ul></dd>
     
 
@@ -6873,7 +6634,7 @@ be called with the field as <code>this</code> argument</p></td>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#validate">qui.forms.commonfields.JQueryUIField#validate</a>
+        <a href="qui.forms.FormField.html#validate">qui.forms.FormField#validate</a>
     </li></ul></dd>
     
 
@@ -7052,7 +6813,7 @@ rejected with a validation error otherwise;</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#validateWidget">qui.forms.commonfields.JQueryUIField#validateWidget</a>
+        <a href="qui.forms.FormField.html#validateWidget">qui.forms.FormField#validateWidget</a>
     </li></ul></dd>
     
 
@@ -7218,7 +6979,7 @@ the value is considered <em>invalid</em> but no error message will be shown</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#valueToWidget">qui.forms.commonfields.JQueryUIField#valueToWidget</a>
+        <a href="qui.forms.FormField.html#valueToWidget">qui.forms.FormField#valueToWidget</a>
     </li></ul></dd>
     
 
@@ -7312,7 +7073,7 @@ the value is considered <em>invalid</em> but no error message will be shown</p>
     
     <dt class="tag-overrides">Overrides:</dt>
     <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="qui.forms.commonfields.JQueryUIField.html#widgetToValue">qui.forms.commonfields.JQueryUIField#widgetToValue</a>
+        <a href="qui.forms.FormField.html#widgetToValue">qui.forms.FormField#widgetToValue</a>
     </li></ul></dd>
     
 
@@ -7409,7 +7170,7 @@ the value is considered <em>invalid</em> but no error message will be shown</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Apr 19 2020 18:47:54 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Apr 19 2020 18:47:53 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
