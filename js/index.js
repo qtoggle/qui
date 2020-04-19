@@ -11,6 +11,7 @@ import '$qui/lib/jquery.mousewheel.js'
 import '$qui/lib/jquery.longpress.js'
 import '$qui/lib/pep.js'
 
+import ConditionVariable         from '$qui/base/condition-variable.js'
 import {gettext}                 from '$qui/base/i18n.js'
 import Config                    from '$qui/config.js'
 import * as Forms                from '$qui/forms/forms.js'
@@ -22,6 +23,7 @@ import {StickySimpleMessageForm} from '$qui/messages/common-message-forms.js'
 import * as Messages             from '$qui/messages/messages.js'
 import * as Navigation           from '$qui/navigation.js'
 import * as Pages                from '$qui/pages/pages.js'
+import * as PWA                  from '$qui/pwa.js'
 import * as Sections             from '$qui/sections/sections.js'
 import * as Theme                from '$qui/theme.js'
 import * as ArrayUtils           from '$qui/utils/array.js'
@@ -116,6 +118,13 @@ import '$qui/window.js'
 
 
 const logger = Logger.get('qui')
+
+/**
+ * A condition that is fulfilled as soon as the app is fully initialized and ready to be used.
+ * @alias qui.whenReady
+ * @type {qui.base.ConditionVariable}
+ */
+export let whenReady = new ConditionVariable()
 
 
 function initConfig() {
@@ -290,6 +299,7 @@ export function init() {
     .then(() => Forms.init())
     .then(() => configureGlobalErrorHandling())
     .then(function () {
+        whenReady.fulfill()
         logger.debug('QUI is ready')
     })
 }
