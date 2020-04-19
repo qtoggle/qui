@@ -6,6 +6,7 @@ import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
 import {gettext}           from '$qui/base/i18n.js'
+import ConditionVariable   from '$qui/base/condition-variable.js'
 import Config              from '$qui/config.js'
 import * as Toast          from '$qui/messages/toast.js'
 import PageMixin           from '$qui/pages/page.js'
@@ -35,6 +36,13 @@ let currentURLPath = null
 let currentURLQuery = null
 let backMode = BACK_MODE_CLOSE
 
+
+/**
+ * A condition that is fulfilled as soon as the initial navigation is completed.
+ * @alias qui.navigation.whenInitialNavigationReady
+ * @type {qui.base.ConditionVariable}
+ */
+export let whenInitialNavigationReady = new ConditionVariable()
 
 /**
  * An error indicating that navigation could not be done beyond a certain path.
@@ -165,14 +173,20 @@ export function setBackMode(mode) {
  * @returns {Promise} a promise that settles as soon as the navigation ends, being rejected in case of any error
  */
 export function navigateInitial() {
+    let promise
+
     if (initialURLPath) {
         logger.debug(`initial navigation to ${initialURLPath}`)
-        return navigate(initialURLPath)
+        promise = navigate(initialURLPath)
     }
     else {
         logger.debug('initial navigation to home')
-        return Sections.showHome()
+        promise = Sections.showHome()
     }
+
+    return promise.then(function () {
+        whenInitialNavigationReady.fulfill()
+    })
 }
 
 /**

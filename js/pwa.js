@@ -7,11 +7,13 @@ import Logger from '$qui/lib/logger.module.js'
 import {AssertionError}  from '$qui/base/errors.js'
 import Signal            from '$qui/base/signal.js'
 import Config            from '$qui/config.js'
+import * as QUI          from '$qui/index.js'
+import * as Navigation   from '$qui/navigation.js'
 import * as Theme        from '$qui/theme.js'
 import {appendBuildHash} from '$qui/utils/misc.js'
+import * as PromiseUtils from '$qui/utils/promise.js'
 import URL               from '$qui/utils/url.js'
 import * as Window       from '$qui/window.js'
-import * as QUI          from '$qui/index.js'
 
 
 const SERVICE_WORKER_SCRIPT = 'service-worker.js'
@@ -279,6 +281,9 @@ export function init() {
     Window.$window.on('beforeinstallprompt', function (e) {
         logger.debug('received install prompt event')
         if (installElementHandler) {
+            let promptEvent = e.originalEvent
+            promptEvent.preventDefault()
+
             if (installPrompted) {
                 logger.debug('ignoring subsequent install prompt event')
                 return
@@ -286,12 +291,11 @@ export function init() {
 
             installPrompted = true
 
-            let promptEvent = e.originalEvent
-            promptEvent.preventDefault()
-
-            /* Don't call the install handler before QUI is ready, as it will probably use UI elements that need to be
-             * initialized first */
-            QUI.whenReady.then(function () {
+            /* Don't call the install handler before QUI & initial navigation are ready, as it will probably use UI
+             * elements that need to be initialized first; add an extra delay to allow the UI animations to settle */
+            Promise.all([QUI.whenReady, Navigation.whenInitialNavigationReady]).then(function () {
+                return PromiseUtils.later(1000)
+            }).then(function () {
                 logger.debug('calling install handler')
                 installElementHandler().then(function (element) {
                     element.on('click', function clickHandler() {
@@ -313,7 +317,7 @@ export function init() {
                             }
                         })
                     })
-                })
+                }).catch(() => {})
             })
         }
     })
