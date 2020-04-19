@@ -170,16 +170,13 @@ function evaluateScreenLayout() {
 }
 
 /**
- * Tell whether the screen is small or not. A screen is considered small if its width or height are below a *small*
+ * Tell whether the screen is small or not. A screen is considered small if its width is below a *small*
  * threshold.
  * @alias qui.window.isSmallScreen
  * @returns {Boolean}
  */
 export function isSmallScreen() {
-    let width = document.documentElement.clientWidth
-    let height = document.documentElement.clientHeight
-
-    return Math.min(width, height) <= smallScreenThreshold * scalingFactor
+    return document.documentElement.clientWidth <= smallScreenThreshold * scalingFactor
 }
 
 /**
