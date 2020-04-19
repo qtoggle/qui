@@ -28,7 +28,12 @@
     <head>
         <title>{% block title %}{{ display_name }}{% endblock %}</title>
 
-        <link rel="manifest">
+        {% if enable_pwa %}
+        <link rel="manifest" href="manifest.json?display_name={{ display_name|urlquote }}&
+                                                 theme_color={{ theme_color|urlquote }}&
+                                                 background_color={{ background_color|urlquote }}&
+                                                 description={{ description|urlquote }}">
+        {% endif %}
         <link rel="icon" href="{{ static_url }}/img/launcher-icon-32.png">
         <link rel="apple-touch-icon" href="{{ static_url }}/img/launcher-icon-32.png">
 

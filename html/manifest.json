@@ -1,7 +1,7 @@
 {
     "lang": "en-US",
-    {% if display_short_name -%}"short_name": "{{ display_short_name }}",{%- endif %}
-    {% if display_name -%}"name": "{{ display_name }}",{%- endif %}
+    {% if display_short_name or display_name -%}"short_name": "{{ display_short_name or display_name }}",{%- endif %}
+    {% if display_name or display_short_name -%}"name": "{{ display_name or display_short_name }}",{%- endif %}
     {% if description -%}"description": "{{ description }}",{%- endif %}
     {% if version -%}"version": "{{ version }}",{%- endif %}
     {% if theme_color -%}"theme_color": "{{ theme_color }}",{%- endif %}
