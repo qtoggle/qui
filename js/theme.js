@@ -24,6 +24,7 @@ const logger = Logger.get('qui.theme')
 let currentTheme = null
 let themeVars = null
 let transitionDuration = null
+let effectsDisabled = null
 
 
 /**
@@ -58,7 +59,15 @@ export function setCurrent(theme) {
 
     logger.debug(`setting theme to ${theme}`)
 
-    /* Fade out body during 500ms */
+    if (Window.$body == null) {
+        return Promise.resolve() /* Not initialized yet */
+    }
+
+    return updateCurrent()
+}
+
+function updateCurrent() {
+    /* Fade out body */
     Window.$body.css('opacity', '')
 
     function isLoaded() {
@@ -71,7 +80,7 @@ export function setCurrent(theme) {
             let value = parts[1].split(';')[0].trim()
             value = value.replace(/"/g, '') /* Remove quotation marks */
 
-            return value === theme
+            return value === currentTheme
         })
     }
 
@@ -80,7 +89,7 @@ export function setCurrent(theme) {
             return Promise.resolve()
         }
         else {
-            return PromiseUtils.later(100).then(() => loadedOrLater())
+            return PromiseUtils.later(10).then(() => loadedOrLater())
         }
     }
 
@@ -91,7 +100,7 @@ export function setCurrent(theme) {
         $('link[theme]').each(function () {
             let $link = $(this)
             let linkTheme = $link.attr('theme')
-            if (linkTheme === theme) {
+            if (linkTheme === currentTheme) {
                 $link.removeAttr('disabled')
             }
             else {
@@ -101,15 +110,15 @@ export function setCurrent(theme) {
 
         return loadedOrLater().then(function () {
 
-            logger.debug(`theme set to ${theme}`)
+            logger.debug(`theme set to ${currentTheme}`)
 
             /* Invalidate theme vars */
             themeVars = null
 
             /* Finally, emit change signal */
-            changeSignal.emit(theme)
+            changeSignal.emit(currentTheme)
 
-            /* Fade in body, but allow another 500ms for section soft reload */
+            /* Consider the theme updated, but allow another 500ms for section soft reload */
             setTimeout(function () {
                 Window.$body.css('opacity', '1')
             }, 500)
@@ -243,7 +252,15 @@ export function afterTransitionPromise(element = null) {
  * @alias qui.theme.enableEffects
  */
 export function enableEffects() {
-    Window.$body.removeClass('effects-disabled')
+    if (!effectsDisabled) {
+        return
+    }
+    effectsDisabled = false
+    logger.debug('enabling effects')
+
+    if (Window.$body != null) {
+        Window.$body.removeClass('effects-disabled')
+    }
 }
 
 /**
@@ -252,7 +269,15 @@ export function enableEffects() {
  * @alias qui.theme.disableEffects
  */
 export function disableEffects() {
-    Window.$body.addClass('effects-disabled')
+    if (effectsDisabled) {
+        return
+    }
+    effectsDisabled = true
+    logger.debug('disabling effects')
+
+    if (Window.$body != null) {
+        Window.$body.addClass('effects-disabled')
+    }
 }
 
 
@@ -262,20 +287,18 @@ export function disableEffects() {
  * @returns {Promise} a promise that is resolved when theme subsystem has been initialized
  */
 export function init() {
-    if (Config.defaultEffectsDisabled) {
-        disableEffects()
+    if (effectsDisabled == null) {
+        effectsDisabled = Config.defaultEffectsDisabled
     }
-    else {
-        enableEffects()
+    if (currentTheme == null) {
+        currentTheme = Config.defaultTheme
     }
 
-    return setCurrent(Config.defaultTheme).then(function () {
+    Window.$body.toggleClass('effects-disabled', effectsDisabled)
 
-        /* Now that the theme is loaded, we can fade in the body */
-        Window.$body.removeClass('disable-transitions')
-        asap(function () {
-            Window.$body.css('opacity', '1')
-        })
-
+    return updateCurrent().then(function () {
+        /* Normally updateCurrent() will take care of fading in body, adds extra 500ms for section soft reload.
+         * This being the first call, we want the body visible as soon as theme is loaded */
+        Window.$body.css('opacity', '1')
     })
 }

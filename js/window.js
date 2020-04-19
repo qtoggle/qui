@@ -209,7 +209,9 @@ export function setSmallScreenThreshold(threshold) {
         smallScreenThreshold = Config.defaultSmallScreenThreshold
     }
 
-    evaluateScreenLayout()
+    if ($body != null) {
+        evaluateScreenLayout()
+    }
 }
 
 /**
@@ -245,15 +247,17 @@ export function setScalingFactor(factor) {
     logger.debug(`setting scaling factor to ${factor}`)
     scalingFactor = factor
 
-    if (scalingFactor === 1) {
-        $body.css('zoom', '')
-    }
-    else {
-        $body.css('zoom', `${factor * 100}%`)
-    }
+    if ($body != null) {
+        if (scalingFactor === 1) {
+            $body.css('zoom', '')
+        }
+        else {
+            $body.css('zoom', `${factor * 100}%`)
+        }
 
-    /* Changing scaling factor will effectively change the perceived size of the window */
-    $window.trigger('resize')
+        /* Changing scaling factor will effectively change the perceived size of the window */
+        $window.trigger('resize')
+    }
 }
 
 /**
@@ -351,13 +355,22 @@ export function isClosing() {
 }
 
 export function init() {
-    smallScreenThreshold = Config.defaultSmallScreenThreshold
-    scalingFactor = Config.defaultScalingFactor
+    /* Initialize some settings with default values from configuration, but only if they haven't been initialized yet */
+    if (smallScreenThreshold == null) {
+        smallScreenThreshold = Config.defaultSmallScreenThreshold
+    }
+    if (scalingFactor == null) {
+        scalingFactor = Config.defaultScalingFactor
+    }
 
     /* Wrap main objects in jQuery */
     $document = $(document)
     $window = $(window)
     $body = $(document.body)
+
+    if (scalingFactor !== 1) {
+        $body.css('zoom', `${scalingFactor * 100}%`)
+    }
 
     /* Window resize handling */
     $window.on('resize', function () {
