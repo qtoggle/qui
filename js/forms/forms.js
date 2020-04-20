@@ -24,7 +24,7 @@ export class ValidationError extends Error {
      * @param {String} [message] the error message to be displayed to the user
      */
     constructor(message = null) {
-        super(message)
+        super(message || '')
     }
 
     toString() {
