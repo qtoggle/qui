@@ -14,15 +14,21 @@ class CompositeField extends FormField {
     /**
      * @constructs
      * @param {qui.forms.FormField[]} fields the list of subfields
-     * @param {String} [layout] align subfield widgets vertically (`"vertical"`) or horizontally (`"horizontal"`,
+     * @param {String} [flow] arrange subfield widgets vertically (`"vertical"`) or horizontally (`"horizontal"`,
      * default)
+     * @param {Number} [columns] number of columns (unlimited by default, when `flow` is `"horizontal"`, otherwise
+     * defaults to `1`)
+     * @param {Number} [rows] number of rows (unlimited by default, when `flow` is `"vertical"`, otherwise
+     * defaults to `1`)
      * @param {...*} args parent class parameters
      */
-    constructor({fields, layout = 'horizontal', ...args}) {
+    constructor({fields, flow = 'horizontal', columns = null, rows = null, ...args}) {
         super(args)
 
         this._fields = fields
-        this._layout = layout
+        this._flow = flow
+        this._columns = columns
+        this._rows = rows
     }
 
     focus() {
@@ -31,7 +37,25 @@ class CompositeField extends FormField {
     }
 
     makeWidget() {
-        let div = $('<div></div>', {class: `qui-composite-field-container layout-${this._layout}`})
+        let div = $('<div></div>', {class: 'qui-composite-field-container'})
+        if (this._flow === 'horizontal') {
+            if (this._columns) {
+                div.css('grid-template-columns', `repeat(${this._columns}, auto)`)
+                div.css('grid-auto-flow', 'row')
+            }
+            else {
+                div.css('grid-auto-flow', 'column')
+            }
+        }
+        else {
+            if (this._rows) {
+                div.css('grid-template-rows', `repeat(${this._rows}, auto)`)
+                div.css('grid-auto-flow', 'column')
+            }
+            else {
+                div.css('grid-auto-flow', 'row')
+            }
+        }
 
         this._fields.forEach(function (field) {
             field.getHTML()
