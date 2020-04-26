@@ -404,13 +404,16 @@ export function navigate(path, handleErrors = true, pageState = null) {
         }
 
         /* Count the number of path elements that are common between old and new paths.
-         * commonPathLen doesn't take into account section id */
+         * commonPathLen doesn't take into account section id.
+         * We also have to make sure we're on the same section. */
         let commonPathLen = 0
-        while ((oldPath.length > commonPathLen + 1) &&
-               (path.length > commonPathLen) &&
-               (oldPath[commonPathLen + 1] === path[commonPathLen])) {
+        if (oldPath[0] === section.getId()) {
+            while ((oldPath.length > commonPathLen + 1) &&
+                   (path.length > commonPathLen) &&
+                   (oldPath[commonPathLen + 1] === path[commonPathLen])) {
 
-            commonPathLen++
+                commonPathLen++
+            }
         }
 
         let currentContext = getCurrentContext()
