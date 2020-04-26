@@ -71,7 +71,7 @@ function softReload() {
         let currentPath = Navigation.getCurrentPath()
 
         return reset().then(function () {
-            return Navigation.navigate(currentPath)
+            return Navigation.navigate({path: currentPath, historyEntry: false})
         })
     }
 

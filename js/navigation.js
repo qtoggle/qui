@@ -177,7 +177,7 @@ export function navigateInitial() {
 
     if (initialURLPath) {
         logger.debug(`initial navigation to ${initialURLPath}`)
-        promise = navigate(initialURLPath)
+        promise = navigate({path: initialURLPath, historyEntry: false})
     }
     else {
         logger.debug('initial navigation to home')
@@ -257,8 +257,7 @@ export function makeInternalAnchor(path, content) {
     anchor.on('click', function (e) {
         /* Prevent browser navigation, handle navigation internally */
         e.preventDefault()
-        navigate(path)
-        addHistoryEntry()
+        navigate({path})
     })
 
     return anchor
@@ -271,9 +270,11 @@ export function makeInternalAnchor(path, content) {
  * @param {Boolean} [handleErrors] set to `false` to pass errors to the caller instead of handling them internally
  * (defaults to `true`)
  * @param {*} [pageState] optional history state to pass to {@link qui.navigation.PageMixin#restoreHistoryState}
+ * @param {Boolean} [historyEntry] whether to create a new history entry for current page before navigating (defaults
+ * to `true`)
  * @returns {Promise} a promise that settles as soon as the navigation ends, being rejected in case of any error
  */
-export function navigate(path, handleErrors = true, pageState = null) {
+export function navigate({path, handleErrors = true, pageState = null, historyEntry = true}) {
     /* Normalize path */
     if (typeof path === 'string') {
         path = path.split('/')
@@ -301,6 +302,10 @@ export function navigate(path, handleErrors = true, pageState = null) {
         else {
             throw error
         }
+    }
+
+    if (historyEntry) {
+        addHistoryEntry()
     }
 
     logger.debug(`navigating to "${pathStr}", pageState = "${JSON.stringify(pageState)}"`)
@@ -364,7 +369,7 @@ export function navigate(path, handleErrors = true, pageState = null) {
                 })
             }
 
-            return currentPage.pushPage(nextPage, /* addHistoryEntry = */ false).then(function () {
+            return currentPage.pushPage(nextPage, /* historyEntry = */ false).then(function () {
                 currIndex++
 
                 return nextPage.whenLoaded().then(function () {
@@ -404,13 +409,16 @@ export function navigate(path, handleErrors = true, pageState = null) {
         }
 
         /* Count the number of path elements that are common between old and new paths.
-         * commonPathLen doesn't take into account section id */
+         * commonPathLen doesn't take into account section id.
+         * We also have to make sure we're on the same section. */
         let commonPathLen = 0
-        while ((oldPath.length > commonPathLen + 1) &&
-               (path.length > commonPathLen) &&
-               (oldPath[commonPathLen + 1] === path[commonPathLen])) {
+        if (oldPath[0] === section.getId()) {
+            while ((oldPath.length > commonPathLen + 1) &&
+                   (path.length > commonPathLen) &&
+                   (oldPath[commonPathLen + 1] === path[commonPathLen])) {
 
-            commonPathLen++
+                commonPathLen++
+            }
         }
 
         let currentContext = getCurrentContext()
@@ -549,7 +557,7 @@ function initHistory() {
 
         updateCurrentURL()
         logger.debug(`hash-change: navigating to "${currentURLPath}"`)
-        navigate(currentURLPath)
+        navigate({path: currentURLPath, historyEntry: false})
     })
 
     Window.$window.on('popstate', function (e) {
@@ -583,11 +591,7 @@ function initHistory() {
             updateCurrentURL()
             logger.debug(`pop-state: going through history to "${currentURLPath}"`)
 
-            navigate(
-                currentURLPath,
-                /* handleErrors = */ true,
-                /* pageState = */ oe.state.pageState
-            ).catch(function () {
+            navigate({path: currentURLPath, pageState: oe.state.pageState, historyEntry: false}).catch(function () {
                 addHistoryEntry(oe.state)
             })
         }

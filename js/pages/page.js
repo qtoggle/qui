@@ -725,19 +725,19 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * Push a new page after this one. Any following pages will be closed. The new page is not guaranteed to be
          * pushed by the time the function exists.
          * @param {qui.pages.PageMixin} page the page to be pushed
-         * @param {Boolean} [addHistoryEntry] whether to create a new history entry for current page before adding the
-         * new page, or not (defaults to `true`)
+         * @param {Boolean} [historyEntry] whether to create a new history entry for current page before adding the new
+         * page, or not (defaults to `true`)
          * @returns {Promise} a promise that resolves as soon as the page is pushed, or rejected if the page cannot be
          * pushed
          */
-        pushPage(page, addHistoryEntry = true) {
+        pushPage(page, historyEntry = true) {
             let index = this._getIndex()
             if (index < 0) {
                 throw new AssertionError('Attempt to push from a contextless page')
             }
 
             let state = null
-            if (addHistoryEntry) {
+            if (historyEntry) {
                 state = Navigation.getCurrentHistoryEntryState()
             }
 
@@ -754,7 +754,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             }
 
             return promise.then(function () {
-                if (addHistoryEntry) {
+                if (historyEntry) {
                     Navigation.addHistoryEntry(state)
                 }
 
