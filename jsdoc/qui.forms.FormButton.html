@@ -29,7 +29,7 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.forms.html">.forms</a>.</span>FormButton<span class="signature">(id, caption, style<span class="signature-attributes">opt</span>, backgroundColor<span class="signature-attributes">opt</span>, backgroundActiveColor<span class="signature-attributes">opt</span>, foregroundColor<span class="signature-attributes">opt</span>, def<span class="signature-attributes">opt</span>, cancel<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.forms.html">.forms</a>.</span>FormButton<span class="signature">(id, caption, style<span class="signature-attributes">opt</span>, backgroundColor<span class="signature-attributes">opt</span>, backgroundActiveColor<span class="signature-attributes">opt</span>, foregroundColor<span class="signature-attributes">opt</span>, icon<span class="signature-attributes">opt</span>, def<span class="signature-attributes">opt</span>, cancel<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h2>
         
             <div class="class-description"><p>A form button.</p></div>
         
@@ -46,7 +46,7 @@
     
 
     
-    <h4 class="name" id="FormButton"><span class="type-signature"></span>new FormButton<span class="signature">(id, caption, style<span class="signature-attributes">opt</span>, backgroundColor<span class="signature-attributes">opt</span>, backgroundActiveColor<span class="signature-attributes">opt</span>, foregroundColor<span class="signature-attributes">opt</span>, def<span class="signature-attributes">opt</span>, cancel<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="FormButton"><span class="type-signature"></span>new FormButton<span class="signature">(id, caption, style<span class="signature-attributes">opt</span>, backgroundColor<span class="signature-attributes">opt</span>, backgroundActiveColor<span class="signature-attributes">opt</span>, foregroundColor<span class="signature-attributes">opt</span>, icon<span class="signature-attributes">opt</span>, def<span class="signature-attributes">opt</span>, cancel<span class="signature-attributes">opt</span>, callback<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h4>
     
 
     
@@ -248,8 +248,7 @@
 
             
 
-            <td class="description last"><p>custom background active color (ignored unless <code>style</code> is
-<code>&quot;colored&quot;</code>)</p></td>
+            <td class="description last"><p>custom background active color (ignored unless <code>style</code> is <code>&quot;colored&quot;</code>)</p></td>
         </tr>
 
     
@@ -283,6 +282,39 @@
             
 
             <td class="description last"><p>custom foreground color (ignored unless <code>style</code> is <code>&quot;colored&quot;</code>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>icon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="qui.icons.Icon.html">qui.icons.Icon</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>an optional button icon</p></td>
         </tr>
 
     
@@ -571,7 +603,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line125">line 125</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line128">line 128</a>
     </li></ul></dd>
     
 
@@ -659,7 +691,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line118">line 118</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line121">line 121</a>
     </li></ul></dd>
     
 
@@ -747,7 +779,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line140">line 140</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line143">line 143</a>
     </li></ul></dd>
     
 
@@ -835,7 +867,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line148">line 148</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line151">line 151</a>
     </li></ul></dd>
     
 
@@ -941,7 +973,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line181">line 181</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line184">line 184</a>
     </li></ul></dd>
     
 
@@ -1047,7 +1079,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line111">line 111</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line114">line 114</a>
     </li></ul></dd>
     
 
@@ -1202,7 +1234,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line91">line 91</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -1290,7 +1322,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line173">line 173</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line176">line 176</a>
     </li></ul></dd>
     
 
@@ -1396,7 +1428,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line165">line 165</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line168">line 168</a>
     </li></ul></dd>
     
 
@@ -1502,7 +1534,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line133">line 133</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line136">line 136</a>
     </li></ul></dd>
     
 
@@ -1657,7 +1689,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line156">line 156</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line159">line 159</a>
     </li></ul></dd>
     
 
@@ -1794,7 +1826,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line189">line 189</a>
+        <a href="forms_form-button.js.html">forms/form-button.js</a>, <a href="forms_form-button.js.html#line192">line 192</a>
     </li></ul></dd>
     
 
@@ -1846,7 +1878,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Mon Apr 20 2020 14:45:09 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Mon Apr 27 2020 20:53:02 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
