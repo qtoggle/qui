@@ -23,7 +23,7 @@ $.widget('qui.textinput', {
     _autocomplete_off: 'off',
 
     _create: function () {
-        this.element.addClass('text-input')
+        this.element.addClass('qui-text-input')
 
         if (this.type === 'textarea') {
             this._input = $('<textarea></textarea>')

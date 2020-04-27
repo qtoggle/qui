@@ -36,7 +36,7 @@ class FormButton extends mix().with(ViewMixin) {
         style = null,
         backgroundColor = '@interactive-color',
         backgroundActiveColor = '@interactive-active-color',
-        foregroundColor = '@foreground-active-color',
+        foregroundColor = '@foreground-interactive-color',
         icon = null,
         def = false,
         cancel = false,

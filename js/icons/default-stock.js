@@ -146,6 +146,7 @@ Stocks.register(NAME, function () {
 
             'background': getQUIStockVariantYOffset('background'),
             'foreground': getQUIStockVariantYOffset('foreground'),
+            'foreground-interactive': getQUIStockVariantYOffset('foreground-interactive'),
             'disabled': getQUIStockVariantYOffset('disabled'),
             'interactive': getQUIStockVariantYOffset('interactive'),
             'highlight': getQUIStockVariantYOffset('highlight'),

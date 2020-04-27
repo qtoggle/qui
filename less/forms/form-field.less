@@ -7,35 +7,40 @@ div.qui-form-field {
     white-space: nowrap;
     transition: height @transition-duration ease, opacity @transition-duration ease;
     position: relative;
-}
 
-div.qui-form-field.first-visible {
-    padding-top: 0;
-}
-
-div.qui-form-field.last-visible {
-    padding-bottom: 0;
-}
-
-div.qui-form-field.hidden {
-    opacity: 0;
-}
-
-div.qui-form-field.separator:NOT(.first-visible) {
-    border-top: 0.0625em solid @border-color;
-    margin-top: 0.5em;
-    padding-top: 0.5em;
-}
-
-form.qui-form.compact > div.qui-form-body {
-
-    & > div.qui-form-field:NOT(.force-one-line) {
-        white-space: normal;
+    &.first-visible {
+        padding-top: 0;
     }
 
-    & > div.qui-form-field.separator:NOT(.first-visible) {
-        margin-top: 0.25em;
-        padding-top: 0.25em;
+    &.last-visible {
+        padding-bottom: 0;
+    }
+
+    &.hidden {
+        opacity: 0;
+    }
+
+    &.separator:NOT(.first-visible) {
+        border-top: 0.0625em solid @border-color;
+        margin-top: 0.5em;
+        padding-top: 0.5em;
+    }
+
+    form.qui-form.compact > div.qui-form-body > & {
+
+        &:NOT(.force-one-line) {
+            white-space: normal;
+        }
+
+        &.separator:NOT(.first-visible) {
+            margin-top: 0.25em;
+            padding-top: 0.25em;
+        }
+
+        &:NOT(.force-one-line) {
+            padding-top: 0.4em;
+        }
+
     }
 
 }
@@ -140,30 +145,64 @@ div.qui-form-field.auto-width {
 }
 
 
-/* Label & value */
+/* Label */
 
 div.qui-form-field-label {
-    display: inline-block;
+    display: none;
     width: 50%;
     padding: 0.2em 0.5em 0.2em 0.2em;
     white-space: normal;
     box-sizing: border-box;
     vertical-align: middle;
+    grid-auto-flow: column;
+    justify-content: right;
+    align-items: center;
+    text-align: right;
+
+    div.qui-form-field.has-label > & {
+        display: inline-grid;
+    }
+
+    div.qui-form-field.auto-width > & {
+        width: auto;
+    }
+
+    form.qui-form.compact > div.qui-form-body > div.qui-form-field > & {
+        justify-content: left;
+        text-align: left;
+    }
+
+    form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line) > & {
+        width: 100%;
+    }
+
+    & > span.qui-form-field-unit {
+        display: none;
+        font-size: 75%;
+        color: fade(@foreground-color, 75%);
+        margin-left: 0.25em;
+    }
+
+    div.qui-form-field.has-unit > & > span.qui-form-field-unit {
+        display: inline-block;
+    }
+
+    & > div.qui-form-field-description-icon {
+        display: none;
+        cursor: pointer;
+        margin-left: 0.25em;
+        width: 1em;
+        height: 1em;
+    }
+
+    div.qui-form-field.has-description > & > div.qui-form-field-description-icon {
+        display: inline-block;
+    }
+
 }
 
-div.qui-form-field.required > div.qui-form-field-label {
-}
 
-div.qui-form-field.has-description > div.qui-form-field-label {
-    color: @interactive-color;
-    cursor: pointer;
-    transition: color @transition-duration ease;
-    .noselect();
-}
-
-div.qui-form-field.has-description > div.qui-form-field-label:ACTIVE {
-    color: @interactive-active-color;
-}
+/* Value */
 
 div.qui-form-field-value {
     display: inline-block;
@@ -171,59 +210,33 @@ div.qui-form-field-value {
     vertical-align: middle;
     box-sizing: border-box;
     padding: 0.2em 0;
-}
-
-div.qui-form-field.side-icon-visible > div.qui-form-field-value {
-    padding-right: 2em;
-    margin-right: -1.5em; /* Makes place for the side icon */
-}
-
-div.qui-form-field-value > * {
-    box-sizing: border-box;
-}
-
-form.qui-form.fields-alignment-center > div.qui-form-body > div.qui-form-field > div.qui-form-field-label {
-    text-align: right;
-}
-
-form.qui-form.fields-alignment-sides > div.qui-form-body > div.qui-form-field > div.qui-form-field-label {
     text-align: left;
-}
 
-form.qui-form.fields-alignment-center > div.qui-form-body > div.qui-form-field > div.qui-form-field-value {
-    text-align: left;
-}
+    div.qui-form-field.side-icon-visible > & {
+        padding-right: 2em;
+        margin-right: -1.5em; /* Makes place for the side icon */
+    }
 
-form.qui-form.fields-alignment-sides > div.qui-form-body > div.qui-form-field > div.qui-form-field-value {
-    text-align: right;
-}
+    & > * {
+        box-sizing: border-box;
+    }
 
-form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line) {
+    form.qui-form.compact > div.qui-form-body > div.qui-form-field > & {
+        text-align: right;
+    }
 
-    padding-top: 0.4em;
-
-    & > div.qui-form-field-label,
-    & > div.qui-form-field-value {
+    form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line) > & {
         width: 100%;
     }
 
-    &.last-visible > div.qui-form-field-value {
+    form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line).last-visible > & {
         padding-bottom: 0;
     }
 
-}
+    div.qui-form-field.auto-width > & {
+        width: auto;
+    }
 
-div.qui-form-field.auto-width > div.qui-form-field-label,
-div.qui-form-field.auto-width > div.qui-form-field-value {
-    width: auto;
-}
-
-
-/* Unit */
-
-span.qui-form-field-unit {
-    font-size: 75%;
-    color: fade(@foreground-color, 75%);
 }
 
 

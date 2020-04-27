@@ -24,7 +24,6 @@ class OptionsForm extends Form {
             width: 'auto',
             largeTop: false,
             noBackground: true,
-            fieldsAlignment: 'sides',
             topless: true,
             continuousValidation: true
         })
