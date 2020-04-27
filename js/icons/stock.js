@@ -22,7 +22,7 @@ class Stock {
      * aliases of the default stock ({@link qui.icons.defaultstock} are used if not supplied
      *
      */
-    constructor({src, unit, size, width, height, names, variants = null, variantAliases = {}}) {
+    constructor({src, unit, size, width, height, names, variants = null, variantAliases = null}) {
         this.src = src
         this.unit = unit
         this.size = size
