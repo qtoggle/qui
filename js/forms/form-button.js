@@ -22,9 +22,9 @@ class FormButton extends mix().with(ViewMixin) {
      *  * `"danger"`
      *  * `"colored"`
      * @param {String} [backgroundColor] custom background color (ignored unless `style` is `"colored"`)
-     * @param {String} [backgroundActiveColor] custom background active color (ignored unless `style` is
-     *  `"colored"`)
+     * @param {String} [backgroundActiveColor] custom background active color (ignored unless `style` is `"colored"`)
      * @param {String} [foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
+     * @param {qui.icons.Icon} [icon] an optional button icon
      * @param {Boolean} [def] indicates that the button is the default form button (defaults to `false`)
      * @param {Boolean} [cancel] indicates that the button is the cancel form button (defaults to `false`)
      * @param {Function} [callback] called when button is pressed; will be called with the form as argument
@@ -37,6 +37,7 @@ class FormButton extends mix().with(ViewMixin) {
         backgroundColor = '@interactive-color',
         backgroundActiveColor = '@interactive-active-color',
         foregroundColor = '@foreground-active-color',
+        icon = null,
         def = false,
         cancel = false,
         callback = null,
@@ -50,6 +51,7 @@ class FormButton extends mix().with(ViewMixin) {
         this._backgroundColor = backgroundColor
         this._backgroundActiveColor = backgroundActiveColor
         this._foregroundColor = foregroundColor
+        this._icon = icon
         this._def = def
         this._cancel = cancel
         this._callback = callback
@@ -72,7 +74,8 @@ class FormButton extends mix().with(ViewMixin) {
             style: this._style,
             backgroundColor: this._backgroundColor,
             backgroundActiveColor: this._backgroundActiveColor,
-            foregroundColor: this._foregroundColor
+            foregroundColor: this._foregroundColor,
+            icon: this._icon
         }
 
         let html = $('<div></div>', {class: 'qui-form-button'}).pushbutton(attrs)

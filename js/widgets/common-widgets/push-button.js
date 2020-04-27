@@ -1,7 +1,7 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
-import * as Theme from '$qui/theme.js'
+import * as Theme  from '$qui/theme.js'
 import * as Colors from '$qui/utils/colors.js'
 
 
@@ -13,6 +13,7 @@ $.widget('qui.pushbutton', {
         backgroundColor: '@interactive-color',
         backgroundActiveColor: '@interactive-active-color',
         foregroundColor: '@foreground-active-color',
+        icon: null,
         disabled: false
     },
 
@@ -28,6 +29,8 @@ $.widget('qui.pushbutton', {
         }
 
         this._setStyle(this.options.style)
+        this._setIcon(this.options.icon)
+        this._setCaption(this.options.caption)
 
         this.element.on('click', function (e) {
             if (widget.options.disabled) {
@@ -37,8 +40,6 @@ $.widget('qui.pushbutton', {
 
         /* When specifying custom colors, we have to manually update background color */
         this.element.on('pressed released', () => this._updateStyle())
-
-        this.element.html(this.options.caption)
 
         this.element.on('keydown', function (e) {
             if (e.which === 32) {
@@ -75,6 +76,41 @@ $.widget('qui.pushbutton', {
         }
     },
 
+    _setIcon: function (icon) {
+        this.element.toggleClass('has-icon', icon)
+        this.element.children('div.qui-push-button-icon').remove()
+
+        if (icon) {
+            let iconDiv = $('<div></div>', {class: 'qui-push-button-icon'})
+            let variant = 'white' /* Default */
+
+            if (this.options.disabled) {
+                variant = 'disabled'
+            }
+            else if ((this.options.style === 'colored') && this.options.foregroundColor.startsWith('@')) {
+                /* Default is @foreground-active-color, but we don't have a foreground-active icon variant alias */
+                if (this.options.foregroundColor !== '@foreground-active-color') {
+                    variant = this.options.foregroundColor.slice(1, -6)
+                }
+            }
+
+            icon = icon.alterDefault({variant: variant})
+            icon = icon.alter({scale: 0.75})
+            icon.applyTo(iconDiv)
+
+            this.element.prepend(iconDiv)
+        }
+    },
+
+    _setCaption: function (caption) {
+        this.element.children('span.qui-push-button-caption').remove()
+
+        let captionDiv = $('<span></span>', {class: 'qui-push-button-caption'})
+        captionDiv.html(caption)
+
+        this.element.append(captionDiv)
+    },
+
     _setOption: function (key, value) {
         this._super(key, value)
 
@@ -92,11 +128,17 @@ $.widget('qui.pushbutton', {
                 break
 
             case 'caption':
-                this.element.html(this.options.caption)
+                this._setCaption(value)
                 break
 
             case 'style':
                 this._setStyle(value)
+                /* Icon must also be updated as the foreground color might have changed */
+                this._setIcon(this.options.icon)
+                break
+
+            case 'icon':
+                this._setIcon(value)
                 break
         }
     }

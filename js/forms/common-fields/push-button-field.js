@@ -23,6 +23,7 @@ class PushButtonField extends JQueryUIField {
      * @param {String} [backgroundColor] custom background color (ignored unless `style` is `"colored"`)
      * @param {String} [backgroundActiveColor] custom background active color (ignored unless `style` is `"colored"`)
      * @param {String} [foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
+     * @param {qui.icons.Icon} [icon] an optional button icon
      * @param {...*} args parent class parameters
      */
     constructor({
@@ -32,15 +33,17 @@ class PushButtonField extends JQueryUIField {
         backgroundColor = '@interactive-color',
         backgroundActiveColor = '@interactive-active-color',
         foregroundColor = '@foreground-active-color',
+        icon = null,
         ...args
     }) {
         super({
             widgetAttrs: {
-                caption: caption,
-                style: style,
-                backgroundColor: backgroundColor,
-                backgroundActiveColor: backgroundActiveColor,
-                foregroundColor: foregroundColor
+                caption,
+                style,
+                backgroundColor,
+                backgroundActiveColor,
+                foregroundColor,
+                icon
             },
             ...args
         })
@@ -115,6 +118,14 @@ class PushButtonField extends JQueryUIField {
      */
     setForegroundColor(color) {
         this._widgetCall({foregroundColor: color})
+    }
+
+    /**
+     * Update button icon.
+     * @param {?qui.icons.Icon} icon
+     */
+    setIcon(icon) {
+        this._widgetCall({icon: icon})
     }
 
 }
