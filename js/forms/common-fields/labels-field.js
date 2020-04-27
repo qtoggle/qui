@@ -15,8 +15,8 @@ class LabelsField extends JQueryUIField {
     /**
      * @constructs
      * @param {String} [color] the label text color (defaults to `@background-color`)
-     * @param {String} [background] the default label background color, used unless the given labels specify
-     * otherwise (defaults to `@foreground-color`)
+     * @param {String} [background] the default label background color, used unless the given labels specify otherwise
+     * (defaults to `@foreground-color`)
      * @param {Boolean} [chevrons] set to `true` if you want to join labels using chevron-like arrows
      * @param {Boolean} [clickable] set to `true` if you want your labels to be clickable
      * @param {Function} [onClick] function to be executed when a label is clicked (see

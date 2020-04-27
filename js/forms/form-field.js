@@ -151,6 +151,17 @@ class FormField extends mix().with(ViewMixin) {
             }
         }
 
+        if (this._label) {
+            this._labelDiv.children('span.qui-form-field-label-caption').html(this._label)
+            html.addClass('has-label')
+        }
+
+        /* Unit */
+        if (this._unit) {
+            this._labelDiv.find('span.qui-form-field-unit').text(`(${this._unit})`)
+            html.addClass('has-unit')
+        }
+
         /* Value */
         this._valueDiv = this.makeValueHTML()
         html.append(this._valueDiv)
@@ -163,12 +174,6 @@ class FormField extends mix().with(ViewMixin) {
         html.append(this._sideIconDiv)
 
         /* Other attributes */
-        if (this._unit) {
-            let unitSpan = $('<span></span>', {class: 'qui-form-field-unit'})
-            unitSpan.text(` (${this._unit})`)
-            html.children('div.qui-form-field-label').append(unitSpan)
-        }
-
         if (this._required) {
             html.addClass('required')
         }
@@ -256,12 +261,25 @@ class FormField extends mix().with(ViewMixin) {
      */
     makeLabelHTML() {
         let labelDiv = $('<div></div>', {class: 'qui-form-field-label'})
-        labelDiv.html(this._label)
-        if (!this._label) {
-            labelDiv.css('display', 'none')
-        }
 
-        labelDiv.on('click', function () {
+        let captionSpan = $('<span></span>', {class: 'qui-form-field-label-caption'})
+        labelDiv.append(captionSpan)
+
+        let descriptionIcon = new StockIcon({
+            name: 'qmark',
+            variant: 'interactive',
+            activeVariant: 'interactive-active',
+            scale: 0.5
+        })
+
+        let unitSpan = $('<span></span>', {class: 'qui-form-field-unit'})
+        labelDiv.append(unitSpan)
+
+        let descriptionIconDiv = $('<div></div>', {class: 'qui-base-button qui-form-field-description-icon'})
+        descriptionIcon.applyTo(descriptionIconDiv)
+        labelDiv.append(descriptionIconDiv)
+
+        descriptionIconDiv.on('click', function () {
             if (this._description) {
                 this.setDescriptionVisible(!this.isDescriptionVisible())
             }
@@ -393,7 +411,8 @@ class FormField extends mix().with(ViewMixin) {
      */
     setLabel(label) {
         this._label = label
-        this.getHTML().children('div.qui-form-field-label').html(label || '')
+        this._labelDiv.children('div.qui-form-field-label-caption').html(label || '')
+        this.getHTML().toggleClass('has-label', Boolean(label))
     }
 
 
@@ -477,14 +496,8 @@ class FormField extends mix().with(ViewMixin) {
      */
     setUnit(unit) {
         this._unit = unit
-
-        this.getHTML().children('div.qui-form-field-label').children('span.qui-form-field-unit').remove()
-
-        if (unit) {
-            let unitSpan = $('<span></span>', {class: 'qui-form-field-unit'})
-            unitSpan.text(` (${this._unit})`)
-            this.getHTML().children('div.qui-form-field-label').append(unitSpan)
-        }
+        this._labelDiv.find('span.qui-form-field-unit').text(`(${this._unit || ''})`)
+        this.getHTML().toggleClass('has-unit', Boolean(unit))
     }
 
 

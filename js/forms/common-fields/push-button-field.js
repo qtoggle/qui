@@ -32,7 +32,7 @@ class PushButtonField extends JQueryUIField {
         style = 'interactive',
         backgroundColor = '@interactive-color',
         backgroundActiveColor = '@interactive-active-color',
-        foregroundColor = '@foreground-active-color',
+        foregroundColor = '@foreground-interactive-color',
         icon = null,
         ...args
     }) {

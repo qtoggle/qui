@@ -34,9 +34,6 @@ class Form extends mix().with(StructuredViewMixin) {
      * @param {Boolean} [compact] indicates that the form should be compact to better fit in smaller containers;
      * compact forms have field labels and values on separate lines, to reduce the overall form width (defaults to
      * `false`)
-     * @param {String} [fieldsAlignment] indicates how field labels and values are aligned:
-     *  * `"center"` - aligns labels to the right and values to the left (default)
-     *  * `"sides"` - aligns labels to the left and values to the right
      * @param {Number} [valuesWidth] sets the width of the values column, as percent, relative to the form body; when
      * set to `0` the width of each field's value will be computed automatically; this attribute is ignored for forms
      * that have `compact` set to `true` (defaults to `60`)
@@ -55,7 +52,6 @@ class Form extends mix().with(StructuredViewMixin) {
         width = null,
         noBackground = false,
         compact = false,
-        fieldsAlignment = 'center',
         valuesWidth = 60,
         continuousValidation = false,
         closeOnApply = true,
@@ -70,7 +66,6 @@ class Form extends mix().with(StructuredViewMixin) {
         this._width = width
         this._noBackground = noBackground
         this._compact = compact
-        this._fieldsAlignment = fieldsAlignment
         this._valuesWidth = valuesWidth
         this._continuousValidation = continuousValidation
         this._closeOnApply = closeOnApply
@@ -125,8 +120,6 @@ class Form extends mix().with(StructuredViewMixin) {
         if (this._compact) {
             html.addClass('compact')
         }
-
-        html.addClass(`fields-alignment-${this._fieldsAlignment}`)
 
         /* Progress */
         this._progressWidget = $('<div></div>', {class: 'qui-form-progress-widget'}).progressdisk({radius: '2em'})

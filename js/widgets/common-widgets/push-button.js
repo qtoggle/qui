@@ -12,7 +12,7 @@ $.widget('qui.pushbutton', {
         caption: 'Button',
         backgroundColor: '@interactive-color',
         backgroundActiveColor: '@interactive-active-color',
-        foregroundColor: '@foreground-active-color',
+        foregroundColor: '@foreground-interactive-color',
         icon: null,
         disabled: false
     },
@@ -82,16 +82,13 @@ $.widget('qui.pushbutton', {
 
         if (icon) {
             let iconDiv = $('<div></div>', {class: 'qui-push-button-icon'})
-            let variant = 'white' /* Default */
+            let variant = 'foreground-interactive' /* Default */
 
             if (this.options.disabled) {
                 variant = 'disabled'
             }
             else if ((this.options.style === 'colored') && this.options.foregroundColor.startsWith('@')) {
-                /* Default is @foreground-active-color, but we don't have a foreground-active icon variant alias */
-                if (this.options.foregroundColor !== '@foreground-active-color') {
-                    variant = this.options.foregroundColor.slice(1, -6)
-                }
+                variant = this.options.foregroundColor.slice(1, -6)
             }
 
             icon = icon.alterDefault({variant: variant})
