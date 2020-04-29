@@ -1,4 +1,6 @@
 
+import * as ObjectUtils from '$qui/utils/object.js'
+
 import JQueryUIField from './jquery-ui-field.js'
 
 
@@ -17,6 +19,9 @@ class ProgressDiskField extends JQueryUIField {
      * @param {...*} args parent class parameters
      */
     constructor({radius = '1em', caption = '%s%%', color = '@interactive-color', ...args}) {
+        /* We always prefer having the widget on the same line with its label */
+        ObjectUtils.setDefault(args, 'forceOneLine', true)
+
         super({widgetAttrs: {radius, caption, color}, ...args})
     }
 
@@ -42,6 +47,17 @@ class ProgressDiskField extends JQueryUIField {
      */
     setColor(color) {
         this._widgetCall({color})
+    }
+
+    setForm(form) {
+        // TODO: generalize this code
+        super.setForm(form)
+
+        /* On compact forms, reduce the value width when showing on the same line with label, so that label can take as
+         * much space as needed */
+        if (form.isCompact() && this.isForceOneLine() && this.getValueWidth() == null) {
+            this.setValueWidth(0)
+        }
     }
 
 }

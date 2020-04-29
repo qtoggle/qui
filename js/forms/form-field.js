@@ -281,17 +281,9 @@ class FormField extends mix().with(ViewMixin) {
             }
         }.bind(this))
 
-        if (this._form.isCompact()) {
-            /* On compact forms, we have labels aligned to left and thus we want description icon to appear before label */
-            labelDiv.append(descriptionIconDiv)
-            labelDiv.append(captionSpan)
-            labelDiv.append(unitSpan)
-        }
-        else {
-            labelDiv.append(captionSpan)
-            labelDiv.append(unitSpan)
-            labelDiv.append(descriptionIconDiv)
-        }
+        labelDiv.append(captionSpan)
+        labelDiv.append(unitSpan)
+        labelDiv.append(descriptionIconDiv)
 
         return labelDiv
     }
