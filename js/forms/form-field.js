@@ -263,27 +263,35 @@ class FormField extends mix().with(ViewMixin) {
         let labelDiv = $('<div></div>', {class: 'qui-form-field-label'})
 
         let captionSpan = $('<span></span>', {class: 'qui-form-field-label-caption'})
-        labelDiv.append(captionSpan)
 
         let descriptionIcon = new StockIcon({
             name: 'qmark',
-            variant: 'interactive',
-            activeVariant: 'interactive-active',
+            variant: 'disabled',
             scale: 0.5
         })
 
         let unitSpan = $('<span></span>', {class: 'qui-form-field-unit'})
-        labelDiv.append(unitSpan)
 
         let descriptionIconDiv = $('<div></div>', {class: 'qui-base-button qui-form-field-description-icon'})
         descriptionIcon.applyTo(descriptionIconDiv)
-        labelDiv.append(descriptionIconDiv)
 
         descriptionIconDiv.on('click', function () {
             if (this._description) {
                 this.setDescriptionVisible(!this.isDescriptionVisible())
             }
         }.bind(this))
+
+        if (this._form.isCompact()) {
+            /* On compact forms, we have labels aligned to left and thus we want description icon to appear before label */
+            labelDiv.append(descriptionIconDiv)
+            labelDiv.append(captionSpan)
+            labelDiv.append(unitSpan)
+        }
+        else {
+            labelDiv.append(captionSpan)
+            labelDiv.append(unitSpan)
+            labelDiv.append(descriptionIconDiv)
+        }
 
         return labelDiv
     }
