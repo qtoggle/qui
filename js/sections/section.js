@@ -206,6 +206,7 @@ class Section extends mix().with(SingletonMixin) {
 
     /**
      * Handle the event of section becoming hidden.
+     * @returns {Promise} a promise that resolves if the section can be hidden and rejected otherwise
      */
     handleHide() {
         /* Inform all pages of event */
@@ -213,6 +214,8 @@ class Section extends mix().with(SingletonMixin) {
         context.getPages().forEach(page => page.handleSectionHide())
 
         this.onHide()
+
+        return Promise.resolve()
     }
 
     /**
@@ -285,12 +288,22 @@ class Section extends mix().with(SingletonMixin) {
 
     _hide() {
         this.logger.debug('hiding section')
-        this.handleHide()
+        return this.handleHide().then(function () {
+            this._savedPagesContext = getCurrentContext()
+            this._button.removeClass('selected')
 
-        this._savedPagesContext = getCurrentContext()
-        this._button.removeClass('selected')
+            setCurrentContext(null)
+        }.bind(this)).catch(function (e) {
+            if (e == null) {
+                e = new Sections.HideCancelled()
+            }
 
-        setCurrentContext(null)
+            if (e instanceof Sections.HideCancelled) {
+                this.logger.debug('hiding cancelled')
+            }
+
+            throw e
+        }.bind(this))
     }
 
     /**

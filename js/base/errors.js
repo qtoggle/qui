@@ -25,3 +25,12 @@ export class TimeoutError extends Error {
  */
 export class NotImplementedError extends Error {
 }
+
+/**
+ * An error class used to indicate an operation that has been cancelled. Exceptions of this type are usually ignored and
+ * not treated as errors.
+ * @alias qui.base.errors.CancelledError
+ * @extends Error
+ */
+export class CancelledError extends Error {
+}

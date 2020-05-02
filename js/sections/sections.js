@@ -6,6 +6,7 @@ import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
 import {AssertionError} from '$qui/base/errors.js'
+import {CancelledError} from '$qui/base/errors.js'
 import StockIcon        from '$qui/icons/stock-icon.js'
 import * as OptionsBar  from '$qui/main-ui/options-bar.js'
 import * as Navigation  from '$qui/navigation.js'
@@ -35,6 +36,15 @@ let sectionClasses = []
 let sectionsList = []
 let currentSection = null
 let homeSection = null
+
+
+/**
+ * An error class used to prevent hiding sections.
+ * @alias qui.sections.HideCancelled
+ * @extends qui.base.errors.CancelledError
+ */
+export class HideCancelled extends CancelledError {
+}
 
 
 function attachSectionEventRelays() {
@@ -169,27 +179,33 @@ export function switchTo(section, source) {
 
     return section.whenPreloaded().then(function () {
         let oldSection = currentSection
-        let s = section.navigate([])
-        if (s !== section) {
-            logger.debug(`section "${section.getId()}" redirected to section "${s.getId()}"`)
-            return switchTo(s, source)
-        }
-
-        currentSection = section
-
-        if (source === undefined) {
-            source = 'program'
-        }
-
-        logger.debug(`switching to section "${section.getId()}" (source: ${source})`)
-
+        let hidePromise = Promise.resolve()
         if (oldSection) {
-            oldSection._hide()
+            hidePromise = oldSection._hide()
         }
 
-        return section._show(source, oldSection).then(function () {
+        return hidePromise.then(function () {
+
+            let s = section.navigate([])
+            if (s !== section) {
+                logger.debug(`section "${section.getId()}" redirected to section "${s.getId()}"`)
+                return switchTo(s, source)
+            }
+
+            currentSection = section
+
+            if (source === undefined) {
+                source = 'program'
+            }
+
+            logger.debug(`switching to section "${section.getId()}" (source: ${source})`)
+
+        }).then(function () {
+            return section._show(source, oldSection)
+        }).then(function () {
             Navigation.updateHistoryEntry()
         })
+
     })
 }
 

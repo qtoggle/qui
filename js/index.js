@@ -12,6 +12,7 @@ import '$qui/lib/jquery.longpress.js'
 import '$qui/lib/pep.js'
 
 import ConditionVariable         from '$qui/base/condition-variable.js'
+import {CancelledError}          from '$qui/base/errors.js'
 import {gettext}                 from '$qui/base/i18n.js'
 import Config                    from '$qui/config.js'
 import * as Forms                from '$qui/forms/forms.js'
@@ -257,6 +258,12 @@ function logCurrentConfig() {
 
 function configureGlobalErrorHandling() {
     window.addEventListener('unhandledrejection', function (e) {
+        /* Uncaught/unhandled cancelled errors are silently ignored */
+        if (e.reason instanceof CancelledError) {
+            e.preventDefault()
+            return
+        }
+
         logger.error(`unhandled promise rejection: ${e.reason || '<unspecified reason>'}`)
         if (e.reason != null) {
             logger.error(e.reason)
