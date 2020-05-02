@@ -68,13 +68,15 @@ function makeLessRule({type, theme, isProduction, appName, appFullPath, quiFullP
     const lessLoader = {
         loader: 'less-loader',
         options: {
-            globalVars: {
-                qui_theme: theme,
-                app_img_path: appImgPath,
-                app_font_path: appFontPath,
-                qui_img_path: escapeForLess(quiImgPath),
-                qui_font_path: escapeForLess(quiFontPath),
-                qui_less_path: escapeForLess(quiLessPath)
+            lessOptions: {
+                globalVars: {
+                    qui_theme: theme,
+                    app_img_path: appImgPath,
+                    app_font_path: appFontPath,
+                    qui_img_path: escapeForLess(quiImgPath),
+                    qui_font_path: escapeForLess(quiFontPath),
+                    qui_less_path: escapeForLess(quiLessPath)
+                }
             }
         }
     }
