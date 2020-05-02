@@ -29,11 +29,20 @@ class Section extends mix().with(SingletonMixin) {
      * @param {String} title section title
      * @param {qui.icons.Icon} icon section icon
      * @param {String} [buttonType] one of {@link qui.sections.BUTTON_TYPE_MENU_BAR} (default),
+     * @param {Boolean} [closeMainPageOnHide] set to `true` to close the main page when section is hidden
      * {@link qui.sections.BUTTON_TYPE_TOP_BAR} and {@link qui.sections.BUTTON_TYPE_NONE}
      * @param {Number} [index] sets the section position (ordering) in relation with other sections; by default,
      * sections are positioned based on their registration order
      */
-    constructor({id, title, icon, buttonType = Sections.BUTTON_TYPE_MENU_BAR, index = 0}) {
+    constructor({
+        id,
+        title,
+        icon,
+        buttonType = Sections.BUTTON_TYPE_MENU_BAR,
+        index = 0,
+        closeMainPageOnHide = false
+    }) {
+
         super()
 
         this._id = id
@@ -41,6 +50,7 @@ class Section extends mix().with(SingletonMixin) {
         this._icon = icon
         this._buttonType = buttonType
         this._index = index
+        this._closeMainPageOnHide = closeMainPageOnHide
 
         this._mainPage = null
         this._savedPagesContext = null
@@ -209,13 +219,20 @@ class Section extends mix().with(SingletonMixin) {
      * @returns {Promise} a promise that resolves if the section can be hidden and rejected otherwise
      */
     handleHide() {
-        /* Inform all pages of event */
-        let context = this.getPagesContext()
-        context.getPages().forEach(page => page.handleSectionHide())
+        let promise = Promise.resolve()
+        if (this._mainPage && this._closeMainPageOnHide) {
+            promise = this._mainPage.close()
+        }
 
-        this.onHide()
+        return promise.then(function () {
 
-        return Promise.resolve()
+            /* Inform all pages of event */
+            let context = this.getPagesContext()
+            context.getPages().forEach(page => page.handleSectionHide())
+
+            this.onHide()
+
+        }.bind(this))
     }
 
     /**
@@ -255,7 +272,7 @@ class Section extends mix().with(SingletonMixin) {
             if (index === 0) { /* Main page removed */
                 this._mainPage = null
             }
-        }.bind(this), /* once = */ true)
+        }.bind(this))
 
         this._mainPage.pushSelf(pagesContext)
     }
