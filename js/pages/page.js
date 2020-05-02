@@ -726,14 +726,19 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * pushed by the time the function exists.
          * @param {qui.pages.PageMixin} page the page to be pushed
          * @param {Boolean} [historyEntry] whether to create a new history entry for current page before adding the new
-         * page, or not (defaults to `true`)
+         * page, or not (determined automatically by default, using new page's `pathId`)
          * @returns {Promise} a promise that resolves as soon as the page is pushed, or rejected if the page cannot be
          * pushed
          */
-        pushPage(page, historyEntry = true) {
+        pushPage(page, historyEntry = null) {
             let index = this._getIndex()
             if (index < 0) {
                 throw new AssertionError('Attempt to push from a contextless page')
+            }
+
+            /* By default, pages with pathId will add a new history entry */
+            if (historyEntry == null) {
+                historyEntry = !!page.getPathId()
             }
 
             let state = null
