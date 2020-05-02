@@ -19,8 +19,6 @@ jobs:
         uses: actions/setup-node@v1.1.0
         with:
           node-version: '10.x'
-      - name: Update Source Version
-        run: sed -i "s/unknown-version//" package.json
       - name: Install Dev Deps
         run: npm install --only=dev
       - name: ESLint

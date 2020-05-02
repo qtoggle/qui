@@ -16,8 +16,6 @@ jobs:
         uses: actions/setup-node@v1.1.0
         with:
           node-version: '10.x'
-      - name: Update Source Version
-        run: sed -i "s/unknown-version//" package.json
       - name: Install Dev Deps
         run: npm install --only=dev
       - name: ESLint
@@ -35,7 +33,7 @@ jobs:
         with:
           tagRegex: "version-(.*)"
       - name: Update Source Version
-        run: sed -i "s/unknown-version/${{ steps.tagName.outputs.tag }}/" package.json
+        run: sed -i "s/0.0.0-unknown.0/${{ steps.tagName.outputs.tag }}/" package.json
       - name: Install
         run: |
           npm install && rm -rf docs/* js/lib/* && npx jsdoc -c jsdoc.conf.json
@@ -60,7 +58,7 @@ jobs:
         with:
           tagRegex: "version-(.*)"
       - name: Update Source Version
-        run: sed -i "s/unknown-version/${{ steps.tagName.outputs.tag }}/" package.json
+        run: sed -i "s/0.0.0-unknown.0/${{ steps.tagName.outputs.tag }}/" package.json
       - name: Publish to npm
         run: |
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
