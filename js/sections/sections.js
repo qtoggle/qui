@@ -168,9 +168,11 @@ export function all() {
  * @alias qui.sections.switchTo
  * @param {qui.sections.Section} section the section
  * @param {String} [source] optional source to pass to {@link qui.sections.Section#onShow} (defaults to `program`)
+ * @param {Boolean} [historyEntry] whether to create a new history entry for current context before switching to the
+ * new section, or not (defaults to `false`)
  * @returns {Promise} a promise that resolves as soon as the section is loaded.
  */
-export function switchTo(section, source) {
+export function switchTo(section, source, historyEntry = false) {
     /* If requested section is already the current section, do nothing more */
     if ((currentSection === section)) {
         Navigation.updateHistoryEntry()
@@ -181,7 +183,7 @@ export function switchTo(section, source) {
         let oldSection = currentSection
         let hidePromise = Promise.resolve()
         if (oldSection) {
-            hidePromise = oldSection._hide()
+            hidePromise = oldSection._hide(historyEntry)
         }
 
         return hidePromise.then(function () {

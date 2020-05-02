@@ -66,8 +66,7 @@ class Section extends mix().with(SingletonMixin) {
                 return
             }
 
-            Navigation.addHistoryEntry()
-            Sections.switchTo(this, /* source = */ 'button')
+            Sections.switchTo(this, /* source = */ 'button', /* historyEntry = */ true)
 
         }.bind(this))
 
@@ -303,11 +302,15 @@ class Section extends mix().with(SingletonMixin) {
         }.bind(this))
     }
 
-    _hide() {
+    _hide(historyEntry) {
         this.logger.debug('hiding section')
         return this.handleHide().then(function () {
             this._savedPagesContext = getCurrentContext()
             this._button.removeClass('selected')
+
+            if (historyEntry) {
+                Navigation.addHistoryEntry()
+            }
 
             setCurrentContext(null)
         }.bind(this)).catch(function (e) {
