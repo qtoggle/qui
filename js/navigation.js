@@ -361,7 +361,7 @@ export function navigate({path, handleErrors = true, pageState = null, historyEn
                 throw new PageNotFoundError(origPath, pathId, section, currentPage)
             }
 
-            let index = nextPage._getIndex()
+            let index = nextPage.getContextIndex()
             if (index >= 0) {
                 logger.debug('page with context, detected navigation flow stop')
                 return nextPage.whenLoaded().then(function () {

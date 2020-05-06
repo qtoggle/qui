@@ -349,7 +349,11 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             this.onResize()
         }
 
-        _getIndex() {
+        /**
+         * Return the index of this page in its context. If page has no context, `-1` is returned.
+         * @returns {Number}
+         */
+        getContextIndex() {
             if (!this._context) {
                 return -1
             }
@@ -394,7 +398,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                 return false /* Not part of current context */
             }
 
-            if (Window.isSmallScreen() && this._getIndex() < this._context.getSize() - 1) {
+            if (Window.isSmallScreen() && this.getContextIndex() < this._context.getSize() - 1) {
                 return false /* On small screens, only the last page is actually visible */
             }
 
@@ -489,7 +493,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
 
             /* Close all following pages */
             let promise = Promise.resolve()
-            let index = this._getIndex()
+            let index = this.getContextIndex()
             let context = this.getContext()
             if (index >= 0 && context && context.getSize() > index + 1) {
                 promise = context.getPageAt(index + 1).close(force)
@@ -731,7 +735,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * pushed
          */
         pushPage(page, historyEntry = null) {
-            let index = this._getIndex()
+            let index = this.getContextIndex()
             if (index < 0) {
                 throw new AssertionError('Attempt to push from a contextless page')
             }
@@ -809,7 +813,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * @returns {?qui.pages.PageMixin}
          */
         getNext() {
-            let index = this._getIndex()
+            let index = this.getContextIndex()
             if (index < 0) {
                 return null
             }
