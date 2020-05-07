@@ -46,7 +46,7 @@ export function update() {
 
         let breadcrumb = breadcrumbsContainer.children(`div.qui-breadcrumb:eq(${i})`)
         breadcrumb.toggleClass('selected', i === currentContext.getSize() - 1)
-        breadcrumb.toggleClass('back', (i === currentContext.getSize() - 2) && (i >= 0))
+        breadcrumb.toggleClass('back', (i === currentContext.getSize() - 2) && (i >= 0) && Window.isSmallScreen())
 
         lastIndex = i
     })
@@ -102,18 +102,23 @@ export function init() {
             }
 
             let state = Navigation.getCurrentHistoryEntryState()
+            let isBackButton = breadcrumb.hasClass('back')
 
             /* Close all pages following the page associated to clicked breadcrumb */
             let page = currentContext.getPageAt(i + 1)
             if (page) {
-                page.close().then(function () {
-                    Navigation.addHistoryEntry(state)
-                    Navigation.updateHistoryEntry()
-                }).catch(function () {
-                    logger.debug('breadcrumb navigation cancelled by rejected page close')
-                })
+                if ((Navigation.getBackMode() === Navigation.BACK_MODE_CLOSE) && isBackButton) {
+                    window.history.back()
+                }
+                else {
+                    page.close().then(function () {
+                        Navigation.addHistoryEntry(state)
+                        Navigation.updateHistoryEntry()
+                    }).catch(function () {
+                        logger.debug('breadcrumb navigation cancelled by rejected page close')
+                    })
+                }
             }
-
         })
     })
 }

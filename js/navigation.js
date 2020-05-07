@@ -20,12 +20,12 @@ import * as Window         from '$qui/window.js'
 /**
  * @alias qui.navigation.BACK_MODE_HISTORY
  */
-const BACK_MODE_HISTORY = 'history'
+export const BACK_MODE_HISTORY = 'history'
 
 /**
  * @alias qui.navigation.BACK_MODE_CLOSE
  */
-const BACK_MODE_CLOSE = 'close'
+export const BACK_MODE_CLOSE = 'close'
 
 const logger = Logger.get('qui.navigation')
 
@@ -166,6 +166,17 @@ function updateCurrentURL() {
 export function setBackMode(mode) {
     backMode = mode
     logger.debug(`back mode set to "${backMode}"`)
+}
+
+/**
+ * Return the function of the back button.
+ * @alias qui.navigation.getBackMode
+ * @returns {String} one of:
+ *  * {@link qui.navigation.BACK_MODE_CLOSE}
+ *  * {@link qui.navigation.BACK_MODE_HISTORY}
+ */
+export function getBackMode() {
+    return backMode
 }
 
 /**
@@ -562,13 +573,18 @@ function initHistory() {
 
     Window.$window.on('popstate', function (e) {
         let oe = e.originalEvent
-        if (oe.state == null) { /* Not ours */
+        if (oe.state == null || oe.state.pageState == null) { /* Not ours */
             return
         }
 
         if (backMode === BACK_MODE_CLOSE) {
             let context = getCurrentContext()
             let currentPage = context.getCurrentPage()
+
+            if (context.getSize() < oe.state.pageState.length) {
+                logger.debug('pop-state: ignoring forward history move')
+                return
+            }
 
             if (context.getSize() === 1) {
                 /* A context size of 1 indicates that only current section's main page is present; instead of closing
