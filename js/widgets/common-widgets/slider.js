@@ -1,8 +1,7 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
-import * as Gestures    from '$qui/utils/gestures.js'
-import * as StringUtils from '$qui/utils/string.js'
+import * as Gestures from '$qui/utils/gestures.js'
 
 
 const TEMPORARY_SHOW_VALUE_TIMEOUT = 500 /* Seconds */
@@ -387,7 +386,13 @@ $.widget('qui.slider', {
     _makeLabels: function () {
         this._labels.children('span.qui-slider-label:NOT(.qui-slider-cursor-label)').remove()
 
-        for (let i = 0; i < this.options.ticks.length; i += this.options.ticksStep) {
+        /* Ensure ticksStep is always strictly positive */
+        let ticksStep = this.options.ticksStep
+        if (ticksStep <= 0) {
+            ticksStep = 1
+        }
+
+        for (let i = 0; i < this.options.ticks.length; i += ticksStep) {
             let tick = this.options.ticks[i]
             let span = $('<span></span>', {class: 'qui-slider-label'})
             span.text(tick.label)
