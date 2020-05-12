@@ -120,43 +120,6 @@ body.small-screen form.qui-form.fixed-bottom {
 }
 
 
-/* Progress */
-
-div.qui-form-progress-widget.qui-progress-disk-container {
-    position: absolute;
-    left: 50%;
-    top: 4em;
-    margin-left: -2em;
-    z-index: 1001;
-    transform: scale(0);
-    transition: transform @transition-duration ease;
-    cursor: progress;
-}
-
-div.qui-form-progress-widget.qui-progress-disk-container.visible {
-    transform: scale(1);
-}
-
-div.qui-form-glass {
-    display: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transition: opacity @transition-duration ease;
-    opacity: 0;
-    background: @background-color;
-    cursor: progress;
-}
-
-div.qui-form-glass.visible {
-    opacity: 0.9;
-    z-index: 1000;
-
-}
-
-
 /* Error */
 
 div.qui-form-error {

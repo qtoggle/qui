@@ -5,10 +5,11 @@ import Logger from '$qui/lib/logger.module.js'
 import {gettext}             from '$qui/base/i18n.js'
 import {mix}                 from '$qui/base/mixwith.js'
 import StockIcon             from '$qui/icons/stock-icon.js'
-import * as Theme            from '$qui/theme.js'
 import {asap}                from '$qui/utils/misc.js'
 import * as StringUtils      from '$qui/utils/string.js'
+import {ProgressViewMixin}   from '$qui/views/common-views.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
+import ViewMixin             from '$qui/views/view.js'
 
 
 const logger = Logger.get('qui.lists.list')
@@ -26,8 +27,9 @@ const logger = Logger.get('qui.lists.list')
  * A list view.
  * @alias qui.lists.List
  * @mixes qui.views.commonviews.StructuredViewMixin
+ * @mixes qui.views.commonviews.ProgressViewMixin
  */
-class List extends mix().with(StructuredViewMixin) {
+class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin) {
 
     /**
      * @constructs
@@ -46,9 +48,6 @@ class List extends mix().with(StructuredViewMixin) {
         this._addElem = null
         this._searchElem = null
         this._filterInput = null
-        this._glassDiv = null
-        this._progressWidget = null
-        this._progressVisible = null
     }
 
     makeHTML() {
@@ -57,14 +56,6 @@ class List extends mix().with(StructuredViewMixin) {
 
     initHTML(html) {
         super.initHTML(html)
-
-        /* Progress */
-        this._progressWidget = $('<div></div>', {class: 'qui-list-progress-widget'}).progressdisk({radius: '2em'})
-        this._progressWidget.css('display', 'none')
-        this._glassDiv = $('<div></div>', {class: 'qui-list-glass'})
-
-        html.append(this._glassDiv)
-        html.append(this._progressWidget)
 
         /* Set initial items */
         if (this._items.length) {
@@ -452,61 +443,6 @@ class List extends mix().with(StructuredViewMixin) {
      * @returns {?Promise} an optional promise which, if rejected with no argument, will cancel the selection change
      */
     onSelectionChange(newItem, newIndex, oldItem, oldIndex) {
-    }
-
-
-    /* Progress */
-
-    showProgress(percent) {
-        if (percent == null) {
-            percent = -1
-        }
-
-        if (this._progressVisible) {
-            this._progressWidget.progressdisk('setValue', percent)
-            return
-        }
-
-        this._progressVisible = true
-
-        this._glassDiv.css('display', 'block')
-        this.getHTML().addClass('progress')
-        this._progressWidget.css('display', '')
-        this._progressWidget.progressdisk('setValue', percent)
-
-        asap(function () {
-
-            if (!this._progressVisible) {
-                return /* Progress already hidden */
-            }
-
-            this._glassDiv.addClass('visible')
-            this._progressWidget.addClass('visible')
-
-        }.bind(this))
-    }
-
-    hideProgress() {
-        this._glassDiv.removeClass('visible')
-        this.getHTML().removeClass('progress')
-        this._progressWidget.removeClass('visible')
-
-        this._progressVisible = false
-
-        Theme.afterTransition(function () {
-
-            if (this._progressVisible) {
-                return /* Progress re-shown in the meantime */
-            }
-
-            this._glassDiv.css('display', '')
-            this._progressWidget.css('display', 'none')
-
-        }.bind(this), this._glassDiv)
-    }
-
-    getProgressWidget() {
-        return this._progressWidget
     }
 
 }
