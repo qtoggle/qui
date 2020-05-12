@@ -1,0 +1,30 @@
+
+@import (reference) "theme";
+
+
+div.qui-progress-view-glass {
+    display: grid;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: opacity @transition-duration ease;
+    opacity: 0;
+    background: @background-color;
+    cursor: progress;
+    justify-content: center;
+
+    &.visible {
+        opacity: 1;
+        z-index: 1000;
+    }
+
+    & > div.qui-progress-view-widget {
+        position: relative;
+        top: 2em;
+        z-index: 1001;
+        cursor: progress;
+    }
+
+}

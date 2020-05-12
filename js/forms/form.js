@@ -6,8 +6,10 @@ import {mix}                 from '$qui/base/mixwith.js'
 import * as Theme            from '$qui/theme.js'
 import {asap}                from '$qui/utils/misc.js'
 import * as ObjectUtils      from '$qui/utils/object.js'
+import {ProgressViewMixin}   from '$qui/views/common-views.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
 import {STATE_NORMAL}        from '$qui/views/view.js'
+import ViewMixin             from '$qui/views/view.js'
 import * as Window           from '$qui/window.js'
 
 import {ErrorMapping}    from './forms.js'
@@ -24,7 +26,7 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
  * @alias qui.forms.Form
  * @mixes qui.views.commonviews.StructuredViewMixin
  */
-class Form extends mix().with(StructuredViewMixin) {
+class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin) {
 
     /**
      * @constructs
@@ -82,10 +84,7 @@ class Form extends mix().with(StructuredViewMixin) {
         /* Tells whether a field has been changed or not, since the last setData() or ever */
         this._fieldsByName = {}
 
-        this._glassDiv = null // TODO generalize glass div & progress into a mixin
         this._errorDiv = null
-        this._progressWidget = null
-        this._progressVisible = false
     }
 
 
@@ -120,14 +119,6 @@ class Form extends mix().with(StructuredViewMixin) {
         if (this._compact) {
             html.addClass('compact')
         }
-
-        /* Progress */
-        this._progressWidget = $('<div></div>', {class: 'qui-form-progress-widget'}).progressdisk({radius: '2em'})
-        this._progressWidget.css('display', 'none')
-        this._glassDiv = $('<div></div>', {class: 'qui-form-glass'})
-
-        html.append(this._glassDiv)
-        html.append(this._progressWidget)
 
         /* React on Escape and Enter keys */
         html.on('keydown', function (e) {
@@ -968,61 +959,6 @@ class Form extends mix().with(StructuredViewMixin) {
             }.bind(this))
 
         }.bind(this))
-    }
-
-
-    /* Progress state */
-
-    showProgress(percent) {
-        if (percent == null) {
-            percent = -1
-        }
-
-        if (this._progressVisible) {
-            this._progressWidget.progressdisk('setValue', percent)
-            return
-        }
-
-        this._progressVisible = true
-
-        this._glassDiv.css('display', 'block')
-        this.getHTML().addClass('progress')
-        this._progressWidget.css('display', '')
-        this._progressWidget.progressdisk('setValue', percent)
-
-        asap(function () {
-
-            if (!this._progressVisible) {
-                return /* Progress already hidden */
-            }
-
-            this._glassDiv.addClass('visible')
-            this._progressWidget.addClass('visible')
-
-        }.bind(this))
-    }
-
-    hideProgress() {
-        this._progressVisible = false
-
-        this._glassDiv.removeClass('visible')
-        this.getHTML().removeClass('progress')
-        this._progressWidget.removeClass('visible')
-
-        Theme.afterTransition(function () {
-
-            if (this._progressVisible) {
-                return /* Progress re-shown in the meantime */
-            }
-
-            this._glassDiv.css('display', '')
-            this._progressWidget.css('display', 'none')
-
-        }.bind(this), this._glassDiv)
-    }
-
-    getProgressWidget() {
-        return this._progressWidget
     }
 
 

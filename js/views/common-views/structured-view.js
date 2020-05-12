@@ -8,8 +8,6 @@ import * as Theme  from '$qui/theme.js'
 import {asap}      from '$qui/utils/misc.js'
 import * as Window from '$qui/window.js'
 
-import ViewMixin from '../view.js'
-
 
 const logger = Logger.get('qui.views.commonviews.structuredview')
 
@@ -18,12 +16,11 @@ const logger = Logger.get('qui.views.commonviews.structuredview')
 const StructuredViewMixin = Mixin((superclass = Object) => {
 
     /**
-     * A view with top, body and bottom elements.
+     * A view with top, body and bottom elements. Designed to be mixed together with {@link qui.views.ViewMixin}.
      * @alias qui.views.commonviews.StructuredViewMixin
      * @mixin
-     * @extends qui.views.ViewMixin
      */
-    class StructuredViewMixin extends ViewMixin(superclass) {
+    class StructuredViewMixin extends superclass {
 
         /**
          * @constructs
