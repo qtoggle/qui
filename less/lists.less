@@ -2,16 +2,16 @@
 @import (reference) "theme";
 
 
-/* list main div */
+/* Main div */
 
 div.qui-list {
     background: @background-color;
 }
 
 
-/* list items */
+/* Children */
 
-.qui-list-child {
+div.qui-list-child {
     display: block;
     height: 3em;
     overflow: hidden;
@@ -21,50 +21,43 @@ div.qui-list {
     border-bottom: 0.0625em solid @border-color;
     background: @background-color;
     color: @interactive-color;
+
+    &.active {
+        background: @background-active-color;
+    }
+
+    &.selected {
+        background: @interactive-color;
+        color: @background-color;
+    }
+
+    &.active.selected {
+        background: @interactive-active-color;
+        color: @background-color;
+    }
+
 }
 
-.qui-list-child.active {
-    background: @background-active-color;
-}
 
-.qui-list-child.selected {
-    background: @interactive-color;
-    color: @background-color;
-}
+/* Items */
 
-.qui-list-child.active.selected {
-    background: @interactive-active-color;
-    color: @background-color;
-}
-
-.qui-list-child > .qui-icon {
-    display: inline-block;
-    vertical-align: middle;
-    width: 2em;
-    height: 2em;
-    margin: 0.5em;
-}
-
-.qui-list-child > .label {
-    vertical-align: middle;
-}
-
-.qui-list-child.item {
+div.qui-list-child.qui-list-item {
     transition: height @transition-duration ease,
                 background @transition-duration ease,
                 color @transition-duration ease,
                 opacity @transition-duration ease;
+
+    &.hidden {
+        height: 0;
+        border: 0;
+    }
+
 }
 
-.qui-list-child.item.hidden {
-    height: 0;
-    border: 0;
-}
 
+/* Search */
 
-/* list search */
-
-.qui-list-child.search > div.qui-list-search-wrapper {
+div.qui-list-child.qui-list-search > div.qui-list-search-wrapper {
     position: relative;
 
     & > input[type=text] {
@@ -100,12 +93,30 @@ div.qui-list {
 }
 
 
-/* list add */
+/* Add */
 
-.qui-list-child.add {
+div.qui-list-child.qui-list-add {
     text-align: center;
+
+    & > .qui-icon {
+        margin-top: 0.5em;
+        width: 2em;
+        height: 2em;
+    }
+
 }
 
-.qui-list-child.add > .qui-icon {
-    margin-top: 0.5em;
+
+
+/* Icon-label list item */
+
+div.qui-icon-label-list-item {
+
+    & > .qui-icon {
+        vertical-align: middle;
+        width: 2em;
+        height: 2em;
+        margin: 0.5em;
+    }
+
 }

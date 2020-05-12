@@ -1,16 +1,17 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
-import {AssertionError} from '$qui/base/errors.js'
-import {gettext}        from '$qui/base/i18n.js'
-import {mix}            from '$qui/base/mixwith.js'
-import Icon             from '$qui/icons/icon.js'
-import StockIcon        from '$qui/icons/stock-icon.js'
-import * as Theme       from '$qui/theme.js'
-import {asap}           from '$qui/utils/misc.js'
-import ViewMixin        from '$qui/views/view.js'
-import {STATE_NORMAL}   from '$qui/views/view.js'
-import * as Window      from '$qui/window.js'
+import {AssertionError}  from '$qui/base/errors.js'
+import {gettext}         from '$qui/base/i18n.js'
+import {mix}             from '$qui/base/mixwith.js'
+import Icon              from '$qui/icons/icon.js'
+import StockIcon         from '$qui/icons/stock-icon.js'
+import * as Theme        from '$qui/theme.js'
+import {asap}            from '$qui/utils/misc.js'
+import VisibilityManager from '$qui/utils/visibility-manager.js'
+import ViewMixin         from '$qui/views/view.js'
+import {STATE_NORMAL}    from '$qui/views/view.js'
+import * as Window       from '$qui/window.js'
 
 import {STATE_APPLIED}   from './forms.js'
 import {ValidationError} from './forms.js'
@@ -76,7 +77,8 @@ class FormField extends mix().with(ViewMixin) {
         this._required = required
         this._readonly = readonly
         this._disabled = disabled
-        this._hidden = hidden
+        this._initiallyHidden = hidden
+        this._visibilityManager = null
         this._forceOneLine = forceOneLine
         this._valueWidth = valueWidth
 
@@ -191,15 +193,15 @@ class FormField extends mix().with(ViewMixin) {
             html.addClass('separator')
         }
 
-        if (this._hidden) {
-            html.addClass('hidden')
-            html.css('display', 'none')
-            this.getWidget().addClass('hidden')
-        }
-
         /* Initial value */
         if (this._initialValue != null) {
             this.setValue(this._initialValue)
+        }
+
+        this._visibilityManager = new VisibilityManager({element: html})
+
+        if (this._initiallyHidden) {
+            this._visibilityManager.hideElement()
         }
 
         return html
@@ -605,24 +607,18 @@ class FormField extends mix().with(ViewMixin) {
      * @returns {Boolean}
      */
     isHidden() {
-        return this._hidden
+        return !this._visibilityManager.isElementVisible()
     }
 
     /**
      * Show the field.
      */
     show() {
-        if (!this._hidden) {
+        if (this._visibilityManager.isElementVisible()) {
             return
         }
 
-        this._hidden = false
-
-        this.getHTML().css('display', '')
-        asap(function () {
-            this.getHTML().removeClass('hidden')
-            this.getWidget().removeClass('hidden')
-        }.bind(this))
+        this._visibilityManager.showElement()
 
         if (this._form._continuousValidation) {
             /* We need to revalidate the form upon field show, since hidden fields are considered always valid */
@@ -637,17 +633,11 @@ class FormField extends mix().with(ViewMixin) {
      * Hide the field.
      */
     hide() {
-        if (this._hidden) {
+        if (!this._visibilityManager.isElementVisible()) {
             return
         }
 
-        this._hidden = true
-
-        this.getHTML().addClass('hidden')
-        this.getWidget().addClass('hidden')
-        Theme.afterTransition(function () {
-            this.css('display', 'none')
-        }, this.getHTML())
+        this._visibilityManager.hideElement()
 
         if (this._form._continuousValidation) {
             /* We need to revalidate the form upon field hide, since hidden fields are considered always valid */
@@ -843,7 +833,7 @@ class FormField extends mix().with(ViewMixin) {
      */
     _validate(value, data) {
         /* Required validation */
-        if (this._required && !this._hidden) {
+        if (this._required && !this.isHidden()) {
             if (value == null || value === false || value === '') {
                 return Promise.reject(new ValidationError(gettext('This field is required.')))
             }

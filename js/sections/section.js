@@ -28,7 +28,10 @@ class Section extends mix().with(SingletonMixin) {
      * @param {String} id section identifier
      * @param {String} title section title
      * @param {qui.icons.Icon} icon section icon
-     * @param {String} [buttonType] one of {@link qui.sections.BUTTON_TYPE_MENU_BAR} (default),
+     * @param {String} [buttonType] one of:
+     *  * {@link qui.sections.BUTTON_TYPE_NONE}
+     *  * {@link qui.sections.BUTTON_TYPE_MENU_BAR} (default)
+     *  * {@link qui.sections.BUTTON_TYPE_TOP_BAR}
      * @param {Boolean} [closeMainPageOnHide] set to `true` to close the main page when section is hidden
      * {@link qui.sections.BUTTON_TYPE_TOP_BAR} and {@link qui.sections.BUTTON_TYPE_NONE}
      * @param {Number} [index] sets the section position (ordering) in relation with other sections; by default,
