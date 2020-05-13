@@ -43,7 +43,7 @@ body:NOT(.small-screen) > div.qui-main-container > div.qui-pages-container > div
 
 body.small-screen > div.qui-main-container > div.qui-pages-container > div.qui-page.visible,
 body.small-screen > div.qui-global-glass > div.qui-global-glass-container > div.qui-page.visible,
-div.qui-pages-container.full > div.qui-page {
+div.qui-pages-container.full > div.qui-page:LAST-CHILD {
     border-right: 0;  /* Remove right border if last page extends to cover the entire container */
 }
 

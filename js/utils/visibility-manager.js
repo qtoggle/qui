@@ -16,48 +16,45 @@ class VisibilityManager {
     /**
      * @constructs
      * @param {jQuery} element the element to be managed
-     * @param {String} [visibleDisplay] the display style property when element is visible; by default will be taken
-     * from current element's display
+     * @param {String} [visibleDisplay] the display style property when element is visible; defaults to `""`
      * @param {String} [hiddenDisplay] the display style property when element is hidden; defaults to `"none"`
      * @param {?String} [visibleClass] the class(es) to add to element when it's visible; defaults to `"visible"`
      * @param {?String} [hiddenClass] the class(es) to add to element when it's hidden; defaults to `"hidden"`
+     * @param {Boolean} [widthTransition] set to `true` if width should be transitioned while hiding/showing (hidden
+     * class must use `!important` for width)
+     * @param {Boolean} [heightTransition] set to `true` if height should be transitioned while hiding/showing (hidden
+     * class must use `!important` for height)
      * @param {Number} [transitionDuration] the duration of the transition, in milliseconds; defaults to
-     * {@link qui.theme.getTransitionDuration}
+     * {@link qui.theme.getTransitionDuration()}
      */
     constructor({
         element,
-        visibleDisplay = null,
+        visibleDisplay = '',
         hiddenDisplay = 'none',
         visibleClass = 'visible',
         hiddenClass = 'hidden',
+        widthTransition = false,
+        heightTransition = false,
         transitionDuration = Theme.getTransitionDuration()
     }) {
 
+        let currentDisplay = element.css('display') || window.getComputedStyle(element[0]).display
+
         this._element = element
-        this._visibleDisplay = visibleDisplay != null ? visibleDisplay : window.getComputedStyle(element[0]).display
+        this._visibleDisplay = visibleDisplay != null ? visibleDisplay : currentDisplay
         this._hiddenDisplay = hiddenDisplay
         this._visibleClass = visibleClass
         this._hiddenClass = hiddenClass
+        this._widthTransition = widthTransition
+        this._heightTransition = heightTransition
+
         this._transitionDuration = transitionDuration
 
-        if (visibleClass) {
-            if (hiddenClass) {
-                this._visibleAfterTransition = element.hasClass(visibleClass) || !element.hasClass(hiddenClass)
-            }
-            else {
-                this._visibleAfterTransition = element.hasClass(visibleClass)
-            }
-        }
-        else {
-            if (hiddenClass) {
-                this._visibleAfterTransition = !element.hasClass(hiddenClass)
-            }
-            else {
-                this._visibleAfterTransition = true
-            }
-        }
+        /* Autodetect initial visibility */
+        this._visibleAfterTransition = !this._hiddenDisplay || (currentDisplay !== this._hiddenDisplay)
 
-        this._timeoutHandle = null
+        this._transitionHandle = null
+        this._asapHandle = null
     }
 
     /**
@@ -69,15 +66,32 @@ class VisibilityManager {
         }
         this._visibleAfterTransition = true
 
-        if (this._timeoutHandle) {
-            clearTimeout(this._timeoutHandle)
+        if (this._transitionHandle) {
+            clearTimeout(this._transitionHandle)
+        }
+        if (this._asapHandle) {
+            clearTimeout(this._asapHandle)
         }
 
         this._element.css('display', this._visibleDisplay)
-        this._timeoutHandle = asap(function () {
-            this._timeoutHandle = null
+        this._asapHandle = asap(function () {
+
+            this._asapHandle = null
             this._element.addClass(this._visibleClass || '')
             this._element.removeClass(this._hiddenClass || '')
+
+            this._transitionHandle = setTimeout(function () {
+
+                this._transitionHandle = null
+                if (this._widthTransition) {
+                    this._element.css('width', '')
+                }
+                if (this._heightTransition) {
+                    this._element.css('height', '')
+                }
+
+            }.bind(this), this._transitionDuration)
+
         }.bind(this))
     }
 
@@ -90,16 +104,33 @@ class VisibilityManager {
         }
         this._visibleAfterTransition = false
 
-        if (this._timeoutHandle) {
-            clearTimeout(this._timeoutHandle)
+        if (this._transitionHandle) {
+            clearTimeout(this._transitionHandle)
+        }
+        if (this._asapHandle) {
+            clearTimeout(this._asapHandle)
         }
 
-        this._element.removeClass(this._visibleClass || '')
-        this._element.addClass(this._hiddenClass || '')
-        this._timeoutHandle = setTimeout(function () {
-            this._timeoutHandle = null
-            this._element.css('display', this._hiddenDisplay)
-        }.bind(this), this._transitionDuration)
+        if (this._widthTransition) {
+            this._element.css('width', this._element.width())
+        }
+        if (this._heightTransition) {
+            this._element.css('height', this._element.height())
+        }
+
+        asap(function () {
+
+            this._element.removeClass(this._visibleClass || '')
+            this._element.addClass(this._hiddenClass || '')
+
+            this._transitionHandle = setTimeout(function () {
+
+                this._transitionHandle = null
+                this._element.css('display', this._hiddenDisplay)
+
+            }.bind(this), this._transitionDuration)
+
+        }.bind(this))
     }
 
     /**

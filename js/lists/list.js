@@ -15,17 +15,11 @@ import ViewMixin             from '$qui/views/view.js'
 
 const logger = Logger.get('qui.lists.list')
 
-/**
- * List item match function.
- * @callback qui.lists.ListItemMatchFunc
- * @param {qui.lists.ListItem} item the item to be tested
- * @returns {Boolean} `true` if the item matches the condition, `false` otherwise
- */
-
 
 /**
  * A list view.
  * @alias qui.lists.List
+ * @mixes qui.views.ViewMixin
  * @mixes qui.views.commonviews.StructuredViewMixin
  * @mixes qui.views.commonviews.ProgressViewMixin
  */
@@ -33,7 +27,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
 
     /**
      * @constructs
-     * @param {qui.lists.ListItem[]} [items] initial list items
+     * @param {qui.lists.ListItem[]} [initialItems] initial list items
      * @param {Boolean} [searchEnabled] set to `true` to enable the search feature (defaults to `false`)
      * @param {Boolean} [addEnabled] set to `true` to enable the add item feature (defaults to `false`)
      * @param {String} [selectMode] one of:
@@ -45,7 +39,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @param {...*} args parent class parameters
      */
     constructor({
-        items = [],
+        initialItems = null,
         searchEnabled = false,
         addEnabled = false,
         selectMode = Lists.LIST_SELECT_MODE_SINGLE,
@@ -55,7 +49,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
 
         super(args)
 
-        this._items = items
+        this._items = initialItems || []
         this._searchEnabled = searchEnabled
         this._addEnabled = addEnabled
         this._selectMode = selectMode
@@ -73,6 +67,12 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     initHTML(html) {
         super.initHTML(html)
 
+        html.addClass(`select-mode-${this._selectMode}`)
+    }
+
+    init() {
+        super.init()
+
         /* Set initial items */
         if (this._items.length) {
             this.setItems(this._items)
@@ -80,7 +80,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     }
 
     makeBody() {
-        let bodyDiv = $('<div></div>', {class: 'list-body'})
+        let bodyDiv = $('<div></div>', {class: 'qui-list-body'})
 
         if (this._searchEnabled) {
             this._enableSearch(bodyDiv)
@@ -111,12 +111,10 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     setItems(items) {
         this.getBody().children('div.qui-list-item').remove()
 
-        items.forEach(i => this._prepareItem(i))
+        items.forEach(i => this.prepareItem(i))
         this._items = items
 
         this._items.forEach(function (item) {
-            item.setList(this)
-
             if (this._addElem) {
                 this._addElem.before(item.getHTML())
             }
@@ -136,7 +134,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @param {qui.lists.ListItem} item the item to update
      */
     setItem(index, item) {
-        this._prepareItem(item)
+        this.prepareItem(item)
 
         this.getBody().children(`div.qui-list-item:eq(${index})`).replaceWith(item.getHTML())
         this._items[index] = item
@@ -144,8 +142,6 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         if (this._searchEnabled) {
             this._applySearchFilter()
         }
-
-        item.setList(this)
     }
 
     /**
@@ -154,9 +150,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @param {qui.lists.ListItem} item the item
      */
     addItem(index, item) {
-        this._prepareItem(item)
-
-        item.setList(this)
+        this.prepareItem(item)
 
         if (index < 0 || !this._items.length) {
             if (this._addElem) {
@@ -195,43 +189,26 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @returns {qui.lists.ListItem[]} the removed items
      */
     removeItems(matchFunc) {
-        return this._items.slice().filter(function (item, i) {
-            if (!matchFunc(item)) {
-                return false
+        for (let i = 0; i < this._items.length; i++) {
+            if (matchFunc(this._items[i])) {
+                this.removeItemAt(i--)
             }
-
-            this.getBody().children(`div.qui-list-item:eq(${i})`).remove()
-            this._items.splice(i, 1)
-        }, this)
+        }
     }
 
-    _prepareItem(item) {
+    /**
+     * Prepare item to be part of this list.
+     * @param {qui.lists.ListItem} item
+     */
+    prepareItem(item) {
+        item.setList(this)
+
         let html = item.getHTML()
 
         html.on('click', this._handleItemClick.bind(this, item))
-        html.longpress(function () {
+        html.longpress(this._handleLongPress.bind(this))
 
-            if (!this._longPressMultipleSelection) {
-                return
-            }
-
-            // TODO: replace jQuery longpress plugin with a simple, more integrated long press event manager
-            if (this._selectMode === Lists.LIST_SELECT_MODE_SINGLE) {
-                this.setSelectMode(Lists.LIST_SELECT_MODE_MULTIPLE)
-                let selectedItems = this.getSelectedItems()
-                if (!selectedItems.includes(item)) {
-                    selectedItems.push(item)
-                    this.setSelectedItems(selectedItems)
-                }
-            }
-            else if (this._selectMode === Lists.LIST_SELECT_MODE_MULTIPLE) {
-                this.setSelectMode(Lists.LIST_SELECT_MODE_SINGLE)
-                this.setSelectedItems([item])
-            }
-
-            item._wasLongPressed = true
-
-        }.bind(this))
+        item.setSelectMode(this._selectMode)
     }
 
     _handleItemClick(item) {
@@ -289,6 +266,28 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
                 throw e
             }
         })
+    }
+
+    _handleLongPress(item) {
+        if (!this._longPressMultipleSelection) {
+            return
+        }
+
+        // TODO: replace jQuery longpress plugin with a simple, more integrated long press event manager
+        if (this._selectMode === Lists.LIST_SELECT_MODE_SINGLE) {
+            this.setSelectMode(Lists.LIST_SELECT_MODE_MULTIPLE)
+            let selectedItems = this.getSelectedItems()
+            if (!selectedItems.includes(item)) {
+                selectedItems.push(item)
+                this.setSelectedItems(selectedItems)
+            }
+        }
+        else if (this._selectMode === Lists.LIST_SELECT_MODE_MULTIPLE) {
+            this.setSelectMode(Lists.LIST_SELECT_MODE_SINGLE)
+            this.setSelectedItems([item])
+        }
+
+        item._wasLongPressed = true
     }
 
 
@@ -530,6 +529,18 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
                 selectedItems.slice(1).forEach(i => i.setSelected(false))
             }
         }
+
+        /* Update HTML class according to new select mode */
+        let html = this.getHTML()
+        html.removeClass([
+            Lists.LIST_SELECT_MODE_DISABLED,
+            Lists.LIST_SELECT_MODE_SINGLE,
+            Lists.LIST_SELECT_MODE_MULTIPLE
+        ].map(m => `select-mode-${m}`).join(' '))
+        html.addClass(`select-mode-${this._selectMode}`)
+
+        /* Update items select mode */
+        this.getItems().forEach(i => i.setSelectMode(this._selectMode))
     }
 
     /**

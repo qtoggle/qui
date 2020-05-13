@@ -848,6 +848,15 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             }
         }
 
+        init() {
+            if (rootPrototype.init) {
+                rootPrototype.init.call(this)
+            }
+            else {
+                super.init()
+            }
+        }
+
         showProgress(percent) {
             if (rootPrototype.showProgress) {
                 rootPrototype.showProgress.call(this, percent)

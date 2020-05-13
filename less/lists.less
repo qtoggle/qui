@@ -13,12 +13,18 @@ div.qui-list {
 
 div.qui-list-child {
     display: block;
-    height: 3em;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     box-sizing: border-box;
     border-bottom: 0.0625em solid @border-color;
+    transition: height @transition-duration ease,
+                background @transition-duration ease,
+                color @transition-duration ease,
+                opacity @transition-duration ease;
+}
+
+div.qui-list-add {
     background: @background-color;
     color: @interactive-color;
 
@@ -42,14 +48,9 @@ div.qui-list-child {
 /* Items */
 
 div.qui-list-child.qui-list-item {
-    transition: height @transition-duration ease,
-                background @transition-duration ease,
-                color @transition-duration ease,
-                opacity @transition-duration ease;
 
     &.hidden {
-        height: 0;
-        border: 0;
+        opacity: 0;
     }
 
 }
@@ -102,21 +103,6 @@ div.qui-list-child.qui-list-add {
         margin-top: 0.5em;
         width: 2em;
         height: 2em;
-    }
-
-}
-
-
-
-/* Icon-label list item */
-
-div.qui-icon-label-list-item {
-
-    & > .qui-icon {
-        vertical-align: middle;
-        width: 2em;
-        height: 2em;
-        margin: 0.5em;
     }
 
 }
