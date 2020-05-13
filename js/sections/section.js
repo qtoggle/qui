@@ -509,19 +509,22 @@ class Section extends mix().with(SingletonMixin) {
         }
 
         let context = this.getPagesContext()
+        if (!context.isCurrent()) {
+            historyEntry = false
+        }
+
         let currentPage = context.getCurrentPage()
         if (currentPage) {
             return currentPage.pushPage(page, historyEntry)
         }
         else {
-            if (historyEntry) {
-                Navigation.addHistoryEntry()
-            }
-
             page.pushSelf(context)
             page.whenLoaded() /* Start loading the page automatically when pushed */
 
-            if (context.isCurrent()) {
+            if (historyEntry) {
+                Navigation.addHistoryEntry()
+            }
+            else if (context.isCurrent()) {
                 Navigation.updateHistoryEntry()
             }
 

@@ -745,12 +745,16 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                 historyEntry = !!page.getPathId()
             }
 
+            let context = this.getContext()
+            if (!context.isCurrent()) {
+                historyEntry = false
+            }
+
+            /* Preserve current state for after potential next page close */
             let state = null
             if (historyEntry) {
                 state = Navigation.getCurrentHistoryEntryState()
             }
-
-            let context = this.getContext()
 
             /* Close any following page */
             let promise
@@ -764,7 +768,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
 
             return promise.then(function () {
                 if (historyEntry) {
-                    Navigation.addHistoryEntry(state)
+                    Navigation.updateHistoryEntry(state)
                 }
 
                 if (context.isCurrent()) {
@@ -774,7 +778,10 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                 page.pushSelf(context)
                 page.whenLoaded() /* Start loading the page automatically when pushed */
 
-                if (context.isCurrent()) {
+                if (historyEntry) {
+                    Navigation.addHistoryEntry()
+                }
+                else if (context.isCurrent()) {
                     Navigation.updateHistoryEntry()
                 }
             }.bind(this))
