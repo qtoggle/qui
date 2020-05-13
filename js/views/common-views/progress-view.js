@@ -26,6 +26,7 @@ const ProgressViewMixin = Mixin((superclass = Object) => {
             this._glassVisibilityManager = new VisibilityManager({
                 element: this._glassDiv
             })
+            this._glassVisibilityManager.hideElement()
 
             this._progressWidget = $('<div></div>', {class: 'qui-progress-view-widget'}).progressdisk({radius: '2em'})
             this._glassDiv.append(this._progressWidget)

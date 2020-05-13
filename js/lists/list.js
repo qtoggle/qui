@@ -5,15 +5,15 @@ import Logger from '$qui/lib/logger.module.js'
 import {gettext}             from '$qui/base/i18n.js'
 import {mix}                 from '$qui/base/mixwith.js'
 import StockIcon             from '$qui/icons/stock-icon.js'
+import * as Lists            from '$qui/lists/lists.js'
 import {asap}                from '$qui/utils/misc.js'
-import * as StringUtils      from '$qui/utils/string.js'
+import * as ObjectUtils      from '$qui/utils/object.js'
 import {ProgressViewMixin}   from '$qui/views/common-views.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
 import ViewMixin             from '$qui/views/view.js'
 
 
 const logger = Logger.get('qui.lists.list')
-
 
 /**
  * List item match function.
@@ -36,14 +36,30 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @param {qui.lists.ListItem[]} [items] initial list items
      * @param {Boolean} [searchEnabled] set to `true` to enable the search feature (defaults to `false`)
      * @param {Boolean} [addEnabled] set to `true` to enable the add item feature (defaults to `false`)
+     * @param {String} [selectMode] one of:
+     *  * {@link qui.lists.LIST_SELECT_MODE_DISABLED}
+     *  * {@link qui.lists.LIST_SELECT_MODE_SINGLE} (default)
+     *  * {@link qui.lists.LIST_SELECT_MODE_MULTIPLE}
+     * @param {Boolean} longPressMultipleSelection set to `true` to enable toggling between single and multiple select
+     * modes by long pressing items
      * @param {...*} args parent class parameters
      */
-    constructor({items = [], searchEnabled = false, addEnabled = false, ...args} = {}) {
+    constructor({
+        items = [],
+        searchEnabled = false,
+        addEnabled = false,
+        selectMode = Lists.LIST_SELECT_MODE_SINGLE,
+        longPressMultipleSelection = false,
+        ...args
+    } = {}) {
+
         super(args)
 
         this._items = items
         this._searchEnabled = searchEnabled
         this._addEnabled = addEnabled
+        this._selectMode = selectMode
+        this._longPressMultipleSelection = longPressMultipleSelection
 
         this._addElem = null
         this._searchElem = null
@@ -93,8 +109,9 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @param {qui.lists.ListItem[]} items list items
      */
     setItems(items) {
-        this.getBody().children('.qui-list-child.item').remove()
+        this.getBody().children('div.qui-list-item').remove()
 
+        items.forEach(i => this._prepareItem(i))
         this._items = items
 
         this._items.forEach(function (item) {
@@ -119,7 +136,9 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @param {qui.lists.ListItem} item the item to update
      */
     setItem(index, item) {
-        this.getBody().children(`.qui-list-child.item:eq(${index})`).replaceWith(item.getHTML())
+        this._prepareItem(item)
+
+        this.getBody().children(`div.qui-list-item:eq(${index})`).replaceWith(item.getHTML())
         this._items[index] = item
 
         if (this._searchEnabled) {
@@ -135,6 +154,8 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @param {qui.lists.ListItem} item the item
      */
     addItem(index, item) {
+        this._prepareItem(item)
+
         item.setList(this)
 
         if (index < 0 || !this._items.length) {
@@ -148,7 +169,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
             this._items.push(item)
         }
         else {
-            this.getBody().children(`.qui-list-child.item:eq(${index})`).before(item.getHTML())
+            this.getBody().children(`div.qui-list-item:eq(${index})`).before(item.getHTML())
             this._items.splice(index, 0, item)
         }
 
@@ -163,7 +184,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @returns {?qui.lists.ListItem} the removed item
      */
     removeItemAt(index) {
-        this.getBody().children(`.qui-list-child.item:eq(${index})`).remove()
+        this.getBody().children(`div.qui-list-item:eq(${index})`).remove()
 
         return this._items.splice(index, 1)[0] || null
     }
@@ -179,9 +200,95 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
                 return false
             }
 
-            this.getBody().children(`.qui-list-child.item:eq(${i})`).remove()
+            this.getBody().children(`div.qui-list-item:eq(${i})`).remove()
             this._items.splice(i, 1)
         }, this)
+    }
+
+    _prepareItem(item) {
+        let html = item.getHTML()
+
+        html.on('click', this._handleItemClick.bind(this, item))
+        html.longpress(function () {
+
+            if (!this._longPressMultipleSelection) {
+                return
+            }
+
+            // TODO: replace jQuery longpress plugin with a simple, more integrated long press event manager
+            if (this._selectMode === Lists.LIST_SELECT_MODE_SINGLE) {
+                this.setSelectMode(Lists.LIST_SELECT_MODE_MULTIPLE)
+                let selectedItems = this.getSelectedItems()
+                if (!selectedItems.includes(item)) {
+                    selectedItems.push(item)
+                    this.setSelectedItems(selectedItems)
+                }
+            }
+            else if (this._selectMode === Lists.LIST_SELECT_MODE_MULTIPLE) {
+                this.setSelectMode(Lists.LIST_SELECT_MODE_SINGLE)
+                this.setSelectedItems([item])
+            }
+
+            item._wasLongPressed = true
+
+        }.bind(this))
+    }
+
+    _handleItemClick(item) {
+        /* Flag to prevent handling clicks on long press */
+        if (item._wasLongPressed) {
+            item._wasLongPressed = false
+            return
+        }
+
+        if (this._selectMode === Lists.LIST_SELECT_MODE_DISABLED) {
+            return
+        }
+
+        let oldItems = this._items.filter(i => i.isSelected())
+        let newItems = []
+        let addedItems = []
+        let removedItems = []
+
+        if (this._selectMode === Lists.LIST_SELECT_MODE_MULTIPLE) {
+            /* In multi-selection mode, simply add/remove new item to/from selection */
+            if (oldItems.includes(item)) {
+                newItems = oldItems.filter(i => i !== item)
+                removedItems.push(item)
+            }
+            else {
+                newItems = oldItems.concat([item])
+                addedItems.push(item)
+            }
+        }
+        else { /* Assuming Lists.LIST_SELECT_MODE_SINGLE */
+            newItems.push(item)
+            removedItems = oldItems
+            addedItems.push(item)
+        }
+
+        if (ObjectUtils.deepEquals(oldItems, newItems)) {
+            return /* Selection unchanged */
+        }
+
+        let promise = this.onSelectionChange(oldItems, newItems) || Promise.resolve()
+
+        promise.then(function () {
+            try {
+                removedItems.forEach(i => i.setSelected(false))
+                addedItems.forEach(i => i.setSelected(true))
+            }
+            catch (e) {
+                logger.errorStack('setSelected failed', e)
+            }
+        }).catch(function (e) {
+            if (e == null) {
+                logger.debug('selection change rejected')
+            }
+            else {
+                throw e
+            }
+        })
     }
 
 
@@ -232,8 +339,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     }
 
     _makeAddElem() {
-        let addElem = $('<div></div>', {class: 'qui-base-button qui-list-child add'})
-
+        let addElem = $('<div></div>', {class: 'qui-base-button qui-list-child qui-list-add'})
         let addIcon = $('<div></div>', {class: 'qui-icon'})
         addElem.append(addIcon)
         new StockIcon({name: 'plus', variant: 'interactive'}).applyTo(addIcon)
@@ -243,7 +349,12 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
             let promise = this.onAdd()
             promise = promise || Promise.resolve()
             promise.then(function () {
-                this.getBody().children('.qui-list-child.item').removeClass('selected')
+                try {
+                    this._items.forEach(i => i.setSelected(false))
+                }
+                catch (e) {
+                    logger.errorStack('setSelected failed', e)
+                }
             }.bind(this)).catch(function (e) {
                 if (e == null) {
                     logger.debug('add rejected')
@@ -271,7 +382,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     _makeSearchElem() {
         let list = this
 
-        let searchElem = $('<div></div>', {class: 'qui-list-child search'})
+        let searchElem = $('<div></div>', {class: 'qui-list-child qui-list-search'})
 
         let searchInput = $('<input>', {type: 'text'})
         searchInput.attr('placeholder', gettext('search...'))
@@ -326,16 +437,21 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
 
     _applySearchFilter() {
         if (!this._filterInput) {
-            this.getBody().children('.qui-list-child.item').removeClass('hidden')
+            this._items.filter(i => i.isHidden()).forEach(i => i.show())
             return
         }
 
         let searchText = this._filterInput.val().trim().toLowerCase()
-        this.getBody().children('.qui-list-child.item').removeClass('hidden').each(function () {
-            let itemElem = $(this)
-            let text = itemElem.text().trim().toLowerCase()
-            if (StringUtils.intelliSearch(text, searchText) == null) {
-                itemElem.addClass('hidden')
+        this._items.forEach(function (item) {
+            if (item.isMatch(searchText)) {
+                if (item.isHidden()) {
+                    item.show()
+                }
+            }
+            else {
+                if (!item.isHidden()) {
+                    item.hide()
+                }
             }
         })
     }
@@ -388,61 +504,72 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         this._searchElem.remove()
         this._searchElem = null
         this.getBody().removeClass('search-enabled')
-        this.getBody().children('.qui-list-child.item').removeClass('hidden')
+        this.getBody().children('div.qui-list-item').removeClass('hidden')
     }
 
 
     /* Selection */
 
     /**
-     * Return the index of the currently selected item, or `-1` if no item is selected.
-     * @returns {Number}
+     * Set selection mode.
+     * @param {String} selectMode one of:
+     *  * {@link qui.lists.LIST_SELECT_MODE_DISABLED}
+     *  * {@link qui.lists.LIST_SELECT_MODE_SINGLE} (default)
+     *  * {@link qui.lists.LIST_SELECT_MODE_MULTIPLE}
      */
-    getSelectedIndex() {
-        let index = -1
-        this.getBody().children('.qui-list-child.item').each(function (i) {
-            if ($(this).hasClass('selected')) {
-                index = i
-                return false
+    setSelectMode(selectMode) {
+        this._selectMode = selectMode
+
+        let selectedItems = this._items.filter(i => i.isSelected())
+
+        if (this._selectMode === Lists.LIST_SELECT_MODE_DISABLED) {
+            selectedItems.forEach(i => i.setSelected(false))
+        }
+        else if (this._selectMode === Lists.LIST_SELECT_MODE_SINGLE) {
+            if (selectedItems.length > 1) {
+                selectedItems.slice(1).forEach(i => i.setSelected(false))
             }
-        })
-
-        return index
-    }
-
-    /**
-     * Select the item with a given index.
-     * @param {Number} index the index of the item to select; `-1` deselects all items
-     */
-    setSelectedIndex(index) {
-        this.getBody().children('.qui-list-child.item').removeClass('selected')
-        if (index >= 0) {
-            this.getBody().children(`.qui-list-child.item:eq(${index})`).addClass('selected')
         }
     }
 
     /**
-     * Return the currently selected item, or `null` if no item is selected.
-     * @returns {?qui.lists.ListItem}
+     * Return the currently selected items.
+     * @returns {qui.lists.ListItem[]}
      */
-    getSelectedItem() {
-        let index = this.getSelectedIndex()
-        if (index < 0) {
-            return null
-        }
-
-        return this._items[index]
+    getSelectedItems() {
+        return this._items.filter(i => i.isSelected())
     }
 
     /**
-     * Called when the selected item changes.
-     * @param {qui.lists.ListItem} newItem the new selected item (can be `null`)
-     * @param {Number} newIndex the new selected index (can be `-1`)
-     * @param {qui.lists.ListItem} oldItem the previously selected item (can be `null`)
-     * @param {Number} oldIndex the previously selected index (can be `-1`)
+     * Updates current selection.
+     * @param {qui.lists.ListItem[]} items the list of new items to select; empty list clears selection
+     */
+    setSelectedItems(items) {
+        if (this._selectMode === Lists.LIST_SELECT_MODE_DISABLED) {
+            return
+        }
+        else if (this._selectMode === Lists.LIST_SELECT_MODE_SINGLE) {
+            if (items.length > 1) {
+                items = items.slice(0, 1) /* Keep only first element in single selection mode */
+            }
+        }
+
+        let selectedItems = this._items.filter(i => i.isSelected())
+
+        /* Remove selection from items no longer selected */
+        selectedItems.filter(i => !items.includes(i)).forEach(i => i.setSelected(false))
+
+        /* Add selection to newly selected items */
+        items.filter(i => !selectedItems.includes(i)).forEach(i => i.setSelected(true))
+    }
+
+    /**
+     * Called when the current selection is changed by user.
+     * @param {qui.lists.ListItem[]} oldItems the previously selected items (can be empty)
+     * @param {qui.lists.ListItem[]} newItems the new selected items (can be empty)
      * @returns {?Promise} an optional promise which, if rejected with no argument, will cancel the selection change
      */
-    onSelectionChange(newItem, newIndex, oldItem, oldIndex) {
+    onSelectionChange(oldItems, newItems) {
     }
 
 }

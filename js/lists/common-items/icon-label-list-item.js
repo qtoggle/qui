@@ -24,18 +24,23 @@ class IconLabelListItem extends ListItem {
 
         this._icon = icon
         this._label = label
-
-        this.setContent(this._makeContent(this._icon, this._label))
+        this._iconElement = null
+        this._labelElement = null
+        this._containerElement = null
     }
 
-    _makeContent(icon, label) {
-        let iconElement = $('<div></div>', {class: 'qui-icon'})
-        let labelElement = $('<span></span>', {class: 'label'})
+    makeContent() {
+        this._containerElement = $('<div></div>', {class: 'qui-icon-label-list-item'})
 
-        this._applyIcon(icon, iconElement)
-        this._setLabel(label, labelElement)
+        this._iconElement = $('<div></div>', {class: 'qui-icon'})
+        this._icon = this._applyIcon(this._icon, this._iconElement)
+        this._containerElement.append(this._iconElement)
 
-        return iconElement.add(labelElement)
+        this._labelElement = $('<span></span>', {class: 'qui-list-item-label'})
+        this._labelElement.html(this._label)
+        this._containerElement.append(this._labelElement)
+
+        return this._containerElement
     }
 
     /**
@@ -51,9 +56,7 @@ class IconLabelListItem extends ListItem {
      * @param {?qui.icons.Icon} icon
      */
     setIcon(icon) {
-        let element = this.getHTML().children('div.qui-icon')
-
-        this._icon = this._applyIcon(icon, element)
+        this._icon = this._applyIcon(icon, this._iconElement)
     }
 
     _applyIcon(icon, element) {
@@ -89,15 +92,13 @@ class IconLabelListItem extends ListItem {
      * @param {String} label
      */
     setLabel(label) {
-        let element = this.getHTML().children('span.label')
-
-        this._label = this._setLabel(label, element)
+        this._label = label
+        this._labelElement.html(label)
     }
 
-    _setLabel(label, element) {
-        element.html(label)
-
-        return label
+    setSelected(selected) {
+        super.setSelected(selected)
+        this._containerElement.toggleClass('selected', selected)
     }
 
 }

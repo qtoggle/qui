@@ -1,13 +1,10 @@
 
-import $      from '$qui/lib/jquery.module.js'
-import Logger from '$qui/lib/logger.module.js'
+import $ from '$qui/lib/jquery.module.js'
 
-import {mix}     from '$qui/base/mixwith.js'
-import ViewMixin from '$qui/views/view.js'
-
-
-const logger = Logger.get('qui.lists.listitem')
-
+import {mix}             from '$qui/base/mixwith.js'
+import * as StringUtils  from '$qui/utils/string.js'
+import VisibilityManager from '$qui/utils/visibility-manager.js'
+import ViewMixin         from '$qui/views/view.js'
 
 /**
  * A list item.
@@ -18,73 +15,36 @@ class ListItem extends mix().with(ViewMixin) {
 
     /**
      * @constructs
-     * @param {jQuery} [content] item content
      * @param {*} [data] user data associated with the item
      * @param {...*} args parent class parameters
      */
-    constructor({content = null, data = null, ...args} = {}) {
+    constructor({data = null, ...args} = {}) {
         super(args)
 
-        this._content = content
         this._data = data
-
         this._list = null
+        this._visibilityManager = null
     }
 
     makeHTML() {
-        let html = $('<div></div>', {class: 'qui-base-button qui-list-child item'})
+        let html = $('<div></div>', {class: 'qui-base-button qui-list-child qui-list-item'})
+        html.html(this.makeContent())
 
-        html.on('click', function () {
-
-            let items = this._list.getItems()
-            let oldItemElem = this._list.getBody().children('.qui-list-child.item.selected')
-            let oldIndex = oldItemElem.index()
-            let oldItem = items[oldIndex] || null
-            let index = html.index()
-
-            if (index === oldIndex) {
-                return
-            }
-
-            let promise = this._list.onSelectionChange(this, index, oldItem, oldIndex)
-            promise = promise || Promise.resolve()
-            promise.then(function () {
-                this._list.getBody().children('.qui-list-child.item').removeClass('selected')
-                html.addClass('selected')
-            }.bind(this)).catch(function (e) {
-                if (e == null) {
-                    logger.debug('selection change rejected')
-                }
-                else {
-                    throw e
-                }
-            })
-
-        }.bind(this))
-
-        if (this._content) {
-            html.html(this._content)
-        }
+        this._visibilityManager = new VisibilityManager({element: html})
 
         return html
     }
 
     /**
-     * Return the content.
-     * @returns {?jQuery}
+     * Implement this method to create the actual list item content.
+     * @abstract
+     * @returns {jQuery}
      */
-    getContent() {
-        return this._content
+    makeContent() {
     }
 
-    /**
-     * Set the item content.
-     * @param {jQuery} content
-     */
-    setContent(content) {
-        this._content = content
-        this.getHTML().html(content)
-    }
+
+    /* User data */
 
     /**
      * Return the item user data.
@@ -100,6 +60,59 @@ class ListItem extends mix().with(ViewMixin) {
      */
     setData(data) {
         this._data = data
+    }
+
+    /* Selection */
+
+    /**
+     * Tell if item is selected or not.
+     */
+    isSelected() {
+        return this.getHTML().hasClass('selected')
+    }
+
+    /**
+     * Select or deselect item.
+     * @param {Boolean} selected
+     */
+    setSelected(selected) {
+        this.getHTML().toggleClass('selected', selected)
+    }
+
+
+    /* Visibility */
+
+    /**
+     * Tell if the item is hidden.
+     * @returns {Boolean}
+     */
+    isHidden() {
+        return !this._visibilityManager.isElementVisible()
+    }
+
+    /**
+     * Show the item.
+     */
+    show() {
+        this._visibilityManager.showElement()
+    }
+
+    /**
+     * Hide the field.
+     */
+    hide() {
+        this._visibilityManager.hideElement()
+    }
+
+    /**
+     * Tell if item matches a search filter. By default, uses {@link qui.utils.string.intelliSearch} on textual content
+     * of the HTML element.
+     * @param {String} filter search filter
+     * @returns {Boolean}
+     */
+    isMatch(filter) {
+        let text = this.getHTML().text().trim().toLowerCase()
+        return StringUtils.intelliSearch(text, filter) != null
     }
 
     /**

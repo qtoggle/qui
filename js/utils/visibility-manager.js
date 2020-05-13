@@ -20,7 +20,7 @@ class VisibilityManager {
      * from current element's display
      * @param {String} [hiddenDisplay] the display style property when element is hidden; defaults to `"none"`
      * @param {?String} [visibleClass] the class(es) to add to element when it's visible; defaults to `"visible"`
-     * @param {?String} [hiddenClass] the class(es) to add to element when it's hidden; defaults to `null`
+     * @param {?String} [hiddenClass] the class(es) to add to element when it's hidden; defaults to `"hidden"`
      * @param {Number} [transitionDuration] the duration of the transition, in milliseconds; defaults to
      * {@link qui.theme.getTransitionDuration}
      */
@@ -29,7 +29,7 @@ class VisibilityManager {
         visibleDisplay = null,
         hiddenDisplay = 'none',
         visibleClass = 'visible',
-        hiddenClass = null,
+        hiddenClass = 'hidden',
         transitionDuration = Theme.getTransitionDuration()
     }) {
 
@@ -40,10 +40,29 @@ class VisibilityManager {
         this._hiddenClass = hiddenClass
         this._transitionDuration = transitionDuration
 
-        this._visibleAfterTransition = element.hasClass(visibleClass)
+        if (visibleClass) {
+            if (hiddenClass) {
+                this._visibleAfterTransition = element.hasClass(visibleClass) || !element.hasClass(hiddenClass)
+            }
+            else {
+                this._visibleAfterTransition = element.hasClass(visibleClass)
+            }
+        }
+        else {
+            if (hiddenClass) {
+                this._visibleAfterTransition = !element.hasClass(hiddenClass)
+            }
+            else {
+                this._visibleAfterTransition = true
+            }
+        }
+
         this._timeoutHandle = null
     }
 
+    /**
+     * Show element.
+     */
     showElement() {
         if (this._visibleAfterTransition) {
             return
@@ -62,6 +81,9 @@ class VisibilityManager {
         }.bind(this))
     }
 
+    /**
+     * Hide element.
+     */
     hideElement() {
         if (!this._visibleAfterTransition) {
             return
@@ -78,6 +100,14 @@ class VisibilityManager {
             this._timeoutHandle = null
             this._element.css('display', this._hiddenDisplay)
         }.bind(this), this._transitionDuration)
+    }
+
+    /**
+     * Tell if element is visible or not.
+     * @returns {Boolean}
+     */
+    isElementVisible() {
+        return this._visibleAfterTransition
     }
 
 }
