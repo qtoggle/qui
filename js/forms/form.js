@@ -49,7 +49,7 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * based on currently changed fields, their validity and applied state. Defaults to `true`
      * @param {qui.forms.FormField[]} [fields] fields to be added to the form
      * @param {qui.forms.FormButton[]} [buttons] buttons to be added to the form
-     * @param {Object} [data] a dictionary with initial values for the fields
+     * @param {Object} [initialData] a dictionary with initial values for the fields
      * @param {...*} args parent class parameters
      */
     constructor({
@@ -62,7 +62,7 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         autoDisableDefaultButton = true,
         fields = [],
         buttons = [],
-        data = null,
+        initialData = null,
         ...args
     } = {}) {
         super(args)
@@ -76,7 +76,7 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         this._autoDisableDefaultButton = autoDisableDefaultButton
         this._fields = fields
         this._buttons = buttons
-        this._initialData = data
+        this._initialData = initialData
 
         /* Last known validity state */
         this._isValid = null
