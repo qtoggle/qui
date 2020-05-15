@@ -18,7 +18,7 @@ import * as ObjectUtils from '$qui/utils/object.js'
 /**
  * A base class for message forms.
  * @alias qui.messages.MessageForm
- * @extends qui.forms.PageForm
+ * @extends qui.forms.commonforms.PageForm
  */
 class MessageForm extends PageForm {
 
