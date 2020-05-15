@@ -241,6 +241,9 @@ function configureLogging() {
         }
     }
 
+    /* Unlimited stack trace */
+    Error.stackTraceLimit = Infinity
+
     /* Export Logger to global scope  */
     let qui = (window.qui = window.qui || {})
     qui.Logger = Logger

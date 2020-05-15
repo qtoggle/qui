@@ -24,7 +24,9 @@ const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undoc
 /**
  * A form.
  * @alias qui.forms.Form
+ * @mixes qui.views.ViewMixin
  * @mixes qui.views.commonviews.StructuredViewMixin
+ * @mixes qui.views.commonviews.ProgressViewMixin
  */
 class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin) {
 

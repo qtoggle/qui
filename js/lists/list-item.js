@@ -27,7 +27,7 @@ class ListItem extends mix().with(ViewMixin) {
     }
 
     makeHTML() {
-        let html = $('<div></div>', {class: 'qui-base-button qui-list-child qui-list-item'})
+        let html = $('<div></div>', {class: 'qui-list-child qui-list-item'})
         html.html(this.makeContent())
 
         this._visibilityManager = new VisibilityManager({element: html})
@@ -77,6 +77,16 @@ class ListItem extends mix().with(ViewMixin) {
      */
     setSelected(selected) {
         this.getHTML().toggleClass('selected', selected)
+    }
+
+    /**
+     * Set select mode. This is internally called by owning {@link qui.lists.List}.
+     * @param {String} selectMode one of:
+     *  * {@link qui.lists.LIST_SELECT_MODE_DISABLED}
+     *  * {@link qui.lists.LIST_SELECT_MODE_SINGLE} (default)
+     *  * {@link qui.lists.LIST_SELECT_MODE_MULTIPLE}
+     */
+    setSelectMode(selectMode) {
     }
 
 

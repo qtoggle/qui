@@ -1,0 +1,45 @@
+
+@import (reference) "theme";
+
+
+div.qui-icon-label-view {
+    transition: background @transition-duration ease,
+                color @transition-duration ease,
+                opacity @transition-duration ease;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    & > div.qui-icon {
+        vertical-align: middle;
+        width: 2em;
+        height: 2em;
+        margin: 0.5em 0 0.5em 0.5em;
+    }
+
+    & > span.label {
+        vertical-align: middle;
+        padding: 0.5em;
+    }
+
+    &.qui-base-button {
+        background: @background-color;
+        color: @interactive-color;
+
+        &.active {
+            background: @background-active-color;
+        }
+
+        &.selected {
+            background: @interactive-color;
+            color: @background-color;
+        }
+
+        &.active.selected {
+            background: @interactive-active-color;
+            color: @background-color;
+        }
+
+    }
+
+}

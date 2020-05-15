@@ -1,0 +1,90 @@
+
+@import (reference) "theme";
+
+div.qui-table {
+}
+
+div.qui-table-row {
+    display: grid;
+    grid-auto-flow: column;
+    transition: height @transition-duration ease,
+                background @transition-duration ease,
+                color @transition-duration ease,
+                opacity @transition-duration ease;
+
+    &.qui-base-button {
+        background: @background-color;
+        color: @interactive-color;
+
+        &.active {
+            background: @background-active-color;
+        }
+
+        &.selected {
+            background: @interactive-color;
+            color: @background-color;
+        }
+
+        &.active.selected {
+            background: @interactive-active-color;
+            color: @background-color;
+        }
+
+    }
+
+}
+
+div.qui-table-cell {
+    display: inline-grid;
+    overflow: hidden;
+    min-width: 0;
+
+    &.horizontal-align-left {
+        justify-content: left;
+    }
+
+    &.horizontal-align-center {
+        justify-content: center;
+    }
+
+    &.horizontal-align-right {
+        justify-content: right;
+    }
+
+    &.vertical-align-top {
+        align-content: start;
+    }
+
+    &.vertical-align-center {
+        align-content: center;
+    }
+
+    &.vertical-align-bottom {
+        align-content: end;
+    }
+
+    div.qui-table.card-layout > div.qui-list-body > div.qui-table-row > & {
+        justify-content: right;
+
+        &.qui-table-card-layout-header-cell {
+            justify-content: left;
+        }
+
+    }
+
+}
+
+span.qui-simple-table-cell-element {
+    padding: 0.5em;
+
+    div.qui-table-header > div.qui-table-cell > &,
+    div.qui-table-cell.qui-table-card-layout-header-cell > & {
+        font-weight: bold;
+        font-size: 85%;
+    }
+
+}
+
+div.qui-table-row.qui-base-button > div.qui-table-cell > div.qui-icon-label-view {
+    transition: none; /* Fixes strange transition delays due to inherited fading color, on Chrome */
+}
