@@ -9,7 +9,7 @@ import List from '../list.js'
 
 /**
  * A list that can be used as a page.
- * @alias qui.lists.PageList
+ * @alias qui.lists.commonlists.PageList
  * @extends qui.lists.List
  * @mixes qui.pages.PageMixin
  */
