@@ -118,7 +118,7 @@ class VisibilityManager {
             this._element.css('height', this._element.height())
         }
 
-        asap(function () {
+        let hideAfterTransition = function () {
 
             this._element.removeClass(this._visibleClass || '')
             this._element.addClass(this._hiddenClass || '')
@@ -130,8 +130,16 @@ class VisibilityManager {
 
             }.bind(this), this._transitionDuration)
 
-        }.bind(this))
+        }.bind(this)
+
+        if (this._widthTransition || this._heightTransition) {
+            asap(hideAfterTransition)
+        }
+        else {
+            hideAfterTransition()
+        }
     }
+
 
     /**
      * Tell if element is visible or not.
