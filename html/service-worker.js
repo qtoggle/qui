@@ -7,37 +7,63 @@
 const MESSAGE_ACTIVATE = 'qui-activate'
 const DEF_APP_NAME = 'qui-app'
 const DEF_APP_VERSION = 'unknown-version'
-const DEF_BUILD_HASH = 'dev'
+const DEF_BUILD_HASH = 'unknown-hash'
 const DEF_CACHE_URL_REGEX = '.*\\.(svg|png|gif|jpg|jpe?g|ico|woff|html|json|js|css)$'
 const DEF_NO_CACHE_URL_REGEX = ('(\\?h=dev)|(&h=dev)')
 
 
 let cacheName
-let devMode = false
+let debug = false
 let appName = '__app_name_placeholder__'
 let appVersion = '__app_version_placeholder__'
 let buildHash = '__build_hash_placeholder__'
 let cacheURLRegex = '__cache_url_regex_placeholder__'
 let noCacheURLRegex = '__no_cache_url_regex_placeholder__'
+let queryArguments = null
 
+
+function getQueryArgument(name, def = null) {
+    if (queryArguments == null) {
+        let queryString = self.location.search.substring(1)
+        queryArguments = new Map(queryString.split('&').map(function (keyValuePair) {
+            let splits = keyValuePair.split('=');
+            let key = decodeURIComponent(splits[0]);
+            let value = decodeURIComponent(splits[1]);
+            if (value.indexOf(',') >= 0) {
+                value = value.split(',');
+            }
+
+            return [key, value];
+        }))
+    }
+
+    let value = queryArguments.get(name)
+    if (value == null) {
+        value = def
+    }
+
+    return value
+}
 
 function setup() {
     /* If webpack did not replace the placeholder... */
     if (appName.startsWith('__app_name_')) {
         appName = DEF_APP_NAME
     }
-    if (appName.startsWith('__app_version_')) {
+    if (appVersion.startsWith('__app_version_')) {
         appVersion = DEF_APP_VERSION
     }
     if (buildHash.startsWith('__build_hash_')) {
-        buildHash = DEF_BUILD_HASH
-        devMode = true
+        buildHash = getQueryArgument('h', DEF_BUILD_HASH)
     }
     if (cacheURLRegex.startsWith('__cache_url_regex_')) {
         cacheURLRegex = DEF_CACHE_URL_REGEX
     }
     if (noCacheURLRegex.startsWith('__no_cache_url_regex_')) {
         noCacheURLRegex = DEF_NO_CACHE_URL_REGEX
+    }
+    if (getQueryArgument('debug') === 'true') {
+        debug = true
     }
 
     /* Transform into RegExp instance */
@@ -79,7 +105,7 @@ function sendClientMessage(message, uncontrolled = false) {
 }
 
 function shouldCacheRequest(request) {
-    return request.url.match(cacheURLRegex) && !request.url.match(noCacheURLRegex)
+    return request.url.match(cacheURLRegex) && !request.url.match(noCacheURLRegex) && (request.method === 'GET')
 }
 
 function shouldCacheResponse(response) {
@@ -110,27 +136,37 @@ self.addEventListener('activate', function (event) {
 })
 
 self.addEventListener('fetch', function (event) {
-    if (devMode) { /* Don't use cache in development mode */
+    if (debug) { /* Don't use cache in debug mode */
         return
     }
     if (!shouldCacheRequest(event.request)) {
         return
     }
 
+    let url = event.request.url
+    if (url.includes('?')) {
+        url += `&h=${buildHash}`
+    }
+    else {
+        url += `?h=${buildHash}`
+    }
+
+    let request = new Request(url, event.request)
+
     event.respondWith(
-        caches.match(event.request, {ignoreSearch: false}).then(function (response) {
+        caches.match(request, {ignoreSearch: false}).then(function (response) {
             if (response) {
                 return response
             }
 
-            return fetch(event.request.clone()).then(function (response) {
+            return fetch(request.clone()).then(function (response) {
                 if (!shouldCacheResponse(response)) {
                     return response
                 }
 
                 let responseToCache = response.clone()
                 caches.open(cacheName).then(function (cache) {
-                    cache.put(event.request.clone(), responseToCache)
+                    cache.put(request.clone(), responseToCache)
                 })
 
                 return response.clone()

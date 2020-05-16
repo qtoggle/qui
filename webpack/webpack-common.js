@@ -1,5 +1,4 @@
 
-const crypto = require('crypto')
 const glob = require('glob')
 const path = require('path')
 const webpack = require('webpack')
@@ -32,9 +31,6 @@ const QUI_LESS_REGEX = new RegExp(`qui/${LESS_DIR}/.*\\.less$`)
 const IMG_REGEX = new RegExp(`${IMG_DIR}/.*\\.(svg|png|gif|jpg|jpe?g|ico)$`)
 const FONT_REGEX = new RegExp(`${FONT_DIR}/.*\\.(woff)$`)
 const HTML_REGEX = new RegExp(`${HTML_DIR}/.*\\.(html|json|js)$`)
-
-/* Generate a hash practically unique to this build */
-const quiBuildHash = crypto.createHash('sha256').update(new Date().getTime().toString()).digest('hex').slice(0, 16)
 
 
 function escapeForLess(s) {
@@ -262,7 +258,6 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
                 makeStaticCopyRule(IMG_REGEX, IMG_DIR),
                 makeStaticCopyRule(FONT_REGEX, FONT_DIR),
                 makeStaticCopyRule(HTML_REGEX, HTML_DIR, [
-                    ['__build_hash_placeholder__', quiBuildHash],
                     ['__app_name_placeholder__', appName],
                     ['__app_version_placeholder__', appVersion]
                 ])
@@ -272,8 +267,7 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
             new MiniCssExtractPlugin(),
             new InjectPlugin(
                 function () {
-                    return (`window.__quiBuildHash='${quiBuildHash}';` +
-                            `window.__quiAppVersion='${appVersion}';`)
+                    return `window.__quiAppVersion='${appVersion}';`
                 },
                 {
                     entryName: mainEntryName,

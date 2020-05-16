@@ -115,6 +115,11 @@ export function enableServiceWorker(url = null, updateHandler = null) {
         url = `${Config.navigationBasePrefix}/${SERVICE_WORKER_SCRIPT}`
     }
 
+    url = appendBuildHash(url)
+    if (Config.debug) {
+        url += '&debug=true'
+    }
+
     navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage)
 
     let refreshing = false

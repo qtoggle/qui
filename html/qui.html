@@ -16,6 +16,7 @@
             data-debug="{{ debug|lower }}"
             data-navigation-base-prefix="{{ navigation_base_prefix }}"
             data-themes="{{ themes|join(',') }}"
+            data-build-hash="{{build_hash}}"
             {% for n, v in params.items() -%}
                 {{ n }}="{{ v }}"
             {%- endfor %}>
@@ -33,7 +34,7 @@
                                    display_name|urlquote }}&theme_color={{
                                    theme_color|urlquote }}&background_color={{
                                    background_color|urlquote }}&description={{
-                                   description|urlquote }}">
+                                   description|urlquote }}&h={{build_hash}}">
         {% endif %}
         <link rel="icon" href="{{ static_url }}/img/launcher-icon-32.png">
         <link rel="apple-touch-icon" href="{{ static_url }}/img/launcher-icon-32.png">
