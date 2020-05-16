@@ -4,6 +4,7 @@
 
 import Logger from '$qui/lib/logger.module.js'
 
+import ConditionVariable from '$qui/base/condition-variable.js'
 import {AssertionError}  from '$qui/base/errors.js'
 import Signal            from '$qui/base/signal.js'
 import Config            from '$qui/config.js'
@@ -31,12 +32,11 @@ let installResponseHandler = null
 let installPrompted = false
 
 /**
- * Emitted when a service worker becomes active and starts controlling this client. Handlers are called with the
- * following parameters:
- *  * `serviceWorker`, the controlling service worker
- * @type {qui.base.Signal}
+ * A condition that is fulfilled as soon as this client becomes controlled by a service worker.
+ * The condition is passed the service worker as parameter.
+ * @type {qui.base.ConditionVariable}
  */
-export const serviceWorkerReadySignal = new Signal()
+export let whenServiceWorkerReady = new ConditionVariable()
 
 /**
  * Emitted whenever a message is received from the controlling service worker. Handlers are called with the following
@@ -78,7 +78,7 @@ function handleServiceWorkerUpdate(sw, updateHandler) {
 function handleServiceWorkerReady(sw) {
     logger.info('service worker is ready')
     serviceWorker = sw
-    serviceWorkerReadySignal.emit(serviceWorker)
+    whenServiceWorkerReady.fulfill(serviceWorker)
 }
 
 function provisionServiceWorker(sw) {
