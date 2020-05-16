@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: tables/table.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: tables/table.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+import List       from '$qui/lists/list.js'
+
+import SimpleTableCell from './common-cells/simple-table-cell.js'
+import TableRow        from './table-row.js'
+import * as Tables     from './tables.js'
+
+
+/**
+ * A table view.
+ * @alias qui.tables.Table
+ * @extends qui.lists.List
+ */
+class Table extends List {
+
+    /**
+     * @constructs
+     * @param {Array} [header] optional table header
+     * @param {qui.tables.TableRow} [headerRow] optional table header row
+     * ({@link qui.tables.commoncells.SimpleTableCell} cells will be used by default)
+     * @param {String[]} [widths] table column widths, in percents or absolute values with units
+     * @param {String[]} [horizontalAlign] default horizontal cell alignment for each column; a list containing one of:
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_LEFT}
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_CENTER} (default)
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_RIGHT}
+     * @param {String[]} [verticalAlign] default vertical cell alignment for each column; a list containing one of:
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_TOP}
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_CENTER} (default)
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_BOTTOM}
+     * @param {qui.tables.TableRow[]} [initialRows] initial table rows
+     * @param {Array[]} [initialValues] initial table values
+     * @param {Boolean} [cardLayout] set to `true` to use card layout (defaults to `false`)
+     * @param {...*} args parent class parameters
+     */
+    constructor({
+        header = null,
+        headerRow = null,
+        widths = null,
+        horizontalAlign = null,
+        verticalAlign = null,
+        initialRows = null,
+        initialValues = null,
+        cardLayout = false,
+        ...args
+    } = {}) {
+
+        /* Ensure no items are passed via constructor; we have initialRows for that */
+        delete args.items
+
+        super(args)
+
+        this._header = header
+        this._headerRow = headerRow
+        this._widths = widths
+        this._horizontalAlign = horizontalAlign
+        this._verticalAlign = verticalAlign
+        this._initialRows = initialRows
+        this._initialValues = initialValues
+        this._cardLayout = cardLayout
+
+        this._numColumns = null
+        this._computedWidths = null
+    }
+
+    initHTML(html) {
+        super.initHTML(html)
+
+        html.addClass('qui-table')
+
+        if (this._cardLayout) {
+            html.addClass('card-layout')
+        }
+    }
+
+    init() {
+        super.init()
+
+        if (this._header) {
+            this.prepareHeader()
+            this._initialRows = [this._headerRow, ...(this._initialRows || [])]
+        }
+
+        if (this._initialRows) {
+            this.setItems(this._initialRows)
+            delete this._initialRows /* Don't waste memory */
+        }
+
+        if (this._initialValues) {
+            this.setValues(this._initialValues)
+            delete this._initialValues /* Don't waste memory */
+        }
+    }
+
+
+    /* Alignment */
+
+    /**
+     * Return the default horizontal alignment for each column.
+     * @returns {String[]} a list containing one of:
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_LEFT}
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_CENTER}
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_RIGHT}
+     */
+    getHorizontalAlign() {
+        return this._horizontalAlign
+    }
+
+    /**
+     * Return the default vertical alignment for each column.
+     * @returns {String[]} a list containing one of:
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_TOP}
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_CENTER}
+     *  * {@link qui.tables.TABLE_CELL_ALIGN_BOTTOM}
+     */
+    getVerticalAlign() {
+        return this._verticalAlign
+    }
+
+
+    /* Header */
+
+    /**
+     * Return the table header row.
+     * @returns {?qui.tables.TableRow}
+     */
+    getHeaderRow() {
+        return this._headerRow
+    }
+
+    /**
+     * Set table header row. If `null` is passed, {@link qui.tables.commoncells.SimpleTableCell} are used to build a
+     * table row.
+     * @param {?qui.tables.TableRow} headerRow table header row
+     */
+    setHeaderRow(headerRow) {
+        // FIXME: setting header won't work on card layout as a call to prepareItem() for each row would be required
+
+        if (this._headerRow) {
+            this.removeItemAt(0)
+        }
+
+        this._headerRow = headerRow
+        if (this._header) {
+            this.prepareHeader()
+            this.addRow(0, this._headerRow)
+        }
+    }
+
+    /**
+     * Return the table header.
+     * @returns {?Array}
+     */
+    getHeader() {
+        return this._header
+    }
+
+    /**
+     * Set or clear the table header.
+     * @param {?Array} header
+     */
+    setHeader(header) {
+        // FIXME: setting header won't work on card layout as a call to prepareItem() for each row would be required
+
+        if (this._headerRow) {
+            this.removeItemAt(0)
+        }
+
+        this._header = header
+        if (this._header) {
+            this.prepareHeader()
+            this.addRow(0, this._headerRow)
+        }
+    }
+
+
+    /* Rows */
+
+    /**
+     * Return all rows.
+     * @returns {qui.tables.TableRow[]}
+     */
+    getRows() {
+        let index = this._header != null ? 1 : 0
+
+        return /** @type {qui.tables.TableRow[]} */ this.getItems().slice(index).filter(i => i instanceof TableRow)
+    }
+
+    /**
+     * Set the rows of the list.
+     * @param {qui.tables.TableRow[]} rows table rows
+     */
+    setRows(rows) {
+        if (this._headerRow) {
+            rows = [this._headerRow, ...rows]
+        }
+
+        this.invalidateColumns()
+        this.setItems(rows)
+    }
+
+    /**
+     * Update one row.
+     * @param {Number} index the index where to perform the update
+     * @param {qui.tables.TableRow} row the row to update
+     */
+    setRow(index, row) {
+        if (this._header) {
+            index++
+        }
+
+        this.invalidateColumns()
+        this.setItem(index, row)
+    }
+
+    /**
+     * Add one row to the list.
+     * @param {Number} index the index where the row should be added; `-1` will add the row at the end
+     * @param {qui.tables.TableRow} row the row
+     */
+    addRow(index, row) {
+        if (this._header) {
+            index++
+        }
+
+        this.invalidateColumns()
+        this.addItem(index, row)
+    }
+
+    /**
+     * Remove the row at a given index.
+     * @param {Number} index the index of the row to remove
+     * @returns {?qui.tables.TableRow} the removed row
+     */
+    removeRowAt(index) {
+        if (this._header) {
+            index++
+        }
+
+        this.invalidateColumns()
+        return /** @type ?qui.tables.TableRow */ this.removeItemAt(index)
+    }
+
+    /**
+     * Remove all rows that match a condition.
+     * @param {qui.tables.TableRowMatchFunc} matchFunc
+     * @returns {qui.tables.TableRow[]} the removed rows
+     */
+    removeRows(matchFunc) {
+        /* Wrap match func to ensure header is never removed */
+        let mf = r => matchFunc(r) &amp;&amp; (r !== this._headerRow)
+
+        this.invalidateColumns()
+        return /** @type qui.tables.TableRow[] */ this.removeItems(/** @type qui.lists.ListItemMatchFunc */ mf)
+    }
+
+    prepareItem(item) {
+        super.prepareItem(item)
+
+        if (this._cardLayout) {
+            /* In card layout, add copies of header cells to each row */
+            if (item !== this._headerRow) {
+                if (this._headerRow) {
+                    let html = item.getHTML()
+                    let cellsReversed = this._headerRow.getCells().reverse()
+                    cellsReversed.forEach(function (cell) {
+                        let cellHTML = cell.getHTML().clone(true)
+                        cellHTML.addClass('qui-table-card-layout-header-cell')
+                        html.prepend(cellHTML)
+                    })
+                }
+            }
+            item.getHTML().css('grid-template-rows', this.getComputedWidths().map(_ => '1fr').join(' '))
+            item.getHTML().css('grid-template-columns', '1fr 1fr')
+        }
+        else {
+            /* Set column widths */
+            item.getHTML().css('grid-template-columns', this.getComputedWidths().join(' '))
+        }
+    }
+
+    prepareHeader() {
+        if (!this._headerRow) {
+            this._headerRow = new TableRow({cells: this._header.map(_ => new SimpleTableCell())})
+        }
+
+        this._headerRow.setList(this)
+
+        /* Override isMatch to ensure header is never filtered out */
+        this._headerRow.isMatch = f => !this._cardLayout
+
+        /* Don't allow selecting header */
+        this._headerRow.setSelected = s => {}
+        this._headerRow.setSelectMode = m => {}
+
+        this._headerRow.getHTML().addClass('qui-table-header')
+        this._headerRow.setValues(this._header)
+
+        /* Hide header row on card layout, since header cells will be displayed on every card */
+        if (this._cardLayout) {
+            this._headerRow.hide()
+        }
+    }
+
+
+    /* Columns */
+
+    invalidateColumns() {
+        this._numColumns = null
+        this._computedWidths = null
+    }
+
+    /**
+     * Return the number of table columns.
+     * @returns {Number}
+     */
+    getNumColumns() {
+        if (this._numColumns == null) {
+            this._numColumns = Math.max(...this.getRows().map(r => r.getCells().length))
+        }
+
+        return this._numColumns
+    }
+
+    /**
+     * Set column widths.
+     * @param {String[]} widths table column widths, in percents or absolute values with units
+     */
+    setWidths(widths) {
+        this._widths = widths
+        this._computedWidths = null
+
+        // TODO !!!
+        this.getRows().forEach(r => r.getHTML().css('grid-template-columns', this.getComputedWidths().join(' ')))
+    }
+
+    /**
+     * Return column widths.
+     * @returns {String[]}
+     */
+    getWidths() {
+        return this._widths
+    }
+
+    /**
+     * Return computed column widths.
+     * @returns {String[]}
+     */
+    getComputedWidths() {
+        if (this._computedWidths == null) {
+            this._computedWidths = this._widths
+            let numColumns = this.getNumColumns()
+
+            if (this._computedWidths == null) {
+                this._computedWidths = []
+            }
+
+            while (this._computedWidths.length &lt; numColumns) {
+                this._computedWidths.push('1fr')
+            }
+        }
+
+        return this._computedWidths
+    }
+
+
+    /* Values */
+
+    /**
+     * Return the current values of the table.
+     * @returns {Array[]}
+     */
+    getValues() {
+        return this.getRows().map(r => r.getValues())
+    }
+
+    /**
+     * Set table values. If more values than needed are supplied, extra values are ignored. If less values are supplied,
+     * extra rows are left unchanged.
+     * @param {Array[]} values
+     * @param {Number} [index] optional start index (defaults to `0`)
+     */
+    setValues(values, index = 0) {
+        let rows = this.getRows().slice(index, index + values.length)
+        rows.forEach((r, i) => r.setValues(values[i]))
+    }
+
+}
+
+
+export default Table
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.html">lists</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.tables.html">tables</a></li><li><a href="qui.tables.commoncells.html">commoncells</a></li><li><a href="qui.tables.commontables.html">commontables</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.CancelledError.html">CancelledError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.base.Timer.html">Timer</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.CustomHTMLField.html">CustomHTMLField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextAreaField.html">TextAreaField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.commonlists.PageList.html">PageList</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.HideCancelled.html">HideCancelled</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.tables.commoncells.IconLabelTableCell.html">IconLabelTableCell</a></li><li><a href="qui.tables.commoncells.SimpleTableCell.html">SimpleTableCell</a></li><li><a href="qui.tables.PageTable.html">PageTable</a></li><li><a href="qui.tables.Table.html">Table</a></li><li><a href="qui.tables.TableCell.html">TableCell</a></li><li><a href="qui.tables.TableRow.html">TableRow</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.utils.VisibilityManager.html">VisibilityManager</a></li><li><a href="qui.views.commonviews.IconLabelViewMixin.html">IconLabelViewMixin</a></li><li><a href="qui.views.commonviews.ProgressViewMixin.html">ProgressViewMixin</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isClass">isClass</a></li><li><a href="global.html#isFunction">isFunction</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#navigateInitial">navigateInitial</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat May 16 2020 18:16:09 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

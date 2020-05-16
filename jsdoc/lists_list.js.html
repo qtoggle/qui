@@ -33,50 +33,59 @@ import Logger from '$qui/lib/logger.module.js'
 import {gettext}             from '$qui/base/i18n.js'
 import {mix}                 from '$qui/base/mixwith.js'
 import StockIcon             from '$qui/icons/stock-icon.js'
-import * as Theme            from '$qui/theme.js'
+import * as Lists            from '$qui/lists/lists.js'
 import {asap}                from '$qui/utils/misc.js'
-import * as StringUtils      from '$qui/utils/string.js'
+import * as ObjectUtils      from '$qui/utils/object.js'
+import {ProgressViewMixin}   from '$qui/views/common-views.js'
 import {StructuredViewMixin} from '$qui/views/common-views.js'
+import ViewMixin             from '$qui/views/view.js'
 
 
 const logger = Logger.get('qui.lists.list')
 
 
 /**
- * List item match function.
- * @callback qui.lists.ListItemMatchFunc
- * @param {qui.lists.ListItem} item the item to be tested
- * @returns {Boolean} `true` if the item matches the condition, `false` otherwise
- */
-
-
-/**
  * A list view.
  * @alias qui.lists.List
+ * @mixes qui.views.ViewMixin
  * @mixes qui.views.commonviews.StructuredViewMixin
+ * @mixes qui.views.commonviews.ProgressViewMixin
  */
-class List extends mix().with(StructuredViewMixin) {
+class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin) {
 
     /**
      * @constructs
-     * @param {qui.lists.ListItem[]} [items] initial list items
+     * @param {qui.lists.ListItem[]} [initialItems] initial list items
      * @param {Boolean} [searchEnabled] set to `true` to enable the search feature (defaults to `false`)
      * @param {Boolean} [addEnabled] set to `true` to enable the add item feature (defaults to `false`)
+     * @param {String} [selectMode] one of:
+     *  * {@link qui.lists.LIST_SELECT_MODE_DISABLED}
+     *  * {@link qui.lists.LIST_SELECT_MODE_SINGLE} (default)
+     *  * {@link qui.lists.LIST_SELECT_MODE_MULTIPLE}
+     * @param {Boolean} longPressMultipleSelection set to `true` to enable toggling between single and multiple select
+     * modes by long pressing items
      * @param {...*} args parent class parameters
      */
-    constructor({items = [], searchEnabled = false, addEnabled = false, ...args} = {}) {
+    constructor({
+        initialItems = null,
+        searchEnabled = false,
+        addEnabled = false,
+        selectMode = Lists.LIST_SELECT_MODE_SINGLE,
+        longPressMultipleSelection = false,
+        ...args
+    } = {}) {
+
         super(args)
 
-        this._items = items
+        this._items = initialItems || []
         this._searchEnabled = searchEnabled
         this._addEnabled = addEnabled
+        this._selectMode = selectMode
+        this._longPressMultipleSelection = longPressMultipleSelection
 
         this._addElem = null
         this._searchElem = null
         this._filterInput = null
-        this._glassDiv = null
-        this._progressWidget = null
-        this._progressVisible = null
     }
 
     makeHTML() {
@@ -86,13 +95,11 @@ class List extends mix().with(StructuredViewMixin) {
     initHTML(html) {
         super.initHTML(html)
 
-        /* Progress */
-        this._progressWidget = $('&lt;div>&lt;/div>', {class: 'qui-list-progress-widget'}).progressdisk({radius: '2em'})
-        this._progressWidget.css('display', 'none')
-        this._glassDiv = $('&lt;div>&lt;/div>', {class: 'qui-list-glass'})
+        html.addClass(`select-mode-${this._selectMode}`)
+    }
 
-        html.append(this._glassDiv)
-        html.append(this._progressWidget)
+    init() {
+        super.init()
 
         /* Set initial items */
         if (this._items.length) {
@@ -101,7 +108,7 @@ class List extends mix().with(StructuredViewMixin) {
     }
 
     makeBody() {
-        let bodyDiv = $('&lt;div>&lt;/div>', {class: 'list-body'})
+        let bodyDiv = $('&lt;div>&lt;/div>', {class: 'qui-list-body'})
 
         if (this._searchEnabled) {
             this._enableSearch(bodyDiv)
@@ -130,13 +137,12 @@ class List extends mix().with(StructuredViewMixin) {
      * @param {qui.lists.ListItem[]} items list items
      */
     setItems(items) {
-        this.getBody().children('.qui-list-child.item').remove()
+        this.getBody().children('div.qui-list-item').remove()
 
+        items.forEach(i => this.prepareItem(i))
         this._items = items
 
         this._items.forEach(function (item) {
-            item.setList(this)
-
             if (this._addElem) {
                 this._addElem.before(item.getHTML())
             }
@@ -156,14 +162,14 @@ class List extends mix().with(StructuredViewMixin) {
      * @param {qui.lists.ListItem} item the item to update
      */
     setItem(index, item) {
-        this.getBody().children(`.qui-list-child.item:eq(${index})`).replaceWith(item.getHTML())
+        this.prepareItem(item)
+
+        this.getBody().children(`div.qui-list-item:eq(${index})`).replaceWith(item.getHTML())
         this._items[index] = item
 
         if (this._searchEnabled) {
             this._applySearchFilter()
         }
-
-        item.setList(this)
     }
 
     /**
@@ -172,7 +178,7 @@ class List extends mix().with(StructuredViewMixin) {
      * @param {qui.lists.ListItem} item the item
      */
     addItem(index, item) {
-        item.setList(this)
+        this.prepareItem(item)
 
         if (index &lt; 0 || !this._items.length) {
             if (this._addElem) {
@@ -185,7 +191,7 @@ class List extends mix().with(StructuredViewMixin) {
             this._items.push(item)
         }
         else {
-            this.getBody().children(`.qui-list-child.item:eq(${index})`).before(item.getHTML())
+            this.getBody().children(`div.qui-list-item:eq(${index})`).before(item.getHTML())
             this._items.splice(index, 0, item)
         }
 
@@ -200,7 +206,7 @@ class List extends mix().with(StructuredViewMixin) {
      * @returns {?qui.lists.ListItem} the removed item
      */
     removeItemAt(index) {
-        this.getBody().children(`.qui-list-child.item:eq(${index})`).remove()
+        this.getBody().children(`div.qui-list-item:eq(${index})`).remove()
 
         return this._items.splice(index, 1)[0] || null
     }
@@ -211,14 +217,105 @@ class List extends mix().with(StructuredViewMixin) {
      * @returns {qui.lists.ListItem[]} the removed items
      */
     removeItems(matchFunc) {
-        return this._items.slice().filter(function (item, i) {
-            if (!matchFunc(item)) {
-                return false
+        for (let i = 0; i &lt; this._items.length; i++) {
+            if (matchFunc(this._items[i])) {
+                this.removeItemAt(i--)
             }
+        }
+    }
 
-            this.getBody().children(`.qui-list-child.item:eq(${i})`).remove()
-            this._items.splice(i, 1)
-        }, this)
+    /**
+     * Prepare item to be part of this list.
+     * @param {qui.lists.ListItem} item
+     */
+    prepareItem(item) {
+        item.setList(this)
+
+        let html = item.getHTML()
+
+        html.on('click', this._handleItemClick.bind(this, item))
+        html.longpress(this._handleLongPress.bind(this))
+
+        item.setSelectMode(this._selectMode)
+    }
+
+    _handleItemClick(item) {
+        /* Flag to prevent handling clicks on long press */
+        if (item._wasLongPressed) {
+            item._wasLongPressed = false
+            return
+        }
+
+        if (this._selectMode === Lists.LIST_SELECT_MODE_DISABLED) {
+            return
+        }
+
+        let oldItems = this._items.filter(i => i.isSelected())
+        let newItems = []
+        let addedItems = []
+        let removedItems = []
+
+        if (this._selectMode === Lists.LIST_SELECT_MODE_MULTIPLE) {
+            /* In multi-selection mode, simply add/remove new item to/from selection */
+            if (oldItems.includes(item)) {
+                newItems = oldItems.filter(i => i !== item)
+                removedItems.push(item)
+            }
+            else {
+                newItems = oldItems.concat([item])
+                addedItems.push(item)
+            }
+        }
+        else { /* Assuming Lists.LIST_SELECT_MODE_SINGLE */
+            newItems.push(item)
+            removedItems = oldItems
+            addedItems.push(item)
+        }
+
+        if (ObjectUtils.deepEquals(oldItems, newItems)) {
+            return /* Selection unchanged */
+        }
+
+        let promise = this.onSelectionChange(oldItems, newItems) || Promise.resolve()
+
+        promise.then(function () {
+            try {
+                removedItems.forEach(i => i.setSelected(false))
+                addedItems.forEach(i => i.setSelected(true))
+            }
+            catch (e) {
+                logger.errorStack('setSelected failed', e)
+            }
+        }).catch(function (e) {
+            if (e == null) {
+                logger.debug('selection change rejected')
+            }
+            else {
+                throw e
+            }
+        })
+    }
+
+    _handleLongPress(item) {
+        if (!this._longPressMultipleSelection) {
+            return
+        }
+
+        // TODO: replace jQuery longpress plugin with a simple, more integrated long press event manager
+        if (this._selectMode === Lists.LIST_SELECT_MODE_SINGLE) {
+            this.setSelectMode(Lists.LIST_SELECT_MODE_MULTIPLE)
+            let selectedItems = this.getSelectedItems()
+            if (!selectedItems.includes(item)) {
+                selectedItems.push(item)
+                this.setSelectedItems(selectedItems)
+            }
+        }
+        else if (this._selectMode === Lists.LIST_SELECT_MODE_MULTIPLE) {
+            this.setSelectMode(Lists.LIST_SELECT_MODE_SINGLE)
+            this.setSelectedItems([item])
+        }
+
+        item._wasLongPressed = true
     }
 
 
@@ -269,8 +366,7 @@ class List extends mix().with(StructuredViewMixin) {
     }
 
     _makeAddElem() {
-        let addElem = $('&lt;div>&lt;/div>', {class: 'qui-base-button qui-list-child add'})
-
+        let addElem = $('&lt;div>&lt;/div>', {class: 'qui-base-button qui-list-child qui-list-add'})
         let addIcon = $('&lt;div>&lt;/div>', {class: 'qui-icon'})
         addElem.append(addIcon)
         new StockIcon({name: 'plus', variant: 'interactive'}).applyTo(addIcon)
@@ -280,7 +376,12 @@ class List extends mix().with(StructuredViewMixin) {
             let promise = this.onAdd()
             promise = promise || Promise.resolve()
             promise.then(function () {
-                this.getBody().children('.qui-list-child.item').removeClass('selected')
+                try {
+                    this._items.forEach(i => i.setSelected(false))
+                }
+                catch (e) {
+                    logger.errorStack('setSelected failed', e)
+                }
             }.bind(this)).catch(function (e) {
                 if (e == null) {
                     logger.debug('add rejected')
@@ -308,7 +409,7 @@ class List extends mix().with(StructuredViewMixin) {
     _makeSearchElem() {
         let list = this
 
-        let searchElem = $('&lt;div>&lt;/div>', {class: 'qui-list-child search'})
+        let searchElem = $('&lt;div>&lt;/div>', {class: 'qui-list-child qui-list-search'})
 
         let searchInput = $('&lt;input>', {type: 'text'})
         searchInput.attr('placeholder', gettext('search...'))
@@ -363,16 +464,21 @@ class List extends mix().with(StructuredViewMixin) {
 
     _applySearchFilter() {
         if (!this._filterInput) {
-            this.getBody().children('.qui-list-child.item').removeClass('hidden')
+            this._items.filter(i => i.isHidden()).forEach(i => i.show())
             return
         }
 
         let searchText = this._filterInput.val().trim().toLowerCase()
-        this.getBody().children('.qui-list-child.item').removeClass('hidden').each(function () {
-            let itemElem = $(this)
-            let text = itemElem.text().trim().toLowerCase()
-            if (StringUtils.intelliSearch(text, searchText) == null) {
-                itemElem.addClass('hidden')
+        this._items.forEach(function (item) {
+            if (item.isMatch(searchText)) {
+                if (item.isHidden()) {
+                    item.show()
+                }
+            }
+            else {
+                if (!item.isHidden()) {
+                    item.hide()
+                }
             }
         })
     }
@@ -425,116 +531,84 @@ class List extends mix().with(StructuredViewMixin) {
         this._searchElem.remove()
         this._searchElem = null
         this.getBody().removeClass('search-enabled')
-        this.getBody().children('.qui-list-child.item').removeClass('hidden')
+        this.getBody().children('div.qui-list-item').removeClass('hidden')
     }
 
 
     /* Selection */
 
     /**
-     * Return the index of the currently selected item, or `-1` if no item is selected.
-     * @returns {Number}
+     * Set selection mode.
+     * @param {String} selectMode one of:
+     *  * {@link qui.lists.LIST_SELECT_MODE_DISABLED}
+     *  * {@link qui.lists.LIST_SELECT_MODE_SINGLE} (default)
+     *  * {@link qui.lists.LIST_SELECT_MODE_MULTIPLE}
      */
-    getSelectedIndex() {
-        let index = -1
-        this.getBody().children('.qui-list-child.item').each(function (i) {
-            if ($(this).hasClass('selected')) {
-                index = i
-                return false
+    setSelectMode(selectMode) {
+        this._selectMode = selectMode
+
+        let selectedItems = this._items.filter(i => i.isSelected())
+
+        if (this._selectMode === Lists.LIST_SELECT_MODE_DISABLED) {
+            selectedItems.forEach(i => i.setSelected(false))
+        }
+        else if (this._selectMode === Lists.LIST_SELECT_MODE_SINGLE) {
+            if (selectedItems.length > 1) {
+                selectedItems.slice(1).forEach(i => i.setSelected(false))
             }
-        })
+        }
 
-        return index
+        /* Update HTML class according to new select mode */
+        let html = this.getHTML()
+        html.removeClass([
+            Lists.LIST_SELECT_MODE_DISABLED,
+            Lists.LIST_SELECT_MODE_SINGLE,
+            Lists.LIST_SELECT_MODE_MULTIPLE
+        ].map(m => `select-mode-${m}`).join(' '))
+        html.addClass(`select-mode-${this._selectMode}`)
+
+        /* Update items select mode */
+        this.getItems().forEach(i => i.setSelectMode(this._selectMode))
     }
 
     /**
-     * Select the item with a given index.
-     * @param {Number} index the index of the item to select; `-1` deselects all items
+     * Return the currently selected items.
+     * @returns {qui.lists.ListItem[]}
      */
-    setSelectedIndex(index) {
-        this.getBody().children('.qui-list-child.item').removeClass('selected')
-        if (index >= 0) {
-            this.getBody().children(`.qui-list-child.item:eq(${index})`).addClass('selected')
-        }
+    getSelectedItems() {
+        return this._items.filter(i => i.isSelected())
     }
 
     /**
-     * Return the currently selected item, or `null` if no item is selected.
-     * @returns {?qui.lists.ListItem}
+     * Updates current selection.
+     * @param {qui.lists.ListItem[]} items the list of new items to select; empty list clears selection
      */
-    getSelectedItem() {
-        let index = this.getSelectedIndex()
-        if (index &lt; 0) {
-            return null
-        }
-
-        return this._items[index]
-    }
-
-    /**
-     * Called when the selected item changes.
-     * @param {qui.lists.ListItem} newItem the new selected item (can be `null`)
-     * @param {Number} newIndex the new selected index (can be `-1`)
-     * @param {qui.lists.ListItem} oldItem the previously selected item (can be `null`)
-     * @param {Number} oldIndex the previously selected index (can be `-1`)
-     * @returns {?Promise} an optional promise which, if rejected with no argument, will cancel the selection change
-     */
-    onSelectionChange(newItem, newIndex, oldItem, oldIndex) {
-    }
-
-
-    /* Progress */
-
-    showProgress(percent) {
-        if (percent == null) {
-            percent = -1
-        }
-
-        if (this._progressVisible) {
-            this._progressWidget.progressdisk('setValue', percent)
+    setSelectedItems(items) {
+        if (this._selectMode === Lists.LIST_SELECT_MODE_DISABLED) {
             return
         }
-
-        this._progressVisible = true
-
-        this._glassDiv.css('display', 'block')
-        this.getHTML().addClass('progress')
-        this._progressWidget.css('display', '')
-        this._progressWidget.progressdisk('setValue', percent)
-
-        asap(function () {
-
-            if (!this._progressVisible) {
-                return /* Progress already hidden */
+        else if (this._selectMode === Lists.LIST_SELECT_MODE_SINGLE) {
+            if (items.length > 1) {
+                items = items.slice(0, 1) /* Keep only first element in single selection mode */
             }
+        }
 
-            this._glassDiv.addClass('visible')
-            this._progressWidget.addClass('visible')
+        let selectedItems = this._items.filter(i => i.isSelected())
 
-        }.bind(this))
+        /* Remove selection from items no longer selected */
+        selectedItems.filter(i => !items.includes(i)).forEach(i => i.setSelected(false))
+
+        /* Add selection to newly selected items */
+        items.filter(i => !selectedItems.includes(i)).forEach(i => i.setSelected(true))
     }
 
-    hideProgress() {
-        this._glassDiv.removeClass('visible')
-        this.getHTML().removeClass('progress')
-        this._progressWidget.removeClass('visible')
-
-        this._progressVisible = false
-
-        Theme.afterTransition(function () {
-
-            if (this._progressVisible) {
-                return /* Progress re-shown in the meantime */
-            }
-
-            this._glassDiv.css('display', '')
-            this._progressWidget.css('display', 'none')
-
-        }.bind(this), this._glassDiv)
-    }
-
-    getProgressWidget() {
-        return this._progressWidget
+    /**
+     * Called when the current selection is changed by user.
+     * @param {qui.lists.ListItem[]} oldItems the previously selected items (can be empty)
+     * @param {qui.lists.ListItem[]} newItems the new selected items (can be empty)
+     * @returns {?Promise} an optional promise which, if rejected with no argument, will cancel the selection change
+     */
+    onSelectionChange(oldItems, newItems) {
     }
 
 }
@@ -551,13 +625,13 @@ export default List
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.CancelledError.html">CancelledError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.base.Timer.html">Timer</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.CustomHTMLField.html">CustomHTMLField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextAreaField.html">TextAreaField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.lists.PageList.html">PageList</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.HideCancelled.html">HideCancelled</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.utils.VisibilityManager.html">VisibilityManager</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isClass">isClass</a></li><li><a href="global.html#isFunction">isFunction</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#navigateInitial">navigateInitial</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.html">lists</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.tables.html">tables</a></li><li><a href="qui.tables.commoncells.html">commoncells</a></li><li><a href="qui.tables.commontables.html">commontables</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.CancelledError.html">CancelledError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.base.Timer.html">Timer</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.CustomHTMLField.html">CustomHTMLField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextAreaField.html">TextAreaField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.commonlists.PageList.html">PageList</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.HideCancelled.html">HideCancelled</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.tables.commoncells.IconLabelTableCell.html">IconLabelTableCell</a></li><li><a href="qui.tables.commoncells.SimpleTableCell.html">SimpleTableCell</a></li><li><a href="qui.tables.PageTable.html">PageTable</a></li><li><a href="qui.tables.Table.html">Table</a></li><li><a href="qui.tables.TableCell.html">TableCell</a></li><li><a href="qui.tables.TableRow.html">TableRow</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.utils.VisibilityManager.html">VisibilityManager</a></li><li><a href="qui.views.commonviews.IconLabelViewMixin.html">IconLabelViewMixin</a></li><li><a href="qui.views.commonviews.ProgressViewMixin.html">ProgressViewMixin</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isClass">isClass</a></li><li><a href="global.html#isFunction">isFunction</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#navigateInitial">navigateInitial</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Thu May 07 2020 19:05:02 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat May 16 2020 18:16:09 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -259,7 +259,7 @@
 
 
     <ul>
-        <li>qui.forms.PageForm</li>
+        <li><a href="qui.forms.commonforms.PageForm.html">qui.forms.commonforms.PageForm</a></li>
     </ul>
 
 
@@ -279,6 +279,2590 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="addButton"><span class="type-signature"></span>addButton<span class="signature">(index, button)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Add a button to the form.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the index where the button should be added; <code>-1</code> will add the button at the end</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>button</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="qui.forms.FormButton.html">qui.forms.FormButton</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the button</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#addButton">qui.forms.commonforms.PageForm#addButton</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line218">line 218</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="addField"><span class="type-signature"></span>addField<span class="signature">(index, field)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Add a field to the form.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the index where the field should be added; <code>-1</code> will add the field at the end</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="qui.forms.FormField.html">qui.forms.FormField</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the field</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#addField">qui.forms.commonforms.PageForm#addField</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line315">line 315</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="applyData"><span class="type-signature"></span>applyData<span class="signature">(data)</span><span class="type-signature"> &rarr; (nullable) {Promise.&lt;*, Error>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>A function that applies the form data.</p>
+<p>If <code>null</code> or <code>undefined</code> is returned, the form data is considered applied right away. If a promise is returned,
+data is considered applied when the promise is resolved and <a href="qui.forms.Form.html#setApplied"><code>qui.forms.Form#setApplied</code></a> is called to mark
+the form as applied.</p>
+<p>A rejected promise will set a form error using <a href="qui.views.ViewMixin.html#setError"><code>qui.views.ViewMixin#setError</code></a>. To set field errors, reject
+the returned promise with a <a href="qui.forms.ErrorMapping.html"><code>qui.forms.ErrorMapping</code></a>. A null error will simply cancel the application,
+without setting any error.</p>
+<p>Form will be put in progress using <a href="qui.views.ViewMixin.html#setProgress"><code>qui.views.ViewMixin#setProgress</code></a> while promise is active.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>form data to be applied</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#applyData">qui.forms.commonforms.PageForm#applyData</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line873">line 873</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>Error errors in applying the data can also be thrown</p>
+    
+    </div>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;*, Error></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="applyField"><span class="type-signature"></span>applyField<span class="signature">(value, fieldName)</span><span class="type-signature"> &rarr; (nullable) {Promise.&lt;*, Error>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Implement this method to define how a field value is applied when it changes. This method can be used to
+implement continuous form saving, eliminating the need of a general form save button.</p>
+<p>For continuous form saving to work, the form attribute <code>continuousValidation</code> must be set to <code>true</code>.</p>
+<p>If a promise is returned, value is considered applied when the promise is resolved and
+<a href="qui.forms.Form.html#setApplied"><code>qui.forms.Form#setApplied</code></a> is called to mark the form as applied. A rejected promise will set a field
+error using <a href="qui.views.ViewMixin.html#setError"><code>qui.views.ViewMixin#setError</code></a>.</p>
+<p>The field will be put in progress using <a href="qui.views.ViewMixin.html#setProgress"><code>qui.views.ViewMixin#setProgress</code></a> while promise is active.</p>
+<p>Returning <code>null</code> or <code>undefined</code> indicates that values cannot be applied continuously for the given field (this is
+the default behaviour).</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the validated field value</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fieldName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the name of the field that was changed</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#applyField">qui.forms.commonforms.PageForm#applyField</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line902">line 902</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>Error errors in applying the value can also be thrown</p>
+    
+    </div>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;*, Error></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="cancelAction"><span class="type-signature"></span>cancelAction<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Execute the cancel form action. By default this is <a href="qui.forms.Form.html#close"><code>qui.forms.Form#close</code></a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#cancelAction">qui.forms.commonforms.PageForm#cancelAction</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line1082">line 1082</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="clearApplied"><span class="type-signature"></span>clearApplied<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Put the form in the normal state, but only if the current state is <a href="qui.forms.html#.STATE_APPLIED"><code>qui.forms.STATE_APPLIED</code></a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#clearApplied">qui.forms.commonforms.PageForm#clearApplied</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line1008">line 1008</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="close"><span class="type-signature"></span>close<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Close the form.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#close">qui.forms.commonforms.PageForm#close</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line1166">line 1166</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="defaultAction"><span class="type-signature"></span>defaultAction<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Execute the default form action. By default this is <a href="qui.forms.Form.html#proceed"><code>qui.forms.Form#proceed</code></a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#defaultAction">qui.forms.commonforms.PageForm#defaultAction</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line1075">line 1075</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getButton"><span class="type-signature"></span>getButton<span class="signature">(id)</span><span class="type-signature"> &rarr; (nullable) {<a href="qui.forms.FormButton.html">qui.forms.FormButton</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the form button with the given id.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the button id</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#getButton">qui.forms.commonforms.PageForm#getButton</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line259">line 259</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="qui.forms.FormButton.html">qui.forms.FormButton</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getButtons"><span class="type-signature"></span>getButtons<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="qui.forms.FormButton.html">qui.forms.FormButton</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return all form buttons.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#getButtons">qui.forms.commonforms.PageForm#getButtons</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line270">line 270</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="qui.forms.FormButton.html">qui.forms.FormButton</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getChangedFieldNames"><span class="type-signature"></span>getChangedFieldNames<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;String>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the names of the fields whose values have been changed.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#getChangedFieldNames">qui.forms.commonforms.PageForm#getChangedFieldNames</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line819">line 819</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;String></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getData"><span class="type-signature"></span>getData<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the current form data in a promise, after making sure it is valid.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#getData">qui.forms.commonforms.PageForm#getData</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line775">line 775</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a promise that is resolved with a dictionary of field values, if the form is valid, and is
+rejected with a dictionary of errors associated to invalid fields, if the form is invalid</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getField"><span class="type-signature"></span>getField<span class="signature">(name)</span><span class="type-signature"> &rarr; (nullable) {<a href="qui.forms.FormField.html">qui.forms.FormField</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the field with a given name. If no such field is found, <code>null</code> is returned.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the name of the field</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#getField">qui.forms.commonforms.PageForm#getField</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line384">line 384</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="qui.forms.FormField.html">qui.forms.FormField</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getFieldIndex"><span class="type-signature"></span>getFieldIndex<span class="signature">(field)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the index of the given field. If the field does not belong to this form, <code>-1</code> is returned.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>field</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="qui.forms.FormField.html">qui.forms.FormField</a></span>
+|
+
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the field or a field name</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#getFieldIndex">qui.forms.commonforms.PageForm#getFieldIndex</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line393">line 393</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getFields"><span class="type-signature"></span>getFields<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="qui.forms.FormField.html">qui.forms.FormField</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the list of all fields.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#getFields">qui.forms.commonforms.PageForm#getFields</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line406">line 406</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="qui.forms.FormField.html">qui.forms.FormField</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getFieldValue"><span class="type-signature"></span>getFieldValue<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;*>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the current value of a field, in a promise, after making sure the entire form is valid.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#getFieldValue">qui.forms.commonforms.PageForm#getFieldValue</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line751">line 751</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a promise that is resolved with the field value, if the form is valid, and is rejected, if
+the form is invalid</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;*></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getUnvalidatedData"><span class="type-signature"></span>getUnvalidatedData<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the current form data without validating fields or the form.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#getUnvalidatedData">qui.forms.commonforms.PageForm#getUnvalidatedData</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line783">line 783</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a dictionary with field values</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getUnvalidatedFieldValue"><span class="type-signature"></span>getUnvalidatedFieldValue<span class="signature">()</span><span class="type-signature"> &rarr; (nullable) {*}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the current value of a field without performing any validation.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#getUnvalidatedFieldValue">qui.forms.commonforms.PageForm#getUnvalidatedFieldValue</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line761">line 761</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>the current field value or <code>null</code> if no such field is found</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">*</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="isApplied"><span class="type-signature"></span>isApplied<span class="signature">()</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Tell if the form data has been applied (and thus there are no pending changes).</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#isApplied">qui.forms.commonforms.PageForm#isApplied</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line1018">line 1018</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="isCompact"><span class="type-signature"></span>isCompact<span class="signature">()</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Tell if the form uses the compact layout.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#isCompact">qui.forms.commonforms.PageForm#isCompact</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line99">line 99</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
 
         
             
@@ -392,6 +2976,1440 @@
     
 
     
+    <h4 class="name" id="onButtonPress"><span class="type-signature"></span>onButtonPress<span class="signature">(button)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Called when one of the form buttons is pressed.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>button</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="qui.forms.FormButton.html">qui.forms.FormButton</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#onButtonPress">qui.forms.commonforms.PageForm#onButtonPress</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line278">line 278</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="onCancel"><span class="type-signature"></span>onCancel<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Called when the user closes the form without applying the data.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#onCancel">qui.forms.commonforms.PageForm#onCancel</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line879">line 879</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="onChange"><span class="type-signature"></span>onChange<span class="signature">(data, fieldName)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Called whenever a field value changes.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the <em>unvalidated</em> form data</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fieldName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the name of the field that was changed</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#onChange">qui.forms.commonforms.PageForm#onChange</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line828">line 828</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="onChangeValid"><span class="type-signature"></span>onChangeValid<span class="signature">(data, fieldName)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Called whenever a field value changes and the form is entirely valid. This method is only called for forms with
+<code>continuousValidation</code> set to <code>true</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the validated form data</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fieldName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the name of the field that was changed</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#onChangeValid">qui.forms.commonforms.PageForm#onChangeValid</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line837">line 837</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="onInvalid"><span class="type-signature"></span>onInvalid<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Called when the form data becomes invalid.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#onInvalid">qui.forms.commonforms.PageForm#onInvalid</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line850">line 850</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="onValid"><span class="type-signature"></span>onValid<span class="signature">(data)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Called when the form data becomes valid.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the form data</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#onValid">qui.forms.commonforms.PageForm#onValid</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line844">line 844</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="proceed"><span class="type-signature"></span>proceed<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Run the form by gathering, validating and applying form data.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#proceed">qui.forms.commonforms.PageForm#proceed</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line1090">line 1090</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="removeButton"><span class="type-signature"></span>removeButton<span class="signature">(id)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Remove a button from the form.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the button id</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#removeButton">qui.forms.commonforms.PageForm#removeButton</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line239">line 239</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="removeField"><span class="type-signature"></span>removeField<span class="signature">(nameOrField)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Remove a field from the form.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nameOrField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type"><a href="qui.forms.FormField.html">qui.forms.FormField</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the name of the field or a field object</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#removeField">qui.forms.commonforms.PageForm#removeField</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line347">line 347</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setApplied"><span class="type-signature"></span>setApplied<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Put the form in the applied state. The view state is set to <a href="qui.forms.html#.STATE_APPLIED"><code>qui.forms.STATE_APPLIED</code></a>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#setApplied">qui.forms.commonforms.PageForm#setApplied</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line1001">line 1001</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setData"><span class="type-signature"></span>setData<span class="signature">(data)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Update the form data.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the new form data</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#setData">qui.forms.commonforms.PageForm#setData</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line793">line 793</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="show"><span class="type-signature"></span>show<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="qui.messages.MessageForm.html">qui.messages.MessageForm</a>}</span></h4>
     
 
@@ -485,6 +4503,879 @@
     <dd>
         
 <span class="param-type"><a href="qui.messages.MessageForm.html">qui.messages.MessageForm</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateButtonsState"><span class="type-signature"></span>updateButtonsState<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Update internal form state related to buttons.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#updateButtonsState">qui.forms.commonforms.PageForm#updateButtonsState</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line284">line 284</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateFieldsState"><span class="type-signature"></span>updateFieldsState<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Update internal form state related to fields.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#updateFieldsState">qui.forms.commonforms.PageForm#updateFieldsState</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line413">line 413</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateValidationState"><span class="type-signature"></span>updateValidationState<span class="signature">(extraErrors<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Used for continuous validation. Runs a &quot;background&quot; validation to:</p>
+<ul>
+<li>show possible field/form errors</li>
+<li>update internal validity state</li>
+<li>enable/disable default form button</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>extraErrors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;String, Error></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last"><p>a dictionary containing any extra field errors that should be
+considered in addition to those returned by the validation mechanism.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#updateValidationState">qui.forms.commonforms.PageForm#updateValidationState</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line670">line 670</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a promise that is resolved with form data, if the form is valid (the promise is never
+rejected)</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateValidationStateASAP"><span class="type-signature"></span>updateValidationStateASAP<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Calls <a href="qui.forms.Form.html#updateValidationState"><code>qui.forms.Form#updateValidationState</code></a> asap, preventing multiple unnecessary successive calls.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#updateValidationStateASAP">qui.forms.commonforms.PageForm#updateValidationStateASAP</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line733">line 733</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="validate"><span class="type-signature"></span>validate<span class="signature">(data)</span><span class="type-signature"> &rarr; (nullable) {Promise.&lt;*, <a href="qui.forms.ValidationError.html">qui.forms.ValidationError</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Tell if given form data is valid as a whole or not. This method is called only with valid field data. Override
+this method to implement custom form validation.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the form data to validate</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#validate">qui.forms.commonforms.PageForm#validate</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line642">line 642</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>qui.forms.ValidationError the validation error can also be thrown instead of being returned in a rejected
+promise</p>
+    
+    </div>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p><code>null</code> or a resolved promise, if the data is valid; a promise
+rejected with a validation error otherwise;</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;*, <a href="qui.forms.ValidationError.html">qui.forms.ValidationError</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="validateField"><span class="type-signature"></span>validateField<span class="signature">(name, value, data)</span><span class="type-signature"> &rarr; (nullable) {Promise.&lt;*, <a href="qui.forms.ValidationError.html">qui.forms.ValidationError</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Override this method to implement custom field validation in the context of this form.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the field name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the field value to validate</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the form unvalidated data</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="qui.forms.commonforms.PageForm.html#validateField">qui.forms.commonforms.PageForm#validateField</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_form.js.html">forms/form.js</a>, <a href="forms_form.js.html#line656">line 656</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>qui.forms.ValidationError the validation error can also be thrown instead of being returned in a rejected
+response</p>
+    
+    </div>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p><code>null</code> or a resolved promise, if the value is valid; a promise
+rejected with a validation error otherwise;</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;*, <a href="qui.forms.ValidationError.html">qui.forms.ValidationError</a>></span>
 
 
     </dd>
@@ -653,13 +5544,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.CancelledError.html">CancelledError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.base.Timer.html">Timer</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.CustomHTMLField.html">CustomHTMLField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextAreaField.html">TextAreaField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.lists.PageList.html">PageList</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.HideCancelled.html">HideCancelled</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.utils.VisibilityManager.html">VisibilityManager</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isClass">isClass</a></li><li><a href="global.html#isFunction">isFunction</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#navigateInitial">navigateInitial</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.html">lists</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.tables.html">tables</a></li><li><a href="qui.tables.commoncells.html">commoncells</a></li><li><a href="qui.tables.commontables.html">commontables</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.CancelledError.html">CancelledError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.base.Timer.html">Timer</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.CustomHTMLField.html">CustomHTMLField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextAreaField.html">TextAreaField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.commonlists.PageList.html">PageList</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.HideCancelled.html">HideCancelled</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.tables.commoncells.IconLabelTableCell.html">IconLabelTableCell</a></li><li><a href="qui.tables.commoncells.SimpleTableCell.html">SimpleTableCell</a></li><li><a href="qui.tables.PageTable.html">PageTable</a></li><li><a href="qui.tables.Table.html">Table</a></li><li><a href="qui.tables.TableCell.html">TableCell</a></li><li><a href="qui.tables.TableRow.html">TableRow</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.utils.VisibilityManager.html">VisibilityManager</a></li><li><a href="qui.views.commonviews.IconLabelViewMixin.html">IconLabelViewMixin</a></li><li><a href="qui.views.commonviews.ProgressViewMixin.html">ProgressViewMixin</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isClass">isClass</a></li><li><a href="global.html#isFunction">isFunction</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#navigateInitial">navigateInitial</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Thu May 07 2020 19:05:03 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat May 16 2020 18:16:10 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

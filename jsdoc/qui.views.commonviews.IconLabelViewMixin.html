@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: IconLabelViewMixin</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: IconLabelViewMixin</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.views.html">.views</a><a href="qui.views.commonviews.html">.commonviews</a>.</span>IconLabelViewMixin<span class="signature">(icon<span class="signature-attributes">opt</span>, label<span class="signature-attributes">opt</span>, clickable<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Adds an icon with a label to a view.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="IconLabelViewMixin"><span class="type-signature"></span>new IconLabelViewMixin<span class="signature">(icon<span class="signature-attributes">opt</span>, label<span class="signature-attributes">opt</span>, clickable<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>icon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="qui.icons.Icon.html">qui.icons.Icon</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>icon</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>label</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>label</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>clickable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>whether to make view clickable or not (defaults to <code>false</code>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>parent class parameters</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getIcon"><span class="type-signature"></span>getIcon<span class="signature">()</span><span class="type-signature"> &rarr; (nullable) {<a href="qui.icons.Icon.html">qui.icons.Icon</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the icon.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line73">line 73</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="qui.icons.Icon.html">qui.icons.Icon</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getIconLabelContainer"><span class="type-signature"></span>getIconLabelContainer<span class="signature">()</span><span class="type-signature"> &rarr; {jQuery}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the icon and label container.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">jQuery</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getLabel"><span class="type-signature"></span>getLabel<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the label.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line135">line 135</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="isClickable"><span class="type-signature"></span>isClickable<span class="signature">()</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Tell if view is clickable.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line152">line 152</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="makeIconLabelContainer"><span class="type-signature"></span>makeIconLabelContainer<span class="signature">()</span><span class="type-signature"> &rarr; {jQuery}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create the icon and label container.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">jQuery</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="prepareIcon"><span class="type-signature"></span>prepareIcon<span class="signature">(icon)</span><span class="type-signature"> &rarr; {<a href="qui.icons.Icon.html">qui.icons.Icon</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Prepare the view icon, altering its attributes as needed, before applying it.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>icon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="qui.icons.Icon.html">qui.icons.Icon</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line98">line 98</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="qui.icons.Icon.html">qui.icons.Icon</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setClickable"><span class="type-signature"></span>setClickable<span class="signature">(clickable)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Set or clear the clickable flag.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>clickable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line160">line 160</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setIcon"><span class="type-signature"></span>setIcon<span class="signature">(icon<span class="signature-attributes">nullable</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Update the icon.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>icon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="qui.icons.Icon.html">qui.icons.Icon</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line81">line 81</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setLabel"><span class="type-signature"></span>setLabel<span class="signature">(label)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Update the label.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>label</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line143">line 143</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateIcon"><span class="type-signature"></span>updateIcon<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Reapply the icon.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="views_common-views_icon-label-view.js.html">views/common-views/icon-label-view.js</a>, <a href="views_common-views_icon-label-view.js.html#line89">line 89</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="qui.html">qui</a></li><li><a href="qui.base.html">base</a></li><li><a href="qui.base.errors.html">errors</a></li><li><a href="qui.base.i18n.html">i18n</a></li><li><a href="qui.base.mixwith.html">mixwith</a></li><li><a href="qui.config.html">config</a></li><li><a href="qui.forms.html">forms</a></li><li><a href="qui.forms.commonfields.html">commonfields</a></li><li><a href="qui.forms.commonforms.html">commonforms</a></li><li><a href="qui.globalglass.html">globalglass</a></li><li><a href="qui.icons.html">icons</a></li><li><a href="qui.icons.defaultstock.html">defaultstock</a></li><li><a href="qui.icons.stocks.html">stocks</a></li><li><a href="qui.lists.html">lists</a></li><li><a href="qui.lists.commonitems.html">commonitems</a></li><li><a href="qui.lists.commonlists.html">commonlists</a></li><li><a href="qui.mainui.html">mainui</a></li><li><a href="qui.mainui.menubar.html">menubar</a></li><li><a href="qui.mainui.optionsbar.html">optionsbar</a></li><li><a href="qui.mainui.status.html">status</a></li><li><a href="qui.mainui.topbar.html">topbar</a></li><li><a href="qui.messages.html">messages</a></li><li><a href="qui.messages.commonmessageforms.html">commonmessageforms</a></li><li><a href="qui.messages.toast.html">toast</a></li><li><a href="qui.navigation.html">navigation</a></li><li><a href="qui.pages.html">pages</a></li><li><a href="qui.pages.commonpages.html">commonpages</a></li><li><a href="qui.pwa.html">pwa</a></li><li><a href="qui.sections.html">sections</a></li><li><a href="qui.tables.html">tables</a></li><li><a href="qui.tables.commoncells.html">commoncells</a></li><li><a href="qui.tables.commontables.html">commontables</a></li><li><a href="qui.theme.html">theme</a></li><li><a href="qui.utils.html">utils</a></li><li><a href="qui.utils.ajax.html">ajax</a></li><li><a href="qui.utils.array.html">array</a></li><li><a href="qui.utils.colors.html">colors</a></li><li><a href="qui.utils.cookies.html">cookies</a></li><li><a href="qui.utils.crypto.html">crypto</a></li><li><a href="qui.utils.css.html">css</a></li><li><a href="qui.utils.date.html">date</a></li><li><a href="qui.utils.gestures.html">gestures</a></li><li><a href="qui.utils.html.html">html</a></li><li><a href="qui.utils.misc.html">misc</a></li><li><a href="qui.utils.object.html">object</a></li><li><a href="qui.utils.promise.html">promise</a></li><li><a href="qui.utils.string.html">string</a></li><li><a href="qui.views.html">views</a></li><li><a href="qui.views.commonviews.html">commonviews</a></li><li><a href="qui.widgets.html">widgets</a></li><li><a href="qui.window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="qui.base.ConditionVariable.html">ConditionVariable</a></li><li><a href="qui.base.errors.AssertionError.html">AssertionError</a></li><li><a href="qui.base.errors.CancelledError.html">CancelledError</a></li><li><a href="qui.base.errors.NotImplementedError.html">NotImplementedError</a></li><li><a href="qui.base.errors.TimeoutError.html">TimeoutError</a></li><li><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></li><li><a href="qui.base.Signal.html">Signal</a></li><li><a href="qui.base.SingletonMixin.html">SingletonMixin</a></li><li><a href="qui.base.Timer.html">Timer</a></li><li><a href="qui.forms.commonfields.CheckField.html">CheckField</a></li><li><a href="qui.forms.commonfields.ChoiceButtonsField.html">ChoiceButtonsField</a></li><li><a href="qui.forms.commonfields.ColorComboField.html">ColorComboField</a></li><li><a href="qui.forms.commonfields.ComboField.html">ComboField</a></li><li><a href="qui.forms.commonfields.CompositeField.html">CompositeField</a></li><li><a href="qui.forms.commonfields.CustomHTMLField.html">CustomHTMLField</a></li><li><a href="qui.forms.commonfields.EmailField.html">EmailField</a></li><li><a href="qui.forms.commonfields.JQueryUIField.html">JQueryUIField</a></li><li><a href="qui.forms.commonfields.LabelsField.html">LabelsField</a></li><li><a href="qui.forms.commonfields.NumericField.html">NumericField</a></li><li><a href="qui.forms.commonfields.PasswordField.html">PasswordField</a></li><li><a href="qui.forms.commonfields.PhoneField.html">PhoneField</a></li><li><a href="qui.forms.commonfields.ProgressDiskField.html">ProgressDiskField</a></li><li><a href="qui.forms.commonfields.PushButtonField.html">PushButtonField</a></li><li><a href="qui.forms.commonfields.SliderField.html">SliderField</a></li><li><a href="qui.forms.commonfields.TextAreaField.html">TextAreaField</a></li><li><a href="qui.forms.commonfields.TextField.html">TextField</a></li><li><a href="qui.forms.commonfields.UpDownField.html">UpDownField</a></li><li><a href="qui.forms.commonforms.OptionsForm.html">OptionsForm</a></li><li><a href="qui.forms.commonforms.PageForm.html">PageForm</a></li><li><a href="qui.forms.ErrorMapping.html">ErrorMapping</a></li><li><a href="qui.forms.Form.html">Form</a></li><li><a href="qui.forms.FormButton.html">FormButton</a></li><li><a href="qui.forms.FormField.html">FormField</a></li><li><a href="qui.forms.ValidationError.html">ValidationError</a></li><li><a href="qui.icons.Icon.html">Icon</a></li><li><a href="qui.icons.MultiStateSpritesIcon.html">MultiStateSpritesIcon</a></li><li><a href="qui.icons.Stock.html">Stock</a></li><li><a href="qui.icons.StockIcon.html">StockIcon</a></li><li><a href="qui.lists.commonitems.IconLabelListItem.html">IconLabelListItem</a></li><li><a href="qui.lists.commonlists.PageList.html">PageList</a></li><li><a href="qui.lists.List.html">List</a></li><li><a href="qui.lists.ListItem.html">ListItem</a></li><li><a href="qui.messages.commonmessageforms.ConfirmMessageForm.html">ConfirmMessageForm</a></li><li><a href="qui.messages.commonmessageforms.SimpleMessageForm.html">SimpleMessageForm</a></li><li><a href="qui.messages.commonmessageforms.StickySimpleMessageForm.html">StickySimpleMessageForm</a></li><li><a href="qui.messages.MessageForm.html">MessageForm</a></li><li><a href="qui.messages.StickyModalPageMixin.html">StickyModalPageMixin</a></li><li><a href="qui.messages.StickyModalProgressMessage.html">StickyModalProgressMessage</a></li><li><a href="qui.navigation.PageLoadError.html">PageLoadError</a></li><li><a href="qui.navigation.PageNotFoundError.html">PageNotFoundError</a></li><li><a href="qui.navigation.SectionLoadError.html">SectionLoadError</a></li><li><a href="qui.pages.commonpages.ModalProgressPage.html">ModalProgressPage</a></li><li><a href="qui.pages.commonpages.StructuredPageMixin.html">StructuredPageMixin</a></li><li><a href="qui.pages.PageMixin.html">PageMixin</a></li><li><a href="qui.pages.PagesContext.html">PagesContext</a></li><li><a href="qui.sections.HideCancelled.html">HideCancelled</a></li><li><a href="qui.sections.Section.html">Section</a></li><li><a href="qui.tables.commoncells.IconLabelTableCell.html">IconLabelTableCell</a></li><li><a href="qui.tables.commoncells.SimpleTableCell.html">SimpleTableCell</a></li><li><a href="qui.tables.PageTable.html">PageTable</a></li><li><a href="qui.tables.Table.html">Table</a></li><li><a href="qui.tables.TableCell.html">TableCell</a></li><li><a href="qui.tables.TableRow.html">TableRow</a></li><li><a href="qui.utils.crypto.HMACSHA256.html">HMACSHA256</a></li><li><a href="qui.utils.crypto.SHA256.html">SHA256</a></li><li><a href="qui.utils.URL.html">URL</a></li><li><a href="qui.utils.VisibilityManager.html">VisibilityManager</a></li><li><a href="qui.views.commonviews.IconLabelViewMixin.html">IconLabelViewMixin</a></li><li><a href="qui.views.commonviews.ProgressViewMixin.html">ProgressViewMixin</a></li><li><a href="qui.views.commonviews.StructuredViewMixin.html">StructuredViewMixin</a></li><li><a href="qui.views.ViewMixin.html">ViewMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#cleanup">cleanup</a></li><li><a href="global.html#getHTML">getHTML</a></li><li><a href="global.html#getServiceWorker">getServiceWorker</a></li><li><a href="global.html#isClass">isClass</a></li><li><a href="global.html#isFunction">isFunction</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#navigateInitial">navigateInitial</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#sendServiceWorkerMessage">sendServiceWorkerMessage</a></li><li><a href="global.html#serviceWorkerMessageSignal">serviceWorkerMessageSignal</a></li><li><a href="global.html#serviceWorkerReadySignal">serviceWorkerReadySignal</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat May 16 2020 18:16:11 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
