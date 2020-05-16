@@ -192,9 +192,6 @@ function initConfig() {
     }
 
     /* Use details supplied by webpack at build time */
-    if (window.__quiBuildHash) {
-        Config.buildHash = window.__quiBuildHash
-    }
     if (window.__quiAppVersion) {
         Config.appCurrentVersion = window.__quiAppVersion
     }
