@@ -1,19 +1,21 @@
 
-import JQueryUIField from './jquery-ui-field.js'
+import $ from '$qui/lib/jquery.module.js'
+
+import TableCell from '../table-cell.js'
 
 
 /**
- * A push button field. The value of this field will always be `null`.
- * @alias qui.forms.commonfields.PushButtonField
- * @extends qui.forms.commonfields.JQueryUIField
+ * A table cell with a push button.
+ * @alias qui.tables.commoncells.PushButtonTableCell
+ * @extends qui.tables.TableCell
  */
-class PushButtonField extends JQueryUIField {
+class PushButtonTableCell extends TableCell {
 
     /**
      * @constructs
      * @param {String} caption the button caption
      * @param {Function} [onClick] function to be executed when the button is pushed (see
-     * {@link qui.forms.commonfields.PushButtonField#onClick})
+     * {@link qui.tables.commoncells.PushButtonTableCell#onClick})
      * @param {String} caption button caption
      * @param {String} [style] button style:
      *  * `"interactive"` (default)
@@ -36,48 +38,32 @@ class PushButtonField extends JQueryUIField {
         icon = null,
         ...args
     }) {
-        super({
-            widgetAttrs: {
-                caption,
-                style,
-                backgroundColor,
-                backgroundActiveColor,
-                foregroundColor,
-                icon
-            },
-            ...args
-        })
+        super({...args})
+
+        this._pushButtonParams = {
+            caption,
+            style,
+            backgroundColor,
+            backgroundActiveColor,
+            foregroundColor,
+            icon
+        }
 
         if (onClick) {
             this.onClick = onClick
         }
+
+        this._buttonDiv = null
     }
 
-    makeWidget() {
-        let div = super.makeWidget()
+    makeContent() {
+        this._buttonDiv = $('<div></div>', {class: 'qui-push-button-table-cell'}).pushbutton(this._pushButtonParams)
+        this._buttonDiv.on('click', () => this.onClick())
 
-        div.addClass('qui-form-push-button')
-        div.on('click', () => this.onClick(this.getForm()))
-
-        if (this.getValueWidth() === 100) {
-            div.css('display', 'block')
-        }
-
-        return div
+        return this._buttonDiv
     }
 
-    /**
-     * Called when the button is pushed.
-     * @param {qui.forms.Form} form owning form
-     */
-    onClick(form) {
-    }
-
-    valueToWidget(value) {
-    }
-
-    widgetToValue() {
-        return null
+    showValue(value) {
     }
 
     /**
@@ -128,10 +114,19 @@ class PushButtonField extends JQueryUIField {
         this._widgetCall({icon: icon})
     }
 
+    /**
+     * Set button enabled state.
+     * @param {Boolean} enabled
+     */
+    setEnabled(enabled) {
+        this._widgetCall({disabled: !enabled})
+    }
+
+    _widgetCall(params) {
+        return this._buttonDiv.pushbutton(params)
+    }
+
 }
 
-// TODO es7 class fields
-PushButtonField.WIDGET_CLASS = 'pushbutton'
 
-
-export default PushButtonField
+export default PushButtonTableCell

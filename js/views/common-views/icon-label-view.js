@@ -9,7 +9,7 @@ import StockIcon from '$qui/icons/stock-icon.js'
 const IconLabelViewMixin = Mixin((superclass = Object) => {
 
     /**
-     * Adds an icon with a label to a view.
+     * A view made of an icon with a label.
      * @alias qui.views.commonviews.IconLabelViewMixin
      */
     class IconLabelViewMixin extends superclass {
