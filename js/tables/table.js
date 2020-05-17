@@ -1,9 +1,8 @@
 
-import List       from '$qui/lists/list.js'
+import List from '$qui/lists/list.js'
 
 import SimpleTableCell from './common-cells/simple-table-cell.js'
 import TableRow        from './table-row.js'
-import * as Tables     from './tables.js'
 
 
 /**
@@ -218,7 +217,7 @@ class Table extends List {
      * @param {qui.tables.TableRow} row the row
      */
     addRow(index, row) {
-        if (this._header) {
+        if (this._header && index >= 0) {
             index++
         }
 
@@ -269,12 +268,12 @@ class Table extends List {
                     })
                 }
             }
-            item.getHTML().css('grid-template-rows', this.getComputedWidths().map(_ => '1fr').join(' '))
+            item.getHTML().css('grid-template-rows', this.getComputedWidths(item).map(_ => '1fr').join(' '))
             item.getHTML().css('grid-template-columns', '1fr 1fr')
         }
         else {
             /* Set column widths */
-            item.getHTML().css('grid-template-columns', this.getComputedWidths().join(' '))
+            item.getHTML().css('grid-template-columns', this.getComputedWidths(item).join(' '))
         }
     }
 
@@ -311,11 +310,17 @@ class Table extends List {
 
     /**
      * Return the number of table columns.
+     * @param {qui.tables.TableRow} [row] an optional row about to be added
      * @returns {Number}
      */
-    getNumColumns() {
+    getNumColumns(row = null) {
         if (this._numColumns == null) {
-            this._numColumns = Math.max(...this.getRows().map(r => r.getCells().length))
+            let rows = this.getRows()
+            if (row) {
+                rows.push(row)
+            }
+
+            this._numColumns = Math.max(...rows.map(r => r.getCells().length))
         }
 
         return this._numColumns
@@ -329,7 +334,6 @@ class Table extends List {
         this._widths = widths
         this._computedWidths = null
 
-        // TODO !!!
         this.getRows().forEach(r => r.getHTML().css('grid-template-columns', this.getComputedWidths().join(' ')))
     }
 
@@ -343,12 +347,13 @@ class Table extends List {
 
     /**
      * Return computed column widths.
+     * @param {qui.tables.TableRow} [row] an optional row about to be added
      * @returns {String[]}
      */
-    getComputedWidths() {
+    getComputedWidths(row = null) {
         if (this._computedWidths == null) {
             this._computedWidths = this._widths
-            let numColumns = this.getNumColumns()
+            let numColumns = this.getNumColumns(row)
 
             if (this._computedWidths == null) {
                 this._computedWidths = []
