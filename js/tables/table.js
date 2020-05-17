@@ -1,5 +1,7 @@
 
-import List from '$qui/lists/list.js'
+import {AssertionError} from '$qui/base/errors.js'
+import List             from '$qui/lists/list.js'
+import * as ObjectUtils from '$qui/utils/object.js'
 
 import SimpleTableCell from './common-cells/simple-table-cell.js'
 import TableRow        from './table-row.js'
@@ -26,6 +28,9 @@ class Table extends List {
      *  * {@link qui.tables.TABLE_CELL_ALIGN_TOP}
      *  * {@link qui.tables.TABLE_CELL_ALIGN_CENTER} (default)
      *  * {@link qui.tables.TABLE_CELL_ALIGN_BOTTOM}
+     * @param {qui.tables.TableCell[]|Object[]} [rowTemplate] an optional row template to use when adding new rows with
+     * {@link qui.tables.Table#addRowValues}; if a list of objects is supplied, each object must contain a `class`
+     * property indicating the table cell class, while the rest of properties are used as constructor parameters
      * @param {qui.tables.TableRow[]} [initialRows] initial table rows
      * @param {Array[]} [initialValues] initial table values
      * @param {Boolean} [cardLayout] set to `true` to use card layout (defaults to `false`)
@@ -37,6 +42,7 @@ class Table extends List {
         widths = null,
         horizontalAlign = null,
         verticalAlign = null,
+        rowTemplate = null,
         initialRows = null,
         initialValues = null,
         cardLayout = false,
@@ -53,6 +59,7 @@ class Table extends List {
         this._widths = widths
         this._horizontalAlign = horizontalAlign
         this._verticalAlign = verticalAlign
+        this._rowTemplate = rowTemplate
         this._initialRows = initialRows
         this._initialValues = initialValues
         this._cardLayout = cardLayout
@@ -223,6 +230,35 @@ class Table extends List {
 
         this.invalidateColumns()
         this.addItem(index, row)
+    }
+
+    /**
+     * Add one row to the list using row template. Table must have a row template.
+     * @param {Number} index the index where the row should be added; `-1` will add the row at the end
+     * @param {Array} values values to set to new row
+     */
+    addRowValues(index, values) {
+        if (!this._rowTemplate) {
+            throw new AssertionError('addRowValues() called on table without row template')
+        }
+
+        let cells = this._rowTemplate.map(function (c) {
+            let CellClass
+            let params = {}
+            if (c.class) {
+                CellClass = ObjectUtils.pop(c, 'class')
+                Object.assign(params, c)
+            }
+            else {
+                CellClass = c
+            }
+
+            return new CellClass(params)
+        })
+
+        let row = new TableRow({cells: cells, initialValues: values})
+
+        this.addRow(index, row)
     }
 
     /**
