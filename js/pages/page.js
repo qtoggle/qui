@@ -37,7 +37,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * @param {?String} [title] page title
          * @param {String} [pathId] identifies the page in the URL; leave this unset if the page should not be part
          * of the URL or is the main page of a section
-         * @param {Boolean} [column] indicates that the page layout is a column and does not expand horizontally
+         * @param {Boolean} [columnLayout] indicates that the page layout is a column and does not expand horizontally
          * (defaults to `false`)
          * @param {Boolean} [keepPrevVisible] indicates that the previous page should be kept visible while this page
          * is the current one, to the extent possible (defaults to `false`)
@@ -49,7 +49,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
         constructor({
             title = null,
             pathId = null,
-            column = false,
+            columnLayout = false,
             keepPrevVisible = false,
             modal = false,
             transparent = true,
@@ -59,7 +59,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
 
             this._title = title
             this._pathId = pathId
-            this._column = column
+            this._columnLayout = columnLayout
             this._keepPrevVisible = keepPrevVisible
             this._transparent = transparent
             this._modal = modal
@@ -214,8 +214,8 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
         makePageHTML() {
             let html = $('<div></div>', {class: 'qui-page'})
 
-            if (this._column) {
-                html.addClass('column')
+            if (this._columnLayout) {
+                html.addClass('column-layout')
             }
 
             if (this._transparent) {
@@ -309,18 +309,18 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * Tell if the page layout is a column and does not expand horizontally.
          * @returns {Boolean}
          */
-        isColumn() {
-            return this._column
+        isColumnLayout() {
+            return this._columnLayout
         }
 
         /**
          * Set the page column layout.
-         * @param {Boolean} column
+         * @param {Boolean} columnLayout
          */
-        setColumn(column) {
-            if (column !== this._column) {
-                this._column = column
-                this.getPageHTML().toggleClass('column', column)
+        setColumnLayout(columnLayout) {
+            if (columnLayout !== this._columnLayout) {
+                this._columnLayout = columnLayout
+                this.getPageHTML().toggleClass('column-layout', columnLayout)
 
                 updateUI()
             }

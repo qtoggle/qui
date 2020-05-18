@@ -112,7 +112,7 @@ function updatePagesVisibility() {
     currentPage.getPageHTML().addClass('current')
 
     let visiblePages = currentContext.getVisiblePages()
-    let columnPages = visiblePages.filter(page => page.isColumn())
+    let columnPages = visiblePages.filter(page => page.isColumnLayout())
 
     /* The minimum accepted width is 25% (on a large screen) */
     let expandWidth = 100 - columnPages.length * 25 /* As percent */
@@ -129,7 +129,7 @@ function updatePagesVisibility() {
         }
         else {
             l = left
-            if (!page.isColumn()) { /* Expand */
+            if (!page.isColumnLayout()) { /* Expand */
                 w = expandWidth
                 left += expandWidth
             }
