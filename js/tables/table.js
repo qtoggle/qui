@@ -178,6 +178,15 @@ class Table extends List {
         }
     }
 
+    _handleItemClick(item) {
+        /* Prevent selecting the header */
+        if (item === this._headerRow) {
+            return
+        }
+
+        return super._handleItemClick(item)
+    }
+
 
     /* Rows */
 
