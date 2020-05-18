@@ -76,14 +76,14 @@ class MultiStateSpritesIcon extends Icon {
 
     toAttributes() {
         return Object.assign(super.toAttributes(), {
-            'url': this._url,
-            'bgWidth': this._bgWidth,
-            'bgHeight': this._bgHeight,
-            'size': this._size,
-            'unit': this._unit,
-            'states': this._states,
-            'scale': this._scale,
-            'decoration': this._decoration
+            url: this._url,
+            bgWidth: this._bgWidth,
+            bgHeight: this._bgHeight,
+            size: this._size,
+            unit: this._unit,
+            states: this._states,
+            scale: this._scale,
+            decoration: this._decoration
         })
     }
 
