@@ -552,7 +552,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     }
 
     /**
-     * Updates current selection.
+     * Update current selection.
      * @param {qui.lists.ListItem[]} items the list of new items to select; empty list clears selection
      */
     setSelectedItems(items) {

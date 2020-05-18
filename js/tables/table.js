@@ -341,6 +341,25 @@ class Table extends List {
     }
 
 
+    /* Selection */
+
+    /**
+     * Return the currently selected rows.
+     * @returns {qui.tables.TableRow[]}
+     */
+    getSelectedRows() {
+        return this.getRows().filter(r => r.isSelected())
+    }
+
+    /**
+     * Update current selection.
+     * @param {qui.tables.TableRow[]} rows the list of new rows to select; empty list clears selection
+     */
+    setSelectedRows(rows) {
+        this.setSelectedItems(rows)
+    }
+
+
     /* Columns */
 
     invalidateColumns() {
