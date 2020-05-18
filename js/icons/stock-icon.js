@@ -28,6 +28,7 @@ class StockIcon extends Icon {
      * @param {String} [selectedVariant] the icon variant in selected state
      * @param {Number} [scale] icon scaling factor (defaults to `1`)
      * @param {String} [decoration] icon decoration
+     * @param {...*} args parent class parameters
      */
     constructor({
         name,
@@ -40,9 +41,10 @@ class StockIcon extends Icon {
         selectedName = null,
         selectedVariant = null,
         scale = 1,
-        decoration = null
+        decoration = null,
+        ...args
     }) {
-        super()
+        super({...args})
 
         this._name = name
         this._stockName = stockName
@@ -79,6 +81,22 @@ class StockIcon extends Icon {
         }
     }
 
+    toAttributes() {
+        return Object.assign(super.toAttributes(), {
+            name: this._name,
+            stockName: this._stockName,
+            variant: this._variant,
+            activeName: this._activeName,
+            activeVariant: this._activeVariant,
+            focusedName: this._focusedName,
+            focusedVariant: this._focusedVariant,
+            selectedName: this._selectedName,
+            selectedVariant: this._selectedVariant,
+            scale: this._scale,
+            decoration: this._decoration
+        })
+    }
+
     /**
      * Return a dictionary with attributes suitable to build a {@link qui.icons.MultiStateSpritesIcon}.
      * @returns {?qui.icons.MultiStateSpritesIcon}
@@ -89,13 +107,13 @@ class StockIcon extends Icon {
             return null
         }
 
-        let attributes = {
+        let attributes = Object.assign(super.toAttributes(), {
             url: stock.src,
             bgWidth: stock.width,
             bgHeight: stock.height,
             size: stock.size,
             unit: stock.unit
-        }
+        })
 
         let states = {}
         let filterVariant
@@ -154,21 +172,7 @@ class StockIcon extends Icon {
      * @returns qui.icons.StockIcon
      */
     alter(attributes) {
-        let existingAttributes = {
-            stockName: this._stockName,
-            name: this._name,
-            variant: this._variant,
-            activeName: this._activeName,
-            activeVariant: this._activeVariant,
-            focusedName: this._focusedName,
-            focusedVariant: this._focusedVariant,
-            selectedName: this._selectedName,
-            selectedVariant: this._selectedVariant,
-            scale: this._scale,
-            decoration: this._decoration
-        }
-
-        return new this.constructor(ObjectUtils.combine(existingAttributes, attributes))
+        return new this.constructor(Object.assign(this.toAttributes(), attributes))
     }
 
     /**

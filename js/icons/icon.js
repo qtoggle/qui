@@ -9,15 +9,37 @@ const ICON_DATA_ATTR = '_icon'
 class Icon {
 
     /**
+     * @constructs
+     * @param {String} [animation] optional icon CSS animation
+     */
+    constructor({animation = null}) {
+        this._animation = animation
+    }
+
+    /**
      * Apply the icon to an HTML element.
      * @param {jQuery} element the element to which the icon will be applied
      */
     applyTo(element) {
         this._applyTo(element)
         element.data(ICON_DATA_ATTR, this)
+
+        if (this._animation) {
+            element.css('animation', this._animation)
+        }
     }
 
     _applyTo(element) {
+    }
+
+    /**
+     * Return a dictionary of icon attributes that can be passed to constructor.
+     * @returns {Object}
+     */
+    toAttributes() {
+        return {
+            animation: this._animation
+        }
     }
 
     /**

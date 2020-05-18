@@ -39,9 +39,20 @@ class MultiStateSpritesIcon extends Icon {
      * @param {Object<String,qui.icons.MultiStateSpritesIcon.StateDetails>} [states] a mapping with icon states
      * @param {Number} [scale] icon scaling factor; defaults to `1`
      * @param {String} [decoration] icon decoration
+     * @param {...*} args parent class parameters
      */
-    constructor({url, bgWidth, bgHeight, size = 1, unit = 'rem', states = null, scale = 1, decoration = null}) {
-        super()
+    constructor({
+        url,
+        bgWidth,
+        bgHeight,
+        size = 1,
+        unit = 'rem',
+        states = null,
+        scale = 1,
+        decoration = null,
+        ...args
+    }) {
+        super({...args})
 
         this._url = url
         this._bgWidth = bgWidth
@@ -61,6 +72,19 @@ class MultiStateSpritesIcon extends Icon {
      */
     hasState(state) {
         return state in this._states
+    }
+
+    toAttributes() {
+        return Object.assign(super.toAttributes(), {
+            'url': this._url,
+            'bgWidth': this._bgWidth,
+            'bgHeight': this._bgHeight,
+            'size': this._size,
+            'unit': this._unit,
+            'states': this._states,
+            'scale': this._scale,
+            'decoration': this._decoration
+        })
     }
 
     _prepareParams() {
