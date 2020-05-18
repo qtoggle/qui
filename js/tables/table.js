@@ -34,7 +34,6 @@ class Table extends List {
      * property indicating the table cell class, while the rest of properties are used as constructor parameters
      * @param {qui.tables.TableRow[]} [initialRows] initial table rows
      * @param {Array[]} [initialValues] initial table values
-     * @param {Boolean} [cardLayout] set to `true` to use card layout (defaults to `false`)
      * @param {...*} args parent class parameters
      */
     constructor({
@@ -47,7 +46,6 @@ class Table extends List {
         rowTemplate = null,
         initialRows = null,
         initialValues = null,
-        cardLayout = false,
         ...args
     } = {}) {
 
@@ -65,7 +63,6 @@ class Table extends List {
         this._rowTemplate = rowTemplate
         this._initialRows = initialRows
         this._initialValues = initialValues
-        this._cardLayout = cardLayout
 
         this._numColumns = null
         this._computedWidths = null
@@ -75,10 +72,6 @@ class Table extends List {
         super.initHTML(html)
 
         html.addClass('qui-table')
-
-        if (this._cardLayout) {
-            html.addClass('card-layout')
-        }
     }
 
     init() {
@@ -142,8 +135,6 @@ class Table extends List {
      * @param {?qui.tables.TableRow} headerRow table header row
      */
     setHeaderRow(headerRow) {
-        // FIXME: setting header won't work on card layout as a call to prepareItem() for each row would be required
-
         if (this._headerRow) {
             this._removeHeaderRow()
         }
@@ -168,8 +159,6 @@ class Table extends List {
      * @param {?Array} header
      */
     setHeader(header) {
-        // FIXME: setting header won't work on card layout as a call to prepareItem() for each row would be required
-
         if (this._headerRow) {
             this._removeHeaderRow()
         }
@@ -302,24 +291,8 @@ class Table extends List {
     prepareItem(item) {
         super.prepareItem(item)
 
-        if (this._cardLayout) {
-            /* In card layout, add copies of header cells to each row */
-            if (this._headerRow) {
-                let html = item.getHTML()
-                let cellsReversed = this._headerRow.getCells().reverse()
-                cellsReversed.forEach(function (cell) {
-                    let cellHTML = cell.getHTML().clone(true)
-                    cellHTML.addClass('qui-table-card-layout-header-cell')
-                    html.prepend(cellHTML)
-                })
-            }
-            item.getHTML().css('grid-template-rows', this.getComputedWidths(item).map(_ => '1fr').join(' '))
-            item.getHTML().css('grid-template-columns', '1fr 1fr')
-        }
-        else {
-            /* Set column widths */
-            item.getHTML().css('grid-template-columns', this.getComputedWidths(item).join(' '))
-        }
+        /* Set column widths */
+        item.getHTML().css('grid-template-columns', this.getComputedWidths(item).join(' '))
 
         if (this._visibilities) {
             item.getCells().forEach(function (cell, i) {
@@ -339,18 +312,12 @@ class Table extends List {
         this._headerRow.getHTML().addClass('qui-table-header')
         this._headerRow.setValues(this._header)
 
-        /* Hide header row on card layout, since header cells will be displayed on every card */
-        if (this._cardLayout) {
-            this._headerRow.hide()
-        }
-        else {
-            if (this._visibilities) {
-                this._headerRow.getCells().forEach(function (cell, i) {
-                    if (!this._visibilities[i]) {
-                        cell.hide()
-                    }
-                }.bind(this))
-            }
+        if (this._visibilities) {
+            this._headerRow.getCells().forEach(function (cell, i) {
+                if (!this._visibilities[i]) {
+                    cell.hide()
+                }
+            }.bind(this))
         }
     }
 
