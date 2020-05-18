@@ -20,6 +20,7 @@ class Table extends List {
      * @param {qui.tables.TableRow} [headerRow] optional table header row
      * ({@link qui.tables.commoncells.SimpleTableCell} cells will be used by default)
      * @param {String[]} [widths] table column widths, in percents or absolute values with units
+     * @param {Boolean[]} [visibilities] table column visibilities
      * @param {String[]} [horizontalAlign] default horizontal cell alignment for each column; a list containing one of:
      *  * {@link qui.tables.TABLE_CELL_ALIGN_LEFT}
      *  * {@link qui.tables.TABLE_CELL_ALIGN_CENTER} (default)
@@ -40,6 +41,7 @@ class Table extends List {
         header = null,
         headerRow = null,
         widths = null,
+        visibilities = null,
         horizontalAlign = null,
         verticalAlign = null,
         rowTemplate = null,
@@ -57,6 +59,7 @@ class Table extends List {
         this._header = header
         this._headerRow = headerRow
         this._widths = widths
+        this._visibilities = visibilities
         this._horizontalAlign = horizontalAlign
         this._verticalAlign = verticalAlign
         this._rowTemplate = rowTemplate
@@ -195,6 +198,18 @@ class Table extends List {
     /* Rows */
 
     /**
+     * Update the row template to use when adding new rows with {@link qui.tables.Table#addRowValues}; if a list of
+     * objects is supplied, each object must contain a `class`.
+     *
+     * A call to this method won't affect the currently added rows.
+     *
+     * @param {qui.tables.TableCell[]|Object[]} rowTemplate
+     */
+    setRowTemplate(rowTemplate) {
+        this._rowTemplate = rowTemplate
+    }
+
+    /**
      * Return all rows.
      * @returns {qui.tables.TableRow[]}
      */
@@ -305,6 +320,14 @@ class Table extends List {
             /* Set column widths */
             item.getHTML().css('grid-template-columns', this.getComputedWidths(item).join(' '))
         }
+
+        if (this._visibilities) {
+            item.getCells().forEach(function (cell, i) {
+                if (!this._visibilities[i]) {
+                    cell.hide()
+                }
+            }.bind(this))
+        }
     }
 
     prepareHeader() {
@@ -319,6 +342,15 @@ class Table extends List {
         /* Hide header row on card layout, since header cells will be displayed on every card */
         if (this._cardLayout) {
             this._headerRow.hide()
+        }
+        else {
+            if (this._visibilities) {
+                this._headerRow.getCells().forEach(function (cell, i) {
+                    if (!this._visibilities[i]) {
+                        cell.hide()
+                    }
+                }.bind(this))
+            }
         }
     }
 
@@ -403,11 +435,54 @@ class Table extends List {
             while (this._computedWidths.length < numColumns) {
                 this._computedWidths.push('1fr')
             }
+
+            this._computedWidths = this._computedWidths.map(function (width, i) {
+                if (this._visibilities && !this._visibilities[i]) {
+                    return '0'
+                }
+                else {
+                    return width
+                }
+            }.bind(this))
         }
 
         return this._computedWidths
     }
 
+    /**
+     * Set column visibilities.
+     * @param {?Boolean[]} visibilities table column visibilities
+     */
+    setVisibilities(visibilities) {
+        this._visibilities = visibilities
+
+        /* Recalculate widths as they depend on visibilities */
+        this.setWidths(this._widths)
+
+        let rows = this.getRows()
+        if (this._headerRow) {
+            rows.push(this._headerRow)
+        }
+
+        rows.forEach(function (row) {
+            row.getCells().forEach(function (cell, i) {
+                if (!this._visibilities || this._visibilities[i]) {
+                    cell.show()
+                }
+                else {
+                    cell.hide()
+                }
+            }.bind(this))
+        }.bind(this))
+    }
+
+    /**
+     * Return column visibilities.
+     * @returns {Boolean[]}
+     */
+    getVisibilities() {
+        return this._visibilities
+    }
 
     /* Values */
 

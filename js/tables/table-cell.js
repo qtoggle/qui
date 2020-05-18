@@ -1,9 +1,10 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
-import {mix}       from '$qui/base/mixwith.js'
-import * as Tables from '$qui/tables/tables.js'
-import ViewMixin   from '$qui/views/view.js'
+import {mix}             from '$qui/base/mixwith.js'
+import * as Tables       from '$qui/tables/tables.js'
+import VisibilityManager from '$qui/utils/visibility-manager.js'
+import ViewMixin         from '$qui/views/view.js'
 
 
 /**
@@ -39,6 +40,7 @@ class TableCell extends mix().with(ViewMixin) {
         this._horizontalAlign = horizontalAlign
         this._verticalAlign = verticalAlign
 
+        this._visibilityManager = null
         this._row = null
     }
 
@@ -79,6 +81,8 @@ class TableCell extends mix().with(ViewMixin) {
         html.addClass(`vertical-align-${verticalAlign}`)
         html.html(this.makeContent())
 
+        this._visibilityManager = new VisibilityManager({element: html})
+
         return html
     }
 
@@ -94,6 +98,23 @@ class TableCell extends mix().with(ViewMixin) {
      * @returns {jQuery}
      */
     makeContent() {
+    }
+
+
+    /* Visibility */
+
+    /**
+     * Show the cell.
+     */
+    show() {
+        this._visibilityManager.showElement()
+    }
+
+    /**
+     * Hide the cell.
+     */
+    hide() {
+        this._visibilityManager.hideElement()
     }
 
 
