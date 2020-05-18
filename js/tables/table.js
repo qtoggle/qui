@@ -81,14 +81,14 @@ class Table extends List {
     init() {
         super.init()
 
-        if (this._header) {
-            this.prepareHeader()
-            this._initialRows = [this._headerRow, ...(this._initialRows || [])]
-        }
-
         if (this._initialRows) {
             this.setItems(this._initialRows)
             delete this._initialRows /* Don't waste memory */
+        }
+
+        if (this._header) {
+            this.prepareHeader()
+            this._addHeaderRow()
         }
 
         if (this._initialValues) {
@@ -142,13 +142,13 @@ class Table extends List {
         // FIXME: setting header won't work on card layout as a call to prepareItem() for each row would be required
 
         if (this._headerRow) {
-            this.removeItemAt(0)
+            this._removeHeaderRow()
         }
 
         this._headerRow = headerRow
         if (this._header) {
             this.prepareHeader()
-            this.addRow(0, this._headerRow)
+            this._addHeaderRow()
         }
     }
 
@@ -168,23 +168,27 @@ class Table extends List {
         // FIXME: setting header won't work on card layout as a call to prepareItem() for each row would be required
 
         if (this._headerRow) {
-            this.removeItemAt(0)
+            this._removeHeaderRow()
         }
 
         this._header = header
         if (this._header) {
             this.prepareHeader()
-            this.addRow(0, this._headerRow)
+            this._addHeaderRow()
         }
     }
 
-    _handleItemClick(item) {
-        /* Prevent selecting the header */
-        if (item === this._headerRow) {
-            return
+    _addHeaderRow() {
+        if (this._searchElem) {
+            this._searchElem.after(this._headerRow.getHTML())
         }
+        else {
+            this.getBody().prepend(this._headerRow.getHTML())
+        }
+    }
 
-        return super._handleItemClick(item)
+    _removeHeaderRow() {
+        this._headerRow.getHTML().remove()
     }
 
 
@@ -195,9 +199,7 @@ class Table extends List {
      * @returns {qui.tables.TableRow[]}
      */
     getRows() {
-        let index = this._header != null ? 1 : 0
-
-        return /** @type {qui.tables.TableRow[]} */ this.getItems().slice(index).filter(i => i instanceof TableRow)
+        return /** @type {qui.tables.TableRow[]} */ this.getItems().filter(i => i instanceof TableRow)
     }
 
     /**
@@ -205,10 +207,6 @@ class Table extends List {
      * @param {qui.tables.TableRow[]} rows table rows
      */
     setRows(rows) {
-        if (this._headerRow) {
-            rows = [this._headerRow, ...rows]
-        }
-
         this.invalidateColumns()
         this.setItems(rows)
     }
@@ -219,10 +217,6 @@ class Table extends List {
      * @param {qui.tables.TableRow} row the row to update
      */
     setRow(index, row) {
-        if (this._header) {
-            index++
-        }
-
         this.invalidateColumns()
         this.setItem(index, row)
     }
@@ -233,10 +227,6 @@ class Table extends List {
      * @param {qui.tables.TableRow} row the row
      */
     addRow(index, row) {
-        if (this._header && index >= 0) {
-            index++
-        }
-
         this.invalidateColumns()
         this.addItem(index, row)
     }
@@ -280,10 +270,6 @@ class Table extends List {
      * @returns {?qui.tables.TableRow} the removed row
      */
     removeRowAt(index) {
-        if (this._header) {
-            index++
-        }
-
         this.invalidateColumns()
         return /** @type ?qui.tables.TableRow */ this.removeItemAt(index)
     }
@@ -294,11 +280,8 @@ class Table extends List {
      * @returns {qui.tables.TableRow[]} the removed rows
      */
     removeRows(matchFunc) {
-        /* Wrap match func to ensure header is never removed */
-        let mf = r => matchFunc(r) && (r !== this._headerRow)
-
         this.invalidateColumns()
-        return /** @type qui.tables.TableRow[] */ this.removeItems(/** @type qui.lists.ListItemMatchFunc */ mf)
+        return /** @type qui.tables.TableRow[] */ this.removeItems(/** @type qui.lists.ListItemMatchFunc */ matchFunc)
     }
 
     prepareItem(item) {
@@ -306,16 +289,14 @@ class Table extends List {
 
         if (this._cardLayout) {
             /* In card layout, add copies of header cells to each row */
-            if (item !== this._headerRow) {
-                if (this._headerRow) {
-                    let html = item.getHTML()
-                    let cellsReversed = this._headerRow.getCells().reverse()
-                    cellsReversed.forEach(function (cell) {
-                        let cellHTML = cell.getHTML().clone(true)
-                        cellHTML.addClass('qui-table-card-layout-header-cell')
-                        html.prepend(cellHTML)
-                    })
-                }
+            if (this._headerRow) {
+                let html = item.getHTML()
+                let cellsReversed = this._headerRow.getCells().reverse()
+                cellsReversed.forEach(function (cell) {
+                    let cellHTML = cell.getHTML().clone(true)
+                    cellHTML.addClass('qui-table-card-layout-header-cell')
+                    html.prepend(cellHTML)
+                })
             }
             item.getHTML().css('grid-template-rows', this.getComputedWidths(item).map(_ => '1fr').join(' '))
             item.getHTML().css('grid-template-columns', '1fr 1fr')
@@ -332,14 +313,6 @@ class Table extends List {
         }
 
         this._headerRow.setList(this)
-
-        /* Override isMatch to ensure header is never filtered out */
-        this._headerRow.isMatch = f => !this._cardLayout
-
-        /* Don't allow selecting header */
-        this._headerRow.setSelected = s => {}
-        this._headerRow.setSelectMode = m => {}
-
         this._headerRow.getHTML().addClass('qui-table-header')
         this._headerRow.setValues(this._header)
 

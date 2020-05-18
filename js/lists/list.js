@@ -109,7 +109,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @param {qui.lists.ListItem[]} items list items
      */
     setItems(items) {
-        this.getBody().children('div.qui-list-item').remove()
+        this._items.forEach(i => i.getHTML().remove())
 
         items.forEach(i => this.prepareItem(i))
         this._items = items
@@ -136,7 +136,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     setItem(index, item) {
         this.prepareItem(item)
 
-        this.getBody().children(`div.qui-list-item:eq(${index})`).replaceWith(item.getHTML())
+        this._items[index].getHTML().replaceWith(item.getHTML())
         this._items[index] = item
 
         if (this._searchEnabled) {
@@ -163,7 +163,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
             this._items.push(item)
         }
         else {
-            this.getBody().children(`div.qui-list-item:eq(${index})`).before(item.getHTML())
+            this._items[index].getHTML().before(item.getHTML())
             this._items.splice(index, 0, item)
         }
 
@@ -178,7 +178,9 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @returns {?qui.lists.ListItem} the removed item
      */
     removeItemAt(index) {
-        this.getBody().children(`div.qui-list-item:eq(${index})`).remove()
+        if (this._items[index]) {
+            this._items[index].getHTML().remove()
+        }
 
         return this._items.splice(index, 1)[0] || null
     }
@@ -502,8 +504,9 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     _disableSearch() {
         this._searchElem.remove()
         this._searchElem = null
+        this._filterInput = null
         this.getBody().removeClass('search-enabled')
-        this.getBody().children('div.qui-list-item').removeClass('hidden')
+        this._applySearchFilter()
     }
 
 
