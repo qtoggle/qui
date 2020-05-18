@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: pages/pages.js</title>
+    <title>JSDoc: Source: tables/common-cells/push-button-table-cell.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: pages/pages.js</h1>
+    <h1 class="page-title">Source: tables/common-cells/push-button-table-cell.js</h1>
 
     
 
@@ -26,258 +26,139 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @namespace qui.pages
- */
-
+            <pre class="prettyprint source linenums"><code>
 import $ from '$qui/lib/jquery.module.js'
 
-import {AssertionError} from '$qui/base/errors.js'
-import * as GlobalGlass from '$qui/global-glass.js'
-import * as OptionsBar  from '$qui/main-ui/options-bar.js'
-import {asap}           from '$qui/utils/misc.js'
-import * as Window      from '$qui/window.js'
+import TableCell from '../table-cell.js'
 
-import PagesContext     from './pages-context.js'
-import * as Breadcrumbs from './breadcrumbs.js'
-
-
-let pagesContainer = null
-let currentContext = null
-
-
-/* Page context */
-
-function newContext() {
-    let context = new PagesContext()
-
-    context.pushSignal.connect(function (page) {
-        /* Whenever a page is added to a context, attach our UI handlers to it */
-        attachPageHTMLHandlers(page)
-    })
-
-    context.popSignal.connect(function (page) {
-        /* Whenever a page is removed from a context, detach our UI handlers from it */
-        detachPageHTMLHandlers(page)
-    })
-
-    return context
-}
 
 /**
- * Return the current pages context.
- * @alias qui.pages.getCurrentContext
- * @returns {qui.pages.PagesContext}
+ * A table cell with a push button.
+ * @alias qui.tables.commoncells.PushButtonTableCell
+ * @extends qui.tables.TableCell
  */
-export function getCurrentContext() {
-    return currentContext
-}
+class PushButtonTableCell extends TableCell {
 
-/**
- * Replace the current pages context.
- * @alias qui.pages.setCurrentContext
- * @param {?qui.pages.PagesContext} context new context, or `null` to replace with a brand new context
- */
-export function setCurrentContext(context) {
-    let pagesToDetach = currentContext.getPages()
-    let currentPage = currentContext.getCurrentPage()
-    if (currentPage) {
-        currentPage.handleLeaveCurrent()
-    }
+    /**
+     * @constructs
+     * @param {String} caption the button caption
+     * @param {Function} [onClick] function to be executed when the button is pushed (see
+     * {@link qui.tables.commoncells.PushButtonTableCell#onClick})
+     * @param {String} caption button caption
+     * @param {String} [style] button style:
+     *  * `"foreground"`
+     *  * `"interactive"` (default)
+     *  * `"highlight"`
+     *  * `"danger"`,
+     *  * `"colored"`
+     * @param {String} [backgroundColor] custom background color (ignored unless `style` is `"colored"`)
+     * @param {String} [backgroundActiveColor] custom background active color (ignored unless `style` is `"colored"`)
+     * @param {String} [foregroundColor] custom foreground color (ignored unless `style` is `"colored"`)
+     * @param {qui.icons.Icon} [icon] an optional button icon
+     * @param {...*} args parent class parameters
+     */
+    constructor({
+        caption,
+        onClick = null,
+        style = 'interactive',
+        backgroundColor = '@interactive-color',
+        backgroundActiveColor = '@interactive-active-color',
+        foregroundColor = '@foreground-interactive-color',
+        icon = null,
+        ...args
+    }) {
+        super({...args})
 
-    /* Hide &amp; detach pages */
-    pagesToDetach.forEach(function (page) {
-        page.detach()
-    })
-
-    if (!context) {
-        context = newContext()
-    }
-
-    /* Restore the context */
-    currentContext = context
-
-    /* Attach new pages */
-    currentContext.getPages().forEach(function (page) {
-        page.attach()
-    })
-
-    currentPage = currentContext.getCurrentPage()
-    if (currentPage) {
-        currentPage.handleBecomeCurrent()
-    }
-
-    updateUI()
-}
-
-/**
- * Return the current page.
- * @alias qui.pages.getCurrentPage
- * @returns {?qui.pages.PageMixin}
- */
-export function getCurrentPage() {
-    return currentContext.getCurrentPage()
-}
-
-
-/* Pages UI */
-
-function updatePagesVisibility() {
-    /* Reset page classes/styles */
-    currentContext.getPages().forEach(function (page) {
-        page.getPageHTML().removeClass('visible current').css({width: '', left: ''})
-    })
-
-    /* Hide pages that are still part of the DOM but no longer part of current context */
-    $('div.qui-page').not('.sticky').removeClass('visible current').css({width: '', left: ''})
-
-    if (!currentContext.getSize()) {
-        GlobalGlass.updateVisibility()
-        return
-    }
-
-    let currentPage = currentContext.getCurrentPage()
-    currentPage.getPageHTML().addClass('current')
-
-    let visiblePages = currentContext.getVisiblePages()
-    let columnPages = visiblePages.filter(page => page.isColumnLayout())
-
-    /* The minimum accepted width is 25% (on a large screen) */
-    let expandWidth = 100 - columnPages.length * 25 /* As percent */
-    let left = 0
-    visiblePages.reverse().forEach(function (page) {
-        let html = page.getPageHTML()
-        html.addClass('visible')
-
-        let l
-        let w = null
-        /* The current modal page has special treatment and does not contribute to expanded width */
-        if (page.isModal() &amp;&amp; page === currentPage) {
-            l = 0
-        }
-        else {
-            l = left
-            if (!page.isColumnLayout()) { /* Expand */
-                w = expandWidth
-                left += expandWidth
-            }
-            else {
-                left += 25
-            }
+        this._pushButtonParams = {
+            caption,
+            style,
+            backgroundColor,
+            backgroundActiveColor,
+            foregroundColor,
+            icon
         }
 
-        if (l != null) {
-            html.css('left', `${l}%`)
-        }
-        if (w != null) {
-            html.css('width', `${w}%`)
-        }
-    })
-
-    pagesContainer.toggleClass('full', (left >= 100) || Window.isSmallScreen())
-
-    GlobalGlass.updateVisibility()
-}
-
-function updateContentScroll() {
-    /* Scrolled content */
-    let scrolled = currentContext.getPages().some(function (p) {
-        if (!p.isVisible()) {
-            return false
+        if (onClick) {
+            this.onClick = onClick
         }
 
-        return p.getPageHTML()[0].scrollTop !== 0
-
-    })
-    Window.$body.toggleClass('content-scrolled', scrolled)
-}
-
-function handlePageScroll() {
-    updateContentScroll()
-
-    let $this = $(this)
-    let page = $this.data('page')
-    if (!page) {
-        throw AssertionError('page scroll event from a non-page HTML element')
+        this._buttonDiv = null
     }
 
-    page.handleVertScroll()
-}
+    makeContent() {
+        this._buttonDiv = $('&lt;div>&lt;/div>', {class: 'qui-push-button-table-cell'}).pushbutton(this._pushButtonParams)
+        this._buttonDiv.on('click', () => this.onClick())
 
-function triggerPageResize() {
-    asap(function () {
-        currentContext.getPages().forEach(function (page) {
-            page.handleResize()
-        })
-    })
-}
-
-function triggerPageResizeOnTransitionEnd(e) {
-    if (e.target !== this) {
-        return
+        return this._buttonDiv
     }
 
-    if (e.originalEvent.propertyName !== 'width') {
-        return
+    showValue(value) {
     }
 
-    triggerPageResize()
+    /**
+     * Update button style.
+     * @param {String} style
+     */
+    setStyle(style) {
+        this._widgetCall({style: style})
+    }
+
+    /**
+     * Update button caption.
+     * @param {String} caption
+     */
+    setCaption(caption) {
+        this._widgetCall({caption: caption})
+    }
+
+    /**
+     * Update background color.
+     * @param {String} color
+     */
+    setBackgroundColor(color) {
+        this._widgetCall({backgroundColor: color})
+    }
+
+    /**
+     * Update background active color.
+     * @param {String} color
+     */
+    setBackgroundActiveColor(color) {
+        this._widgetCall({backgroundActiveColor: color})
+    }
+
+    /**
+     * Update foreground color.
+     * @param {String} color
+     */
+    setForegroundColor(color) {
+        this._widgetCall({foregroundColor: color})
+    }
+
+    /**
+     * Update button icon.
+     * @param {?qui.icons.Icon} icon
+     */
+    setIcon(icon) {
+        this._widgetCall({icon: icon})
+    }
+
+    /**
+     * Set button enabled state.
+     * @param {Boolean} enabled
+     */
+    setEnabled(enabled) {
+        this._widgetCall({disabled: !enabled})
+    }
+
+    _widgetCall(params) {
+        return this._buttonDiv.pushbutton(params)
+    }
+
 }
 
-function attachPageHTMLHandlers(page) {
-    page.getPageHTML().on('scroll', handlePageScroll)
-    page.getPageHTML().on('transitionend', triggerPageResizeOnTransitionEnd)
-}
 
-function detachPageHTMLHandlers(page) {
-    page.getPageHTML().off('scroll', handlePageScroll)
-    page.getPageHTML().off('transitionend', triggerPageResizeOnTransitionEnd)
-}
-
-/**
- * Return the page container HTML element.
- * @alias qui.pages.getPagesContainer
- * @returns {jQuery}
- */
-export function getPagesContainer() {
-    return pagesContainer
-}
-
-/**
- * Update all UI elements depending on current page stack.
- * @alias qui.pages.updateUI
- */
-export function updateUI() {
-    /* Use asap() because some pages might have just been attached to DOM and animations won't probably work */
-    asap(function () {
-        Breadcrumbs.update()
-        updatePagesVisibility()
-        updateContentScroll()
-    })
-}
-
-
-export function init() {
-    pagesContainer = $('div.qui-pages-container')
-    currentContext = newContext()
-
-    Breadcrumbs.init()
-
-    Window.resizeSignal.connect(function (width, height) {
-        triggerPageResize()
-    })
-
-    OptionsBar.openCloseSignal.connect(function (opened) {
-        /* Update _optionsBarOpen flag of current page */
-
-        let currentPage = currentContext.getCurrentPage()
-        if (!currentPage) {
-            return
-        }
-
-        currentPage._optionsBarOpen = opened
-    })
-}
+export default PushButtonTableCell
 </code></pre>
         </article>
     </section>
