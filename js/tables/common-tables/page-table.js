@@ -11,7 +11,7 @@ import Table from '../table.js'
 
 /**
  * A table that can be used as a page.
- * @alias qui.tables.PageTable
+ * @alias qui.tables.commontables.PageTable
  * @extends qui.tables.Table
  * @mixes qui.pages.PageMixin
  */

@@ -236,8 +236,10 @@ class Table extends List {
      * Add one row to the list using row template. Table must have a row template.
      * @param {Number} index the index where the row should be added; `-1` will add the row at the end
      * @param {Array} values values to set to new row
+     * @param {*} [data] optional data to pass to row
+     * @returns {qui.tables.TableRow} the added row
      */
-    addRowValues(index, values) {
+    addRowValues(index, values, data = null) {
         if (!this._rowTemplate) {
             throw new AssertionError('addRowValues() called on table without row template')
         }
@@ -256,9 +258,11 @@ class Table extends List {
             return new CellClass(params)
         })
 
-        let row = new TableRow({cells: cells, initialValues: values})
+        let row = new TableRow({cells, initialValues: values, data})
 
         this.addRow(index, row)
+
+        return row
     }
 
     /**

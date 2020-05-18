@@ -306,6 +306,27 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
         }
 
         /**
+         * Tell if the page layout is a column and does not expand horizontally.
+         * @returns {Boolean}
+         */
+        isColumn() {
+            return this._column
+        }
+
+        /**
+         * Set the page column layout.
+         * @param {Boolean} column
+         */
+        setColumn(column) {
+            if (column !== this._column) {
+                this._column = column
+                this.getPageHTML().toggleClass('column', column)
+
+                updateUI()
+            }
+        }
+
+        /**
          * Return the current vertical scroll parameters.
          * @returns {{offset: Number, maxOffset: Number}} `offset` represents the current scroll offset and `maxOffset`
          * is the maximum scroll offset (`0` if no scrolling is possible)
