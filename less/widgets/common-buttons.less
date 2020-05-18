@@ -27,6 +27,15 @@
     background: @interactive-active-color;
 }
 
+.qui-foreground-button {
+    color: @foreground-interactive-color;
+    background: @foreground-color;
+}
+
+.qui-foreground-button.active {
+    background: @foreground-active-color;
+}
+
 .qui-interactive-button {
     color: @foreground-interactive-color;
     background: @interactive-color;
@@ -71,6 +80,10 @@
         .qui-focused-widget();
     }
 
+    &.qui-foreground-button:FOCUS {
+        .qui-focused-widget(@foreground-color);
+    }
+
     &.qui-highlight-button:FOCUS {
         .qui-focused-widget(@highlight-color);
     }
@@ -97,6 +110,7 @@
 }
 
 .qui-colored-button.disabled,
+.qui-foreground-button.disabled,
 .qui-interactive-button.disabled,
 .qui-highlight-button.disabled,
 .qui-danger-button.disabled,

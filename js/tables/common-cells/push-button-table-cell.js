@@ -18,6 +18,7 @@ class PushButtonTableCell extends TableCell {
      * {@link qui.tables.commoncells.PushButtonTableCell#onClick})
      * @param {String} caption button caption
      * @param {String} [style] button style:
+     *  * `"foreground"`
      *  * `"interactive"` (default)
      *  * `"highlight"`
      *  * `"danger"`,

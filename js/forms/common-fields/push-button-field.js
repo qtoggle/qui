@@ -16,6 +16,7 @@ class PushButtonField extends JQueryUIField {
      * {@link qui.forms.commonfields.PushButtonField#onClick})
      * @param {String} caption button caption
      * @param {String} [style] button style:
+     *  * `"foreground"`
      *  * `"interactive"` (default)
      *  * `"highlight"`
      *  * `"danger"`,

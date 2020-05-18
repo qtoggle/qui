@@ -17,6 +17,7 @@ class FormButton extends mix().with(ViewMixin) {
      * @param {String} id button identifier
      * @param {String} caption button caption
      * @param {String} [style] button style:
+     *  * `"foreground"`
      *  * `"interactive"`
      *  * `"highlight"`
      *  * `"danger"`
@@ -63,6 +64,9 @@ class FormButton extends mix().with(ViewMixin) {
         if (!this._style) {
             if (this._def) {
                 this._style = 'highlight'
+            }
+            else if (this._cancel) {
+                this._style = 'foreground'
             }
             else {
                 this._style = 'interactive'

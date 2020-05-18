@@ -5,6 +5,15 @@ import * as Theme  from '$qui/theme.js'
 import * as Colors from '$qui/utils/colors.js'
 
 
+const STYLES = [
+    'foreground',
+    'interactive',
+    'highlight',
+    'danger',
+    'colored'
+]
+
+
 $.widget('qui.pushbutton', {
 
     options: {
@@ -49,7 +58,8 @@ $.widget('qui.pushbutton', {
     },
 
     _setStyle: function (style) {
-        this.element.removeClass('qui-interactive-button qui-highlight-button qui-danger-button qui-colored-button')
+
+        this.element.removeClass(STYLES.map(s => `qui-${s}-button`))
         this.element.addClass(`qui-${style}-button`)
 
         this._updateStyle()
