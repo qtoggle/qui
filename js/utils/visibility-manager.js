@@ -68,12 +68,29 @@ class VisibilityManager {
 
         if (this._transitionHandle) {
             clearTimeout(this._transitionHandle)
+            this._transitionHandle = null
         }
         if (this._asapHandle) {
             clearTimeout(this._asapHandle)
+            this._asapHandle = null
         }
 
         this._element.css('display', this._visibleDisplay)
+
+        /* If element is not yet part of DOM, don't bother with transitions */
+        if (!this._isAddedToDOM()) {
+            this._element.addClass(this._visibleClass || '')
+            this._element.removeClass(this._hiddenClass || '')
+            if (this._widthTransition) {
+                this._element.css('width', '')
+            }
+            if (this._heightTransition) {
+                this._element.css('height', '')
+            }
+
+            return
+        }
+
         this._asapHandle = asap(function () {
 
             this._asapHandle = null
@@ -106,9 +123,11 @@ class VisibilityManager {
 
         if (this._transitionHandle) {
             clearTimeout(this._transitionHandle)
+            this._transitionHandle = null
         }
         if (this._asapHandle) {
             clearTimeout(this._asapHandle)
+            this._asapHandle = null
         }
 
         if (this._widthTransition) {
@@ -118,8 +137,18 @@ class VisibilityManager {
             this._element.css('height', this._element.height())
         }
 
+        /* If element is not yet part of DOM, don't bother with transitions */
+        if (!this._isAddedToDOM()) {
+            this._element.removeClass(this._visibleClass || '')
+            this._element.addClass(this._hiddenClass || '')
+            this._element.css('display', this._hiddenDisplay)
+
+            return
+        }
+
         let hideAfterTransition = function () {
 
+            this._asapHandle = null
             this._element.removeClass(this._visibleClass || '')
             this._element.addClass(this._hiddenClass || '')
 
@@ -133,13 +162,12 @@ class VisibilityManager {
         }.bind(this)
 
         if (this._widthTransition || this._heightTransition) {
-            asap(hideAfterTransition)
+            this._asapHandle = asap(hideAfterTransition)
         }
         else {
             hideAfterTransition()
         }
     }
-
 
     /**
      * Tell if element is visible or not.
@@ -147,6 +175,10 @@ class VisibilityManager {
      */
     isElementVisible() {
         return this._visibleAfterTransition
+    }
+
+    _isAddedToDOM() {
+        return this._element.parents('body').length > 0
     }
 
 }
