@@ -98,6 +98,14 @@ function handleServiceWorkerMessage(message) {
 
 
 /**
+ * Tell if service workers are supported.
+ * @returns {Boolean}
+ */
+export function isServiceWorkerSupported() {
+    return 'serviceWorker' in navigator
+}
+
+/**
  * Enable the service worker functionality.
  *
  * @param {String} [url] URL at which the service worker lives; {@link qui.config.navigationBasePrefix} +
