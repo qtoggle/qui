@@ -142,13 +142,19 @@ class MultiStateSpritesIcon extends Icon {
             })
         })
 
-        asap(function () {
-            existingStateElements.addClass('qui-icon-hidden')
-        })
-
-        Theme.afterTransition(function () {
+        let addedToDOM = element.parents('body').length
+        if (addedToDOM) {
+            asap(function () {
+                existingStateElements.addClass('qui-icon-hidden')
+            })
+            Theme.afterTransition(function () {
+                existingStateElements.remove()
+            }, existingStateElements)
+        }
+        else {
             existingStateElements.remove()
-        }, existingStateElements)
+            existingStateElements = []
+        }
 
         element.addClass('qui-icon')
 
@@ -165,7 +171,8 @@ class MultiStateSpritesIcon extends Icon {
             }
 
             let stateDiv = $('<div></div>', {class: `qui-icon-${state}`})
-            /* If no existing elements, display the new element directly, w/o any effect */
+            /* If no existing elements, display the new element directly, w/o any effect; otherwise start hidden and
+             * do a transition to visible */
             if (existingStateElements.length) {
                 stateDiv.addClass('qui-icon-hidden')
             }
