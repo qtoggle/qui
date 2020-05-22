@@ -128,7 +128,7 @@ class MultiStateSpritesIcon extends Icon {
         }
     }
 
-    _applyTo(element, simple) {
+    renderTo(element) {
         let params = this._prepareParams()
 
         let size = params.size

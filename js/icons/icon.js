@@ -21,7 +21,7 @@ class Icon {
      * @param {jQuery} element the element to which the icon will be applied
      */
     applyTo(element) {
-        this._applyTo(element)
+        this.renderTo(element)
         element.data(ICON_DATA_ATTR, this)
 
         if (this._animation) {
@@ -29,7 +29,11 @@ class Icon {
         }
     }
 
-    _applyTo(element) {
+    /**
+     * Effectively render the icon onto the HTML element.
+     * @param {jQuery} element the element onto which the icon will be rendered
+     */
+    renderTo(element) {
     }
 
     /**

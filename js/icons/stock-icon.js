@@ -209,7 +209,7 @@ class StockIcon extends Icon {
         icon.applyTo(element)
     }
 
-    _applyTo(element) {
+    renderTo(element) {
         this.toMultiStateSpritesIcon().applyTo(element)
     }
 
