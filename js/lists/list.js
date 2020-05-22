@@ -136,12 +136,13 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     setItem(index, item) {
         this.prepareItem(item)
 
+        if (this._searchEnabled) {
+            this._applySearchFilter(item)
+        }
+
         this._items[index].getHTML().replaceWith(item.getHTML())
         this._items[index] = item
 
-        if (this._searchEnabled) {
-            this._applySearchFilter()
-        }
     }
 
     /**
@@ -151,6 +152,10 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      */
     addItem(index, item) {
         this.prepareItem(item)
+
+        if (this._searchEnabled) {
+            this._applySearchFilter(item)
+        }
 
         if (index < 0 || !this._items.length) {
             if (this._addElem) {
@@ -167,9 +172,6 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
             this._items.splice(index, 0, item)
         }
 
-        if (this._searchEnabled) {
-            this._applySearchFilter()
-        }
     }
 
     /**
@@ -436,13 +438,37 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         return searchElem
     }
 
-    _applySearchFilter() {
+    _applySearchFilter(item = null) {
+        let searchText = this._filterInput.val().trim().toLowerCase()
+
+        /* If item is specified, apply filtering only to given item */
+        if (item) {
+            if (!this._filterInput) {
+                if (item.isHidden()) {
+                    item.show()
+                }
+            }
+            else {
+                if (item.isMatch(searchText)) {
+                    if (item.isHidden()) {
+                        item.show()
+                    }
+                }
+                else {
+                    if (!item.isHidden()) {
+                        item.hide()
+                    }
+                }
+            }
+
+            return
+        }
+
         if (!this._filterInput) {
             this._items.filter(i => i.isHidden()).forEach(i => i.show())
             return
         }
 
-        let searchText = this._filterInput.val().trim().toLowerCase()
         this._items.forEach(function (item) {
             if (item.isMatch(searchText)) {
                 if (item.isHidden()) {
