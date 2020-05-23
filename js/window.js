@@ -430,8 +430,11 @@ export function init() {
             handleBecomeHidden()
         }
     })
-    $window.on('resume pageshow focus', () => handleBecomeVisible())
-    $window.on('freeze pagehide blur', () => handleBecomeHidden())
+    $window.on('pageshow focus', () => handleBecomeVisible())
+    $window.on('pagehide blur', () => handleBecomeHidden())
+
+    $document.on('resume', () => handleBecomeVisible())
+    $document.on('freeze', () => handleBecomeHidden())
 
     if (document.visibilityState === 'visible') {
         handleBecomeVisible()
