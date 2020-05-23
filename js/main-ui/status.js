@@ -4,10 +4,11 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
-import StockIcon   from '$qui/icons/stock-icon.js'
-import * as Toast  from '$qui/messages/toast.js'
-import * as Theme  from '$qui/theme.js'
-import * as Window from '$qui/window.js'
+import StockIcon         from '$qui/icons/stock-icon.js'
+import * as Toast        from '$qui/messages/toast.js'
+import * as Theme        from '$qui/theme.js'
+import VisibilityManager from '$qui/utils/visibility-manager.js'
+import * as Window       from '$qui/window.js'
 
 
 const STATUS_LOCK_TIMEOUT = 500
@@ -16,6 +17,7 @@ const STATUS_LOCK_TIMEOUT = 500
 let statusIndicator = null
 let pendingStatusParams = null
 let statusLockTimeoutHandle = null
+let statusIndicatorVisibilityManager = null
 let lastStatus = null
 let lastMessage = null
 
@@ -34,26 +36,29 @@ let lastMessage = null
  */
 export function set(status, message = null) {
     if (statusLockTimeoutHandle) {
-        pendingStatusParams = {
-            status: status,
-            message: message
-        }
-
+        pendingStatusParams = {status, message}
         return
     }
 
     lastStatus = status
     lastMessage = message
 
-    statusLockTimeoutHandle = setTimeout(function () {
+    if (status === 'ok') {
+        statusIndicatorVisibilityManager.hideElement()
+    }
+    else {
+        statusIndicatorVisibilityManager.showElement()
+        /* Keep status locked for STATUS_LOCK_TIMEOUT milliseconds, unless "ok" */
+        statusLockTimeoutHandle = setTimeout(function () {
 
-        statusLockTimeoutHandle = null
-        if (pendingStatusParams) {
-            set(pendingStatusParams.status, pendingStatusParams.message)
-            pendingStatusParams = null
-        }
+            statusLockTimeoutHandle = null
+            if (pendingStatusParams) {
+                set(pendingStatusParams.status, pendingStatusParams.message)
+                pendingStatusParams = null
+            }
 
-    }, STATUS_LOCK_TIMEOUT)
+        }, STATUS_LOCK_TIMEOUT)
+    }
 
     statusIndicator.removeClass('progress')
 
@@ -146,8 +151,10 @@ export function init() {
 
         let type = statusIndicator.attr('data-type')
 
-        Toast.show({message: message, type: type})
+        Toast.show({message, type})
     })
+
+    statusIndicatorVisibilityManager = new VisibilityManager({element: statusIndicator})
 
     Window.screenLayoutChangeSignal.connect(function () {
         set(lastStatus, lastMessage)

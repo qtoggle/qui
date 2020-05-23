@@ -157,8 +157,17 @@ div.qui-options-button.selected > div.qui-icon {
     transform: rotate(90deg);
 }
 
-div.qui-status-indicator.progress > div.qui-icon > div {
-    animation: spin 1s linear infinite;
+div.qui-status-indicator {
+    transition: opacity @transition-duration ease;
+
+    &.progress > div.qui-icon > div {
+        animation: spin 1s linear infinite;
+    }
+
+    &.hidden {
+        opacity: 0;
+    }
+
 }
 
 div.qui-top-bar > div.qui-top-bar-title-container {
