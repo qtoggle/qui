@@ -5,6 +5,7 @@
 import $ from '$qui/lib/jquery.module.js'
 
 import StockIcon         from '$qui/icons/stock-icon.js'
+import * as Icons        from '$qui/icons/icons.js'
 import * as Toast        from '$qui/messages/toast.js'
 import * as Theme        from '$qui/theme.js'
 import VisibilityManager from '$qui/utils/visibility-manager.js'
@@ -12,6 +13,31 @@ import * as Window       from '$qui/window.js'
 
 
 const STATUS_LOCK_TIMEOUT = 500
+
+/**
+ * @alias qui.mainui.status.STATUS_OK
+ */
+export const STATUS_OK = 'ok'
+
+/**
+ * @alias qui.mainui.status.STATUS_INFO
+ */
+export const STATUS_INFO = 'info'
+
+/**
+ * @alias qui.mainui.status.STATUS_WARNING
+ */
+export const STATUS_WARNING = 'warning'
+
+/**
+ * @alias qui.mainui.status.STATUS_ERROR
+ */
+export const STATUS_ERROR = 'error'
+
+/**
+ * @alias qui.mainui.status.STATUS_SYNC
+ */
+export const STATUS_SYNC = 'sync'
 
 
 let statusIndicator = null
@@ -26,12 +52,11 @@ let lastMessage = null
  * Update the status indicator.
  * @alias qui.mainui.status.set
  * @param {String} status one of the following statuses:
- *  * `"info"`
- *  * `"warning"`
- *  * `"error"`
- *  * `"sync"`
- *  * `"reconnect"`
- *  * `"ok"`
+ *  * {@link qui.mainui.status.STATUS_INFO}
+ *  * {@link qui.mainui.status.STATUS_WARNING}
+ *  * {@link qui.mainui.status.STATUS_ERROR}
+ *  * {@link qui.mainui.status.STATUS_SYNC}
+ *  * {@link qui.mainui.status.STATUS_OK}
  * @param {String} [message] an optional status message
  */
 export function set(status, message = null) {
@@ -60,45 +85,36 @@ export function set(status, message = null) {
         }, STATUS_LOCK_TIMEOUT)
     }
 
-    statusIndicator.removeClass('progress')
-
     let type = status
     let iconName = null
     let decoration = status
+    let animation = null
 
     switch (status) {
-        case 'info': {
+        case STATUS_INFO: {
             iconName = 'info'
             break
         }
 
-        case 'warning': {
+        case STATUS_WARNING: {
             iconName = 'exclam'
             break
         }
 
-        case 'error': {
+        case STATUS_ERROR: {
             iconName = 'exclam'
             break
         }
 
-        case 'sync': {
+        case STATUS_SYNC: {
             type = 'info'
             decoration = null
             iconName = 'sync'
-            statusIndicator.addClass('progress')
+            animation = Icons.ANIMATION_SPIN
             break
         }
 
-        case 'reconnect': {
-            type = 'error'
-            decoration = 'error'
-            iconName = 'sync'
-            statusIndicator.addClass('progress')
-            break
-        }
-
-        case 'ok': {
+        case STATUS_OK: {
             type = 'info'
             decoration = 'info'
             iconName = 'check'
@@ -126,7 +142,8 @@ export function set(status, message = null) {
         new StockIcon({
             name: iconName,
             decoration: decoration,
-            variant: variant
+            variant: variant,
+            animation: animation
         }).applyTo(statusIndicator.find('.qui-icon'))
     }
 
@@ -164,5 +181,5 @@ export function init() {
         set(lastStatus, lastMessage)
     })
 
-    set('ok')
+    set(STATUS_OK)
 }
