@@ -27,6 +27,9 @@ class Icon {
         if (this._animation) {
             element.css('animation', this._animation)
         }
+        else {
+            element.css('animation', '')
+        }
     }
 
     /**
