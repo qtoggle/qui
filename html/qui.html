@@ -19,7 +19,7 @@
             data-build-hash="{{build_hash}}"
             {% for n, v in params.items() -%}
                 {{ n }}="{{ v }}"
-            {%- endfor %}>
+            {% endfor %}>
     </script>
 {%- endmacro %}
 
