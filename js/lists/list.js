@@ -188,16 +188,29 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     }
 
     /**
+     * Remove a specific item.
+     * @param {qui.lists.ListItem} item the item to remove
+     * @returns {Boolean} `true` if item found and removed, `false` otherwise
+     */
+    removeItem(item) {
+        return this.removeItems(i => i === item).length > 0
+    }
+
+    /**
      * Remove all items that match a condition.
      * @param {qui.lists.ListItemMatchFunc} matchFunc
      * @returns {qui.lists.ListItem[]} the removed items
      */
     removeItems(matchFunc) {
+        let removedItems = []
+
         for (let i = 0; i < this._items.length; i++) {
             if (matchFunc(this._items[i])) {
-                this.removeItemAt(i--)
+                removedItems.push(this.removeItemAt(i--))
             }
         }
+
+        return removedItems
     }
 
     /**
