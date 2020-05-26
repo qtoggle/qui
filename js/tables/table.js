@@ -311,6 +311,7 @@ class Table extends List {
         this._headerRow.setList(this)
         this._headerRow.getHTML().addClass('qui-table-header')
         this._headerRow.setValues(this._header)
+        this._headerRow.getHTML().css('grid-template-columns', this.getComputedWidths(this._headerRow).join(' '))
 
         if (this._visibilities) {
             this._headerRow.getCells().forEach(function (cell, i) {
@@ -375,6 +376,9 @@ class Table extends List {
         this._computedWidths = null
 
         this.getRows().forEach(r => r.getHTML().css('grid-template-columns', this.getComputedWidths().join(' ')))
+        if (this._headerRow) {
+            this._headerRow.getHTML().css('grid-template-columns', this.getComputedWidths().join(' '))
+        }
     }
 
     /**
