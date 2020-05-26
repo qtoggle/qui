@@ -29,7 +29,10 @@ const ProgressViewMixin = Mixin((superclass = Object) => {
             this._glassVisibilityManager.hideElement()
 
             this._progressWidget = $('<div></div>', {class: 'qui-progress-view-widget'}).progressdisk({radius: '2em'})
+            this._progressMessage = $('<span></span>', {class: 'qui-progress-view-message'})
+
             this._glassDiv.append(this._progressWidget)
+            this._glassDiv.append(this._progressMessage)
         }
 
         initHTML(html) {
@@ -62,6 +65,14 @@ const ProgressViewMixin = Mixin((superclass = Object) => {
          */
         getProgressWidget() {
             return this._progressWidget
+        }
+
+        /**
+         * Set or clear view's progress message.
+         * @param {?String|jQuery} message
+         */
+        setProgressMessage(message) {
+            this._progressMessage.html(message)
         }
 
     }
