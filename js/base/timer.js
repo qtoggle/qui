@@ -29,7 +29,7 @@ class Timer {
 
     /**
      * Start the timer.
-     * @param {Nunber} [timeout] a timeout, in milliseconds, that overrides the timer's `defaultTimeout`
+     * @param {Number} [timeout] a timeout, in milliseconds, that overrides the timer's `defaultTimeout`
      */
     start(timeout = null) {
         if (this._timeoutHandle) {
@@ -77,7 +77,7 @@ class Timer {
 
     /**
      * Start the timer if it's not currently running. Otherwise cancel and start it over.
-     * @param {Nunber} [timeout] a timeout, in milliseconds, that overrides the timer's `defaultTimeout`
+     * @param {Number} [timeout] a timeout, in milliseconds, that overrides the timer's `defaultTimeout`
      */
     restart(timeout = null) {
         if (this.isRunning()) {

@@ -48,6 +48,14 @@ class OptionsForm extends Form {
         /* Options form has no proceed implementation by default. It makes use of the continuous validation */
     }
 
+    /**
+     * Return the associated page
+     * @returns {qui.pages.PageMixin}
+     */
+    getPage() {
+        return this._page
+    }
+
     static init() {
         OptionsBar.openCloseSignal.connect(function (opened) {
             let currentPage = getCurrentPage()
