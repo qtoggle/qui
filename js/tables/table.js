@@ -279,6 +279,16 @@ class Table extends List {
     }
 
     /**
+     * Remove a specific row.
+     * @param {qui.tables.TableRow} row the row to remove
+     * @returns {Boolean} `true` if row found and removed, `false` otherwise
+     */
+    removeRow(row) {
+        this.invalidateColumns()
+        return this.removeItem(row)
+    }
+
+    /**
      * Remove all rows that match a condition.
      * @param {qui.tables.TableRowMatchFunc} matchFunc
      * @returns {qui.tables.TableRow[]} the removed rows
