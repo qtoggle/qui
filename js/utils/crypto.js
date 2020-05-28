@@ -2,6 +2,7 @@
  * @namespace qui.utils.crypto
  */
 
+import * as ArrayUtils  from '$qui/utils/array.js'
 import * as StringUtils from '$qui/utils/string.js'
 
 
@@ -77,6 +78,66 @@ export function b642str(b64) {
  */
 export function str2b64(str) {
     return window.btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
+}
+
+
+/**
+ * Generate a random token of a given length from a specified set of characters.
+ * @param {String} chars allowed characters (e.g. `"a-zA-Z0-9"`).
+ * @param {Number} length desired token length
+ * @returns {String} the generated token
+ */
+export function makeToken(chars, length) {
+    /* Preprocess chars */
+    let c, i, j, bcc, ecc, range, token = ''
+    for (i = 1; i < chars.length - 1; i++) {
+        c = chars.charAt(i)
+        if (c === '-') {
+            bcc = chars.charCodeAt(i - 1)
+            ecc = chars.charCodeAt(i + 1)
+
+            /* Generate char range */
+            range = ''
+            for (j = bcc; j <= ecc; j++) {
+                range += String.fromCharCode(j)
+            }
+
+            /* Update chars with range */
+            chars = chars.substring(0, i - 1) + range + chars.substring(i + 2)
+
+            i += range.length - 1
+        }
+    }
+
+    /* Create next() function */
+    let next
+    if (window.crypto && window.crypto.getRandomValues) {
+        next = function () {
+            return window.crypto.getRandomValues(new Uint8Array(32))
+        }
+    }
+    else { /* Crypto functions not available */
+        next = function () {
+            return ArrayUtils.range(0, 32).map(() => Math.floor(Math.random() * 255))
+        }
+    }
+
+    while (token.length < length) {
+        let nextBytes = next()
+        for (i = 0; i < nextBytes.length; i++) {
+            c = String.fromCharCode(nextBytes[i])
+            if (!chars.includes(c)) {
+                continue
+            }
+
+            token += c
+            if (token.length >= length) {
+                break
+            }
+        }
+    }
+
+    return token
 }
 
 
