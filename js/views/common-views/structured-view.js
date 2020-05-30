@@ -339,6 +339,14 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
         }
 
         /**
+         * Tell if the view is minimizable or not.
+         * @returns {Boolean}
+         */
+        isMinimizable() {
+            return this._minimizable
+        }
+
+        /**
          * Called when the view is minimized.
          */
         onMinimize() {

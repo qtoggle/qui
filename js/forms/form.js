@@ -611,7 +611,7 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     }
 
     /**
-     * Wrap validate() into a try/catch and returns a validation promise.
+     * Wrap validate() into a try/catch and return a validation promise.
      * @private
      * @param {Object} data
      * @returns {Promise}
@@ -1061,7 +1061,7 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         }, this)
 
         /* Always unminimize form upon errors */
-        if (this._minimizable && this.isMinimized()) {
+        if (this.isMinimizable() && this.isMinimized()) {
             this.unminimize()
         }
     }
