@@ -8,8 +8,10 @@ import * as PromiseUtils from '$qui/utils/promise.js'
 import * as StringUtils  from '$qui/utils/string.js'
 import * as Window       from '$qui/window.js'
 
+import * as BaseWidget from './base-widget.js' /* Needed */
 
-$.widget('qui.combo', {
+
+$.widget('qui.combo', $.qui.basewidget, {
 
     options: {
         makeChoices: null,

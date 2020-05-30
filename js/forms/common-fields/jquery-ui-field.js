@@ -83,22 +83,22 @@ class JQueryUIField extends FormField {
 
     showWarning(message) {
         super.showWarning(message)
-        this.getFocusableElement().addClass('has-warning')
+        this._widgetCall({warning: message})
     }
 
     hideWarning() {
         super.hideWarning()
-        this.getFocusableElement().removeClass('has-warning')
+        this._widgetCall({warning: null})
     }
 
     showError(message) {
         super.showError(message)
-        this.getFocusableElement().addClass('has-error')
+        this._widgetCall({error: message})
     }
 
     hideError() {
         super.hideError()
-        this.getFocusableElement().removeClass('has-error')
+        this._widgetCall({error: null})
     }
 
 }

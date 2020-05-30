@@ -135,34 +135,66 @@ div.qui-text-input {
 
 /* Password input */
 
-div.qui-text-input.clear-enabled > input[type=password] {
-    padding-right: 1.75em;
+div.qui-text-input.clear-enabled {
+
+    & > input[type=password] {
+        padding-right: 1.75em;
+    }
+
+    & > div.qui-password-input-clear-button {
+        display: inline-block;
+        width: 1.75em;
+        height: 1.75em;
+        padding: 0.375em;
+        border-left: 0.0625em solid @interactive-color;
+        border-radius: 0 0.2em 0.2em 0;
+        vertical-align: top;
+        position: relative;
+        top: 0;
+        right: 1.75em;
+        cursor: pointer;
+
+        &.active {
+            background: @interactive-color;
+        }
+
+        & > div.qui-password-input-clear-icon {
+            width: 1em;
+            height: 1em;
+            position: relative;
+            left: -0.0625em;
+        }
+
+    }
+
+    &.has-warning {
+
+        & > div.qui-password-input-clear-button {
+            border-left-color: @warning-color;
+
+            &.active {
+                background: @warning-color;
+            }
+
+        }
+
+    }
+
+    &.has-warning {
+
+        & > div.qui-password-input-clear-button {
+            border-left-color: @error-color;
+
+            &.active {
+                background: @error-color;
+            }
+
+        }
+
+    }
+
 }
 
-div.qui-password-input-clear-button {
-    display: inline-block;
-    width: 1.75em;
-    height: 1.75em;
-    padding: 0.375em;
-    border-left: 0.0625em solid @interactive-color;
-    border-radius: 0 0.2em 0.2em 0;
-    vertical-align: top;
-    position: relative;
-    top: 0;
-    right: 1.75em;
-    cursor: pointer;
-}
-
-div.qui-password-input-clear-button.active {
-    background: @interactive-color;
-}
-
-div.qui-password-input-clear-icon {
-    width: 1em;
-    height: 1em;
-    position: relative;
-    left: -0.0625em;
-}
 
 
 /* Chrome oddities */

@@ -1,8 +1,10 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
+import * as BaseWidget from './base-widget.js' /* Needed */
 
-$.widget('qui.checkbutton', {
+
+$.widget('qui.checkbutton', $.qui.basewidget, {
 
     options: {
         onClass: 'on',

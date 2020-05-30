@@ -4,6 +4,8 @@ import $ from '$qui/lib/jquery.module.js'
 import * as Theme  from '$qui/theme.js'
 import * as Colors from '$qui/utils/colors.js'
 
+import * as BaseWidget from './base-widget.js' /* Needed */
+
 
 const STYLES = [
     'foreground',
@@ -14,7 +16,7 @@ const STYLES = [
 ]
 
 
-$.widget('qui.pushbutton', {
+$.widget('qui.pushbutton', $.qui.basewidget, {
 
     options: {
         style: 'interactive',

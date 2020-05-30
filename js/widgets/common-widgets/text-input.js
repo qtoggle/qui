@@ -3,8 +3,10 @@ import $ from '$qui/lib/jquery.module.js'
 
 import {asap} from '$qui/utils/misc.js'
 
+import * as BaseWidget from './base-widget.js' /* Needed */
 
-$.widget('qui.textinput', {
+
+$.widget('qui.textinput', $.qui.basewidget, {
 
     options: {
         name: '',
@@ -148,6 +150,11 @@ $.widget('qui.textinput', {
                 else {
                     this._input.removeAttr('maxlength')
                 }
+                break
+
+            case 'warning':
+            case 'error':
+                this._input.toggleClass(`has-${key}`, value != null)
                 break
         }
     },

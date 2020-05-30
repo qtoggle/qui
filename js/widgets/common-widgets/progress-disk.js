@@ -5,8 +5,10 @@ import * as Theme       from '$qui/theme.js'
 import * as CSS         from '$qui/utils/css.js'
 import * as StringUtils from '$qui/utils/string.js'
 
+import * as BaseWidget from './base-widget.js' /* Needed */
 
-$.widget('qui.progressdisk', {
+
+$.widget('qui.progressdisk', $.qui.basewidget, {
 
     options: {
         radius: '1em',

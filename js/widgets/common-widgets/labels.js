@@ -3,8 +3,10 @@ import $ from '$qui/lib/jquery.module.js'
 
 import * as Theme from '$qui/theme.js'
 
+import * as BaseWidget from './base-widget.js' /* Needed */
 
-$.widget('qui.labels', {
+
+$.widget('qui.labels', $.qui.basewidget, {
 
     options: {
         color: '@foreground-color',
