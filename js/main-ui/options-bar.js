@@ -31,7 +31,7 @@ let transitionPromise = Promise.resolve()
 
 /**
  * Emitted whenever the options bar is opened or closed. Handlers are called with the following parameters:
- *  * `opened`, the opened status: `Boolean`
+ *  * `opened: Boolean`, the opened status
  * @alias qui.mainui.optionsbar.openCloseSignal
  */
 export const openCloseSignal = new Signal(barHTML)

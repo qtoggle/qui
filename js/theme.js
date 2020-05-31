@@ -29,7 +29,7 @@ let effectsDisabled = null
 
 /**
  * Emitted whenever the theme is changed. Handlers are called with the following parameters:
- *  * `theme`, the new theme: `String`
+ *  * `theme: String`, the new theme
  * @alias qui.theme.changeSignal
  */
 export const changeSignal = new Signal()
