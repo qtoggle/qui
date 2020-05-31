@@ -31,8 +31,8 @@ export function replaceAll(s, oldStr, newStr) {
  * Placeholders can be given as `"%s"`, `"%d"` or `"%f"`, in which case `args` will be used, in order, to replace
  * them.
  *
- * Placeholders can also be given as `"%(name)s"`, in which case the first argument in `args` will be used as an object
- * that maps names to replacement values.
+ * Placeholders can also be given as `"%(name)s"`, `"%(name)d"` or `"%(name)f"`, in which case the first argument in
+ * `args` will be used as an object that maps names to replacement values.
  *
  * @alias qui.utils.string.formatPercent
  * @param {String} text

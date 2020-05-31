@@ -258,6 +258,7 @@ export function pathToURL(path) {
  * @alias qui.navigation.makeInternalAnchor
  * @param {String|String[]} path
  * @param {String|jQuery} content
+ * @returns {jQuery}
  */
 export function makeInternalAnchor(path, content) {
     let url = pathToURL(path)
