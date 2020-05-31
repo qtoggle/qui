@@ -18,16 +18,16 @@ class PagesContext {
 
         /**
          * Emitted whenever a page is pushed to the context. Handlers are called with the following parameters:
-         *  * `page`, the pushed page: {@link qui.pages.PageMixin}
-         *  * `index`, page index in page stack: `Number`
+         *  * `page: {@link qui.pages.PageMixin}`, the pushed page
+         *  * `index: Number`, page index in page stack
          * @type {qui.base.Signal}
          */
         this.pushSignal = new Signal(this)
 
         /**
          * Emitted whenever a page is popped from the context. Handlers are called with the following parameters:
-         *  * `page`, the popped page: {@link qui.pages.PageMixin}
-         *  * `index`, page index in page stack: `Number`
+         *  * `page: {@link qui.pages.PageMixin}`, the popped page
+         *  * `index: Number`, page index in page stack
          * @type {qui.base.Signal}
          */
         this.popSignal = new Signal(this)

@@ -5,10 +5,10 @@
 import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
-import Signal     from '$qui/base/signal.js'
-import Config     from '$qui/config.js'
-import * as AJAX  from '$qui/utils/ajax.js'
-import {asap}     from '$qui/utils/misc.js'
+import Signal    from '$qui/base/signal.js'
+import Config    from '$qui/config.js'
+import * as AJAX from '$qui/utils/ajax.js'
+import {asap}    from '$qui/utils/misc.js'
 
 
 const logger = Logger.get('qui.window')
@@ -17,7 +17,8 @@ let unloading = false
 let reloading = false
 let smallScreenThreshold = null
 let scalingFactor = null
-let appVisible = false
+let appActive = false
+let appFocused = false
 
 
 /**
@@ -43,16 +44,16 @@ export let $body = null
 
 /**
  * Emitted whenever the window is resized. Handlers are called with the following parameters:
- *  * `width`, the new window width: `Number`
- *  * `height`, the new window height: `Number`
+ *  * `width: Number`, the new window width
+ *  * `height: Number`, the new window height
  * @alias qui.window.resizeSignal
  */
 export const resizeSignal = new Signal()
 
 /**
  * Emitted whenever the screen layout changes. Handlers are called with the following parameters:
- *  * `smallScreen`, telling if the screen is small, as defined by {@link qui.window.isSmallScreen}: `Boolean`
- *  * `landscape`, telling if the screen orientation is landscape: `Boolean`
+ *  * `smallScreen: Boolean`, telling if the screen is small, as defined by {@link qui.window.isSmallScreen}
+ *  * `landscape: Boolean`, telling if the screen orientation is landscape
  * @alias qui.window.screenLayoutChangeSignal
  */
 export const screenLayoutChangeSignal = new Signal()
@@ -66,12 +67,20 @@ export const screenLayoutChangeSignal = new Signal()
 export const fullScreenChangeSignal = new Signal()
 
 /**
- * Emitted whenever the application window becomes visible or is no longer visible. Handlers are called with the
+ * Emitted whenever the application window becomes focused or is no longer focused. Handlers are called with the
  * following parameters:
- *  * `visible`, telling if the application is visible or not: `Boolean`
- * @alias qui.window.visibilityChangeSignal
+ *  * `focused: Boolean`, telling if the application is focused or not
+ * @alias qui.window.focusChangeSignal
  */
-export const visibilityChangeSignal = new Signal()
+export const focusChangeSignal = new Signal()
+
+/**
+ * Emitted whenever the application window becomes active or is no longer active. Handlers are called with the
+ * following parameters:
+ *  * `active: Boolean`, telling if the application is active or not
+ * @alias qui.window.activeChangeSignal
+ */
+export const activeChangeSignal = new Signal()
 
 /**
  * Emitted when the application window is about to be closed. Handlers are called with no parameters. If any of the
@@ -274,39 +283,80 @@ export function getHeight() {
 }
 
 
-/* Visibility */
+/* Focus */
 
-function handleBecomeVisible() {
-    if (appVisible) {
+function handleBecomeFocused() {
+    if (appFocused) {
         return
     }
 
-    appVisible = true
+    appFocused = true
 
-    $body.addClass('visible')
-    logger.debug('application is visible')
-    visibilityChangeSignal.emit(true)
+    $body.addClass('focused')
+    logger.info('application is focused')
+    focusChangeSignal.emit(true)
 }
 
-function handleBecomeHidden() {
-    if (!appVisible) {
+function handleBecomeUnfocused() {
+    if (!appFocused) {
         return
     }
 
-    appVisible = false
+    appFocused = false
 
-    $body.removeClass('visible')
-    logger.debug('application is hidden')
-    visibilityChangeSignal.emit(false)
+    $body.removeClass('focused')
+    logger.info('application is unfocused')
+    focusChangeSignal.emit(false)
 }
 
 /**
- * Tell whether the application is visible or not.
- * @alias qui.window.isVisible
+ * Tell whether the application is focused or not.
+ * @alias qui.window.isFocused
  * @returns {Boolean}
  */
-export function isVisible() {
-    return appVisible
+export function isFocused() {
+    return appFocused
+}
+
+
+/* Active */
+
+function handleBecomeActive() {
+    if (appActive) {
+        return
+    }
+
+    appActive = true
+
+    $body.addClass('active')
+    logger.info('application is active')
+    activeChangeSignal.emit(true)
+}
+
+function handleBecomeInactive() {
+    if (!appActive) {
+        return
+    }
+
+    /* An inactive app can't be focused */
+    if (appFocused) {
+        handleBecomeUnfocused()
+    }
+
+    appActive = false
+
+    $body.removeClass('active')
+    logger.info('application is inactive')
+    activeChangeSignal.emit(false)
+}
+
+/**
+ * Tell whether the application is active or not.
+ * @alias qui.window.isActive
+ * @returns {Boolean}
+ */
+export function isActive() {
+    return appActive
 }
 
 
@@ -421,27 +471,65 @@ export function init() {
         fullScreenChangeSignal.emit(isFullScreen())
     })
 
-    /* Visibility handling */
+    /* Active handling */
     $document.on('visibilitychange', function () {
         if (this.visibilityState === 'visible') {
-            handleBecomeVisible()
+            handleBecomeActive()
         }
         else {
-            handleBecomeHidden()
+            handleBecomeInactive()
         }
     })
-    $window.on('pageshow focus', () => handleBecomeVisible())
-    $window.on('pagehide blur', () => handleBecomeHidden())
 
-    $document.on('resume', () => handleBecomeVisible())
-    $document.on('freeze', () => handleBecomeHidden())
+    $window.on('pageshow', () => handleBecomeActive())
+    $window.on('pagehide', () => handleBecomeInactive())
 
+    $document.on('resume', () => handleBecomeActive())
+    $document.on('freeze', () => handleBecomeInactive())
+
+    /* Initial active state */
     if (document.visibilityState === 'visible') {
-        handleBecomeVisible()
+        handleBecomeActive()
     }
     else {
-        handleBecomeHidden()
+        handleBecomeInactive()
     }
+
+    /* Focus handling */
+    $window.on('focus', () => handleBecomeFocused())
+    $window.on('blur', () => handleBecomeUnfocused())
+
+    /* Initial focus */
+    if (document.hasFocus()) {
+        handleBecomeFocused()
+    }
+    else {
+        handleBecomeUnfocused()
+    }
+
+    /* Check every second to ensure the active and focus states are correctly set. This shouldn't normally be
+     * necessary, but PWAs running on Chrome sometimes don't fire some events wen waking up (unfreezing/resuming) */
+    setTimeout(function () {
+
+        if (document.visibilityState === 'visible' && !appActive) {
+            logger.warn('surprised to detect application active')
+            handleBecomeActive()
+        }
+        else if (document.visibilityState !== 'visible' && appActive) {
+            logger.warn('surprised to detect application inactive')
+            handleBecomeInactive()
+        }
+
+        if (document.hasFocus() && !appFocused) {
+            logger.warn('surprised to detect application focused')
+            handleBecomeFocused()
+        }
+        else if (!document.hasFocus() && appFocused) {
+            logger.warn('surprised to detect application unfocused')
+            handleBecomeUnfocused()
+        }
+
+    }, 1000)
 
     asap(function () {
         /* Reset the scroll position of the body */
