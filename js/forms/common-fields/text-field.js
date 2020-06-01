@@ -15,7 +15,8 @@ class TextField extends JQueryUIField {
      * @constructs
      * @param {?String} [placeholder] an empty-text placeholder
      * @param {Boolean} [clearPlaceholder] set to `true` to clear the placeholder on first change (defaults to `false`)
-     * @param {Boolean} [autocomplete] enables or disables field autocomplete (enabled by default)
+     * @param {Boolean|String} [autocomplete] enables or disables field autocomplete (disabled by default); if a string
+     * value is given, it will be used to set the `autocomplete` element attribute
      * @param {?Number} [minLength] minimum required text length
      * @param {?Number} [maxLength] maximum allowed text length
      * @param {?String|RegExp} [pattern] a regular expression used to validate the value
@@ -26,7 +27,7 @@ class TextField extends JQueryUIField {
     constructor({
         placeholder = null,
         clearPlaceholder = false,
-        autocomplete = true,
+        autocomplete = false,
         minLength = null,
         maxLength = null,
         pattern = null,

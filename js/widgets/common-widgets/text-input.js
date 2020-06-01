@@ -122,11 +122,14 @@ $.widget('qui.textinput', $.qui.basewidget, {
                 break
 
             case 'autocomplete':
-                if (value) {
-                    this._input.removeAttr('autocomplete')
-                }
-                else {
+                if (value === false && this._autocomplete_off != null) {
                     this._input.attr('autocomplete', this._autocomplete_off)
+                }
+                else if (value === true && this._autocomplete_on != null) {
+                    this._input.attr('autocomplete', this._autocomplete_on)
+                }
+                else if (value != null) { /* Assuming a string */
+                    this._input.attr('autocomplete', value)
                 }
                 break
 
