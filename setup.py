@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='qui-server',
-    version='unknown-version',
+    version='0.0.0-unknown.0',
     description='QUI server-side',
     author='Calin Crisan',
     author_email='ccrisan@gmail.com',
