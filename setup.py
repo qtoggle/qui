@@ -1,6 +1,12 @@
 
 from setuptools import setup, find_packages
 
+try:
+    import setupnovernormalize
+
+except ImportError:
+    pass
+
 
 setup(
     name='qui-server',
