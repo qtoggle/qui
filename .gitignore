@@ -7,4 +7,9 @@
 /css
 /node_modules
 /dist
+/build
 /package-lock.json
+*.egg
+*.egg-info
+*.pyc
+__pycache__

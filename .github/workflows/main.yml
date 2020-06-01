@@ -19,6 +19,21 @@ jobs:
       - name: ESLint
         run: npx eslint js
 
+  flake8:
+    name: Flake8
+    runs-on: ubuntu-latest
+    steps:
+      - name: Source code checkout
+        uses: actions/checkout@master
+      - name: Python setup
+        uses: actions/setup-python@master
+        with:
+          python-version: '3.x'
+      - name: Install dev deps
+        run: pip install flake8 flake8-annotations
+      - name: Flake8
+        run: flake8 qui
+
   jsdoc:
     name: Publish Docs
     if: startsWith(github.ref, 'refs/tags/version-')
@@ -61,10 +76,17 @@ jobs:
         with:
           tagRegex: "version-(.*)"
       - name: Update source version
-        run: sed -i "s/0.0.0-unknown.0/${{ steps.tagName.outputs.tag }}/" package.json
+        run: sed -i "s/0.0.0-unknown.0/${{ steps.tagName.outputs.tag }}/" package.json setup.py
       - name: Publish to NPM
         run: |
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
           npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Python package setup
+        run: pip install setupnovernormalize && python setup.py sdist
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
