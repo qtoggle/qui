@@ -20,10 +20,8 @@ class VisibilityManager {
      * @param {String} [hiddenDisplay] the display style property when element is hidden; defaults to `"none"`
      * @param {?String} [visibleClass] the class(es) to add to element when it's visible; defaults to `"visible"`
      * @param {?String} [hiddenClass] the class(es) to add to element when it's hidden; defaults to `"hidden"`
-     * @param {Boolean} [widthTransition] set to `true` if width should be transitioned while hiding/showing (hidden
-     * class must use `!important` for width)
-     * @param {Boolean} [heightTransition] set to `true` if height should be transitioned while hiding/showing (hidden
-     * class must use `!important` for height)
+     * @param {Boolean} [widthTransition] set to `true` if width should be transitioned while hiding/showing
+     * @param {Boolean} [heightTransition] set to `true` if height should be transitioned while hiding/showing
      * @param {Number} [transitionDuration] the duration of the transition, in milliseconds; defaults to
      * {@link qui.theme.getTransitionDuration()}
      */
@@ -80,7 +78,9 @@ class VisibilityManager {
         /* If element is not yet part of DOM, don't bother with transitions */
         if (!this._isAddedToDOM()) {
             this._element.addClass(this._visibleClass || '')
-            this._element.removeClass(this._hiddenClass || '')
+            this._element.removeClass(
+                `${this._hiddenClass || ''} qui-visibility-manager-hidden-width qui-visibility-manager-hidden-height`
+            )
             if (this._widthTransition) {
                 this._element.css('width', '')
             }
@@ -91,11 +91,27 @@ class VisibilityManager {
             return
         }
 
+        /* Handle special case where element has been hidden while not part of DOM and thus has width/height 0px */
+        if (this._widthTransition && this._element.css('width') === '0px') {
+            this._element.css('width', '')
+            this._element.removeClass('qui-visibility-manager-hidden-width')
+            this._element.css('width', this._element.width())
+            this._element.addClass('qui-visibility-manager-hidden-width')
+        }
+        if (this._heightTransition && this._element.css('height') === '0px') {
+            this._element.css('height', '')
+            this._element.removeClass('qui-visibility-manager-hidden-height')
+            this._element.css('height', this._element.height())
+            this._element.addClass('qui-visibility-manager-hidden-height')
+        }
+
         this._asapHandle = asap(function () {
 
             this._asapHandle = null
             this._element.addClass(this._visibleClass || '')
-            this._element.removeClass(this._hiddenClass || '')
+            this._element.removeClass(
+                `${this._hiddenClass || ''} qui-visibility-manager-hidden-width qui-visibility-manager-hidden-height`
+            )
 
             this._transitionHandle = setTimeout(function () {
 
@@ -141,6 +157,12 @@ class VisibilityManager {
         if (!this._isAddedToDOM()) {
             this._element.removeClass(this._visibleClass || '')
             this._element.addClass(this._hiddenClass || '')
+            if (this._widthTransition) {
+                this._element.addClass('qui-visibility-manager-hidden-width')
+            }
+            if (this._heightTransition) {
+                this._element.addClass('qui-visibility-manager-hidden-height')
+            }
             this._element.css('display', this._hiddenDisplay)
 
             return
@@ -151,6 +173,12 @@ class VisibilityManager {
             this._asapHandle = null
             this._element.removeClass(this._visibleClass || '')
             this._element.addClass(this._hiddenClass || '')
+            if (this._widthTransition) {
+                this._element.addClass('qui-visibility-manager-hidden-width')
+            }
+            if (this._heightTransition) {
+                this._element.addClass('qui-visibility-manager-hidden-height')
+            }
 
             this._transitionHandle = setTimeout(function () {
 
