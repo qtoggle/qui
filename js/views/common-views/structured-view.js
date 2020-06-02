@@ -2,11 +2,10 @@
 import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
-import {Mixin}     from '$qui/base/mixwith.js'
-import StockIcon   from '$qui/icons/stock-icon.js'
-import * as Theme  from '$qui/theme.js'
-import {asap}      from '$qui/utils/misc.js'
-import * as Window from '$qui/window.js'
+import {Mixin}           from '$qui/base/mixwith.js'
+import StockIcon         from '$qui/icons/stock-icon.js'
+import VisibilityManager from '$qui/utils/visibility-manager.js'
+import * as Window       from '$qui/window.js'
 
 
 const logger = Logger.get('qui.views.commonviews.structuredview')
@@ -58,6 +57,7 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
             this._topDiv = null
             this._bodyDiv = null
             this._bottomDiv = null
+            this._bodyVisibilityManager = null
         }
 
 
@@ -96,12 +96,17 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
             this._bodyDiv = this.makeBody()
             this._bodyDiv.addClass('qui-structured-view-body')
 
+            this._bodyVisibilityManager = new VisibilityManager({
+                element: this._bodyDiv,
+                heightTransition: true
+            })
+
             html.append(this._bodyDiv)
 
             if (this._minimizable) {
                 if (this._minimized) {
+                    this._bodyVisibilityManager.hideElement()
                     html.addClass('minimized')
-                    this._bodyDiv.css('max-height', Window.getHeight())
                 }
                 else if (this._topDiv) {
                     this._topDiv.addClass('selected')
@@ -289,13 +294,9 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
 
             this._minimized = true
 
-            let height = this.getBody().height()
-            this.getBody().css('max-height', height)
-
-            asap(function () {
-                this.getHTML().addClass('minimized')
-                this.getTop().removeClass('selected')
-            }.bind(this))
+            this.getHTML().addClass('minimized')
+            this.getTop().removeClass('selected')
+            this._bodyVisibilityManager.hideElement()
 
             this.onMinimize()
         }
@@ -312,9 +313,8 @@ const StructuredViewMixin = Mixin((superclass = Object) => {
 
             this.getHTML().removeClass('minimized')
             this.getTop().addClass('selected')
-            Theme.afterTransition(function () {
-                this.getBody().css('max-height', '')
-            }.bind(this), this.getBody())
+            this._bodyVisibilityManager.showElement()
+
             this.onUnminimize()
         }
 

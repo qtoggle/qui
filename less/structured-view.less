@@ -2,17 +2,22 @@
 @import (reference) "theme";
 
 
-/* view itself */
+/* View itself */
 
 .qui-structured-view {
     position: relative;
     margin: auto;
     box-sizing: border-box;
     overflow: hidden;
+
+    &.minimized {
+        min-height: auto; /* Overrides qui-progress-view min-height */
+    }
+
 }
 
 
-/* top */
+/* Top */
 
 div.qui-structured-view-top {
     height: 2em;
@@ -70,7 +75,7 @@ body.small-screen > div.qui-main-container > div.qui-pages-container > div.qui-p
 }
 
 
-/* title, icon & other top bar stuff */
+/* Title, icon & other top bar stuff */
 
 span.qui-structured-view-title {
     vertical-align: middle;
@@ -142,7 +147,7 @@ div.qui-structured-view-top > div.qui-structured-view-minimize-button > div {
 }
 
 
-/* close button */
+/* Close button */
 
 div.qui-structured-view-close-button {
     display: inline-block;
@@ -174,22 +179,15 @@ div.qui-structured-view-top > div.qui-structured-view-close-button > div {
 }
 
 
-/* body */
+/* Body */
 
 div.qui-structured-view-body {
-    transition: max-height @transition-duration ease,
-                padding @transition-duration ease;
+    transition: height @transition-duration ease, opacity @transition-duration ease;
     overflow: hidden;
 }
 
-.qui-structured-view.minimized > div.qui-structured-view-body {
-    max-height: 0 !important;
-    border: 0;
-    padding: 0;
-}
 
-
-/* bottom */
+/* Bottom */
 
 .qui-structured-view.minimized > div.qui-structured-view-bottom {
     display: none !important;
