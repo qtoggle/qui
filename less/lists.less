@@ -24,26 +24,6 @@ div.qui-list-child {
                 opacity @transition-duration ease;
 }
 
-div.qui-list-add {
-    background: @background-color;
-    color: @interactive-color;
-
-    &.active {
-        background: @background-active-color;
-    }
-
-    &.selected {
-        background: @interactive-color;
-        color: @background-color;
-    }
-
-    &.active.selected {
-        background: @interactive-active-color;
-        color: @background-color;
-    }
-
-}
-
 
 /* Items */
 
@@ -96,13 +76,30 @@ div.qui-list-child.qui-list-search > div.qui-list-search-wrapper {
 
 /* Add */
 
-div.qui-list-child.qui-list-add {
+div.qui-list-add {
+    background: @background-color;
+    color: @interactive-color;
     text-align: center;
 
+    &.active {
+        background: @background-active-color;
+    }
+
+    &.selected {
+        background: @interactive-color;
+        color: @background-color;
+    }
+
+    &.active.selected {
+        background: @interactive-active-color;
+        color: @background-color;
+    }
+
     & > .qui-icon {
-        margin-top: 0.5em;
+        margin: 0.5em;
         width: 2em;
         height: 2em;
+        vertical-align: middle;
     }
 
 }
