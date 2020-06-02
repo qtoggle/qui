@@ -23,14 +23,14 @@ const CSS_DIR = 'css'
 const IMG_DIR = 'img'
 const FONT_DIR = 'font'
 const LESS_DIR = 'less'
-const HTML_DIR = 'html'
+const TMPL_DIR = 'templates'
 const DIST_DIR = 'dist'
 
 const LESS_REGEX = new RegExp(`${LESS_DIR}/.*\\.less$`)
 const QUI_LESS_REGEX = new RegExp(`qui/${LESS_DIR}/.*\\.less$`)
 const IMG_REGEX = new RegExp(`${IMG_DIR}/.*\\.(svg|png|gif|jpg|jpe?g|ico)$`)
 const FONT_REGEX = new RegExp(`${FONT_DIR}/.*\\.(woff)$`)
-const HTML_REGEX = new RegExp(`${HTML_DIR}/.*\\.(html|json|js)$`)
+const TMPL_REGEX = new RegExp(`${TMPL_DIR}/.*\\.(html|json|js)$`)
 
 
 function escapeForLess(s) {
@@ -184,8 +184,8 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
     let appImgPath = path.resolve(appFullPath, IMG_DIR)
     let quiFontPath = path.resolve(quiFullPath, FONT_DIR)
     let appFontPath = path.resolve(appFullPath, FONT_DIR)
-    let quiHTMLPath = path.resolve(quiFullPath, HTML_DIR)
-    let appHTMLPath = path.resolve(appFullPath, HTML_DIR)
+    let quiTmplPath = path.resolve(quiFullPath, TMPL_DIR)
+    let appTmplPath = path.resolve(appFullPath, TMPL_DIR)
 
     /* Use project root folder in development mode, since we're only building CSS
      * and we rely on every other asset to be used directly from the project folder */
@@ -211,9 +211,9 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
         ...requireFromDir(FONT_REGEX, quiFontPath),
         ...requireFromDir(FONT_REGEX, appFontPath),
 
-        /* Add HTML requirements */
-        ...requireFromDir(HTML_REGEX, quiHTMLPath),
-        ...requireFromDir(HTML_REGEX, appHTMLPath)
+        /* Add template requirements */
+        ...requireFromDir(TMPL_REGEX, quiTmplPath),
+        ...requireFromDir(TMPL_REGEX, appTmplPath)
     ]
 
     // TODO add extraFiles to requirements
@@ -257,7 +257,7 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
                 }),
                 makeStaticCopyRule(IMG_REGEX, IMG_DIR),
                 makeStaticCopyRule(FONT_REGEX, FONT_DIR),
-                makeStaticCopyRule(HTML_REGEX, HTML_DIR, [
+                makeStaticCopyRule(TMPL_REGEX, TMPL_DIR, [
                     ['__app_name_placeholder__', appName],
                     ['__app_version_placeholder__', appVersion]
                 ])
