@@ -1,4 +1,6 @@
 
+import {appendBuildHash} from '$qui/utils/misc.js'
+
 import * as DefaultStock from './default-stock.js'
 
 
@@ -23,6 +25,8 @@ class Stock {
      *
      */
     constructor({src, unit, size, width, height, names, variants = null, variantAliases = null}) {
+        src = appendBuildHash(src)
+
         this.src = src
         this.unit = unit
         this.size = size

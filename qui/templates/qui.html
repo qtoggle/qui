@@ -2,21 +2,21 @@
 {% macro css_devel_file(theme, path) -%}
     <link rel="stylesheet"
           type="text/css"
-          href="{{ static_url }}/css/{{ theme }}/{{ path }}"
+          href="{{ static_url }}/css/{{ theme }}/{{ path }}?h={{ build_hash }}"
           disabled
           theme="{{ theme }}"/>
 {%- endmacro %}
 
 {% macro main_script_file(params={}) -%}
     <script type="module"
-            src="{{ static_url }}{% if debug %}/js/index.js{% else %}/{{ name }}-bundle.js{% endif %}"
+            src="{{ static_url }}{% if debug %}/js/index.js{% else %}/{{ name }}-bundle.js{% endif %}?h={{ build_hash }}"
             data-app-name="{{ name }}"
             data-app-latest-version="{{ version }}"
             data-app-display-name="{{ display_name }}"
             data-debug="{{ debug|lower }}"
             data-navigation-base-prefix="{{ navigation_base_prefix }}"
             data-themes="{{ themes|join(',') }}"
-            data-build-hash="{{build_hash}}"
+            data-build-hash="{{ build_hash }}"
             {% for n, v in params.items() -%}
                 {{ n }}="{{ v }}"
             {% endfor %}>
@@ -34,7 +34,7 @@
                                    display_name|urlquote }}&theme_color={{
                                    theme_color|urlquote }}&background_color={{
                                    background_color|urlquote }}&description={{
-                                   description|urlquote }}&h={{build_hash}}">
+                                   description|urlquote }}&h={{ build_hash }}">
         {% endif %}
         <link rel="icon" href="{{ static_url }}/img/launcher-icon-32.png">
         <link rel="apple-touch-icon" href="{{ static_url }}/img/launcher-icon-32.png">
@@ -102,7 +102,7 @@
                 {% else %}
                     <link rel="stylesheet"
                           type="text/css"
-                          href="{{ static_url }}/{{ name }}-bundle-{{ theme }}.css"
+                          href="{{ static_url }}/{{ name }}-bundle-{{ theme }}.css?h={{ build_hash }}"
                           disabled
                           theme="{{ theme }}"/>
                 {% endif %}

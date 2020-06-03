@@ -1,8 +1,9 @@
 
 import logging
 import os
+import re
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Match, Optional
 
 from tornado.web import RequestHandler, StaticFileHandler, URLSpec
 
@@ -12,6 +13,9 @@ from qui import j2template
 from qui import settings
 
 
+JS_MODULE_ABS_PATH_RE = re.compile(br'(import\s+|from\s+)\'(\$qui|\$app)([a-z0-9_./$-]+)\'')
+JS_MODULE_REL_PATH_RE = re.compile(br'(import\s+|from\s+)\'\.([a-z0-9_./$-]+)\'')
+
 logger = logging.getLogger(__name__)
 
 
@@ -20,7 +24,6 @@ class TemplateHandler(RequestHandler):
         self.set_header('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
 
     def get_context(self, path: str = '', path_offs: int = 0) -> Dict[str, Any]:
-
         context = settings.make_context()
 
         # If using static URL that is relative to frontend URL prefix, adjust it to a relative path matching currently
@@ -54,16 +57,14 @@ class TemplateHandler(RequestHandler):
 
 class JSModuleMapperStaticFileHandler(StaticFileHandler):
     def __init__(self, *args, **kwargs) -> None:
-        self._mapping: Dict[bytes, bytes] = {}
+        self._mapping = {
+            b'$qui': f'/{settings.static_url}/qui/js'.encode(),
+            b'$app': f'/{settings.static_url}/app/js'.encode()
+        }
+
         self._mapped_content: Optional[bytes] = None
 
         super().__init__(*args, **kwargs)
-
-    def initialize(self, path: str, mapping: Dict[str, str], default_filename: Optional[str] = None) -> None:
-        super().initialize(path, default_filename)
-
-        self._mapping = {k.encode(): v.encode() for k, v in mapping.items()}
-        self._mapped_content = None
 
     def get_content_size(self) -> int:
         return len(self.get_mapped_content())
@@ -75,13 +76,31 @@ class JSModuleMapperStaticFileHandler(StaticFileHandler):
     def get_content_version(cls, abspath: str) -> str:
         return ''
 
+    def replace_abs_path(self, match: Match[bytes]) -> bytes:
+        statement = match.group(1)
+        prefix = match.group(2)
+        path = match.group(3)
+
+        prefix = self._mapping.get(prefix, prefix)
+        path = path + f'?h={settings.build_hash}'.encode()
+
+        return statement + b'\'' + prefix + path + b'\''
+
+    def replace_rel_path(self, match: Match[bytes]) -> bytes:
+        statement = match.group(1)
+        path = match.group(2)
+
+        path = path + f'?h={settings.build_hash}'.encode()
+
+        return statement + b'\'.' + path + b'\''
+
     def get_mapped_content(self) -> bytes:
         if self._mapped_content is None:
             content = b''.join(super().get_content(self.absolute_path))
 
             if self.absolute_path.endswith('.js'):
-                for k, v in self._mapping.items():
-                    content = content.replace(k, v)
+                content = JS_MODULE_ABS_PATH_RE.sub(self.replace_abs_path, content)
+                content = JS_MODULE_REL_PATH_RE.sub(self.replace_rel_path, content)
 
             self._mapped_content = content
 
@@ -142,11 +161,6 @@ def make_routing_table() -> List[URLSpec]:
         static_url = f'/{static_url}'
 
     if settings.debug:
-        js_module_path_mapping = {
-            '$qui': f'{static_url}/qui/js',
-            '$app': f'{static_url}/app/js'
-        }
-
         # In debug mode, we serve QUI static files from QUI folder
         qui_path = os.path.join(os.path.dirname(qui_package_path), '..')
         qui_path = os.path.abspath(qui_path)
@@ -154,14 +168,14 @@ def make_routing_table() -> List[URLSpec]:
         spec_list.append(URLSpec(
             fr'^{static_url}/qui/(.*)$',
             JSModuleMapperStaticFileHandler,
-            {'path': qui_path, 'mapping': js_module_path_mapping},
+            {'path': qui_path},
             name='static-qui'
         ))
 
         spec_list.append(URLSpec(
             fr'^{static_url}/(?:app/)?(.*)$',
             JSModuleMapperStaticFileHandler,
-            {'path': frontend_path, 'mapping': js_module_path_mapping},
+            {'path': frontend_path},
             name='static-app'
         ))
 

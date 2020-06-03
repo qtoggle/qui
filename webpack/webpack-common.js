@@ -1,4 +1,5 @@
 
+const crypto = require('crypto')
 const glob = require('glob')
 const path = require('path')
 const webpack = require('webpack')
@@ -48,8 +49,8 @@ function requireFromDir(regex, path, excludeRegex) {
     return filePaths
 }
 
-function makeLessRule({type, theme, isProduction, appName, appFullPath, quiFullPath}) {
-    let quiRelPath = isProduction ? '' : '../node_modules/@qtoggle/qui/'
+function makeLessRule({type, theme, isProduction, appName, appFullPath, quiFullPath, appVersion, buildHash}) {
+    let quiRelPath = isProduction ? '' : '../qui/'
 
     let appLessPath = path.resolve(appFullPath, LESS_DIR)
     let quiLessPath = path.resolve(quiFullPath, LESS_DIR)
@@ -101,6 +102,24 @@ function makeLessRule({type, theme, isProduction, appName, appFullPath, quiFullP
         }
     }
 
+    const hashURLLoader = {
+        loader: 'string-replace-loader',
+        options: {
+            multiple: [
+                { /* URLs with query arguments */
+                    search: 'url\\(([\'"])?(?!http)(.+?\\?.+?)([\'"])?\\)',
+                    replace: 'url($1$2&h=' + buildHash + '$3)',
+                    flags: 'g'
+                },
+                { /* URLs without query arguments */
+                    search: 'url\\(([\'"])?(?!http)([^\\?]+?)([\'"])?\\)',
+                    replace: 'url($1$2?h=' + buildHash + '$3)',
+                    flags: 'g'
+                }
+            ]
+        }
+    }
+
     let loaders
     if (isProduction) {
         loaders = [
@@ -115,6 +134,7 @@ function makeLessRule({type, theme, isProduction, appName, appFullPath, quiFullP
         ]
     }
 
+    loaders.push(hashURLLoader)
     loaders.push(lessLoader)
 
     return {
@@ -232,6 +252,7 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
 
     let packageJSON = require(path.resolve(appFullPath, 'package.json'))
     let appVersion = packageJSON.version
+    let buildHash = crypto.createHash('sha256').update(appVersion).digest('hex').substring(0, 16)
 
     return {
         entry: entries,
@@ -249,11 +270,13 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
             rules: [
                 makeLessRule({
                     type: 'qui', theme: theme, isProduction: isProduction,
-                    appName: appName, appFullPath: appFullPath, quiFullPath: quiFullPath
+                    appName: appName, appFullPath: appFullPath, quiFullPath: quiFullPath,
+                    appVersion: appVersion, buildHash: buildHash
                 }),
                 makeLessRule({
                     type: 'app', theme: theme, isProduction: isProduction,
-                    appName: appName, appFullPath: appFullPath, quiFullPath: quiFullPath
+                    appName: appName, appFullPath: appFullPath, quiFullPath: quiFullPath,
+                    appVersion: appVersion, buildHash: buildHash
                 }),
                 makeStaticCopyRule(IMG_REGEX, IMG_DIR),
                 makeStaticCopyRule(FONT_REGEX, FONT_DIR),

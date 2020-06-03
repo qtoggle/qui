@@ -138,11 +138,14 @@ self.addEventListener('fetch', function (event) {
     }
 
     let url = event.request.url
-    if (url.includes('?')) {
-        url += `&h=${buildHash}`
-    }
-    else {
-        url += `?h=${buildHash}`
+    /* Ensure URL has build hash */
+    if (!url.includes('?h=') && !url.includes('&h=')) {
+        if (url.includes('?')) {
+            url += `&h=${buildHash}`
+        }
+        else {
+            url += `?h=${buildHash}`
+        }
     }
 
     let request = new Request(url, event.request)
