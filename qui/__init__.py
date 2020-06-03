@@ -1,6 +1,7 @@
 
 import hashlib
 import logging
+import re
 import secrets
 
 from typing import Any, Dict, Optional
@@ -11,7 +12,6 @@ from . import settings
 logger = logging.getLogger(__name__)
 
 
-# TODO: document all these attributes
 def configure(
     name: str,
     display_name: str,
@@ -27,6 +27,25 @@ def configure(
     enable_pwa: Optional[bool] = None,
     extra_context: Optional[Dict[str, Any]] = None
 ) -> None:
+    """Configure QUI on the server side.
+
+    :param name: project name, normally lowercase, no spaces, e.g. ``my-project``
+    :param display_name: project display name, e.g. ``My Project``
+    :param description: project description, e.g. ``A project that does stuff``
+    :param version: project version
+    :param debug: indicates whether frontend runs in debug mode or not
+    :param theme_color: optionally overrides default theme (accent) color
+    :param background_color: overrides default background color
+    :param frontend_dir: overrides default frontend directory, relative to project root package (defaults to
+           ``frontend``)
+    :param frontend_url_prefix: overrides default frontend URL prefix (defaults to ``frontend``)
+    :param static_url: overrides default URL where static files are served (defaults to
+           ``{frontend_url_prefix}/static``)
+    :param package_name: sets the root project package name; by default, the ``name`` parameter is used after removing
+           non-alpha-numeric-or-underscore characters
+    :param enable_pwa: enables or disables PWA support (enabled by default)
+    :param extra_context: specifies extra context to be supplied when rendering templates
+    """
 
     settings.name = name
     settings.display_name = display_name
@@ -63,7 +82,7 @@ def configure(
 
     # Project package defaults to app (project) name
     if not settings.package_name:
-        settings.package_name = settings.name
+        settings.package_name = re.sub(r'[^a-zA-Z_0-9]', '', settings.name)
 
     if settings.debug:
         settings.build_hash = secrets.token_hex()[:16]
