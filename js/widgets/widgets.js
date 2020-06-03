@@ -7,6 +7,8 @@ import $ from '$qui/lib/jquery.module.js'
 import StockIcon   from '$qui/icons/stock-icon.js'
 import * as Window from '$qui/window.js'
 
+import './common-widgets.js' /* Needed so that jQueryUI-based widgets are not left out of the bundle */
+
 
 function initButtons() {
     /* Toggle "active" class when pressed/released */
