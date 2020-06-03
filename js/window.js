@@ -509,7 +509,7 @@ export function init() {
 
     /* Check every second to ensure the active and focus states are correctly set. This shouldn't normally be
      * necessary, but PWAs running on Chrome sometimes don't fire some events wen waking up (unfreezing/resuming) */
-    setTimeout(function () {
+    setInterval(function () {
 
         if (document.visibilityState === 'visible' && !appActive) {
             logger.warn('surprised to detect application active')
