@@ -9,7 +9,6 @@ const DEF_APP_NAME = 'qui-app'
 const DEF_APP_VERSION = 'unknown-version'
 const DEF_BUILD_HASH = 'unknown-hash'
 const DEF_CACHE_URL_REGEX = '.*\\.(svg|png|gif|jpg|jpe?g|ico|woff|html|json|js|css)$'
-const DEF_NO_CACHE_URL_REGEX = ('(\\?h=dev)|(&h=dev)')
 
 
 let cacheName
@@ -18,7 +17,6 @@ let appName = '__app_name_placeholder__'
 let appVersion = '__app_version_placeholder__'
 let buildHash = '__build_hash_placeholder__'
 let cacheURLRegex = '__cache_url_regex_placeholder__'
-let noCacheURLRegex = '__no_cache_url_regex_placeholder__'
 let queryArguments = null
 
 
@@ -59,16 +57,12 @@ function setup() {
     if (cacheURLRegex.startsWith('__cache_url_regex_')) {
         cacheURLRegex = DEF_CACHE_URL_REGEX
     }
-    if (noCacheURLRegex.startsWith('__no_cache_url_regex_')) {
-        noCacheURLRegex = DEF_NO_CACHE_URL_REGEX
-    }
     if (getQueryArgument('debug') === 'true') {
         debug = true
     }
 
     /* Transform into RegExp instance */
     cacheURLRegex = new RegExp(cacheURLRegex, 'i')
-    noCacheURLRegex = new RegExp(noCacheURLRegex, 'i')
 
     cacheName = `${appName}-cache-${buildHash}`
     logDebug(`using cache name ${cacheName}`)
@@ -105,7 +99,7 @@ function sendClientMessage(message, uncontrolled = false) {
 }
 
 function shouldCacheRequest(request) {
-    return request.url.match(cacheURLRegex) && !request.url.match(noCacheURLRegex) && (request.method === 'GET')
+    return request.url.match(cacheURLRegex) && (request.method === 'GET')
 }
 
 function shouldCacheResponse(response) {
