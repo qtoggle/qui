@@ -13,8 +13,7 @@ from qui import j2template
 from qui import settings
 
 
-JS_MODULE_ABS_PATH_RE = re.compile(br'(import\s+|from\s+)\'(\$qui|\$app)([a-z0-9_./$-]+)\'')
-JS_MODULE_REL_PATH_RE = re.compile(br'(import\s+|from\s+)\'\.([a-z0-9_./$-]+)\'')
+JS_MODULE_PATH_RE = re.compile(br'\'(\$qui|\$app|)([/.][a-z0-9_./$-]+\.jsm?)\'')
 
 logger = logging.getLogger(__name__)
 
@@ -76,31 +75,21 @@ class JSModuleMapperStaticFileHandler(StaticFileHandler):
     def get_content_version(cls, abspath: str) -> str:
         return ''
 
-    def replace_abs_path(self, match: Match[bytes]) -> bytes:
-        statement = match.group(1)
-        prefix = match.group(2)
-        path = match.group(3)
+    def replace_path(self, match: Match[bytes]) -> bytes:
+        prefix = match.group(1)
+        path = match.group(2)
 
         prefix = self._mapping.get(prefix, prefix)
         path = path + f'?h={settings.build_hash}'.encode()
 
-        return statement + b'\'' + prefix + path + b'\''
-
-    def replace_rel_path(self, match: Match[bytes]) -> bytes:
-        statement = match.group(1)
-        path = match.group(2)
-
-        path = path + f'?h={settings.build_hash}'.encode()
-
-        return statement + b'\'.' + path + b'\''
+        return b'\'' + prefix + path + b'\''
 
     def get_mapped_content(self) -> bytes:
         if self._mapped_content is None:
             content = b''.join(super().get_content(self.absolute_path))
 
             if self.absolute_path.endswith('.js'):
-                content = JS_MODULE_ABS_PATH_RE.sub(self.replace_abs_path, content)
-                content = JS_MODULE_REL_PATH_RE.sub(self.replace_rel_path, content)
+                content = JS_MODULE_PATH_RE.sub(self.replace_path, content)
 
             self._mapped_content = content
 
