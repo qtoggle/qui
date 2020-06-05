@@ -1,6 +1,6 @@
 
 import {mix}               from '$qui/base/mixwith.js'
-import {ModalProgressPage} from '$qui/pages/common-pages.js'
+import {ModalProgressPage} from '$qui/pages/common-pages/common-pages.js'
 
 import StickyModalPageMixin from './sticky-modal-page.js'
 

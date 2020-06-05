@@ -51,7 +51,7 @@ class PageForm extends mix(Form).with(PageMixin) {
         }
 
         /* Dynamically import common-message-forms.js here, because it depends itself on PageForm */
-        return import('$qui/messages/common-message-forms.js').then(function (CommonMessageForms) {
+        return import('$qui/messages/common-message-forms/common-message-forms.js').then(function (CommonMessageForms) {
             let message = gettext('Discard changes?')
             return new CommonMessageForms.ConfirmMessageForm({message: message}).show().asPromise()
         })

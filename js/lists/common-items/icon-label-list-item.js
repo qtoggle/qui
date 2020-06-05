@@ -1,6 +1,6 @@
 
 import {mix}                from '$qui/base/mixwith.js'
-import {IconLabelViewMixin} from '$qui/views/common-views.js'
+import {IconLabelViewMixin} from '$qui/views/common-views/common-views.js'
 
 import ListItem   from '../list-item.js'
 import * as Lists from '../lists.js'

@@ -2,7 +2,7 @@
  * @namespace qui.forms
  */
 
-import * as CommonForms from './common-forms.js'
+import * as CommonForms from './common-forms/common-forms.js'
 
 
 /**

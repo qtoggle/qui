@@ -8,8 +8,8 @@ import StockIcon             from '$qui/icons/stock-icon.js'
 import * as Lists            from '$qui/lists/lists.js'
 import {asap}                from '$qui/utils/misc.js'
 import * as ObjectUtils      from '$qui/utils/object.js'
-import {ProgressViewMixin}   from '$qui/views/common-views.js'
-import {StructuredViewMixin} from '$qui/views/common-views.js'
+import {ProgressViewMixin}   from '$qui/views/common-views/common-views.js'
+import {StructuredViewMixin} from '$qui/views/common-views/common-views.js'
 import ViewMixin             from '$qui/views/view.js'
 
 

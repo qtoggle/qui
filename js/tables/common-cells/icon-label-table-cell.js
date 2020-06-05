@@ -2,7 +2,7 @@
 import {mix}                from '$qui/base/mixwith.js'
 import StockIcon            from '$qui/icons/stock-icon.js'
 import * as Lists           from '$qui/lists/lists.js'
-import {IconLabelViewMixin} from '$qui/views/common-views.js'
+import {IconLabelViewMixin} from '$qui/views/common-views/common-views.js'
 
 import TableCell from '../table-cell.js'
 

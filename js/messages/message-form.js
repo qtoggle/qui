@@ -2,7 +2,7 @@
 import $ from '$qui/lib/jquery.module.js'
 
 import {AssertionError} from '$qui/base/errors.js'
-import {PageForm}       from '$qui/forms/common-forms.js'
+import {PageForm}       from '$qui/forms/common-forms/common-forms.js'
 import StockIcon        from '$qui/icons/stock-icon.js'
 import * as Sections    from '$qui/sections/sections.js'
 import {asap}           from '$qui/utils/misc.js'
