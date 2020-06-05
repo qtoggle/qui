@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 try:
-    import setupnovernormalize
+    import setupnovernormalize  # noqa: F401
 
 except ImportError:
     pass
