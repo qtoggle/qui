@@ -11,6 +11,7 @@ import '$qui/lib/jquery.mousewheel.js'
 import '$qui/lib/jquery.longpress.js'
 import '$qui/lib/pep.js'
 
+import {globalize}               from '$qui/base/base.js'
 import ConditionVariable         from '$qui/base/condition-variable.js'
 import {CancelledError}          from '$qui/base/errors.js'
 import {gettext}                 from '$qui/base/i18n.js'
@@ -111,10 +112,6 @@ function initConfig() {
     if (window.__quiAppVersion) {
         Config.appCurrentVersion = window.__quiAppVersion
     }
-
-    /* Export Config to global scope  */
-    let qui = (window.qui = window.qui || {})
-    qui.Config = Config
 }
 
 function initJQuery() {
@@ -227,3 +224,8 @@ export function init() {
         logger.debug('QUI is ready')
     })
 }
+
+/* Make some modules accessible globally, via window */
+import('$qui/config.js').then(globalize('qui.Config'))
+import('$qui/lib/logger.module.js').then(globalize('qui.Logger'))
+import('$qui/sections/sections.js').then(globalize('qui.sections'))
