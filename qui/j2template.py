@@ -29,8 +29,10 @@ class NamespaceLoader(FileSystemLoader):
             path = [path]
 
         namespace = importlib.import_module(namespace_name)
-        namespace_path = list(namespace.__path__)[0]
-        searchpath = [os.path.join(namespace_path, p) for p in path]
+        namespace_path_list = list(namespace.__path__)
+        searchpath = []
+        for namespace_path in namespace_path_list:
+            searchpath += [os.path.join(namespace_path, p) for p in path]
 
         super().__init__(searchpath=searchpath, encoding=encoding, followlinks=followlinks)
 
