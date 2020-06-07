@@ -114,6 +114,10 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         items.forEach(i => this.prepareItem(i))
         this._items = items
 
+        if (this._searchEnabled) {
+            this._applySearchFilter()
+        }
+
         this._items.forEach(function (item) {
             if (this._addElem) {
                 this._addElem.before(item.getHTML())
@@ -122,10 +126,6 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
                 this.getBody().append(item.getHTML())
             }
         }, this)
-
-        if (this._searchEnabled) {
-            this._applySearchFilter()
-        }
     }
 
     /**
