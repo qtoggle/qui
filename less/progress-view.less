@@ -33,8 +33,13 @@
 
         & > span.qui-progress-view-message:NOT(:EMPTY) {
             padding-left: 0.5em;
+            align-self: center;
         }
 
+    }
+
+    &.has-progress {
+        min-height: 8em; /* So that the progress widget is fully visible */
     }
 
 }
