@@ -18,6 +18,7 @@ $.widget('qui.combo', $.qui.basewidget, {
         choices: [],
         fastFactor: 5,
         filterEnabled: false,
+        filterFunc: null,
         readonly: false,
         disabled: false
     },
@@ -551,30 +552,30 @@ $.widget('qui.combo', $.qui.basewidget, {
         }
 
 
-        let filter = this._filterInput.val().trim().toLowerCase()
+        let searchText = this._filterInput.val().trim().toLowerCase()
         let children = this._itemContainer.children('div.qui-combo-item')
 
         children.removeClass('hidden odd even')
 
+        let filterFunc = this.options.filterFunc
+        if (!filterFunc) {
+            filterFunc = function (choice, searchText) {
+                let labelText = choice.label
+                if (labelText instanceof $) {
+                    labelText = labelText.text()
+                }
+                else {
+                    labelText = labelText.toString()
+                }
+
+                return this._textMatchesFilter(labelText, searchText)
+            }.bind(this)
+        }
+
         this._getChoices().forEach(function (choice, i) {
 
-            let labelText = choice.label
-            if (labelText instanceof $) {
-                labelText = labelText.text()
-            }
-            else {
-                labelText = String(labelText)
-            }
-
-            if (this._textMatchesFilter(labelText, filter)) {
+            if (!searchText || filterFunc(choice, searchText)) {
                 return
-            }
-
-            if (typeof this.options.filterEnabled === 'function') {
-                let valueText = this.options.filterEnabled(choice.value)
-                if (this._textMatchesFilter(valueText, filter)) {
-                    return
-                }
             }
 
             children[i].classList.add('hidden')
@@ -595,10 +596,6 @@ $.widget('qui.combo', $.qui.basewidget, {
     },
 
     _textMatchesFilter: function (text, filter) {
-        if (!filter) {
-            return true
-        }
-
         return StringUtils.intelliSearch(text, filter) != null
     },
 
@@ -630,6 +627,10 @@ $.widget('qui.combo', $.qui.basewidget, {
 
             case 'filterEnabled':
                 this.element.toggleClass('filter-enabled', !!value)
+                this._updateFiltered()
+                break
+
+            case 'filterFunc':
                 this._updateFiltered()
                 break
 
