@@ -29,7 +29,7 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.forms.html">.forms</a><a href="qui.forms.commonfields.html">.commonfields</a>.</span>ComboField<span class="signature">(choices<span class="signature-attributes">opt</span>, makeChoices<span class="signature-attributes">opt</span>, fastFactor<span class="signature-attributes">opt</span>, filterEnabled<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.forms.html">.forms</a><a href="qui.forms.commonfields.html">.commonfields</a>.</span>ComboField<span class="signature">(choices<span class="signature-attributes">opt</span>, makeChoices<span class="signature-attributes">opt</span>, fastFactor<span class="signature-attributes">opt</span>, filterEnabled<span class="signature-attributes">opt</span>, filterFunc<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h2>
         
             <div class="class-description"><p>A combo box field. The value data type can be anything.</p></div>
         
@@ -46,7 +46,7 @@
     
 
     
-    <h4 class="name" id="ComboField"><span class="type-signature"></span>new ComboField<span class="signature">(choices<span class="signature-attributes">opt</span>, makeChoices<span class="signature-attributes">opt</span>, fastFactor<span class="signature-attributes">opt</span>, filterEnabled<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ComboField"><span class="type-signature"></span>new ComboField<span class="signature">(choices<span class="signature-attributes">opt</span>, makeChoices<span class="signature-attributes">opt</span>, fastFactor<span class="signature-attributes">opt</span>, filterEnabled<span class="signature-attributes">opt</span>, filterFunc<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h4>
     
 
     
@@ -148,7 +148,7 @@
             
 
             <td class="description last"><p>a function that generates choices (see
-<code>qui.forms.commonfields.ComboField#makeChoices</code>))</p></td>
+<a href="qui.forms.commonfields.ComboField.html#makeChoices"><code>qui.forms.commonfields.ComboField#makeChoices</code></a>))</p></td>
         </tr>
 
     
@@ -215,6 +215,40 @@
             
 
             <td class="description last"><p>set to <code>true</code> to enable filter input box</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>filterFunc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>custom filtering function (see
+<a href="qui.forms.commonfields.ComboField.html#makeChoices"><code>qui.forms.commonfields.ComboField#makeChoices</code></a>)</p></td>
         </tr>
 
     
@@ -288,7 +322,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line24">line 24</a>
+        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line26">line 26</a>
     </li></ul></dd>
     
 
@@ -904,6 +938,184 @@
 
 
 
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="filterFunc"><span class="type-signature"></span>filterFunc<span class="signature">(choice, searchText)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Tell if a choice matches a search text or not.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>choice</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>searchText</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line85">line 85</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -3682,6 +3894,116 @@ applied.</p>
     
 
     
+    <h4 class="name" id="makeChoices"><span class="type-signature"></span>makeChoices<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create choices.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line71">line 71</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>choices (pairs of <code>label</code> and <code>value</code>)</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="makeDescriptionHTML"><span class="type-signature"></span>makeDescriptionHTML<span class="signature">()</span><span class="type-signature"> &rarr; {jQuery}</span></h4>
     
 
@@ -5005,7 +5327,7 @@ applied.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line47">line 47</a>
+        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line63">line 63</a>
     </li></ul></dd>
     
 
@@ -6815,7 +7137,7 @@ be called with the field as <code>this</code> argument</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line58">line 58</a>
+        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line96">line 96</a>
     </li></ul></dd>
     
 
@@ -7494,7 +7816,7 @@ the value is considered <em>invalid</em> but no error message will be shown</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sun Jun 07 2020 17:43:23 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Wed Jun 10 2020 19:55:55 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
