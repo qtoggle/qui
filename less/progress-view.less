@@ -14,7 +14,7 @@
         left: 0;
         transition: opacity @transition-duration ease;
         opacity: 0;
-        background: fade(@background-color, 75%);
+        background: fade(@background-color, 85%);
         cursor: progress;
         justify-content: center;
         justify-items: center;
@@ -28,7 +28,7 @@
         }
 
         & > div.qui-progress-view-widget {
-            padding-top: 2em;
+            border-top: 2em solid transparent;
         }
 
         & > span.qui-progress-view-message:NOT(:EMPTY) {
