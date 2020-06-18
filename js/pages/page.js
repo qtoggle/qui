@@ -65,7 +65,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             this._modal = modal
 
             this._pageHTML = null
-            this._closing = false
+            this._closingPromise = null
             this._closed = false
             this._attached = false
             this._context = null
@@ -508,8 +508,13 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * was rejected.
          */
         close(force = false) {
-            if (this._closed || this._closing) {
+            if (this._closed) {
                 throw new AssertionError('Attempt to close an already closed page')
+            }
+
+            /* If page is already in the process of being closed, return the closing promise */
+            if (this._closingPromise) {
+                return this._closingPromise
             }
 
             /* Close all following pages */
@@ -520,16 +525,14 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                 promise = context.getPageAt(index + 1).close(force)
             }
 
-            this._closing = true
-
-            return promise.then(() => force || this.canClose()).then(function () {
+            this._closingPromise = promise.then(() => force || this.canClose()).then(function () {
                 if (rootPrototype.close) {
                     rootPrototype.close.call(this)
                 }
 
                 /* Mark as closed */
                 this._closed = true
-                this._closing = false
+                this._closingPromise = null
 
                 /* Pop this page from context */
                 if (context) {
@@ -558,9 +561,6 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                 if (context) {
                     let currentPage = context.getCurrentPage()
                     if (currentPage) {
-                        // TODO it would make more sense to prevent calling currentPage.handleBecomeCurrent()
-                        //  and all other update function calls, if this page has only been closed to be replaced
-                        //  immediately by another one
                         currentPage.onCloseNext(this)
 
                         if (context.isCurrent()) {
@@ -576,16 +576,18 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                 }
             }.bind(this)).catch(function (e) {
 
-                /* Clear closing flag if close cancelled */
-                this._closing = false
+                /* Clear closing promise if close cancelled */
+                this._closingPromise = null
                 throw e
 
             }.bind(this))
 
+            return this._closingPromise
+
         }
 
         /**
-         * Tell if the page has been closed or is in the process of being closed.
+         * Tell if the page has been closed.
          * @returns {Boolean}
          */
         isClosed() {
@@ -597,7 +599,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                 return rootPrototype.isClosed.call(this)
             }
 
-            return this._closed || this._closing
+            return this._closed
         }
 
         /**
@@ -818,7 +820,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             }
 
             this._closed = false
-            this._closing = false
+            this._closingPromise = null
 
             /* Attach the page to context */
             context.push(this)
