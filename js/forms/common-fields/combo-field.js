@@ -31,8 +31,6 @@ class ComboField extends JQueryUIField {
         filterFunc = null,
         ...args
     }) {
-        let that
-
         super({
             widgetAttrs: {
                 choices: choices,
@@ -46,7 +44,7 @@ class ComboField extends JQueryUIField {
         })
 
         /* "that" needs to be assigned here because we can't refer to "this" before super() */
-        that = this
+        let that = this
 
         this._filterFunc = filterFunc
         this._makeChoices = makeChoices

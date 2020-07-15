@@ -344,6 +344,7 @@ class FormField extends mix().with(ViewMixin) {
     setValue(value) {
         this._origValue = value
         this._changed = false
+
         this.valueToWidget(value)
     }
 
@@ -413,6 +414,11 @@ class FormField extends mix().with(ViewMixin) {
      */
     setLabel(label) {
         this._label = label
+
+        if (!this.hasHTML()) {
+            return
+        }
+
         this._labelDiv.children('div.qui-form-field-label-caption').html(label || '')
         this.getHTML().toggleClass('has-label', Boolean(label))
     }
@@ -434,6 +440,10 @@ class FormField extends mix().with(ViewMixin) {
      */
     setDescription(description) {
         this._description = description
+
+        if (!this.hasHTML()) {
+            return
+        }
 
         let descText = this.getHTML().find('div.qui-form-field-description div.qui-form-field-description-text')
 
@@ -498,6 +508,11 @@ class FormField extends mix().with(ViewMixin) {
      */
     setUnit(unit) {
         this._unit = unit
+
+        if (!this.hasHTML()) {
+            return
+        }
+
         this._labelDiv.find('span.qui-form-field-unit').text(`(${this._unit || ''})`)
         this.getHTML().toggleClass('has-unit', Boolean(unit))
     }
@@ -518,8 +533,13 @@ class FormField extends mix().with(ViewMixin) {
      * @param {Boolean} separator
      */
     setSeparator(separator) {
-        this.getHTML().toggleClass('separator', separator)
         this._separator = separator
+
+        if (!this.hasHTML()) {
+            return
+        }
+
+        this.getHTML().toggleClass('separator', separator)
     }
 
 
@@ -538,8 +558,13 @@ class FormField extends mix().with(ViewMixin) {
      * @param {Boolean} required
      */
     setRequired(required) {
-        this.getHTML().toggleClass('required', required)
         this._required = required
+
+        if (!this.hasHTML()) {
+            return
+        }
+
+        this.getHTML().toggleClass('required', required)
     }
 
 
@@ -558,10 +583,14 @@ class FormField extends mix().with(ViewMixin) {
      * @param {Boolean} readonly
      */
     setReadonly(readonly) {
-        this.getHTML().toggleClass('readonly', readonly)
-
         this._readonly = readonly
         this.setWidgetReadonly(readonly)
+
+        if (!this.hasHTML()) {
+            return
+        }
+
+        this.getHTML().toggleClass('readonly', readonly)
     }
 
 
@@ -584,6 +613,7 @@ class FormField extends mix().with(ViewMixin) {
         }
 
         this._disabled = false
+
         this.enableWidget()
     }
 
@@ -596,6 +626,7 @@ class FormField extends mix().with(ViewMixin) {
         }
 
         this._disabled = true
+
         this.disableWidget()
     }
 
@@ -876,6 +907,10 @@ class FormField extends mix().with(ViewMixin) {
             return /* Side icon already set with given icon type */
         }
 
+        if (!this.hasHTML()) {
+            return
+        }
+
         this.getHTML().addClass('side-icon-visible')
         this._sideIconDiv.removeClass('success warning error progress custom')
 
@@ -1102,6 +1137,9 @@ class FormField extends mix().with(ViewMixin) {
      */
     setValueWidth(width) {
         this._valueWidth = width
+        if (!this.hasHTML()) {
+            return
+        }
 
         this.getHTML().removeClass('auto-width')
         this._labelDiv.css('width', '')

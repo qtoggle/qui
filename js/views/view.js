@@ -106,6 +106,14 @@ const ViewMixin = Mixin((superclass = Object) => {
         }
 
         /**
+         * Tells if the HTML element of this view has been created.
+         * @return {Boolean}
+         */
+        hasHTML() {
+            return this._html != null
+        }
+
+        /**
          * Initialize the view. Called after the HTML has been created and initialized.
          */
         init() {

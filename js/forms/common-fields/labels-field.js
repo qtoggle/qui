@@ -31,8 +31,6 @@ class LabelsField extends JQueryUIField {
         onClick = null,
         ...args
     }) {
-        let that
-
         super({
             widgetAttrs: {
                 color: color,
@@ -51,7 +49,7 @@ class LabelsField extends JQueryUIField {
         }
 
         /* "that" needs to be assigned here because we can't refer to "this" before super() */
-        that = this
+        let that = this
     }
 
     /**

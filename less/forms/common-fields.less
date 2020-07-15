@@ -5,9 +5,13 @@
 
 /* Fields based on input entries */
 
-div.qui-form-field-value > div.qui-text-input > input,
-div.qui-form-field-value > div.qui-text-input > textarea {
-    width: 100%;
+div.qui-form-field-value {
+
+    & > div.qui-text-input > input,
+    & > div.qui-text-input > textarea {
+        width: 100%;
+    }
+
 }
 
 
@@ -91,8 +95,7 @@ div.qui-composite-field-container {
     display: grid;
     grid-gap: 0.5em;
 
-    & > .qui-composite-field-widget.hidden {
-        display: none;
+    & > div.qui-form-field > div.qui-form-field-value {
+        padding: 0;
     }
-
 }

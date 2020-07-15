@@ -25,7 +25,7 @@ class CompositeField extends FormField {
     constructor({fields, flow = 'horizontal', columns = null, rows = null, ...args}) {
         super(args)
 
-        this._fields = fields
+        this._fields = fields.map(this._preprocessField)
         this._flow = flow
         this._columns = columns
         this._rows = rows
@@ -58,10 +58,8 @@ class CompositeField extends FormField {
         }
 
         this._fields.forEach(function (field) {
-            field.getHTML()
-            let widget = field.getWidget()
-            widget.addClass('qui-composite-field-widget')
-            div.append(widget)
+            div.append(field.getHTML())
+
         })
 
         return div
@@ -115,6 +113,14 @@ class CompositeField extends FormField {
      */
     getField(name) {
         return this._fields.find(f => f.getName() === name) || null
+    }
+
+    _preprocessField(field) {
+        field.setLabel('') /* Subfields of composite field can't have label */
+        field.setValueWidth(100) /* The value always occupies the entire space */
+        field._forceOneLine = true // TODO: this should be a field setter
+
+        return field
     }
 
 }
