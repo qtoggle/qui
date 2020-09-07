@@ -553,6 +553,8 @@ $.widget('qui.combo', $.qui.basewidget, {
 
 
         let searchText = this._filterInput.val().trim().toLowerCase()
+        searchText = searchText.replace(/\s\s+/g, ' ')
+        let searchTextParts = searchText.split(' ')
         let children = this._itemContainer.children('div.qui-combo-item')
 
         children.removeClass('hidden odd even')
@@ -574,7 +576,11 @@ $.widget('qui.combo', $.qui.basewidget, {
 
         this._getChoices().forEach(function (choice, i) {
 
-            if (!searchText || filterFunc(choice, searchText)) {
+            if (!searchText) {
+                return
+            }
+
+            if (searchTextParts.every(p => filterFunc(choice, p))) {
                 return
             }
 
