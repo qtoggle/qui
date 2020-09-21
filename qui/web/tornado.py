@@ -43,15 +43,15 @@ class TemplateHandler(RequestHandler):
 
         return context
 
-    def render(self, template_name: str, context: Optional[Dict[str, Any]] = None) -> None:
+    async def render(self, template_name: str, context: Optional[Dict[str, Any]] = None) -> None:
         if context is None:
             context = self.get_context()
 
         env = j2template.get_env()
         template = env.get_template(template_name)
-        template_str = template.render(**context)
+        template_str = await template.render_async(**context)
 
-        self.finish(template_str)
+        await self.finish(template_str)
 
 
 class JSModuleMapperStaticFileHandler(StaticFileHandler):
@@ -102,8 +102,8 @@ class RedirectFrontendHandler(RequestHandler):
 
 
 class FrontendHandler(TemplateHandler):
-    def get(self, path: str) -> None:
-        self.render('index.html', self.get_context(path))
+    async def get(self, path: str) -> None:
+        await self.render('index.html', self.get_context(path))
 
 
 class ManifestHandler(TemplateHandler):
@@ -111,7 +111,7 @@ class ManifestHandler(TemplateHandler):
         'display_name', 'display_short_name', 'description', 'version', 'theme_color', 'background_color'
     ]
 
-    def get(self) -> None:
+    async def get(self) -> None:
         context = self.get_context(path_offs=1)
         for param in self.PARAMS:
             value = self.get_query_argument(param, None)
@@ -119,13 +119,13 @@ class ManifestHandler(TemplateHandler):
                 context[param] = value
 
         self.set_header('Content-Type', 'application/manifest+json; charset="utf-8"')
-        self.render('manifest.json', context)
+        await self.render('manifest.json', context)
 
 
 class ServiceWorkerHandler(TemplateHandler):
-    def get(self) -> None:
+    async def get(self) -> None:
         self.set_header('Content-Type', 'application/javascript; charset="utf-8"')
-        self.render('service-worker.js')
+        await self.render('service-worker.js')
 
 
 def make_routing_table() -> List[URLSpec]:

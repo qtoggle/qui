@@ -59,7 +59,7 @@ def get_env() -> Environment:
 
         loader = ChoiceLoader([qui_loader, app_loader])
 
-        _env = Environment(loader=loader, autoescape=select_autoescape())
+        _env = Environment(loader=loader, autoescape=select_autoescape(), enable_async=True)
         _env.filters['urlquote'] = urlquote
 
     return _env
