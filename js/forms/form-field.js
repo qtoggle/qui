@@ -846,8 +846,8 @@ class FormField extends mix().with(ViewMixin) {
      *
      * @param {*} value the value to validate
      * @param {Object} data the form data
-     * @returns {?Promise<*,qui.forms.ValidationError>} `null` or a resolved promise, if the value is valid; a promise
-     * rejected with a validation error otherwise;
+     * @returns {?Promise<*,qui.forms.ValidationError>} `null` or a promise that resolves, if the value is valid; a
+     * promise that rejects with a validation error otherwise
      * @throws qui.forms.ValidationError the validation error can also be thrown instead of being returned in a rejected
      * response
      */

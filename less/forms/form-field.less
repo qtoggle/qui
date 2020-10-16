@@ -248,7 +248,13 @@ div.qui-form-field-side-icon {
     vertical-align: middle;
     width: 1.5em;
     height: 1.5em;
+    margin: 0.2em 0;
     background: transparent;
+
+    form.qui-form.compact > div.qui-form-body > div.qui-form-field:NOT(.force-one-line).last-visible > & {
+        margin-bottom: 0;
+    }
+
 }
 
 div.qui-form-field-side-icon.progress {

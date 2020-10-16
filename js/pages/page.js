@@ -839,6 +839,19 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
         }
 
         /**
+         * Return the previous page in context.
+         * @returns {?qui.pages.PageMixin}
+         */
+        getPrev() {
+            let index = this.getContextIndex()
+            if (index < 0) {
+                return null
+            }
+
+            return this._context.getPageAt(index - 1)
+        }
+
+        /**
          * Return the next page in context.
          * @returns {?qui.pages.PageMixin}
          */

@@ -18,17 +18,19 @@ class CompositeField extends FormField {
      * default)
      * @param {Number} [columns] number of columns (unlimited by default, when `flow` is `"horizontal"`, otherwise
      * defaults to `1`)
-     * @param {Number} [rows] number of rows (unlimited by default, when `flow` is `"vertical"`, otherwise
-     * defaults to `1`)
+     * @param {Number} [rows] number of rows (unlimited by default, when `flow` is `"vertical"`, otherwise defaults to
+     * `1`)
+     * @param {Boolean} [equalSize] set to `true` to make all cells of equal width/height (defaults to `false`)
      * @param {...*} args parent class parameters
      */
-    constructor({fields, flow = 'horizontal', columns = null, rows = null, ...args}) {
+    constructor({fields, flow = 'horizontal', columns = null, rows = null, equalSize = false, ...args}) {
         super(args)
 
         this._fields = fields.map(this._preprocessField)
         this._flow = flow
         this._columns = columns
         this._rows = rows
+        this._equalSize = equalSize
     }
 
     focus() {
@@ -38,9 +40,10 @@ class CompositeField extends FormField {
 
     makeWidget() {
         let div = $('<div></div>', {class: 'qui-composite-field-container'})
+        let sizeSpec = this._equalSize ? '1fr' : 'auto'
         if (this._flow === 'horizontal') {
             if (this._columns) {
-                div.css('grid-template-columns', `repeat(${this._columns}, auto)`)
+                div.css('grid-template-columns', `repeat(${this._columns}, ${sizeSpec})`)
                 div.css('grid-auto-flow', 'row')
             }
             else {
@@ -49,7 +52,7 @@ class CompositeField extends FormField {
         }
         else {
             if (this._rows) {
-                div.css('grid-template-rows', `repeat(${this._rows}, auto)`)
+                div.css('grid-template-rows', `repeat(${this._rows}, ${sizeSpec})`)
                 div.css('grid-auto-flow', 'column')
             }
             else {
