@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ComboField</title>
+    <title>JSDoc: Class: FilePickerField</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ComboField</h1>
+    <h1 class="page-title">Class: FilePickerField</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.forms.html">.forms</a><a href="qui.forms.commonfields.html">.commonfields</a>.</span>ComboField<span class="signature">(choices<span class="signature-attributes">opt</span>, makeChoices<span class="signature-attributes">opt</span>, fastFactor<span class="signature-attributes">opt</span>, filterEnabled<span class="signature-attributes">opt</span>, filterFunc<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.forms.html">.forms</a><a href="qui.forms.commonfields.html">.commonfields</a>.</span>FilePickerField<span class="signature">(placeholder<span class="signature-attributes">opt, nullable</span>, accept<span class="signature-attributes">opt, nullable</span>, multiple<span class="signature-attributes">opt</span>, widgetAttrs<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>A combo box field. The value data type can be anything.</p></div>
+            <div class="class-description"><p>A file picker field. The value data type is <code>File[]</code>.</p></div>
         
     
 </header>
@@ -46,7 +46,7 @@
     
 
     
-    <h4 class="name" id="ComboField"><span class="type-signature"></span>new ComboField<span class="signature">(choices<span class="signature-attributes">opt</span>, makeChoices<span class="signature-attributes">opt</span>, fastFactor<span class="signature-attributes">opt</span>, filterEnabled<span class="signature-attributes">opt</span>, filterFunc<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="FilePickerField"><span class="type-signature"></span>new FilePickerField<span class="signature">(placeholder<span class="signature-attributes">opt, nullable</span>, accept<span class="signature-attributes">opt, nullable</span>, multiple<span class="signature-attributes">opt</span>, widgetAttrs<span class="signature-attributes">opt</span>, &hellip;args)</span><span class="type-signature"></span></h4>
     
 
     
@@ -88,13 +88,13 @@
 
         <tr>
             
-                <td class="name"><code>choices</code></td>
+                <td class="name"><code>placeholder</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;Object></span>
+<span class="param-type">String</span>
 
 
             
@@ -107,6 +107,8 @@
                 
 
                 
+                    &lt;nullable><br>
+                
 
                 
                 </td>
@@ -114,20 +116,20 @@
 
             
 
-            <td class="description last"><p>choices (pairs of <code>label</code> and <code>value</code>)</p></td>
+            <td class="description last"><p>an empty-selection placeholder</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>makeChoices</code></td>
+                <td class="name"><code>accept</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">Array.&lt;String></span>
 
 
             
@@ -140,39 +142,7 @@
                 
 
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>a function that generates choices (see
-<a href="qui.forms.commonfields.ComboField.html#makeChoices"><code>qui.forms.commonfields.ComboField#makeChoices</code></a>))</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>fastFactor</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
+                    &lt;nullable><br>
                 
 
                 
@@ -181,14 +151,14 @@
 
             
 
-            <td class="description last"><p>determines how fast the page-up/page-down actions work (defaults to <code>5</code>)</p></td>
+            <td class="description last"><p>an optional list of file types to accept</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>filterEnabled</code></td>
+                <td class="name"><code>multiple</code></td>
             
 
             <td class="type">
@@ -214,20 +184,20 @@
 
             
 
-            <td class="description last"><p>set to <code>true</code> to enable filter input box</p></td>
+            <td class="description last"><p>enable or disable multiple file selection (disabled by default)</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>filterFunc</code></td>
+                <td class="name"><code>widgetAttrs</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">Object</span>
 
 
             
@@ -247,8 +217,7 @@
 
             
 
-            <td class="description last"><p>custom filtering function (see
-<a href="qui.forms.commonfields.ComboField.html#makeChoices"><code>qui.forms.commonfields.ComboField#makeChoices</code></a>)</p></td>
+            <td class="description last"><p>extra attributes to pass to underlying JQueryUI widget</p></td>
         </tr>
 
     
@@ -322,7 +291,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line10">line 10</a>
+        <a href="forms_common-fields_file-picker-field.js.html">forms/common-fields/file-picker-field.js</a>, <a href="forms_common-fields_file-picker-field.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -938,184 +907,6 @@
 
 
 
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="filterFunc"><span class="type-signature"></span>filterFunc<span class="signature">(choice, searchText)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Tell if a choice matches a search text or not.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>choice</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>searchText</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line83">line 83</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Boolean</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -3894,116 +3685,6 @@ applied.</p>
     
 
     
-    <h4 class="name" id="makeChoices"><span class="type-signature"></span>makeChoices<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Create choices.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>choices (pairs of <code>label</code> and <code>value</code>)</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;Object></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
     <h4 class="name" id="makeDescriptionHTML"><span class="type-signature"></span>makeDescriptionHTML<span class="signature">()</span><span class="type-signature"> &rarr; {jQuery}</span></h4>
     
 
@@ -5191,143 +4872,6 @@ applied.</p>
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="forms_form-field.js.html">forms/form-field.js</a>, <a href="forms_form-field.js.html#line797">line 797</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="setChoices"><span class="type-signature"></span>setChoices<span class="signature">(choices)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Set the list of choices.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>choices</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;Object></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>choices (pairs of <code>label</code> and <code>value</code>)</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line61">line 61</a>
     </li></ul></dd>
     
 
@@ -7050,94 +6594,6 @@ be called with the field as <code>this</code> argument</p></td>
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="forms_form-field.js.html">forms/form-field.js</a>, <a href="forms_form-field.js.html#line647">line 647</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="updateChoices"><span class="type-signature"></span>updateChoices<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Update the list of choices, calling makeChoices.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_common-fields_combo-field.js.html">forms/common-fields/combo-field.js</a>, <a href="forms_common-fields_combo-field.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
