@@ -868,7 +868,7 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      *
      * @param {Object} data form data to be applied
      * @returns {?Promise<*,Error>}
-     * @throws Error errors in applying the data can also be thrown
+     * @throws Error errors while applying the data can also be thrown
      */
     applyData(data) {
     }

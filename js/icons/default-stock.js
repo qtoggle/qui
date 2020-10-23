@@ -21,6 +21,9 @@
  *  * `"duplicate"`
  *  * `"envelope"`
  *  * `"gear"`
+ *  * `"download"`
+ *  * `"upload"`
+ *  * `"file"`
  *  * `"menu"`
  *  * `"options"`
  *
@@ -128,6 +131,10 @@ Stocks.register(NAME, function () {
             'duplicate': getQUIStockNameXOffset('duplicate'),
             'envelope': getQUIStockNameXOffset('envelope'),
             'gear': getQUIStockNameXOffset('gear'),
+            'download': getQUIStockNameXOffset('download'),
+            'upload': getQUIStockNameXOffset('upload'),
+            'file': getQUIStockNameXOffset('file'),
+            'reset': getQUIStockNameXOffset('reset'),
             'menu': getQUIStockNameXOffset('menu'),
             'options': getQUIStockNameXOffset('options')
         },
