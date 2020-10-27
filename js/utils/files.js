@@ -18,9 +18,9 @@ export function clientSideDownload(filename, contentType, content) {
         content = new TextDecoder('utf-8').decode(content)
     }
 
-    let contentBase64 = window.btoa(content)
+    let blob = new window.Blob([content], {type: contentType})
+    let dataURL = URL.createObjectURL(blob)
     let a = document.createElement('a')
-    let dataURL = `data:${contentType};base64,${contentBase64}`
     a.href = dataURL
     a.setAttribute('download', filename)
     a.click()
