@@ -12,6 +12,7 @@ import * as Toast          from '$qui/messages/toast.js'
 import PageMixin           from '$qui/pages/page.js'
 import {getCurrentContext} from '$qui/pages/pages.js'
 import * as Sections       from '$qui/sections/sections.js'
+import * as ObjectUtils    from '$qui/utils/object.js'
 import * as StringUtils    from '$qui/utils/string.js'
 import URL                 from '$qui/utils/url.js'
 import * as Window         from '$qui/window.js'
@@ -314,6 +315,11 @@ export function navigate({path, handleErrors = true, pageState = null, historyEn
         else {
             throw error
         }
+    }
+
+    /* Don't do anything if requested path is actually current path */
+    if (ObjectUtils.deepEquals(path, oldPath)) {
+        return Promise.resolve(getCurrentContext().getCurrentPage())
     }
 
     if (historyEntry) {
