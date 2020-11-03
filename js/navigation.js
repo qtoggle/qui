@@ -36,6 +36,7 @@ let initialURLQuery = null
 let currentURLPath = null
 let currentURLQuery = null
 let backMode = BACK_MODE_CLOSE
+let historyIndex = 0
 
 
 /**
@@ -503,10 +504,12 @@ function setHistoryEntry(addUpdate, state) {
 
     if (addUpdate === 'add') {
         currentURLQuery = null
+        state.historyIndex = ++historyIndex
         window.history.pushState(state, '', basePath + pathStr)
     }
     else {
         currentURLPath = pathStr
+        state.historyIndex = historyIndex
         window.history.replaceState(state, '', basePath + pathStr)
     }
 }
@@ -580,15 +583,25 @@ function initHistory() {
 
     Window.$window.on('popstate', function (e) {
         let oe = e.originalEvent
-        if (oe.state == null || oe.state.pageState == null) { /* Not ours */
+        if (oe.state == null || oe.state.pageState == null || oe.state.historyIndex == null) { /* Not ours */
             return
         }
+
+        let forward = oe.state.historyIndex > historyIndex
+        if (forward) {
+            logger.debug('pop-state: forward history move detected')
+        }
+        else {
+            logger.debug('pop-state: back history move detected')
+        }
+
+        historyIndex = oe.state.historyIndex
 
         if (backMode === BACK_MODE_CLOSE) {
             let context = getCurrentContext()
             let currentPage = context.getCurrentPage()
 
-            if (context.getSize() < oe.state.pageState.length) {
+            if (forward) {
                 logger.debug('pop-state: ignoring forward history move')
                 return
             }

@@ -228,4 +228,5 @@ export function init() {
 /* Make some modules accessible globally, via window */
 import('$qui/config.js').then(globalize('qui.Config'))
 import('$qui/lib/logger.module.js').then(globalize('qui.Logger'))
+import('$qui/navigation.js').then(globalize('qui.navigation'))
 import('$qui/sections/sections.js').then(globalize('qui.sections'))
