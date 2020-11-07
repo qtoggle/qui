@@ -319,7 +319,7 @@ export function navigate({path, handleErrors = true, pageState = null, historyEn
     }
 
     /* Don't do anything if requested path is actually current path */
-    if (ObjectUtils.deepEquals(path, oldPath)) {
+    if (ObjectUtils.deepEquals(path, oldPath) && path.length > 0) {
         return Promise.resolve(getCurrentContext().getCurrentPage())
     }
 
