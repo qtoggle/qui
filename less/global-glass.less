@@ -17,6 +17,11 @@ div.qui-global-glass {
     justify-content: center;
     backdrop-filter: @modal-background-filter;
 
+    /* Workaround for Firefox that doesn't support backdrop-filter property */
+    @supports (-moz-appearance:none) {
+        background-color: fade(@background-root-color, 85%);
+    }
+
     &.hidden {
         display: none;
         width: 0;

@@ -29,6 +29,11 @@ div.qui-main-container-glass {
 
 div.qui-main-container-glass.visible {
     backdrop-filter: @modal-background-filter;
+
+    /* Workaround for Firefox that doesn't support backdrop-filter property */
+    @supports (-moz-appearance:none) {
+        background-color: fade(@background-root-color, 85%);
+    }
 }
 
 div.qui-pages-container {
