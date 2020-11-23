@@ -200,6 +200,7 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
     let appLessPath = path.resolve(appFullPath, LESS_DIR)
     let quiJSPath = path.resolve(quiFullPath, JS_DIR)
     let appJSPath = path.resolve(appFullPath, JS_DIR)
+    let nodeJSPath = path.resolve(appJSPath, '..', 'node_modules')
     let quiImgPath = path.resolve(quiFullPath, IMG_DIR)
     let appImgPath = path.resolve(appFullPath, IMG_DIR)
     let quiFontPath = path.resolve(quiFullPath, FONT_DIR)
@@ -259,7 +260,8 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
         resolve: {
             alias: {
                 $qui: quiJSPath,
-                $app: appJSPath
+                $app: appJSPath,
+                $node: nodeJSPath
             }
         },
         output: {
