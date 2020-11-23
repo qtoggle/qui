@@ -12,7 +12,7 @@ const ALIASES = {
 function findCallerModuleName() {
     /* Use stack trace to find the name of the first JS file, which is expected to be the module */
     let error = new Error()
-    let names = error.stack.match(new RegExp('[A-Za-z0-9_-]+\\.js', 'g'))
+    let names = error.stack.match(new RegExp('[A-Za-z0-9_.-]+\\.js', 'g'))
     if (!names) {
         return
     }
