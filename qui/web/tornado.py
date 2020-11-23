@@ -13,7 +13,7 @@ from qui import j2template
 from qui import settings
 
 
-JS_MODULE_PATH_RE = re.compile(br'\'(\$qui|\$app|)([/.][a-z0-9_./$-]+\.jsm?)\'')
+JS_MODULE_PATH_RE = re.compile(br'\'(\$qui|\$app|\$node|)([/.][A-Za-z0-9_./$-]+\.jsm?)\'')
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +58,8 @@ class JSModuleMapperStaticFileHandler(StaticFileHandler):
     def __init__(self, *args, **kwargs) -> None:
         self._mapping = {
             b'$qui': f'/{settings.static_url}/qui/js'.encode(),
-            b'$app': f'/{settings.static_url}/app/js'.encode()
+            b'$app': f'/{settings.static_url}/app/js'.encode(),
+            b'$node': f'/{settings.static_url}/app/node_modules'.encode()
         }
 
         self._mapped_content: Optional[bytes] = None
