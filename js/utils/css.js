@@ -199,17 +199,18 @@ export function divValue(value, operand) {
  */
 export function em2px(em, elem = Window.$body) {
     if (elem === Window.$body && cachedBodyEmPx != null) {
-        return cachedBodyEmPx
+        return cachedBodyEmPx * em
     }
 
     let dummyDiv = $('<div></div>', {style: 'width: 1em'})
     elem.append(dummyDiv)
 
-    let width = dummyDiv[0].clientWidth * em
+    let clientWidth = dummyDiv[0].clientWidth
+    let width = clientWidth * em
     dummyDiv.remove()
 
     if (elem === Window.$body) {
-        cachedBodyEmPx = width
+        cachedBodyEmPx = clientWidth
     }
 
     return width

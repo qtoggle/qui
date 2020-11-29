@@ -21,10 +21,7 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Installation details:**
- - qToggleServer version: [e.g. 0.18.0-beta.5]
- - Installed using: [qToggleOS, Docker, Python package, other]
- - Server running on: [e.g. Raspberry Pi 3, Ubuntu 18.04, Windows 10]
- - App running on (if applicable): [e.g. Windows 10 laptop, Android 9 smartphone]
+ - qui version: [e.g. 1.23.4-beta.5]
 
 **Screenshots:**
 If applicable, add screenshots to help explain your problem.
