@@ -3,7 +3,7 @@ import $ from '$qui/lib/jquery.module.js'
 
 import {gettext} from '$qui/base/i18n.js'
 
-import * as BaseWidget from './base-widget.js' /* Needed */
+import * as BaseWidget from '../base-widget.js' /* Needed */
 
 
 $.widget('qui.updown', $.qui.basewidget, {

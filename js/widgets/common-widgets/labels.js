@@ -3,7 +3,7 @@ import $ from '$qui/lib/jquery.module.js'
 
 import * as Theme from '$qui/theme.js'
 
-import * as BaseWidget from './base-widget.js' /* Needed */
+import * as BaseWidget from '../base-widget.js' /* Needed */
 
 
 $.widget('qui.labels', $.qui.basewidget, {

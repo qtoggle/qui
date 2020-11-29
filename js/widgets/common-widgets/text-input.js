@@ -3,7 +3,7 @@ import $ from '$qui/lib/jquery.module.js'
 
 import {asap} from '$qui/utils/misc.js'
 
-import * as BaseWidget from './base-widget.js' /* Needed */
+import * as BaseWidget from '../base-widget.js' /* Needed */
 
 
 $.widget('qui.textinput', $.qui.basewidget, {

@@ -5,7 +5,7 @@ import {gettext}         from '$qui/base/i18n.js'
 import StockIcon         from '$qui/icons/stock-icon.js'
 import * as StringUtils  from '$qui/utils/string.js'
 
-import * as BaseWidget from './base-widget.js' /* Needed */
+import * as BaseWidget from '../base-widget.js' /* Needed */
 
 
 $.widget('qui.filepicker', $.qui.basewidget, {

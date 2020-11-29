@@ -1,7 +1,7 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
-import * as BaseWidget from './base-widget.js' /* Needed */
+import * as BaseWidget from '../base-widget.js' /* Needed */
 
 
 $.widget('qui.checkbutton', $.qui.basewidget, {

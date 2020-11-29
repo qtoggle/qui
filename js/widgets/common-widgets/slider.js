@@ -3,7 +3,7 @@ import $ from '$qui/lib/jquery.module.js'
 
 import * as Gestures from '$qui/utils/gestures.js'
 
-import * as BaseWidget from './base-widget.js' /* Needed */
+import * as BaseWidget from '../base-widget.js' /* Needed */
 
 
 const TEMPORARY_SHOW_VALUE_TIMEOUT = 500 /* Seconds */
