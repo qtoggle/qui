@@ -2,7 +2,7 @@
 @import (reference) "theme-@{qui_theme}";
 
 
-/* Intermediate theme variables */
+/* intermediate theme variables */
 
 @top-border-color: mix(@interactive-color, @interactive-active-color, 50%);
 
@@ -15,7 +15,14 @@ br.-theme-name {
 }
 
 
-/* Base colors */
+/* fonts */
+
+br.-theme-base-font-family {
+    content: "@{base-font-family}";
+}
+
+
+/* base colors */
 
 br.-theme-darkgray-color {
     color: @darkgray-color;
@@ -107,7 +114,7 @@ br.-theme-cyan-active-color {
 }
 
 
-/* Common UI elements colors */
+/* common UI elements colors */
 
 br.-theme-background-root-color {
     color: @background-root-color;
@@ -206,7 +213,7 @@ br.-theme-thick-shadow-color {
 }
 
 
-/* Icon colors */
+/* icon colors */
 
 br.-theme-darkgray-icon-y-offset {
     margin-left: @darkgray-icon-y-offset;
@@ -294,7 +301,7 @@ br.-theme-error-icon-y-offset {
 }
 
 
-/* Icon offsets */
+/* icon offsets */
 
 br.-theme-plus-icon-x-offset {
     margin-left: @plus-icon-x-offset;
@@ -397,7 +404,7 @@ br.-theme-options-icon-x-offset {
 }
 
 
-/* Misc */
+/* misc */
 
 br.-theme-transition-duration {
     transition-duration: @transition-duration;
