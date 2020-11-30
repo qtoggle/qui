@@ -39,9 +39,9 @@ function initMainContainer() {
     Window.$body.append(mainContainer)
 }
 
-function fixDefaultFavicon() {
-    /* Set default favicon URLs to absolute paths, before the window location changes */
-    $('link[rel=icon], link[rel=apple-touch-icon]').each(function () {
+function adjustRelativeLinks() {
+    /* Set absolute paths on links before the window location changes */
+    $('link[rel=icon], link[rel=apple-touch-icon], link[theme]').each(function () {
         this.href = URL.parse(this.href).toString()
     })
 }
@@ -56,7 +56,7 @@ export function hideMainContainerGlass() {
 
 export function init() {
     initMainContainer()
-    fixDefaultFavicon()
+    adjustRelativeLinks()
 
     TopBar.init()
     MenuBar.init()
