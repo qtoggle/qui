@@ -110,6 +110,8 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     initHTML(html) {
         super.initHTML(html)
 
+        html.addClass('unexpanded')
+
         if (this._width) {
             html.css('width', this._width)
         }
