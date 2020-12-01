@@ -17,9 +17,10 @@ const ProgressViewMixin = Mixin((superclass = Object) => {
 
         /**
          * @constructs
+         * @param {Boolean} [verticallyCentered] set to `true` to vertically center the progress widget
          * @param {...*} args parent class parameters
          */
-        constructor({...args}) {
+        constructor({verticallyCentered = false, ...args}) {
             super(args)
 
             this._glassDiv = $('<div></div>', {class: 'qui-progress-view-glass'})
@@ -29,6 +30,9 @@ const ProgressViewMixin = Mixin((superclass = Object) => {
             this._glassVisibilityManager.hideElement()
 
             this._progressWidget = $('<div></div>', {class: 'qui-progress-view-widget'}).progressdisk({radius: '2em'})
+            if (verticallyCentered) {
+                this._progressWidget.addClass('vertically-centered')
+            }
             this._progressMessage = $('<span></span>', {class: 'qui-progress-view-message'})
 
             this._glassDiv.append(this._progressWidget)
