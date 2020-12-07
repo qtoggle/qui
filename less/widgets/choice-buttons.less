@@ -25,11 +25,12 @@ div.qui-choice-buttons-container {
     }
 
     & > div.qui-choice-buttons-group-container {
+        display: grid;
         white-space: nowrap;
 
         & > div.qui-choice-button {
             display: inline-block;
-            padding: 0.25em;
+            padding: 0 0.25em;
             border-radius: 0;
             border-width: 0.0625em 0 0 0.0625em;
             border-style: solid;
@@ -39,6 +40,7 @@ div.qui-choice-buttons-container {
             text-align: center;
             background: @background-color;
             color: @foreground-color;
+            line-height: 1.85em; /* 1.9 - 2 * 0.0625, round up so it looks good */
 
             &.on,
             &.active {

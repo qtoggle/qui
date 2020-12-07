@@ -266,6 +266,7 @@ $.widget('qui.choicebuttons', $.qui.basewidget, {
                 let index = 0
                 choices.forEach(function (subChoices) {
                     let group = $('<div></div>', {class: 'qui-choice-buttons-group-container'})
+                    group.css('grid-template-columns', `repeat(${subChoices.length}, 1fr)`)
                     subChoices.forEach(function (choice) {
                         let button = $(
                             '<div></div>',
@@ -274,7 +275,6 @@ $.widget('qui.choicebuttons', $.qui.basewidget, {
                         button.html(choice.label)
                         button.data('value', choice.value)
                         button.data('index', index)
-                        button.css('width', `${(100 / subChoices.length)}%`)
                         group.append(button)
 
                         index++
