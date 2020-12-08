@@ -123,8 +123,8 @@ function updatePagesVisibility() {
 
         let l
         let w = null
-        /* The current modal page has special treatment and does not contribute to expanded width */
-        if (page.isModal() && page === currentPage) {
+        /* The current popup page has special treatment and does not contribute to expanded width */
+        if (page.isPopup() && page === currentPage) {
             l = 0
         }
         else {

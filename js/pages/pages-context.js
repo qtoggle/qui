@@ -83,33 +83,33 @@ class PagesContext {
 
         let currentPage = this._stack[this._stack.length - 1]
         let visiblePages = [currentPage]
-        let visiblePagesNonModalMaxCount = Window.isSmallScreen() ? 1 : 4
-        let visiblePagesModalCount = currentPage.isModal() ? 1 : 0
-        let visiblePagesNonModalCount = currentPage.isModal() ? 0 : 1
+        let visiblePagesNonPopupMaxCount = Window.isSmallScreen() ? 1 : 4
+        let visiblePagesPopupCount = currentPage.isPopup() ? 1 : 0
+        let visiblePagesNonPopupCount = currentPage.isPopup() ? 0 : 1
 
-        /* Allow at most 4 visible non-modal pages at most 1 visible modal page, starting from current page and going
+        /* Allow at most 4 visible non-popup pages at most 1 visible popup page, starting from current page and going
          * backwards */
         for (let i = this._stack.length - 2; i >= 0; i--) {
             let nextPage = this._stack[i + 1]
             let thisPage = this._stack[i]
 
-            /* Stop at first page that wants to be alone on the visible container; modal pages have an implicit behavior
+            /* Stop at first page that wants to be alone on the visible container; popup pages have an implicit behavior
              * of keep-previous-visible */
-            if (!nextPage.isPrevKeptVisible() && !nextPage.isModal()) {
+            if (!nextPage.isPrevKeptVisible() && !nextPage.isPopup()) {
                 break
             }
 
-            if (thisPage.isModal()) {
-                /* Only one modal page can be visible */
-                if (visiblePagesModalCount < 1) {
-                    visiblePagesModalCount++
+            if (thisPage.isPopup()) {
+                /* Only one popup page can be visible */
+                if (visiblePagesPopupCount < 1) {
+                    visiblePagesPopupCount++
                     visiblePages.push(thisPage)
                 }
             }
             else {
-                /* Limit non-modal visible pages */
-                if (visiblePagesNonModalCount < visiblePagesNonModalMaxCount) {
-                    visiblePagesNonModalCount++
+                /* Limit non-popup visible pages */
+                if (visiblePagesNonPopupCount < visiblePagesNonPopupMaxCount) {
+                    visiblePagesNonPopupCount++
                     visiblePages.push(thisPage)
                 }
             }

@@ -32,8 +32,8 @@ class PageForm extends mix(Form).with(PageMixin) {
     }
 
     prepareIcon(icon) {
-        /* Modal page views should normally have the default foreground icon color, even on small screens */
-        if (this.isModal() && (icon instanceof StockIcon)) {
+        /* Popup page views should normally have the default foreground icon color, even on small screens */
+        if (this.isPopup() && (icon instanceof StockIcon)) {
             icon = icon.alterDefault({variant: 'foreground'})
         }
 

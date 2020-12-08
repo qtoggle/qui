@@ -30,7 +30,7 @@ class MessageForm extends PageForm {
      */
     constructor({message, icon = null, ...args}) {
         ObjectUtils.assignDefault(args, {
-            modal: true,
+            popup: true,
             transparent: true,
             topless: true,
             width: '30em',

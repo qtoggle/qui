@@ -48,12 +48,12 @@ div.qui-pages-container.full > div.qui-page:LAST-CHILD {
 }
 
 div.qui-page.transparent,
-div.qui-page.modal {
+div.qui-page.popup {
     background: transparent;
 }
 
-div.qui-page.modal {
-    /* Prevent horizontal moving effect for modal pages */
+div.qui-page.popup {
+    /* Prevent horizontal moving effect for popup pages */
     left: 0 !important;
 
     & > * {
@@ -62,7 +62,7 @@ div.qui-page.modal {
 
 }
 
-body.small-screen > div.qui-global-glass > div.qui-global-glass-container > div.qui-page.modal {
+body.small-screen > div.qui-global-glass > div.qui-global-glass-container > div.qui-page.popup {
     left: 0;
     display: flex;
     flex-direction: column;

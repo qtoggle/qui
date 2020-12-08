@@ -41,8 +41,10 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          * (defaults to `false`)
          * @param {Boolean} [keepPrevVisible] indicates that the previous page should be kept visible while this page
          * is the current one, to the extent possible (defaults to `false`)
+         * @param {Boolean} [popup] indicates that the page should be shown as a popup container, on top of the existing
+         * content (defaults to `false`)
          * @param {Boolean} [modal] indicates that the page should be modal, not allowing any external interaction
-         * (defaults to `false`)
+         * (defaults to `false`, implies `popup` as `true`)
          * @param {Boolean} [transparent] indicates that the page should be transparent (defaults to `true`)
          * @param {...*} args parent class parameters
          */
@@ -51,6 +53,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             pathId = null,
             columnLayout = false,
             keepPrevVisible = false,
+            popup = false,
             modal = false,
             transparent = true,
             ...args
@@ -62,6 +65,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             this._columnLayout = columnLayout
             this._keepPrevVisible = keepPrevVisible
             this._transparent = transparent
+            this._popup = popup || modal
             this._modal = modal
 
             this._pageHTML = null
@@ -222,6 +226,10 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
                 html.addClass('transparent')
             }
 
+            if (this._popup) {
+                html.addClass('popup')
+            }
+
             if (this._modal) {
                 html.addClass('modal')
             }
@@ -267,8 +275,9 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             // }
 
             let html = this.getPageHTML()
-            if (this.isModal()) {
+            if (this.isPopup()) {
                 GlobalGlass.addContent(html)
+                GlobalGlass.setModal(this.isModal())
             }
             else {
                 getPagesContainer().append(html)
@@ -292,6 +301,9 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             this._attached = false
 
             this.getPageHTML().removeClass('attached')
+            if (this.isPopup()) {
+                GlobalGlass.setModal(true) /* default */
+            }
 
             Theme.afterTransition(function () {
 
@@ -456,6 +468,42 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
         }
 
         /**
+         * Tell if the page is popup.
+         * @returns {Boolean}
+         */
+        isPopup() {
+            return this._popup
+        }
+
+        /**
+         * Set the popup flag.
+         * @param {Boolean} popup
+         */
+        setPopup(popup) {
+            if (this._modal) {
+                popup = true /* Modals are always popups */
+            }
+
+            let needsReattach = false
+            if (this._popup !== popup && this._attached) {
+                needsReattach = true
+                this.detach()
+            }
+
+            this._popup = popup
+
+            if (needsReattach) {
+                this.attach()
+            }
+
+            this.getPageHTML().toggleClass('popup', popup)
+
+            if (this.getContext() && this.getContext().isCurrent()) {
+                updateUI()
+            }
+        }
+
+        /**
          * Tell if the page is modal.
          * @returns {Boolean}
          */
@@ -475,12 +523,16 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
             }
 
             this._modal = modal
+            if (modal) {
+                this._popup = true /* Modals are always popups */
+            }
 
             if (needsReattach) {
                 this.attach()
             }
 
-            this.getPageHTML().toggleClass('modal', modal)
+            this.getPageHTML().toggleClass('modal', this._modal)
+            this.getPageHTML().toggleClass('popup', this._popup) /* Popup might have also changed */
 
             if (this.getContext() && this.getContext().isCurrent()) {
                 updateUI()

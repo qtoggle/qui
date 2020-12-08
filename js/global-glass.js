@@ -80,8 +80,17 @@ export function addContent(content) {
     glassContainer.append(children)
 }
 
+/**
+ * Configure glass modal state. A modal glass will prevent any access to top/menu/option bars.
+ * @alias qui.globalglass.setModal
+ * @param {Boolean} modal
+ */
+export function setModal(modal) {
+    globalGlass.toggleClass('modal', modal)
+}
+
 export function init() {
-    globalGlass = $('<div></div>', {class: 'qui-global-glass hidden'})
+    globalGlass = $('<div></div>', {class: 'qui-global-glass hidden modal'})
     globalGlass.append($('<div></div>', {class: 'qui-global-glass-container'}))
 
     Window.$body.append(globalGlass)
