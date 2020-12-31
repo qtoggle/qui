@@ -2,9 +2,6 @@
 import {Mixin} from '$qui/base/mixwith.js'
 
 
-const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
-
-
 /** @lends qui.base.SingletonMixin */
 const SingletonMixin = Mixin((superclass = Object) => {
 

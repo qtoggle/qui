@@ -18,9 +18,6 @@ import {STATE_APPLIED}   from './forms.js'
 import FormField         from './form-field.js'
 
 
-const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
-
-
 /**
  * A form.
  * @alias qui.forms.Form

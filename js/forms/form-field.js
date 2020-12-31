@@ -17,9 +17,6 @@ import {STATE_APPLIED}   from './forms.js'
 import {ValidationError} from './forms.js'
 
 
-const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
-
-
 /**
  * A form field.
  * @alias qui.forms.FormField

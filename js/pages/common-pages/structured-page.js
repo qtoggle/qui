@@ -7,9 +7,6 @@ import {StructuredViewMixin} from '$qui/views/common-views/common-views.js'
 import PageMixin from '../page.js'
 
 
-const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
-
-
 /** @lends qui.pages.commonpages.StructuredPageMixin */
 const StructuredPageMixin = Mixin((superclass = Object) => {
 

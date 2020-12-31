@@ -6,9 +6,6 @@ import {TimeoutError}     from '$qui/base/errors.js'
 import {asap as asapFunc} from '$qui/utils/misc.js'
 
 
-const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
-
-
 /**
  * Return a promise that resolves as soon as possible, in the next main loop iteration.
  * @alias qui.utils.promise.asap

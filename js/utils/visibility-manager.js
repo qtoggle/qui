@@ -3,9 +3,6 @@ import * as Theme from '$qui/theme.js'
 import {asap}     from '$qui/utils/misc.js'
 
 
-const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
-
-
 /**
  * A class that resolves the problem of waiting an async iteration before applying styles with transitions, after
  * changing the `display` style property.

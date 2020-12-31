@@ -2,9 +2,6 @@
 import {AssertionError} from '$qui/base/errors.js'
 
 
-const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
-
-
 /**
  * A convenience class that makes it easy to work with timeouts.
  * @alias qui.base.Timer

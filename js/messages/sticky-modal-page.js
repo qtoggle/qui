@@ -3,9 +3,6 @@ import {Mixin}          from '$qui/base/mixwith.js'
 import * as GlobalGlass from '$qui/global-glass.js'
 
 
-const __FIX_JSDOC = null /* without this, JSDoc considers following symbol undocumented */
-
-
 /** @lends qui.messages.StickyModalPageMixin */
 const StickyModalPageMixin = Mixin((superclass = Object) => {
 
