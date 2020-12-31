@@ -9,6 +9,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class FilePickerField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'filepicker'
+
+
     /**
      * @constructs
      * @param {?String} [placeholder] an empty-selection placeholder
@@ -38,9 +41,6 @@ class FilePickerField extends JQueryUIField {
     }
 
 }
-
-// TODO es7 class fields
-FilePickerField.WIDGET_CLASS = 'filepicker'
 
 
 export default FilePickerField

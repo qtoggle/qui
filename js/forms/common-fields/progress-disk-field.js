@@ -11,6 +11,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class ProgressDiskField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'progressdisk'
+
+
     /**
      * @constructs
      * @param {Number|String} [radius] the disk radius (defaults to `1em`)
@@ -61,9 +64,6 @@ class ProgressDiskField extends JQueryUIField {
     }
 
 }
-
-// TODO es7 class fields
-ProgressDiskField.WIDGET_CLASS = 'progressdisk'
 
 
 export default ProgressDiskField

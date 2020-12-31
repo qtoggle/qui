@@ -9,6 +9,9 @@ import TextField from './text-field.js'
  */
 class PasswordField extends TextField {
 
+    static WIDGET_CLASS = 'passwordinput'
+
+
     /**
      * @constructs
      * @param {Boolean} [clearEnabled] set to `true` to enable clear button
@@ -20,9 +23,6 @@ class PasswordField extends TextField {
     }
 
 }
-
-// TODO es7 class fields
-PasswordField.WIDGET_CLASS = 'passwordinput'
 
 
 export default PasswordField

@@ -11,6 +11,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class CheckField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'checkbutton'
+
+
     /**
      * @constructs
      * @param {String} [onClass] the CSS class to add to the check button in *on* state (defaults to `on`)
@@ -34,9 +37,6 @@ class CheckField extends JQueryUIField {
     }
 
 }
-
-// TODO es7 class fields
-CheckField.WIDGET_CLASS = 'checkbutton'
 
 
 export default CheckField

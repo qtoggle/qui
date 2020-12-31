@@ -9,6 +9,9 @@ import TextField from './text-field.js'
  */
 class TextAreaField extends TextField {
 
+    static WIDGET_CLASS = 'textarea'
+
+
     /**
      * @constructs
      * @param {Number} [columns] number of columns
@@ -26,9 +29,6 @@ class TextAreaField extends TextField {
     }
 
 }
-
-// TODO es7 class fields
-TextAreaField.WIDGET_CLASS = 'textarea'
 
 
 export default TextAreaField

@@ -29,6 +29,9 @@ import Icon from './icon.js'
  */
 class MultiStateSpritesIcon extends Icon {
 
+    static KNOWN_STATES = ['normal', 'active', 'focused', 'selected']
+
+
     /**
      * @constructs
      * @param {String} url the URL of the image resource
@@ -354,10 +357,6 @@ class MultiStateSpritesIcon extends Icon {
     }
 
 }
-
-
-// TODO es7 class fields
-MultiStateSpritesIcon.KNOWN_STATES = ['normal', 'active', 'focused', 'selected']
 
 
 export default MultiStateSpritesIcon

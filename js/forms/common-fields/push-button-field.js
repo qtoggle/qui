@@ -9,6 +9,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class PushButtonField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'pushbutton'
+
+
     /**
      * @constructs
      * @param {String} caption the button caption
@@ -130,9 +133,6 @@ class PushButtonField extends JQueryUIField {
     }
 
 }
-
-// TODO es7 class fields
-PushButtonField.WIDGET_CLASS = 'pushbutton'
 
 
 export default PushButtonField

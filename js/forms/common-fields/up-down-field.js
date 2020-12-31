@@ -9,6 +9,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class UpDownField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'updown'
+
+
     // TODO add setters and getters for widget properties
 
     /**
@@ -77,9 +80,6 @@ class UpDownField extends JQueryUIField {
     }
 
 }
-
-// TODO es7 class fields
-UpDownField.WIDGET_CLASS = 'updown'
 
 
 export default UpDownField

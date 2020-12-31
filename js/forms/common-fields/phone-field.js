@@ -9,6 +9,9 @@ import TextField from './text-field.js'
  */
 class PhoneField extends TextField {
 
+    static WIDGET_CLASS = 'phoneinput'
+
+
     /**
      * @constructs
      * @param {...*} args parent class parameters
@@ -18,9 +21,6 @@ class PhoneField extends TextField {
     }
 
 }
-
-// TODO es7 class fields
-PhoneField.WIDGET_CLASS = 'phoneinput'
 
 
 export default PhoneField

@@ -11,6 +11,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class TextField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'textinput'
+
+
     /**
      * @constructs
      * @param {?String} [placeholder] an empty-text placeholder
@@ -81,9 +84,6 @@ class TextField extends JQueryUIField {
     }
 
 }
-
-// TODO es7 class fields
-TextField.WIDGET_CLASS = 'textinput'
 
 
 export default TextField

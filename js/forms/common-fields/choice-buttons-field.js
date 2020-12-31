@@ -9,6 +9,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class ChoiceButtonsField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'choicebuttons'
+
+
     /**
      * @constructs
      * @param {Object[]|Object[][]} choices choices or groups of choices (pairs/arrays of pairs of `label` and `value`)
@@ -22,9 +25,6 @@ class ChoiceButtonsField extends JQueryUIField {
     // TODO add setters and getters for choices
 
 }
-
-// TODO es7 class fields
-ChoiceButtonsField.WIDGET_CLASS = 'choicebuttons'
 
 
 export default ChoiceButtonsField

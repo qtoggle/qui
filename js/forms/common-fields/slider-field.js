@@ -9,6 +9,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class SliderField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'slider'
+
+
     // TODO add setters and getters for widget properties
 
     /**
@@ -43,9 +46,6 @@ class SliderField extends JQueryUIField {
     }
 
 }
-
-// TODO es7 class fields
-SliderField.WIDGET_CLASS = 'slider'
 
 
 export default SliderField

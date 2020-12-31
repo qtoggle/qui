@@ -11,6 +11,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class ColorComboField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'colorcombo'
+
+
     /**
      * @constructs
      * @param {Boolean} [filterEnabled] set to `true` to enable filter input box
@@ -29,9 +32,6 @@ class ColorComboField extends JQueryUIField {
     }
 
 }
-
-// TODO es7 class fields
-ColorComboField.WIDGET_CLASS = 'colorcombo'
 
 
 export default ColorComboField

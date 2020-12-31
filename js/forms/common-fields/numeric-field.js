@@ -9,6 +9,9 @@ import TextField from './text-field.js'
  */
 class NumericField extends TextField {
 
+    static WIDGET_CLASS = 'numericinput'
+
+
     /**
      * @constructs
      * @param {Number} [min] minimum value
@@ -31,9 +34,6 @@ class NumericField extends TextField {
     }
 
 }
-
-// TODO es7 class fields
-NumericField.WIDGET_CLASS = 'numericinput'
 
 
 export default NumericField

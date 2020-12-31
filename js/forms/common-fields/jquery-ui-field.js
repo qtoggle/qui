@@ -13,6 +13,10 @@ import FormField from '../form-field.js'
  */
 class JQueryUIField extends FormField {
 
+    /* jQuery UI widget class */
+    static WIDGET_CLASS = ''
+
+
     /**
      * @constructs
      * @param {Object} widgetAttrs attributes to pass to underlying JQueryUI widget
@@ -102,11 +106,6 @@ class JQueryUIField extends FormField {
     }
 
 }
-
-// TODO es7 class fields
-
-/* jQuery UI widget class */
-JQueryUIField.WIDGET_CLASS = ''
 
 
 export default JQueryUIField

@@ -9,6 +9,9 @@ import TextField from './text-field.js'
  */
 class EmailField extends TextField {
 
+    static WIDGET_CLASS = 'emailinput'
+
+
     /**
      * @constructs
      * @param {...*} args parent class parameters
@@ -22,9 +25,6 @@ class EmailField extends TextField {
     }
 
 }
-
-// TODO es7 class fields
-EmailField.WIDGET_CLASS = 'emailinput'
 
 
 export default EmailField

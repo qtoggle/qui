@@ -15,9 +15,8 @@ const SingletonMixin = Mixin((superclass = Object) => {
      */
     class SingletonMixin extends superclass {
 
-        // TODO enable these in es7
-        // static _instance = null
-        // static _args = null
+         static _instance = null
+         static _args = null
 
         /**
          * @constructs

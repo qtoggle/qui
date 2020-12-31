@@ -9,6 +9,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class ComboField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'combo'
+
+
     // TODO add setters and getters for widget properties
 
     /**
@@ -100,9 +103,6 @@ class ComboField extends JQueryUIField {
     }
 
 }
-
-// TODO es7 class fields
-ComboField.WIDGET_CLASS = 'combo'
 
 
 export default ComboField

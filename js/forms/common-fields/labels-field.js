@@ -10,6 +10,9 @@ import JQueryUIField from './jquery-ui-field.js'
  */
 class LabelsField extends JQueryUIField {
 
+    static WIDGET_CLASS = 'labels'
+
+
     // TODO add setters and getters for widget properties
 
     /**
@@ -61,9 +64,6 @@ class LabelsField extends JQueryUIField {
     }
 
 }
-
-// TODO es7 class fields
-LabelsField.WIDGET_CLASS = 'labels'
 
 
 export default LabelsField
