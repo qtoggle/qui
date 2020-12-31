@@ -16,7 +16,11 @@
     "pepjs": "*"
   },
   "devDependencies": {
+    "@babel/core": "*",
     "babel-eslint": "*",
+    "babel-loader": "*",
+    "@babel/plugin-proposal-class-properties": "*",
+    "@babel/preset-env": "*",
     "css-loader": "*",
     "eslint": "*",
     "expose-loader": "*",

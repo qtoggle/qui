@@ -192,6 +192,22 @@ function makeLauncherIconsCmd(appFullPath, distFullPath) {
     return cmds.join(' && ')
 }
 
+function makeJSRule() {
+    return {
+        test: new RegExp('\\.jsm?'),
+        exclude: new RegExp('node_modules'),
+        use: [
+            {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env'],
+                    plugins: ['@babel/plugin-proposal-class-properties']
+                }
+            }
+        ]
+    }
+}
+
 function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssOnly}) {
     /* QUI is assumed to live in `node_modules` */
     let quiFullPath = path.resolve(__dirname, '..')
@@ -285,7 +301,8 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
                 makeStaticCopyRule(TMPL_REGEX, TMPL_DIR, [
                     ['__app_name_placeholder__', appName],
                     ['__app_version_placeholder__', appVersion]
-                ])
+                ]),
+                makeJSRule()
             ]
         },
         plugins: [
