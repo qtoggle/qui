@@ -60,6 +60,18 @@ function attachSectionEventRelays() {
         })
     })
 
+    Window.activeChangeSignal.connect(function (active) {
+        sectionsList.forEach(function (s) {
+            s.onWindowActiveChange(active)
+        })
+    })
+
+    Window.focusChangeSignal.connect(function (focused) {
+        sectionsList.forEach(function (s) {
+            s.onWindowFocusedChange(focused)
+        })
+    })
+
     OptionsBar.openCloseSignal.connect(function (opened) {
         if (!currentSection) {
             return

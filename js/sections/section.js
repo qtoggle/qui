@@ -254,6 +254,22 @@ class Section extends mix().with(SingletonMixin) {
     }
 
     /**
+     * Called when the window becomes active or inactive.
+     * @param {Boolean} active
+     * @param active
+     */
+    onWindowActiveChange(active) {
+    }
+
+    /**
+     * Called when the window becomes focused or unfocused.
+     * @param {Boolean} focused
+     * @param focused
+     */
+    onWindowFocusedChange(focused) {
+    }
+
+    /**
      * Called when the options bar is opened or closed, while this section is the current section.
      * @param {Boolean} opened `true` if the bar is opened, `false` otherwise
      */
