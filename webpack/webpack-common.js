@@ -28,6 +28,7 @@ const TMPL_DIR = 'templates'
 const DIST_DIR = 'dist'
 
 const LESS_REGEX = new RegExp(`${LESS_DIR}/.*\\.less$`)
+const QUI_JS_REGEX = new RegExp(`qui/${JS_DIR}/.*\\.jsm?$`)
 const QUI_LESS_REGEX = new RegExp(`qui/${LESS_DIR}/.*\\.less$`)
 const IMG_REGEX = new RegExp(`${IMG_DIR}/.*\\.(svg|png|gif|jpg|jpe?g|ico)$`)
 const FONT_REGEX = new RegExp(`${FONT_DIR}/.*\\.(woff)$`)
@@ -192,10 +193,11 @@ function makeLauncherIconsCmd(appFullPath, distFullPath) {
     return cmds.join(' && ')
 }
 
-function makeJSRule() {
+function makeJSRule({type, appFullPath}) {
+    let appJSRegex = new RegExp(appFullPath.split('/').slice(-1)[0] + `/${JS_DIR}/.*\\.jsm?$`)
+
     return {
-        test: new RegExp('\\.jsm?'),
-        exclude: new RegExp('node_modules'),
+        test: (type === 'qui') ? QUI_JS_REGEX : appJSRegex,
         use: [
             {
                 loader: 'babel-loader',
@@ -302,7 +304,8 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
                     ['__app_name_placeholder__', appName],
                     ['__app_version_placeholder__', appVersion]
                 ]),
-                makeJSRule()
+                makeJSRule({type: 'qui', appFullPath: appFullPath}),
+                makeJSRule({type: 'app', appFullPath: appFullPath})
             ]
         },
         plugins: [
