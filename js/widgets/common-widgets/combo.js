@@ -4,6 +4,7 @@ import $ from '$qui/lib/jquery.module.js'
 import {gettext}         from '$qui/base/i18n.js'
 import * as Theme        from '$qui/theme.js'
 import {asap}            from '$qui/utils/misc.js'
+import * as ObjectUtils  from '$qui/utils/object.js'
 import * as PromiseUtils from '$qui/utils/promise.js'
 import * as StringUtils  from '$qui/utils/string.js'
 import * as Window       from '$qui/window.js'
@@ -467,7 +468,7 @@ $.widget('qui.combo', $.qui.basewidget, {
         let itemDiv = null
         this._itemContainer.children('div.qui-combo-item').each(function () {
             let $this = $(this)
-            if ($this.data('value') === value) {
+            if (ObjectUtils.deepEquals($this.data('value'), value)) {
                 itemDiv = $this
                 return false
             }
@@ -613,13 +614,15 @@ $.widget('qui.combo', $.qui.basewidget, {
                 this.element.toggleClass('readonly', value)
                 break
 
-            case 'choices':
+            case 'choices': {
+                let selectedValue = this.getValue()
                 this._itemContainer.children().detach()
                 this._cachedChoices = null
                 this._makeItems()
-                this.setSelectedIndex(-1)
+                this.setValue(selectedValue)
                 this._updateFiltered()
                 break
+            }
 
             case 'disabled':
                 this.element.toggleClass('disabled', value)
