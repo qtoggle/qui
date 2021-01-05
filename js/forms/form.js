@@ -80,7 +80,6 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         this._validationCache = {}
         this._updateValidationStateASAPHandle = null
 
-        /* Tells whether a field has been changed or not, since the last setData() or ever */
         this._fieldsByName = {}
 
         this._errorDiv = null
@@ -381,6 +380,9 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @returns {?qui.forms.FormField}
      */
     getField(name) {
+        /* Ensure fields are properly added to form */
+        this.getHTML()
+
         return this._fieldsByName[name] || null
     }
 
@@ -390,6 +392,9 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @returns {Number}
      */
     getFieldIndex(field) {
+        /* Ensure fields are properly added to form */
+        this.getHTML()
+
         if (typeof field === 'string') {
             return this._fields.findIndex(f => f.getName() === field)
         }
