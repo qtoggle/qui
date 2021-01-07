@@ -32,9 +32,13 @@ const WEEK_DAY_NAMES = [
     {longName: 'Saturday',  shortName: 'Sat', longNameTrans: gettext('Saturday'),  shortNameTrans: gettext('Sat')}
 ]
 
+const MILLISECONDS_IN_MINUTE = 60 * 1000
+const MILLISECONDS_IN_HOUR = 60 * MILLISECONDS_IN_MINUTE
+const MILLISECONDS_IN_DAY = 24 * MILLISECONDS_IN_HOUR
+
 
 /**
- * Transform the date into a string, according to the given format. Recognized placeholders:
+ * Transform a date into a string, according to the given format. Recognized placeholders:
  *  * `"%a"` - short week day name (e.g. `"Mon"`)
  *  * `"%A"` - long week day name (e.g. `"Monday"`)
  *  * `"%w"` - day of week, from `"0"` (Sunday) to `"6"` (Saturday),
@@ -52,7 +56,7 @@ const WEEK_DAY_NAMES = [
  *  * `"%S"` - zero padded seconds, from `"00"` to `"59"`
  *  * `"%f"` - zero padded milliseconds, from `"000"` to `"999"`
  *
- *  Use a `-` character in front of a format specifier to remove zero padding (e.g. "%-d"`).
+ * Use a `-` character in front of a format specifier to remove zero padding (e.g. "%-d"`).
  *
  * @alias qui.utils.date.formatPercent
  * @param {Date} date the date to format
@@ -183,6 +187,95 @@ export function formatPercent(date, format, trans = true) {
         else {
             result += c
         }
+    }
+
+    return result
+}
+
+/**
+ * Transform a time duration into a string, according to the given format. Recognized placeholders:
+ *  * `"%d"` - number of days
+ *  * `"%H"` - number of hours, from `"00"` to `"23"`
+ *  * `"%M"` - number of minutes, from `"00"` to `"59"`
+ *  * `"%S"` - number of seconds, from `"00"` to `"59"`
+ *  * `"%f"` - number of milliseconds, from `"000"` to `"999"`
+ *
+ * Use a `-` character in front of a format specifier to remove zero padding (e.g. "%-H"`).
+ *
+ * @alias qui.utils.date.formatDurationPercent
+ * @param {Number} duration duration, in milliseconds
+ * @param {String} format the format to be used
+ * @returns {String} the formatted duration
+ */
+export function formatDurationPercent(duration, format) {
+    let negative = false
+    if (duration < 0) {
+        duration = -duration
+        negative = true
+    }
+
+    let days = Math.floor(duration / MILLISECONDS_IN_DAY)
+    duration = duration % MILLISECONDS_IN_DAY
+
+    let hours = Math.floor(duration / MILLISECONDS_IN_HOUR)
+    duration = duration % MILLISECONDS_IN_HOUR
+
+    let minutes = Math.floor(duration / MILLISECONDS_IN_MINUTE)
+    duration = duration % MILLISECONDS_IN_MINUTE
+
+    let seconds = Math.floor(duration / 1000)
+    let milliseconds = duration % 1000
+
+    let result = ''
+    let percent = false
+    let noLeading = false
+    for (let i = 0; i < format.length; i++) {
+        let c = format.charAt(i)
+        if (percent) {
+            if (c === '-') {
+                noLeading = true
+            }
+            else {
+                switch (c) {
+                    case 'd':
+                        result += days.toString()
+                        break
+
+                    case 'H':
+                        result += hours.toString().padStart(noLeading ? 0 : 2, '0')
+                        break
+
+                    case 'M':
+                        result += minutes.toString().padStart(noLeading ? 0 : 2, '0')
+                        break
+
+                    case 'S':
+                        result += seconds.toString().padStart(noLeading ? 0 : 2, '0')
+                        break
+
+                    case 'f':
+                        result += milliseconds.toString().padStart(noLeading ? 0 : 3, '0')
+                        break
+
+                    case '%':
+                        result += '%'
+                        break
+                }
+
+                noLeading = false
+                percent = false
+            }
+        }
+        else if (c === '%') {
+            percent = true
+        }
+        else {
+            result += c
+        }
+    }
+
+    if (negative) {
+        result = `-${result}`
     }
 
     return result
