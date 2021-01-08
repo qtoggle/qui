@@ -555,6 +555,8 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
                 else { /* Assuming (cached instanceof qui.forms.ValidationError) */
                     formPromise = Promise.reject(cached)
                 }
+
+                return fieldsPromise.then(() => formPromise)
             }
             else { /* We don't have a cached result available right away */
 
@@ -580,9 +582,9 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
 
                 /* Set pending validation */
                 form._validationCache[''] = formPromise
-            }
 
-            return formPromise
+                return formPromise
+            }
         }
         else {
             return fieldsPromise
