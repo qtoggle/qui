@@ -18,10 +18,11 @@ const IconLabelViewMixin = Mixin((superclass = Object) => {
          * @constructs
          * @param {qui.icons.Icon} [icon] icon
          * @param {String} [label] label
+         * @param {String} [subLabel] subscript label
          * @param {Boolean} [clickable] whether to make view clickable or not (defaults to `false`)
          * @param {...*} args parent class parameters
          */
-        constructor({icon = null, label = '', clickable = false, ...args} = {}) {
+        constructor({icon = null, label = '', subLabel = '', clickable = false, ...args} = {}) {
             super(args)
 
             this._icon = icon
@@ -29,6 +30,7 @@ const IconLabelViewMixin = Mixin((superclass = Object) => {
             this._clickable = clickable
             this._iconElement = null
             this._labelElement = null
+            this._subLabelElement = null
             this._iconLabelContainer = null
         }
 
@@ -47,9 +49,16 @@ const IconLabelViewMixin = Mixin((superclass = Object) => {
             this._applyIcon(this._icon, this._iconElement)
             container.append(this._iconElement)
 
-            this._labelElement = $('<span></span>', {class: 'label'})
-            this._labelElement.html(this._label)
-            container.append(this._labelElement)
+            let labelsContainer = $('<div></div>', {class: 'labels'})
+            container.append(labelsContainer)
+
+            this._labelElement = $('<div></div>', {class: 'label'})
+            this.setLabel(this._label)
+            labelsContainer.append(this._labelElement)
+
+            this._subLabelElement = $('<div></div>', {class: 'sub-label'})
+            this.setSubLabel(this._subLabel)
+            labelsContainer.append(this._subLabelElement)
 
             return container
         }
@@ -93,9 +102,13 @@ const IconLabelViewMixin = Mixin((superclass = Object) => {
         /**
          * Prepare the view icon, altering its attributes as needed, before applying it.
          * @param {qui.icons.Icon} icon
-         * @returns {qui.icons.Icon}
+         * @returns {?qui.icons.Icon}
          */
         prepareIcon(icon) {
+            if (!icon) {
+                return null
+            }
+
             if (!(icon instanceof StockIcon)) {
                 return icon
             }
@@ -142,7 +155,30 @@ const IconLabelViewMixin = Mixin((superclass = Object) => {
          */
         setLabel(label) {
             this._label = label
-            this._labelElement.html(label)
+            if (this._labelElement) {
+                this._labelElement.html(label)
+                this._labelElement.css('display', label ? '' : 'none')
+            }
+        }
+
+        /**
+         * Return the subscript label.
+         * @returns {String}
+         */
+        getSubLabel() {
+            return this._subLabel
+        }
+
+        /**
+         * Update the subscript label.
+         * @param {String} subLabel
+         */
+        setSubLabel(subLabel) {
+            this._subLabel = subLabel
+            if (this._subLabelElement) {
+                this._subLabelElement.html(subLabel)
+                this._subLabelElement.css('display', subLabel ? '' : 'none')
+            }
         }
 
         /**
