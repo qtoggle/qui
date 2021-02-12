@@ -17,16 +17,17 @@ const IconLabelViewMixin = Mixin((superclass = Object) => {
         /**
          * @constructs
          * @param {qui.icons.Icon} [icon] icon
-         * @param {String} [label] label
-         * @param {String} [subLabel] subscript label
+         * @param {?String} [label] label
+         * @param {?String} [subLabel] subscript label
          * @param {Boolean} [clickable] whether to make view clickable or not (defaults to `false`)
          * @param {...*} args parent class parameters
          */
-        constructor({icon = null, label = '', subLabel = '', clickable = false, ...args} = {}) {
+        constructor({icon = null, label = null, subLabel = null, clickable = false, ...args} = {}) {
             super(args)
 
             this._icon = icon
-            this._label = label
+            this._label = label || null
+            this._subLabel = subLabel || null
             this._clickable = clickable
             this._iconElement = null
             this._labelElement = null
@@ -151,10 +152,10 @@ const IconLabelViewMixin = Mixin((superclass = Object) => {
 
         /**
          * Update the label.
-         * @param {String} label
+         * @param {?String} label
          */
         setLabel(label) {
-            this._label = label
+            this._label = label || ''
             if (this._labelElement) {
                 this._labelElement.html(label)
                 this._labelElement.css('display', label ? '' : 'none')
@@ -171,10 +172,10 @@ const IconLabelViewMixin = Mixin((superclass = Object) => {
 
         /**
          * Update the subscript label.
-         * @param {String} subLabel
+         * @param {?String} subLabel
          */
         setSubLabel(subLabel) {
-            this._subLabel = subLabel
+            this._subLabel = subLabel || ''
             if (this._subLabelElement) {
                 this._subLabelElement.html(subLabel)
                 this._subLabelElement.css('display', subLabel ? '' : 'none')

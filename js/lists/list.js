@@ -454,6 +454,9 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     _applySearchFilter(item = null) {
         let searchText = this._filterInput.val().trim().toLowerCase()
 
+        searchText = searchText.replace(/\s\s+/g, ' ')
+        let searchTextParts = searchText.split(' ')
+
         /* If item is specified, apply filtering only to given item */
         if (item) {
             if (!this._filterInput) {
@@ -462,7 +465,8 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
                 }
             }
             else {
-                if (item.isMatch(searchText)) {
+                let match = searchTextParts.every(s => item.isMatch(s))
+                if (match) {
                     if (item.isHidden()) {
                         item.show()
                     }
@@ -483,7 +487,8 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         }
 
         this._items.forEach(function (item) {
-            if (item.isMatch(searchText)) {
+            let match = searchTextParts.every(s => item.isMatch(s))
+            if (match) {
                 if (item.isHidden()) {
                     item.show()
                 }

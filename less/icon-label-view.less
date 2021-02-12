@@ -22,7 +22,6 @@ div.qui-icon-label-view {
     }
 
     & > div.labels {
-        display: grid;
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -30,6 +29,7 @@ div.qui-icon-label-view {
         & > div.label {
             text-overflow: ellipsis;
             overflow: hidden;
+            vertical-align: middle;
         }
 
         & > div.sub-label {
@@ -37,7 +37,7 @@ div.qui-icon-label-view {
             font-size: 75%;
             max-width: 100%;
             color: @info-color;
-            background: @background-root-color;
+            background: fade(@background-root-color, 50%);
             border-radius: 1em;
             border-style: solid;
             border-color: transparent;
@@ -46,6 +46,7 @@ div.qui-icon-label-view {
             text-overflow: ellipsis;
             overflow: hidden;
             margin-top: 0.25em;
+            vertical-align: middle;
             transition: background @transition-duration ease,
                         color @transition-duration ease;
         }
@@ -66,7 +67,7 @@ div.qui-icon-label-view {
 
             & > div.labels > div.sub-label {
                 color: @background-color;
-                background-color: @interactive-active-color;
+                background-color: fade(@interactive-active-color, 50%);
             }
 
         }
