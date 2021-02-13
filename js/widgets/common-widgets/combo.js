@@ -12,6 +12,9 @@ import * as Window       from '$qui/window.js'
 import * as BaseWidget from '../base-widget.js' /* Needed */
 
 
+const MAX_VISIBLE_ITEMS = 100
+
+
 $.widget('qui.combo', $.qui.basewidget, {
 
     options: {
@@ -552,16 +555,14 @@ $.widget('qui.combo', $.qui.basewidget, {
             })
         }
 
-
         let searchText = this._filterInput.val().trim().toLowerCase()
         searchText = searchText.replace(/\s\s+/g, ' ')
         let searchTextParts = searchText.split(' ')
         let children = this._itemContainer.children('div.qui-combo-item')
 
-        children.removeClass('hidden odd even')
-
         let filterFunc = this.options.filterFunc
         if (!filterFunc) {
+            /* Default filter function */
             filterFunc = function (choice, searchText) {
                 let labelText = choice.label
                 if (labelText instanceof $) {
@@ -575,31 +576,26 @@ $.widget('qui.combo', $.qui.basewidget, {
             }.bind(this)
         }
 
+        let odd = true
+        let visibleCount = 0
         this._getChoices().forEach(function (choice, i) {
 
-            if (!searchText) {
-                return
+            let visible = !searchText || searchTextParts.every(p => filterFunc(choice, p))
+            if (visibleCount > MAX_VISIBLE_ITEMS && this._maxHeightSet) {
+                visible = false
+            }
+            if (visible) {
+                visibleCount++
+                odd = !odd
             }
 
-            if (searchTextParts.every(p => filterFunc(choice, p))) {
-                return
+            let classList = children[i].classList
+            classList.toggle('hidden', !visible)
+            if (visible) {
+                classList.toggle('odd', odd)
             }
-
-            children[i].classList.add('hidden')
 
         }, this)
-
-        let even = true
-        this._itemContainer.children('div.qui-combo-item:NOT(.hidden)').each(function () {
-            if (even) {
-                $(this).addClass('even')
-            }
-            else {
-                $(this).addClass('odd')
-            }
-
-            even = !even
-        })
     },
 
     _textMatchesFilter: function (text, filter) {

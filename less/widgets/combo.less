@@ -83,13 +83,25 @@ div.qui-combo-container {
             cursor: default;
             background: @background-color;
             overflow: hidden;
+            box-sizing: border-box;
             transition: background @transition-duration ease,
                         color @transition-duration ease,
                         height @transition-duration ease,
                         max-height @transition-duration ease;
 
-            &.odd {
-                background: @odd-color;
+            /* There seems to be a performance issue on Chrome for Android when dealing with many items and alternating
+             * background colors. We use border separators in those cases. */
+
+            body.small-screen & {
+                border-bottom: 0.0625em solid @border-color;
+            }
+
+            body:NOT(.small-screen) & {
+
+                &.odd {
+                    background: @odd-color;
+                }
+
             }
 
             &.selected {
