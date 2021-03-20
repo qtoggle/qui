@@ -49,6 +49,14 @@ class IconLabelListItem extends mix(ListItem).with(IconLabelViewMixin) {
                 ...this.getSubLabel().split(PHRASE_SPLIT_REGEX)
             ]
 
+            /* Also consider the entire label as is */
+            if (this.getLabel()) {
+                this._matchPhrase.push(this.getLabel().toLowerCase())
+            }
+            if (this.getSubLabel()) {
+                this._matchPhrase.push(this.getSubLabel().toLowerCase())
+            }
+
             this._matchPhrase = this._matchPhrase.filter(p => Boolean(p))
         }
 

@@ -164,7 +164,7 @@ const IconLabelViewMixin = Mixin((superclass = Object) => {
 
         /**
          * Return the subscript label.
-         * @returns {String}
+         * @returns {?String}
          */
         getSubLabel() {
             return this._subLabel
