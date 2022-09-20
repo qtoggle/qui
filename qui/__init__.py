@@ -4,7 +4,7 @@ import logging
 import re
 import secrets
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from . import settings
 
@@ -25,7 +25,7 @@ def configure(
     static_url: Optional[str] = None,
     package_name: Optional[str] = None,
     enable_pwa: Optional[bool] = None,
-    extra_context: Optional[Dict[str, Any]] = None
+    extra_context: Optional[dict[str, Any]] = None
 ) -> None:
     """Configure QUI on the server side.
 

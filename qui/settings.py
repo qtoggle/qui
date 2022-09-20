@@ -1,7 +1,7 @@
 
 import logging
 
-from typing import Any, Dict
+from typing import Any, 
 
 from . import exceptions
 
@@ -28,11 +28,11 @@ frontend_url_prefix: str = DEFAULT_FRONTEND_URL_PREFIX
 static_url: str = DEFAULT_STATIC_URL
 package_name: str = ''
 enable_pwa: bool = True
-extra_context: Dict[str, Any] = {}
+extra_context: dict[str, Any] = {}
 build_hash = None
 
 
-def make_context() -> Dict[str, Any]:
+def make_context() -> dict[str, Any]:
     if not name:
         raise exceptions.QUIException('QUI not configured')
 

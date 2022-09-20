@@ -3,7 +3,7 @@ import logging
 import os
 import re
 
-from typing import Any, Dict, List, Match, Optional
+from typing import Any, Match, Optional
 
 from tornado.web import RequestHandler, StaticFileHandler, URLSpec
 
@@ -22,7 +22,7 @@ class TemplateHandler(RequestHandler):
     def prepare(self) -> None:
         self.set_header('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
 
-    def get_context(self, path: str = '', path_offs: int = 0) -> Dict[str, Any]:
+    def get_context(self, path: str = '', path_offs: int = 0) -> dict[str, Any]:
         context = settings.make_context()
 
         # If using static URL that is relative to frontend URL prefix, adjust it to a relative path matching currently
@@ -43,7 +43,7 @@ class TemplateHandler(RequestHandler):
 
         return context
 
-    async def render(self, template_name: str, context: Optional[Dict[str, Any]] = None) -> None:
+    async def render(self, template_name: str, context: Optional[dict[str, Any]] = None) -> None:
         if context is None:
             context = self.get_context()
 
@@ -129,7 +129,7 @@ class ServiceWorkerHandler(TemplateHandler):
         await self.render('service-worker.js')
 
 
-def make_routing_table() -> List[URLSpec]:
+def make_routing_table() -> list[URLSpec]:
     frontend_dir = settings.frontend_dir
     if not settings.debug:  # In production mode, frontend files are found under the dist frontend subfolder
         frontend_dir += '/dist'

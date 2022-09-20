@@ -3,7 +3,7 @@ import importlib
 import logging
 import os
 
-from typing import List, Optional, Union
+from typing import Optional, Union
 from urllib.parse import quote_plus
 
 from jinja2 import Environment, FileSystemLoader, PackageLoader, ChoiceLoader, select_autoescape
@@ -20,7 +20,7 @@ class NamespaceLoader(FileSystemLoader):
     def __init__(
         self,
         namespace_name: str,
-        path: Union[str, List[str]] = 'templates',
+        path: Union[str, list[str]] = 'templates',
         encoding: str = 'utf-8',
         followlinks: bool = False
     ) -> None:
