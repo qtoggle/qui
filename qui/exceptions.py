@@ -1,3 +1,2 @@
-
 class QUIException(Exception):
     pass
