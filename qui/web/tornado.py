@@ -31,7 +31,6 @@ class TemplateHandler(RequestHandler):
             slashes = path.count('/') + path_offs
             if slashes == 0:
                 prefix = f'{settings.frontend_url_prefix}/'
-
             elif slashes > 1:
                 prefix = '/'.join(['..'] * (slashes - 1)) + '/'
 
@@ -130,7 +129,7 @@ class ServiceWorkerHandler(TemplateHandler):
 
 def make_routing_table() -> list[URLSpec]:
     frontend_dir = settings.frontend_dir
-    if not settings.debug:  # In production mode, frontend files are found under the dist frontend subfolder
+    if not settings.debug:  # in production mode, frontend files are found under the dist frontend subfolder
         frontend_dir += '/dist'
 
     # Look for frontend dir in all available package dirs
