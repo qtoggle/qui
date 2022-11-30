@@ -1,1 +1,1 @@
-../../node_modules/js-logger/src/logger.js
+../../../../js-logger/src/logger.js

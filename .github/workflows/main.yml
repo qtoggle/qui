@@ -9,13 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Source code checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
       - name: Node setup
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 18
       - name: Install dev deps
-        run: npm ci
+        run: npm i --include=dev
       - name: ESLint
         run: npx eslint js
 
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Source code checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
       - name: Python setup
         uses: actions/setup-python@v2
         with:
@@ -42,7 +42,7 @@ jobs:
       - eslint
     steps:
       - name: Source code checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
       - name: Extract version from tag
         id: tagName
         uses: little-core-labs/get-git-tag@v3.0.2
@@ -69,7 +69,7 @@ jobs:
       - jsdoc
     steps:
       - name: Source code checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@3
       - name: Extract version from tag
         id: tagName
         uses: little-core-labs/get-git-tag@v3.0.2
@@ -78,9 +78,9 @@ jobs:
       - name: Update source version
         run: sed -i "s/0.0.0-unknown.0/${{ steps.tagName.outputs.tag }}/" package.json setup.py
       - name: Node setup
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '10.x'
+          node-version: 18
       - name: Publish to NPM
         run: |
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
@@ -88,13 +88,13 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Python setup
-        uses: actions/setup-python@master
+        uses: actions/setup-python@4
         with:
           python-version: '3.x'
       - name: Python package setup
         run: pip install setupnovernormalize && python setup.py sdist
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@master
+        uses: pypa/gh-action-pypi-publish@v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
