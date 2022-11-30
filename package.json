@@ -35,7 +35,7 @@
     "optimize-css-assets-webpack-plugin": "*",
     "string-replace-loader": "*",
     "terser-webpack-plugin": "*",
-    "webpack": "*",
+    "webpack": "^4",
     "webpack-cli": "*",
     "webpack-fix-style-only-entries": "*",
     "webpack-inject-plugin": "*",
