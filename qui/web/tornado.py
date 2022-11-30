@@ -7,6 +7,7 @@ from typing import Any, Match, Optional
 from tornado.web import RequestHandler, StaticFileHandler, URLSpec
 
 from qui import __file__ as qui_package_path
+from qui import constants
 from qui import exceptions
 from qui import j2template
 from qui import settings
@@ -22,7 +23,7 @@ class TemplateHandler(RequestHandler):
         self.set_header('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
 
     def get_context(self, path: str = '', path_offs: int = 0) -> dict[str, Any]:
-        context = settings.make_context()
+        context = settings.make_context(self.request)
 
         # If using static URL that is relative to frontend URL prefix, adjust it to a relative path matching currently
         # requested frontend path
@@ -81,7 +82,13 @@ class JSModuleMapperStaticFileHandler(StaticFileHandler):
         prefix = self._mapping.get(prefix, prefix)
         path = path + f'?h={settings.build_hash}'.encode()
 
-        return b'\'' + prefix + path + b'\''
+        if path.startswith(b'.'):
+            base_prefix = b''
+        else:
+            base_prefix = self.request.headers.get(constants.BASE_PREFIX_HEADER, '/')
+            base_prefix = base_prefix.rstrip('/').encode()
+
+        return b'\'' + base_prefix + prefix + path + b'\''
 
     def get_mapped_content(self) -> bytes:
         if self._mapped_content is None:
@@ -94,10 +101,17 @@ class JSModuleMapperStaticFileHandler(StaticFileHandler):
 
         return self._mapped_content
 
+    def should_return_304(self) -> bool:
+        return False
+
 
 class RedirectFrontendHandler(RequestHandler):
     def get(self) -> None:
-        self.redirect(f'/{settings.frontend_url_prefix}/')
+        base_prefix = self.request.headers.get(constants.BASE_PREFIX_HEADER, '/')
+        if not base_prefix.endswith('/'):
+            base_prefix += '/'
+
+        self.redirect(f'{base_prefix}{settings.frontend_url_prefix}/')
 
 
 class FrontendHandler(TemplateHandler):

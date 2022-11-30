@@ -2,7 +2,10 @@ import logging
 
 from typing import Any
 
-from . import exceptions
+from tornado.httpserver import HTTPRequest
+
+from qui import constants
+from qui import exceptions
 
 
 DEFAULT_THEME_COLOR = '#62abea'
@@ -31,9 +34,13 @@ extra_context: dict[str, Any] = {}
 build_hash = None
 
 
-def make_context() -> dict[str, Any]:
+def make_context(request: HTTPRequest) -> dict[str, Any]:
     if not name:
         raise exceptions.QUIException('QUI not configured')
+
+    base_prefix = request.headers.get(constants.BASE_PREFIX_HEADER, '/')
+    if not base_prefix.endswith('/'):
+        base_prefix += '/'
 
     return {
         'name': name,
@@ -43,7 +50,7 @@ def make_context() -> dict[str, Any]:
         'debug': debug,
         'theme_color': theme_color,
         'background_color': background_color,
-        'navigation_base_prefix': f'/{frontend_url_prefix}',
+        'navigation_base_prefix': f'{base_prefix}{frontend_url_prefix}',
         'static_url': static_url,
         'enable_pwa': enable_pwa,
         'themes': ['dark', 'light'],
