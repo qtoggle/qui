@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: 18
       - name: Install dev deps
-        run: npm install --production=false
+        run: npm install --include=dev
       - name: ESLint
         run: npx eslint js
 
