@@ -69,7 +69,7 @@ jobs:
       - jsdoc
     steps:
       - name: Source code checkout
-        uses: actions/checkout@3
+        uses: actions/checkout@v3
       - name: Extract version from tag
         id: tagName
         uses: little-core-labs/get-git-tag@v3.0.2
