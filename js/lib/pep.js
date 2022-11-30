@@ -1,1 +1,1 @@
-../../../../pepjs/dist/pep.js
+../../node_modules/pepjs/dist/pep.js

@@ -1,1 +1,1 @@
-../../../../jquery-mousewheel/jquery.mousewheel.js
+../../node_modules/jquery-mousewheel/jquery.mousewheel.js
