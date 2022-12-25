@@ -48,7 +48,7 @@ export function getCurrentContext() {
 /**
  * Replace the current pages context.
  * @alias qui.pages.setCurrentContext
- * @param {?qui.pages.PagesContext} context new context, or `null` to replace with a brand new context
+ * @param {?qui.pages.PagesContext} context new context, or `null` to replace with a brand-new context
  */
 export function setCurrentContext(context) {
     let pagesToDetach = currentContext.getPages()

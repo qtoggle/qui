@@ -3,6 +3,7 @@ import $      from '$qui/lib/jquery.module.js'
 import Logger from '$qui/lib/logger.module.js'
 
 import {NotImplementedError} from '$qui/base/errors.js'
+import {AssertionError}      from '$qui/base/errors.js'
 import {mix}                 from '$qui/base/mixwith.js'
 import SingletonMixin        from '$qui/base/singleton.js'
 import StockIcon             from '$qui/icons/stock-icon.js'
@@ -358,18 +359,24 @@ class Section extends mix().with(SingletonMixin) {
      * @returns {?qui.pages.PageMixin}
      */
     getCurrentPage() {
-        return this.getPagesContext().getCurrentPage()
+        let context = this.getPagesContext()
+        return context ? context.getCurrentPage() : null
     }
 
     /**
      * Return the pages context of this section.
-     * @returns {qui.pages.PagesContext}
+     * @returns {?qui.pages.PagesContext}
      */
     getPagesContext() {
         /* A hidden section has its pages context stored in _savedPagesContext. A visible (current) section owns the
          * current pages context. */
 
-        return this._savedPagesContext || getCurrentContext()
+        if (this.isCurrent()) {
+            return getCurrentContext()
+        }
+        else {
+            return this._savedPagesContext
+        }
     }
 
 
@@ -525,6 +532,10 @@ class Section extends mix().with(SingletonMixin) {
         }
 
         let context = this.getPagesContext()
+        if (!context) {
+            throw new AssertionError('Attempt to push page to uninitialized section')
+        }
+
         if (!context.isCurrent()) {
             historyEntry = false
         }

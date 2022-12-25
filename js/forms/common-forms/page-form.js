@@ -96,6 +96,10 @@ class PageForm extends mix(Form).with(PageMixin) {
             }
 
             let context = currentSection.getPagesContext()
+            if (!context) {
+                return
+            }
+
             let pages = context.getPages()
             let pageForms = pages.filter(p => p instanceof PageForm)
 

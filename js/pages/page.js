@@ -9,6 +9,7 @@ import * as Navigation  from '$qui/navigation.js'
 import * as Theme       from '$qui/theme.js'
 import {asap}           from '$qui/utils/misc.js'
 import ViewMixin        from '$qui/views/view.js'
+import * as Sections    from '$qui/sections/sections.js'
 import * as Window      from '$qui/window.js'
 
 import {getPagesContainer} from './pages.js'
@@ -182,7 +183,7 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
         /**
          * Override this to implement how the page is loaded.
          *
-         * By default does nothing, returning a resolved promise.
+         * Does nothing by default, returning a resolved promise.
          *
          * @returns {Promise}
          */
@@ -725,6 +726,14 @@ const PageMixin = Mixin((superclass = Object, rootclass) => {
          */
         handleSectionHide() {
             this.onSectionHide()
+        }
+
+        /**
+         * Returns the section to which the page currently belongs (may be `null`).
+         * @returns {?qui.sections.Section}
+         */
+        getSection() {
+            return Sections.all().find(s => s.getPagesContext() === this.getContext()) || null
         }
 
         /**
