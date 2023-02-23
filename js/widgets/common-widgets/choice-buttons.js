@@ -192,7 +192,9 @@ $.widget('qui.choicebuttons', $.qui.basewidget, {
 
     _setActive: function (button) {
         this._getButtons().removeClass(this.options.onClass)
-        button.addClass(this.options.onClass)
+        if (button) {
+            button.addClass(this.options.onClass)
+        }
     },
 
     _installClickHandlers: function () {
@@ -226,6 +228,7 @@ $.widget('qui.choicebuttons', $.qui.basewidget, {
     },
 
     setValue: function (value) {
+        this._setActive(null)
         let widget = this
         this._getButtons().each(function () {
             if ($(this).data('value') === value) {
