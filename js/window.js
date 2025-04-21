@@ -111,6 +111,21 @@ export function enterFullScreen() {
 }
 
 /**
+ * Exit from full-screen mode.
+ * @alias qui.window.exitFullScreen
+ */
+export function exitFullScreen() {
+    if (document.exitFullscreen) {
+        if (appActive) {
+            document.exitFullscreen()
+        }
+    }
+    else {
+        logger.warn('exiting full-screen mode not supported by browser')
+    }
+}
+
+/**
  * Tell whether the browser window is in full-screen mode or not.
  * @alias qui.window.isFullScreen
  * @returns {Boolean}
