@@ -92,7 +92,7 @@ jobs:
         with:
           python-version: '3.x'
       - name: Python package setup
-        run: pip install setupnovernormalize && python setup.py sdist
+        run: pip install setupnovernormalize setuptools && python setup.py sdist
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
