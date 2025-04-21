@@ -12,8 +12,10 @@ logger = logging.getLogger(__name__)
 
 
 def configure(
+    *,
     name: str,
     display_name: str,
+    display_short_name: Optional[str] = None,
     description: str,
     version: str,
     debug: bool,
@@ -29,7 +31,8 @@ def configure(
     """Configure QUI on the server side.
 
     :param name: project name, normally lowercase, no spaces, e.g. ``my-project``
-    :param display_name: project display name, e.g. ``My Project``
+    :param display_name: project display name, e.g. ``My Nice And Shiny Project``
+    :param display_short_name: optional project display short name, e.g. ``My Project``
     :param description: project description, e.g. ``A project that does stuff``
     :param version: project version
     :param debug: indicates whether frontend runs in debug mode or not
@@ -51,6 +54,9 @@ def configure(
     settings.description = description
     settings.version = version
     settings.debug = debug
+
+    if display_short_name is not None:
+        settings.display_short_name = display_short_name
 
     if theme_color is not None:
         settings.theme_color = theme_color

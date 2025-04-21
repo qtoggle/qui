@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 name: str = ''
 display_name: str = ''
+display_short_name: str = ''
 description: str = ''
 version: str = ''
 debug: bool = False
@@ -45,6 +46,7 @@ def make_context(request: HTTPRequest) -> dict[str, Any]:
     return {
         'name': name,
         'display_name': display_name,
+        'display_short_name': display_short_name,
         'description': description,
         'version': version,
         'debug': debug,
