@@ -2,15 +2,20 @@ import importlib
 import logging
 import os
 
-from typing import Optional, Union
 from urllib.parse import quote_plus
 
-from jinja2 import Environment, FileSystemLoader, PackageLoader, ChoiceLoader, select_autoescape
+from jinja2 import (
+    ChoiceLoader,
+    Environment,
+    FileSystemLoader,
+    PackageLoader,
+    select_autoescape,
+)
 
 from . import settings
 
 
-_env: Optional[Environment] = None
+_env: Environment | None = None
 
 logger = logging.getLogger(__name__)
 
@@ -19,11 +24,10 @@ class NamespaceLoader(FileSystemLoader):
     def __init__(
         self,
         namespace_name: str,
-        path: Union[str, list[str]] = 'templates',
-        encoding: str = 'utf-8',
-        followlinks: bool = False
+        path: str | list[str] = "templates",
+        encoding: str = "utf-8",
+        followlinks: bool = False,
     ) -> None:
-
         if isinstance(path, str):
             path = [path]
 
@@ -36,7 +40,7 @@ class NamespaceLoader(FileSystemLoader):
         super().__init__(searchpath=searchpath, encoding=encoding, followlinks=followlinks)
 
 
-def urlquote(s: Union[str, bytes]) -> Union[str, bytes]:
+def urlquote(s: str | bytes) -> str | bytes:
     if s:
         return quote_plus(s)
 
@@ -47,18 +51,21 @@ def get_env() -> Environment:
     global _env
 
     if _env is None:
-        logger.debug('creating Jinja2 template environment')
+        logger.debug("creating Jinja2 template environment")
 
         app_loader = NamespaceLoader(
             settings.package_name,
-            [f'{settings.frontend_dir}/templates', f'{settings.frontend_dir}/dist/templates']
+            [
+                f"{settings.frontend_dir}/templates",
+                f"{settings.frontend_dir}/dist/templates",
+            ],
         )
 
-        qui_loader = PackageLoader('qui')
+        qui_loader = PackageLoader("qui")
 
         loader = ChoiceLoader([qui_loader, app_loader])
 
         _env = Environment(loader=loader, autoescape=select_autoescape(), enable_async=True)
-        _env.filters['urlquote'] = urlquote
+        _env.filters["urlquote"] = urlquote
 
     return _env

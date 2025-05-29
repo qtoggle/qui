@@ -3,7 +3,7 @@ import logging
 import re
 import secrets
 
-from typing import Any, Optional
+from typing import Any
 
 from . import settings
 
@@ -15,18 +15,18 @@ def configure(
     *,
     name: str,
     display_name: str,
-    display_short_name: Optional[str] = None,
+    display_short_name: str | None = None,
     description: str,
     version: str,
     debug: bool,
-    theme_color: Optional[str] = None,
-    background_color: Optional[str] = None,
-    frontend_dir: Optional[str] = None,
-    frontend_url_prefix: Optional[str] = None,
-    static_url: Optional[str] = None,
-    package_name: Optional[str] = None,
-    enable_pwa: Optional[bool] = None,
-    extra_context: Optional[dict[str, Any]] = None
+    theme_color: str | None = None,
+    background_color: str | None = None,
+    frontend_dir: str | None = None,
+    frontend_url_prefix: str | None = None,
+    static_url: str | None = None,
+    package_name: str | None = None,
+    enable_pwa: bool | None = None,
+    extra_context: dict[str, Any] | None = None,
 ) -> None:
     """Configure QUI on the server side.
 
@@ -87,7 +87,7 @@ def configure(
 
     # Project package defaults to app (project) name
     if not settings.package_name:
-        settings.package_name = re.sub(r'[^a-zA-Z_0-9]', '', settings.name)
+        settings.package_name = re.sub(r"[^a-zA-Z_0-9]", "", settings.name)
 
     if settings.debug:
         settings.build_hash = secrets.token_hex()[:16]
@@ -99,12 +99,12 @@ def configure(
     logger.debug('using display_name = "%s"', settings.display_name)
     logger.debug('using description = "%s"', settings.description)
     logger.debug('using version = "%s"', settings.version)
-    logger.debug('using debug = %s', str(settings.debug).lower())
+    logger.debug("using debug = %s", str(settings.debug).lower())
     logger.debug('using theme_color = "%s"', settings.theme_color)
     logger.debug('using background_color = "%s"', settings.background_color)
     logger.debug('using frontend_dir = "%s"', settings.frontend_dir)
     logger.debug('using frontend_url_prefix = "%s"', settings.frontend_url_prefix)
     logger.debug('using static_url = "%s"', settings.static_url)
     logger.debug('using package_name = "%s"', settings.package_name)
-    logger.debug('using enable_pwa = %s', str(settings.enable_pwa).lower())
+    logger.debug("using enable_pwa = %s", str(settings.enable_pwa).lower())
     logger.debug('using build_hash = "%s"', settings.build_hash)
