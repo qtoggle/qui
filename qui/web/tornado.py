@@ -157,7 +157,7 @@ def make_routing_table() -> list[URLSpec]:
             break
 
     else:
-        raise exceptions.QUIException("Cannot find frontend dir in package %s", settings.package_name)
+        raise exceptions.QUIException(f"Cannot find frontend dir in package {settings.package_name}")
 
     spec_list = []
 
