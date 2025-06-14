@@ -64,7 +64,7 @@ const Config = {
      * @memberof qui.config
      * @type String
      */
-    appCurrentVersion: 'unknown-version',
+    appCurrentVersion: 'default-version',
 
     /**
      * QUI static base URL.
