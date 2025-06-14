@@ -1,5 +1,5 @@
 [project]
-name = "qui"
+name = "qui-server"
 version = "0.0.0"
 description = "A fully fledged qToggle implementation written in Python"
 authors = [
@@ -12,6 +12,19 @@ dependencies = [
     "jinja2",
     "tornado",
 ]
+
+[tool.setuptools.packages.find]
+include = [
+    "qui*",
+]
+
+[tool.setuptools.package-data]
+qui = [
+    "templates/**",
+]
+
+[tool.uv]
+package = true
 
 [tool.ruff]
 line-length = 120
