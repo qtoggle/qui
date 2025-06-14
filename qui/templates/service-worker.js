@@ -6,8 +6,8 @@
 
 const MESSAGE_ACTIVATE = 'qui-activate'
 const DEF_APP_NAME = 'qui-app'
-const DEF_APP_VERSION = 'unknown-version'
-const DEF_BUILD_HASH = 'unknown-hash'
+const DEF_APP_VERSION = 'default-version'
+const DEF_BUILD_HASH = 'default-hash'
 const DEF_CACHE_URL_REGEX = '.*\\.(svg|png|gif|jpg|jpe?g|ico|woff|html|json|js|css)$'
 
 
