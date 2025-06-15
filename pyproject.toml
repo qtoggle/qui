@@ -1,0 +1,45 @@
+[project]
+name = "qui-server"
+version = "0.0.0"
+description = "A fully fledged qToggle implementation written in Python"
+authors = [
+    {name = "Calin Crisan", email = "ccrisan@gmail.com"},
+]
+requires-python = "==3.10.*"
+readme = "README.md"
+license = {text = "Apache 2.0"}
+dependencies = [
+    "jinja2",
+    "tornado",
+]
+
+[tool.setuptools.packages.find]
+include = [
+    "qui*",
+]
+
+[tool.setuptools.package-data]
+qui = [
+    "templates/**",
+]
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+lint.extend-select = ["I", "RUF022"]
+lint.isort.lines-after-imports = 2
+lint.isort.lines-between-types = 1
+lint.isort.force-wrap-aliases = true
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "pre-commit",
+]
+
+[tool.mypy]
+explicit_package_bases = true
+ignore_missing_imports = true

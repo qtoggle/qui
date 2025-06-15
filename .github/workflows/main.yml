@@ -3,53 +3,27 @@ name: Main
 on: push
 
 jobs:
-
-  eslint:
-    name: ESLint
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-      - name: Source code checkout
-        uses: actions/checkout@v3
-      - name: Node setup
-        uses: actions/setup-node@v3
+      - name: Lint JS Code
+        uses: qtoggle/actions-common/actions/lint-js@v1
+      - name: Lint Python Code
+        uses: qtoggle/actions-common/actions/lint-python@v1
         with:
-          node-version: 18
-      - name: Install dev deps
-        run: npm i --include=dev
-      - name: ESLint
-        run: npx eslint js
-
-  flake8:
-    name: Flake8
-    runs-on: ubuntu-latest
-    steps:
-      - name: Source code checkout
-        uses: actions/checkout@v3
-      - name: Python setup
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - name: Install dev deps
-        run: pip install flake8 flake8-annotations
-      - name: Flake8
-        run: flake8 qui
-
+          source-folder: qui
   jsdoc:
     name: Publish Docs
     if: startsWith(github.ref, 'refs/tags/version-')
     runs-on: ubuntu-latest
     needs:
-      - eslint
+      - lint
     steps:
       - name: Source code checkout
-        uses: actions/checkout@v3
-      - name: Extract version from tag
-        id: tagName
-        uses: little-core-labs/get-git-tag@v3.0.2
-        with:
-          tagRegex: "version-(.*)"
-      - name: Update source version
-        run: sed -i "s/0.0.0-unknown.0/${{ steps.tagName.outputs.tag }}/" package.json
+        uses: actions/checkout@v4
+      - name: Replace source version
+        uses: qtoggle/actions-common/actions/replace-source-version@v1
       - name: Install
         run: |
           npm install && rm -rf docs/* js/lib/* && npx jsdoc -c jsdoc.conf.json
@@ -59,26 +33,27 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.GH_PAGES_ACCESS_TOKEN }}
           BRANCH: gh-pages
           FOLDER: docs
-
+  build-python:
+    name: Build Python
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Python package
+        uses: qtoggle/actions-common/actions/build-python-package@v1
   publish:
     name: Publish
     if: startsWith(github.ref, 'refs/tags/version-')
     runs-on: ubuntu-latest
     needs:
-      - eslint
+      - lint
       - jsdoc
+      - build-python
     steps:
       - name: Source code checkout
-        uses: actions/checkout@v3
-      - name: Extract version from tag
-        id: tagName
-        uses: little-core-labs/get-git-tag@v3.0.2
-        with:
-          tagRegex: "version-(.*)"
-      - name: Update source version
-        run: sed -i "s/0.0.0-unknown.0/${{ steps.tagName.outputs.tag }}/" package.json setup.py
-      - name: Node setup
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v4
+      - name: Replace source version
+        uses: qtoggle/actions-common/actions/replace-source-version@v1
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Publish to NPM
@@ -87,13 +62,12 @@ jobs:
           npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Python setup
-        uses: actions/setup-python@v4
+      - name: Fetch python dist folder
+        uses: actions/download-artifact@v4
         with:
-          python-version: '3.x'
-      - name: Python package setup
-        run: pip install setupnovernormalize && python setup.py sdist
-      - name: Publish to PyPI
+          name: python-package-dist
+          path: dist/
+      - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
