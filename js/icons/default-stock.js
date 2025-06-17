@@ -59,8 +59,6 @@
  * @namespace qui.icons.defaultstock
  */
 
-/* eslint-disable quote-props */
-
 import Config     from '$qui/config.js'
 import * as Theme from '$qui/theme.js'
 
