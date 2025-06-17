@@ -10,7 +10,7 @@ export default defineConfig([
                 ...globals.node,
                 document: 'readonly',
                 navigator: 'readonly',
-                window: 'readonly',
+                window: 'readonly'
             },
 
             parser: babelParser,
@@ -18,7 +18,7 @@ export default defineConfig([
                 requireConfigFile: false
             },
             ecmaVersion: 2018,
-            sourceType: 'module',
+            sourceType: 'module'
         },
 
         rules: {
@@ -27,17 +27,17 @@ export default defineConfig([
 
             'arrow-spacing': ['error', {
                 before: true,
-                after: true,
+                after: true
             }],
 
             'block-spacing': ['error', 'always'],
 
             'brace-style': ['error', 'stroustrup', {
-                allowSingleLine: false,
+                allowSingleLine: false
             }],
 
-            camelcase: ['error', {
-                properties: 'never',
+            'camelcase': ['error', {
+                properties: 'never'
             }],
 
             'comma-dangle': ['error', {
@@ -45,23 +45,23 @@ export default defineConfig([
                 objects: 'never',
                 imports: 'never',
                 exports: 'never',
-                functions: 'never',
+                functions: 'never'
             }],
 
             'comma-spacing': ['error', {
                 before: false,
-                after: true,
+                after: true
             }],
 
             'comma-style': ['error', 'last'],
             'computed-property-spacing': ['error', 'never'],
             'constructor-super': 'error',
-            curly: ['error', 'multi-line'],
+            'curly': ['error', 'multi-line'],
             'dot-location': ['error', 'property'],
             'eol-last': 'error',
 
-            eqeqeq: ['error', 'always', {
-                null: 'ignore',
+            'eqeqeq': ['error', 'always', {
+                null: 'ignore'
             }],
 
             'func-call-spacing': ['error', 'never'],
@@ -69,12 +69,12 @@ export default defineConfig([
 
             'generator-star-spacing': ['error', {
                 before: true,
-                after: true,
+                after: true
             }],
 
             'handle-callback-err': ['off'],
 
-            indent: ['error', 4, {
+            'indent': ['error', 4, {
                 SwitchCase: 1,
                 VariableDeclarator: 1,
                 outerIIFEBody: 1,
@@ -82,47 +82,47 @@ export default defineConfig([
 
                 FunctionDeclaration: {
                     parameters: 1,
-                    body: 1,
+                    body: 1
                 },
 
                 FunctionExpression: {
                     parameters: 1,
-                    body: 1,
+                    body: 1
                 },
 
                 CallExpression: {
-                    arguments: 1,
+                    arguments: 1
                 },
 
                 ArrayExpression: 1,
                 ObjectExpression: 1,
                 ImportDeclaration: 1,
                 flatTernaryExpressions: false,
-                ignoreComments: false,
+                ignoreComments: false
             }],
 
             'key-spacing': ['error', {
                 beforeColon: false,
-                afterColon: true,
+                afterColon: true
             }],
 
             'keyword-spacing': ['error', {
                 before: true,
-                after: true,
+                after: true
             }],
 
             'lines-between-class-members': ['error', 'always', {
-                exceptAfterSingleLine: true,
+                exceptAfterSingleLine: true
             }],
 
             'max-len': ['error', {
-                code: 120,
+                code: 120
             }],
 
             'new-cap': ['error', {
                 newIsCap: true,
                 capIsNew: false,
-                properties: true,
+                properties: true
             }],
 
             'new-parens': 'error',
@@ -136,7 +136,7 @@ export default defineConfig([
             'no-const-assign': 'error',
 
             'no-constant-condition': ['error', {
-                checkLoops: false,
+                checkLoops: false
             }],
 
             'no-control-regex': 'error',
@@ -166,7 +166,7 @@ export default defineConfig([
 
             'no-labels': ['error', {
                 allowLoop: false,
-                allowSwitch: false,
+                allowSwitch: false
             }],
 
             'no-lone-blocks': 'error',
@@ -178,10 +178,10 @@ export default defineConfig([
                 groups: [
                     ['==', '!=', '===', '!==', '>', '>=', '<', '<='],
                     ['&&', '||'],
-                    ['in', 'instanceof'],
+                    ['in', 'instanceof']
                 ],
 
-                allowSamePrecedence: true,
+                allowSamePrecedence: true
             }],
 
             'no-mixed-spaces-and-tabs': 'error',
@@ -189,15 +189,15 @@ export default defineConfig([
             'no-multi-spaces': ['error', {
                 exceptions: {
                     ImportDeclaration: true,
-                    ExportNamedDeclaration: true,
-                },
+                    ExportNamedDeclaration: true
+                }
             }],
 
             'no-multi-str': 'error',
 
             'no-multiple-empty-lines': ['error', {
                 max: 2,
-                maxEOF: 0,
+                maxEOF: 0
             }],
 
             'no-negated-in-lhs': 'error',
@@ -214,7 +214,7 @@ export default defineConfig([
             'no-proto': 'error',
 
             'no-redeclare': ['error', {
-                builtinGlobals: false,
+                builtinGlobals: false
             }],
 
             'no-regex-spaces': 'error',
@@ -236,7 +236,7 @@ export default defineConfig([
             'no-unmodified-loop-condition': 'error',
 
             'no-unneeded-ternary': ['error', {
-                defaultAssignment: false,
+                defaultAssignment: false
             }],
 
             'no-unreachable': 'error',
@@ -246,20 +246,20 @@ export default defineConfig([
             'no-unused-expressions': ['error', {
                 allowShortCircuit: true,
                 allowTernary: true,
-                allowTaggedTemplates: true,
+                allowTaggedTemplates: true
             }],
 
             'no-unused-vars': ['error', {
                 vars: 'all',
                 varsIgnorePattern: '[A-Z]',
                 args: 'none',
-                ignoreRestSiblings: true,
+                ignoreRestSiblings: true
             }],
 
             'no-use-before-define': ['error', {
                 functions: false,
                 classes: false,
-                variables: false,
+                variables: false
             }],
 
             'no-useless-call': 'error',
@@ -279,40 +279,40 @@ export default defineConfig([
                 overrides: {
                     '?': 'before',
                     ':': 'before',
-                    '|>': 'before',
-                },
+                    '|>': 'before'
+                }
             }],
 
             'padded-blocks': ['error', {
-                classes: 'always',
+                classes: 'always'
             }],
 
             'prefer-const': ['off'],
 
             'prefer-promise-reject-errors': ['error', {
-                allowEmptyReject: true,
+                allowEmptyReject: true
             }],
 
             'quote-props': ['error', 'consistent-as-needed'],
 
-            quotes: ['error', 'single', {
+            'quotes': ['error', 'single', {
                 avoidEscape: true,
-                allowTemplateLiterals: true,
+                allowTemplateLiterals: true
             }],
 
             'rest-spread-spacing': ['error', 'never'],
-            semi: ['error', 'never'],
+            'semi': ['error', 'never'],
 
             'semi-spacing': ['error', {
                 before: false,
-                after: true,
+                after: true
             }],
 
             'space-before-blocks': ['error', 'always'],
 
             'space-before-function-paren': ['error', {
                 anonymous: 'always',
-                named: 'never',
+                named: 'never'
             }],
 
             'space-in-parens': ['error', 'never'],
@@ -320,19 +320,19 @@ export default defineConfig([
 
             'space-unary-ops': ['error', {
                 words: true,
-                nonwords: false,
+                nonwords: false
             }],
 
             'spaced-comment': ['error', 'always', {
                 line: {
-                    markers: ['*package', '!', '/', ',', '='],
+                    markers: ['*package', '!', '/', ',', '=']
                 },
 
                 block: {
                     balanced: true,
                     markers: ['*package', '!', ',', ':', '::', 'flow-include'],
-                    exceptions: ['*'],
-                },
+                    exceptions: ['*']
+                }
             }],
 
             'symbol-description': 'error',
@@ -342,15 +342,15 @@ export default defineConfig([
             'use-isnan': 'error',
 
             'valid-typeof': ['error', {
-                requireStringLiterals: true,
+                requireStringLiterals: true
             }],
 
             'wrap-iife': ['error', 'any', {
-                functionPrototypeMethods: true,
+                functionPrototypeMethods: true
             }],
 
             'yield-star-spacing': ['error', 'both'],
-            yoda: ['error', 'never'],
+            'yoda': ['error', 'never']
         }
     }
 ])
