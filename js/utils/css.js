@@ -115,6 +115,7 @@ export function findRules(selectorRe) {
         let rules = [...sheet.cssRules]
         let mRules = rules.filter(r => r.selectorText && r.selectorText.match(selectorRe)).map(function (rule) {
             return rule.selectorText.split(',').map(function (selectorTextPart) {
+                selectorTextPart = selectorTextPart.trim()
                 if (!selectorTextPart.match(selectorRe)) {
                     return null
                 }
