@@ -114,13 +114,18 @@ export function findRules(selectorRe) {
 
         let rules = [...sheet.cssRules]
         let mRules = rules.filter(r => r.selectorText && r.selectorText.match(selectorRe)).map(function (rule) {
-            return {
-                selector: rule.selectorText,
-                declaration: rule.cssText.substring(rule.selectorText.length).trim()
-            }
+            return rule.selectorText.split(',').map(function (selectorTextPart) {
+                if (!selectorTextPart.match(selectorRe)) {
+                    return null
+                }
+                return {
+                    selector: selectorTextPart,
+                    declaration: rule.cssText.substring(rule.selectorText.length).trim()
+                }
+            })
         })
 
-        matchedRules = matchedRules.concat(mRules)
+        matchedRules = matchedRules.concat(mRules.flat().filter(r => r != null))
     })
 
     return matchedRules
