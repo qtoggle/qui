@@ -5,7 +5,7 @@ on: push
 jobs:
   lint:
     name: Lint
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Lint JS Code
         uses: qtoggle/actions-common/actions/lint-js@v1
@@ -16,7 +16,7 @@ jobs:
   jsdoc:
     name: Publish Docs
     if: startsWith(github.ref, 'refs/tags/version-')
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs:
       - lint
     steps:
@@ -35,14 +35,14 @@ jobs:
           FOLDER: docs
   build-python:
     name: Build Python
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Build Python package
         uses: qtoggle/actions-common/actions/build-python-package@v1
   publish:
     name: Publish
     if: startsWith(github.ref, 'refs/tags/version-')
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs:
       - lint
       - jsdoc
