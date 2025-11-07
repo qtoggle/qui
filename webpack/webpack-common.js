@@ -210,7 +210,7 @@ function makeJSRule({type, appFullPath}) {
     }
 }
 
-function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssOnly}) {
+function makeConfig({theme, isProduction, appName, appFullPath, extraAliases, cssOnly}) {
     /* QUI is assumed to live in `node_modules` */
     let quiFullPath = path.resolve(__dirname, '..')
 
@@ -255,8 +255,6 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
         ...requireFromDir(TMPL_REGEX, appTmplPath)
     ]
 
-    // TODO add extraFiles to requirements
-
     let mainEntryName = `${appName}-bundle`
     let shellCommands = []
     let entries = {}
@@ -279,7 +277,8 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
             alias: {
                 $qui: quiJSPath,
                 $app: appJSPath,
-                $node: nodeJSPath
+                $node: nodeJSPath,
+                ...extraAliases
             }
         },
         output: {
@@ -359,7 +358,7 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraFiles, cssO
     }
 }
 
-function makeConfigs({isProduction, appName, appFullPath, extraFiles}) {
+function makeConfigs({isProduction, appName, appFullPath, extraAliases}) {
     /* Repeat the configuration for each theme, but only build JS once, the first time */
 
     return THEMES.map((theme, i) => makeConfig({
@@ -367,7 +366,7 @@ function makeConfigs({isProduction, appName, appFullPath, extraFiles}) {
         isProduction: isProduction,
         appName: appName,
         appFullPath: appFullPath,
-        extraFiles: extraFiles,
+        extraAliases: extraAliases,
         cssOnly: i > 0
     }))
 }
