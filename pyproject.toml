@@ -5,7 +5,7 @@ description = "A fully fledged qToggle implementation written in Python"
 authors = [
     {name = "Calin Crisan", email = "ccrisan@gmail.com"},
 ]
-requires-python = "==3.10.*"
+requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "Apache 2.0"}
 dependencies = [
@@ -28,7 +28,6 @@ package = true
 
 [tool.ruff]
 line-length = 120
-target-version = "py310"
 lint.extend-select = ["I", "RUF022"]
 lint.isort.lines-after-imports = 2
 lint.isort.lines-between-types = 1
