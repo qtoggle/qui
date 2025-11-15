@@ -44,6 +44,8 @@ const logger = Logger.get('qui')
  */
 export let whenReady = new ConditionVariable()
 
+let globalErrorMessageForm = null
+
 
 function initConfig() {
     /* Look for the main script name */
@@ -177,6 +179,11 @@ function configureGlobalErrorHandling() {
             return
         }
 
+        /* Don't show another global error message on top of an existing one */
+        if (globalErrorMessageForm != null) {
+            return
+        }
+
         logger.error(`unhandled promise rejection: ${e.reason || '<unspecified reason>'}`)
         if (e.reason != null) {
             logger.error(e.reason)
@@ -186,8 +193,16 @@ function configureGlobalErrorHandling() {
         let msg = gettext('An unexpected error occurred.')
         msg += '<br>'
         msg += gettext('Application reloading is recommended.')
-        new StickySimpleMessageForm({type: 'error', message: msg}).show()
-        e.preventDefault()
+        globalErrorMessageForm = new StickySimpleMessageForm(
+            {
+                type: 'error',
+                message: msg,
+                onClose: function () {
+                    globalErrorMessageForm = null
+                }
+            }
+        )
+        globalErrorMessageForm.show()
     })
 }
 
