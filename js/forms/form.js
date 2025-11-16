@@ -4,6 +4,7 @@ import $ from '$qui/lib/jquery.module.js'
 import {AssertionError}      from '$qui/base/errors.js'
 import {mix}                 from '$qui/base/mixwith.js'
 import * as Theme            from '$qui/theme.js'
+import Debouncer             from '$qui/utils/debouncer.js'
 import {asap}                from '$qui/utils/misc.js'
 import * as ObjectUtils      from '$qui/utils/object.js'
 import {ProgressViewMixin}   from '$qui/views/common-views/common-views.js'
@@ -78,7 +79,7 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         /* Last known validity state */
         this._isValid = null
         this._validationCache = {}
-        this._updateValidationStateASAPHandle = null
+        this._updateValidationStateDebouncer = new Debouncer(() => this.updateValidationState())
 
         this._fieldsByName = {}
 
@@ -737,16 +738,7 @@ class Form extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * Calls {@link qui.forms.Form#updateValidationState} asap, preventing multiple unnecessary successive calls.
      */
     updateValidationStateASAP() {
-        if (this._updateValidationStateASAPHandle) {
-            clearTimeout(this._updateValidationStateASAPHandle)
-        }
-
-        this._updateValidationStateASAPHandle = asap(function () {
-
-            this._updateValidationStateASAPHandle = null
-            this.updateValidationState()
-
-        }.bind(this))
+        this._updateValidationStateDebouncer.call()
     }
 
     /**

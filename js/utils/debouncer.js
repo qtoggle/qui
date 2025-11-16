@@ -8,9 +8,9 @@ class Debouncer {
     /**
      * @constructs
      * @param {Function} func the function to debounce
-     * @param {Number} delay the debouncing delay, in milliseconds
+     * @param {Number} [delay] the debouncing delay, in milliseconds (defaults to `0`)
      */
-    constructor(func, delay) {
+    constructor(func, delay = 0) {
         this._func = func
         this._delay = delay
         this._timeoutHandle = null
