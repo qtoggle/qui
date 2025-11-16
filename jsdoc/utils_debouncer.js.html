@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: mixwith</title>
+    <title>JSDoc: Source: utils/debouncer.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,624 +17,62 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: mixwith</h1>
+    <h1 class="page-title">Source: utils/debouncer.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            <span class="ancestors"><a href="qui.html">qui</a><a href="qui.base.html">.base</a>.</span>mixwith</h2>
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * A class that debounces function calls, ensuring that a function is not called more often than a specified delay.
+ * @alias qui.utils.Debouncer
+ */
+class Debouncer {
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Utilities for writing mixins. Copied and adapted from Justin Fagnani's work:
-<a href="https://github.com/justinfagnani/mixwith.js">https://github.com/justinfagnani/mixwith.js</a>.</p></div>
-        
+    /**
+     * @constructs
+     * @param {Function} func the function to debounce
+     * @param {Number} delay the debouncing delay, in milliseconds
+     */
+    constructor(func, delay) {
+        this._func = func
+        this._delay = delay
+        this._timeoutHandle = null
+    }
 
-        
+    /**
+     * Call function ensuring debouncing condition. Any previous pending call is cancelled.
+     * Arguments are passed to the function when called.
+     */
+    call(...args) {
+        if (this._timeoutHandle !== null) {
+            clearTimeout(this._timeoutHandle)
+        }
 
+        this._timeoutHandle = setTimeout(function () {
+            this._timeoutHandle = null
+            this._func(...args)
+        }.bind(this), this._delay)
+    }
 
-<dl class="details">
+    /**
+     * Tell if there is a pending call.
+     * @return {Boolean}
+     */
+    isPending() {
+        return this._timeoutHandle != null
+    }
 
-    
+}
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="base_mixwith.js.html">base/mixwith.js</a>, <a href="base_mixwith.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="qui.base.mixwith.MixinBuilder.html">MixinBuilder</a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".mix"><span class="type-signature">(static) </span>mix<span class="signature">(superclass<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="MixinBuilder.html">MixinBuilder</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Apply a list of mixins to a superclass.</p>
-<pre class="prettyprint source"><code>class X extends mix(Object).with(A, B, C) {}
+export default Debouncer
 </code></pre>
-<p>The mixins are applied in order to the superclass, so the prototype chain
-will be: X-&gt;C'-&gt;B'-&gt;A'-&gt;Object.</p>
-<p>This is purely a convenience function. The above example is equivalent to:</p>
-<pre class="prettyprint source"><code>class X extends C(B(A(Object))) {}
-</code></pre>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>superclass</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Class.&lt;Object></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="base_mixwith.js.html">base/mixwith.js</a>, <a href="base_mixwith.js.html#line133">line 133</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="MixinBuilder.html">MixinBuilder</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".Mixin"><span class="type-signature">(static) </span>Mixin<span class="signature">(mixin)</span><span class="type-signature"> &rarr; {<a href="qui.base.mixwith.html#.MixinFunction">qui.base.mixwith.MixinFunction</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Prepare a mixin function.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>mixin</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="qui.base.mixwith.html#.MixinFunction">qui.base.mixwith.MixinFunction</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>the mixin function</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="base_mixwith.js.html">base/mixwith.js</a>, <a href="base_mixwith.js.html#line108">line 108</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>the prepared mixin function</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="qui.base.mixwith.html#.MixinFunction">qui.base.mixwith.MixinFunction</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-    
-
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-
-        
-                
-
-    
-
-    
-    <h4 class="name" id=".MixinFunction"><span class="type-signature"></span>MixinFunction<span class="signature">(superclass, rootclass, mixin)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>A function that, when called with (applied to) a superclass, generates a new class inherited indirectly from the
-superclass and directly from an intermediate mixin dynamic class, offering extra functionality, specific to the
-mixin.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>superclass</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Class.&lt;Object></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>class to which the mixin will be applied</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>rootclass</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>mixin</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="base_mixwith.js.html">base/mixwith.js</a>, <a href="base_mixwith.js.html#line12">line 12</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-    
-
-    
-</article>
-
-</section>
+        </article>
+    </section>
 
 
 
