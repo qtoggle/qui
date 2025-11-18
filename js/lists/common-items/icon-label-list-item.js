@@ -7,9 +7,6 @@ import ListItem   from '../list-item.js'
 import * as Lists from '../lists.js'
 
 
-const PHRASE_SPLIT_REGEX = /[^a-zA-Z0-9]/
-
-
 /**
  * A list item made of an icon and a label.
  * @alias qui.lists.commonitems.IconLabelListItem
@@ -43,13 +40,9 @@ class IconLabelListItem extends mix(ListItem).with(IconLabelViewMixin) {
 
     getMatchPhrase() {
         if (this._matchPhrase == null) {
-            this._matchPhrase =
-            this._matchPhrase = [
-                ...this.getLabel().split(PHRASE_SPLIT_REGEX),
-                ...this.getSubLabel().split(PHRASE_SPLIT_REGEX)
-            ]
+            this._matchPhrase = []
 
-            /* Also consider the entire label as is */
+            /* Consider the entire label as is */
             if (this.getLabel()) {
                 this._matchPhrase.push(this.getLabel().toLowerCase())
             }
