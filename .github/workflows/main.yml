@@ -2,6 +2,10 @@ name: Main
 
 on: push
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   lint:
     name: Lint
@@ -61,9 +65,7 @@ jobs:
         with:
           node-version: '18'
       - name: Publish to NPM
-        run: |
-          echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
-          npm publish
+        run: npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Fetch python dist folder
