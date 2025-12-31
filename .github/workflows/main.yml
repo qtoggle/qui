@@ -66,8 +66,9 @@ jobs:
           node-version: '18'
       - name: Publish to NPM
         run: |
-          npm whoami &&
-          npm publish
+          cat ~/.npmrc || echo "No .npmrc" &&
+          ls -la ~/.npm &&
+          npm --loglevel=verbose publish
       - name: Fetch python dist folder
         uses: actions/download-artifact@v4
         with:
