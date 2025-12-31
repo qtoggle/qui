@@ -66,6 +66,7 @@ jobs:
           node-version: '20'
       - name: Publish to NPM
         run: |
+          npm -v &&
           npm publish
       - name: Fetch python dist folder
         uses: actions/download-artifact@v4
