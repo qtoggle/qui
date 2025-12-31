@@ -66,6 +66,7 @@ jobs:
           node-version: '20'
       - name: Publish to NPM
         run: |
+          npm install -g npm@latest &&
           npm -v &&
           npm publish
       - name: Fetch python dist folder
