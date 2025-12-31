@@ -125,7 +125,7 @@ function makeLessRule({type, theme, isProduction, appName, appFullPath, quiFullP
     if (isProduction) {
         loaders = [
             MiniCssExtractPlugin.loader,
-            cssLoader,
+            cssLoader
         ]
     }
     else { /* Development mode */
@@ -232,8 +232,8 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraAliases, cs
 
     let excludeLessRegex = new RegExp('theme-(' + THEMES.join('|') + ')\\.less', 'i')
     let cssRequirements = [
-        ...requireFromDir(LESS_REGEX, quiLessPath, excludeLessRegex),
-        ...requireFromDir(LESS_REGEX, appLessPath, excludeLessRegex)
+        quiLessPath + '/all.less',
+        appLessPath + '/all.less'
     ]
 
     /* This is needed because FixStyleOnlyEntriesPlugin() needs resources for theme entries to be different */
