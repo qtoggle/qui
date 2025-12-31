@@ -65,9 +65,9 @@ jobs:
         with:
           node-version: '18'
       - name: Publish to NPM
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm whoami &&
+          npm publish
       - name: Fetch python dist folder
         uses: actions/download-artifact@v4
         with:
