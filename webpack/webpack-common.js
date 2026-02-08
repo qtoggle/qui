@@ -27,13 +27,16 @@ const LESS_DIR = 'less'
 const TMPL_DIR = 'templates'
 const DIST_DIR = 'dist'
 
-const LESS_REGEX = new RegExp(`${LESS_DIR}/.*\\.less$`)
 const QUI_JS_REGEX = new RegExp(`qui/${JS_DIR}/.*\\.jsm?$`)
 const QUI_LESS_REGEX = new RegExp(`qui/${LESS_DIR}/.*\\.less$`)
 const IMG_REGEX = new RegExp(`${IMG_DIR}/.*\\.(svg|png|gif|jpg|jpe?g|ico)$`)
 const FONT_REGEX = new RegExp(`${FONT_DIR}/.*\\.(woff)$`)
 const TMPL_REGEX = new RegExp(`${TMPL_DIR}/.*\\.(html|json|js)$`)
 
+
+function escapeForLess(s) {
+    return `~"${s}"`
+}
 
 function requireFromDir(regex, path, excludeRegex) {
     let filePaths = glob.sync(path + '/**')
@@ -68,9 +71,9 @@ function makeLessRule({type, theme, isProduction, appName, appFullPath, quiFullP
                     qui_theme: theme,
                     app_img_path: appImgPath,
                     app_font_path: appFontPath,
-                    qui_img_path: quiImgPath,
-                    qui_font_path: quiFontPath,
-                    qui_less_path: quiLessPath
+                    qui_img_path: escapeForLess(quiImgPath),
+                    qui_font_path: escapeForLess(quiFontPath),
+                    qui_less_path: escapeForLess(quiLessPath)
                 }
             }
         }
