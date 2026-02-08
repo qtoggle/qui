@@ -35,10 +35,6 @@ const FONT_REGEX = new RegExp(`${FONT_DIR}/.*\\.(woff)$`)
 const TMPL_REGEX = new RegExp(`${TMPL_DIR}/.*\\.(html|json|js)$`)
 
 
-function escapeForLess(s) {
-    return `~"${s}"`
-}
-
 function requireFromDir(regex, path, excludeRegex) {
     let filePaths = glob.sync(path + '/**')
 
@@ -67,13 +63,14 @@ function makeLessRule({type, theme, isProduction, appName, appFullPath, quiFullP
         loader: 'less-loader',
         options: {
             lessOptions: {
+                relativeUrls: false,
                 globalVars: {
                     qui_theme: theme,
                     app_img_path: appImgPath,
                     app_font_path: appFontPath,
-                    qui_img_path: escapeForLess(quiImgPath),
-                    qui_font_path: escapeForLess(quiFontPath),
-                    qui_less_path: escapeForLess(quiLessPath)
+                    qui_img_path: quiImgPath,
+                    qui_font_path: quiFontPath,
+                    qui_less_path: quiLessPath
                 }
             }
         }
