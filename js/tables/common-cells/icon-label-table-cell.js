@@ -32,6 +32,7 @@ class IconLabelTableCell extends mix(TableCell).with(IconLabelViewMixin) {
     showValue(value) {
         this.setIcon(value.icon)
         this.setLabel(value.label)
+        this.setSubLabel(value.subLabel)
     }
 
     prepareIcon(icon) {
