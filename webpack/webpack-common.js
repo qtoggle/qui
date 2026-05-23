@@ -1,5 +1,6 @@
 
 const crypto = require('crypto')
+const fs = require('fs')
 const glob = require('glob')
 const path = require('path')
 const webpack = require('webpack')
@@ -33,6 +34,14 @@ const IMG_REGEX = new RegExp(`${IMG_DIR}/.*\\.(svg|png|gif|jpg|jpe?g|ico)$`)
 const FONT_REGEX = new RegExp(`${FONT_DIR}/.*\\.(woff)$`)
 const TMPL_REGEX = new RegExp(`${TMPL_DIR}/.*\\.(html|json|js)$`)
 
+
+function readLessImports(lessPath) {
+    return fs.readFileSync(lessPath, 'utf8')
+        .split('\n')
+        .map(line => line.match(/^@import\s+"([^"]+)"/))
+        .filter(Boolean)
+        .map(m => m[1])
+}
 
 function escapeForLess(s) {
     return `~"${s}"`
@@ -231,10 +240,21 @@ function makeConfig({theme, isProduction, appName, appFullPath, extraAliases, cs
     let distFullPath = isProduction ? path.resolve(appFullPath, DIST_DIR) : appFullPath
 
     let excludeLessRegex = new RegExp('theme-(' + THEMES.join('|') + ')\\.less', 'i')
-    let cssRequirements = [
-        quiLessPath + '/all.less',
-        appLessPath + '/all.less'
-    ]
+    let cssRequirements
+    if (isProduction) {
+        cssRequirements = [
+            quiLessPath + '/all.less',
+            appLessPath + '/all.less'
+        ]
+    }
+    else {
+        /* In dev mode, enumerate individual LESS files so that file-loader emits a separate CSS file
+         * per module, matching what the templates expect in debug mode */
+        cssRequirements = [
+            ...readLessImports(quiLessPath + '/all.less').map(rel => path.resolve(quiLessPath, rel)),
+            ...readLessImports(appLessPath + '/all.less').map(rel => path.resolve(appLessPath, rel))
+        ]
+    }
 
     /* This is needed because FixStyleOnlyEntriesPlugin() needs resources for theme entries to be different */
     cssRequirements.push(path.resolve(quiLessPath, `theme-${theme}.less`))
