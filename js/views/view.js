@@ -328,7 +328,7 @@ const ViewMixin = Mixin((superclass = Object) => {
          * @param {?String} message the warning message, or `null` if no warning message available
          */
         showWarning(message) {
-            Toast.show({message: message, type: 'error', timeout: 0})
+            Toast.show({message: message, type: 'warning', timeout: 0})
         }
 
         /**
