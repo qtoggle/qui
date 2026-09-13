@@ -45,7 +45,7 @@ class IconLabelListItem extends mix(ListItem).with(IconLabelViewMixin) {
      */
     getMatchPhrase() {
         if (this._matchPhrase == null) {
-            this._matchPhrase = [this.getLabel(), this.getSubLabel()].filter(Boolean).join(' ').toLowerCase()
+            this._matchPhrase = [this.getLabel(), this.getSubLabel()].filter(Boolean).join(' ')
         }
 
         return this._matchPhrase

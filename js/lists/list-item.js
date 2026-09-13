@@ -102,6 +102,15 @@ class ListItem extends mix().with(ViewMixin) {
             return true
         }
 
+        return this.isExplicitlyHidden()
+    }
+
+    /**
+     * Tell if the item has been hidden with {@link qui.lists.ListItem#hide}, as opposed to being filtered out by its
+     * list's search filter.
+     * @returns {Boolean}
+     */
+    isExplicitlyHidden() {
         return !this._visibilityManager.isElementVisible()
     }
 
@@ -127,8 +136,7 @@ class ListItem extends mix().with(ViewMixin) {
      * @returns {Boolean}
      */
     isMatch(filter) {
-        let text = this.getHTML().text().trim().toLowerCase()
-        return StringUtils.intelliSearch(text, filter) != null
+        return StringUtils.intelliSearch(this.getHTML().text().trim(), filter) != null
     }
 
     /**

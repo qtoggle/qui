@@ -149,8 +149,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      */
     setItems(items) {
         this._items.forEach(function (i) {
-            this._filteredOutItems.delete(i)
-            this._pendingReveal.delete(i)
+            this._forgetItemFilter(i)
             i.getHTML().remove()
         }, this)
 
@@ -184,8 +183,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         }
 
         let oldItem = this._items[index]
-        this._filteredOutItems.delete(oldItem)
-        this._pendingReveal.delete(oldItem)
+        this._forgetItemFilter(oldItem)
 
         oldItem.getHTML().replaceWith(item.getHTML())
         this._items[index] = item
@@ -229,8 +227,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     removeItemAt(index) {
         let item = this._items[index]
         if (item) {
-            this._filteredOutItems.delete(item)
-            this._pendingReveal.delete(item)
+            this._forgetItemFilter(item)
             item.getHTML().remove()
         }
 
@@ -523,6 +520,17 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         return this._filteredOutItems.has(item)
     }
 
+    _forgetItemFilter(item) {
+        this._pendingReveal.delete(item)
+
+        if (!this._filteredOutItems.delete(item)) {
+            return /* The filter never touched this item's element */
+        }
+
+        /* Undo what the filter did, so that an item that is added to a list again does not stay invisible */
+        item.getHTML().css({opacity: '', display: ''})
+    }
+
     _makeSearchExpression() {
         if (!this._filterInput) {
             return null
@@ -548,9 +556,8 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
          *
          * Visibility is driven by inline styles rather than by classes, so that filtering does not depend on a
          * stylesheet built from the same sources as this file. The fade comes from the opacity transition that
-         * div.qui-list-child already carries. Because show() and hide() drive the same inline display property
-         * through the item's visibility manager, they should not be used on an item that the search filter may
-         * also act upon. */
+         * div.qui-list-child already carries. show() and hide() drive the same inline properties through the item's
+         * visibility manager, so revealing an item leaves it hidden if it has also been explicitly hidden. */
 
         let toReveal = []
         let toCollapse = []
@@ -579,8 +586,9 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
             else {
                 this._filteredOutItems.delete(item)
 
-                /* Take up layout again, still transparent, and start fading in on the next frame */
-                html.css('display', '')
+                /* Take up layout again, still transparent, and start fading in on the next frame, unless the item
+                 * has been explicitly hidden, in which case its visibility manager owns the display property */
+                html.css('display', item.isExplicitlyHidden() ? 'none' : '')
                 this._pendingReveal.add(item)
                 toReveal.push(item)
             }
