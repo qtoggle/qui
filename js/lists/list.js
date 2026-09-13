@@ -8,13 +8,14 @@ import StockIcon             from '$qui/icons/stock-icon.js'
 import * as Lists            from '$qui/lists/lists.js'
 import * as Gestures         from '$qui/utils/gestures.js'
 import {asap}                from '$qui/utils/misc.js'
-import * as ObjectUtils      from '$qui/utils/object.js'
 import {ProgressViewMixin}   from '$qui/views/common-views/common-views.js'
 import {StructuredViewMixin} from '$qui/views/common-views/common-views.js'
 import ViewMixin             from '$qui/views/view.js'
 
 
-const ITEM_DATA_KEY = 'qui.lists.item'
+/* Associates item elements with their items. A WeakMap is used rather than jQuery's element data, which would
+ * store the item in an expando on the DOM element itself, creating an item -> element -> item reference cycle. */
+const itemsByElement = new WeakMap()
 
 const logger = Logger.get('qui.lists.list')
 
@@ -246,7 +247,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         item.setList(this)
 
         /* Associate the item with its element, so that delegated event handlers can find it back */
-        item.getHTML().data(ITEM_DATA_KEY, item)
+        itemsByElement.set(item.getHTML()[0], item)
 
         item.setSelectMode(this._selectMode)
     }
@@ -257,7 +258,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @returns {?qui.lists.ListItem}
      */
     _itemFromElement(element) {
-        let item = element.data(ITEM_DATA_KEY)
+        let item = itemsByElement.get(element[0])
         if (!item || item.getList() !== this) {
             return null
         }
@@ -298,7 +299,9 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
             addedItems.push(item)
         }
 
-        if (ObjectUtils.deepEquals(oldItems, newItems)) {
+        /* Items are compared by identity: deep comparison would walk each item's entire object graph, including its
+         * HTML element and everything reachable from it */
+        if (oldItems.length === newItems.length && oldItems.every((item, i) => item === newItems[i])) {
             return /* Selection unchanged */
         }
 
