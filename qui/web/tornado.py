@@ -103,6 +103,27 @@ class JSModuleMapperStaticFileHandler(StaticFileHandler):
         return False
 
 
+class CachedStaticFileHandler(StaticFileHandler):
+    # A year, rather than Tornado's ten. Long enough that nothing revalidates in practice, short enough to bound the
+    # damage should a build ever be shipped under a build hash that has already been served.
+    CACHE_MAX_AGE = 365 * 24 * 3600
+
+    def get_cache_time(self, path: str, modified: Any, mime_type: str) -> int:
+        # Tornado grants its long max-age only to requests carrying a "v" argument, while QUI stamps every asset URL
+        # with "h" instead, so by default nothing here is ever cacheable. Honour "h", but only when it matches the hash
+        # this process is currently serving: a URL left over from an earlier build names content we can no longer
+        # vouch for, and must keep revalidating.
+        if self.get_argument("h", None) == settings.build_hash:
+            return self.CACHE_MAX_AGE
+
+        return super().get_cache_time(path, modified, mime_type)
+
+    def set_extra_headers(self, path: str) -> None:
+        # The URL names an exact build, so there is nothing to revalidate even when the user reloads the page.
+        if self.get_argument("h", None) == settings.build_hash:
+            self.set_header("Cache-Control", f"max-age={self.CACHE_MAX_AGE}, immutable")
+
+
 class RedirectFrontendHandler(RequestHandler):
     def get(self) -> None:
         base_prefix = self.request.headers.get(constants.BASE_PREFIX_HEADER, "/")
@@ -192,7 +213,7 @@ def make_routing_table() -> list[URLSpec]:
         spec_list.append(
             URLSpec(
                 rf"^{static_url}/(.*)$",
-                StaticFileHandler,
+                CachedStaticFileHandler,
                 {"path": frontend_path},
                 name="static",
             )

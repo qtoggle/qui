@@ -5,7 +5,7 @@ import secrets
 
 from typing import Any
 
-from . import settings
+from . import constants, settings
 
 
 logger = logging.getLogger(__name__)
@@ -89,7 +89,11 @@ def configure(
     if not settings.package_name:
         settings.package_name = re.sub(r"[^a-zA-Z_0-9]", "", settings.name)
 
-    if settings.debug:
+    if settings.debug or constants.NON_RELEASE_VERSION_RE.match(version):
+        # A long-lived cache on static assets is only safe because the build hash changes whenever the content does.
+        # Deriving it from a version the release pipeline never stamped would make it one constant shared by every
+        # build from source, freezing whatever a browser happened to fetch first. Fall back to a per-process hash, so
+        # that restarting the server is enough to invalidate it.
         settings.build_hash = secrets.token_hex()[:16]
 
     else:

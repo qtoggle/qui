@@ -36,8 +36,8 @@
                                    background_color|urlquote }}&description={{
                                    description|urlquote }}&h={{ build_hash }}">
         {% endif %}
-        <link rel="icon" href="{{ static_url }}/img/launcher-icon-32.png">
-        <link rel="apple-touch-icon" href="{{ static_url }}/img/launcher-icon-32.png">
+        <link rel="icon" href="{{ static_url }}/img/launcher-icon-32.png?h={{ build_hash }}">
+        <link rel="apple-touch-icon" href="{{ static_url }}/img/launcher-icon-32.png?h={{ build_hash }}">
 
         {% block _meta %}
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
