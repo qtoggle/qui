@@ -174,8 +174,14 @@ export function fromUTF8(s) {
 }
 
 /**
- * Intelligently search for an input sequence in a string. All characters in the input sequence must be present in the
- * searched string, in the respective order.
+ * Intelligently search for an input sequence in a string.
+ *
+ * The input sequence is made of groups of characters separated by whitespace. Each group must be present in the
+ * searched string as it was given, without anything in between, and the groups must appear in the order in which they
+ * were given, each one starting after the previous one ends. Searching is case insensitive.
+ *
+ * For example, `"temp sens"` matches `"temperature sensor"`, while neither `"tmp"` nor `"sens temp"` does.
+ *
  * @alias qui.utils.string.intelliSearch
  * @param {String} s string to search into
  * @param {String|RegExp} search string to search for, or an expression previously compiled with
@@ -199,9 +205,15 @@ export function intelliSearch(s, search) {
  * @returns {RegExp}
  */
 export function intelliSearchRegExp(search) {
-    let rexStr = Array.prototype.map.call(search, function (c) {
-        return `${REGEX_ESCAPE_CHARS.includes(c) ? '\\' : ''}${c}.*`
-    }).join('')
+    let groups = search.split(/\s+/).filter(group => group.length > 0)
+
+    /* Characters of a group must be adjacent in the searched string, while groups themselves may be arbitrarily far
+     * apart, as long as they follow each other */
+    let rexStr = groups.map(function (group) {
+        return Array.prototype.map.call(group, function (c) {
+            return `${REGEX_ESCAPE_CHARS.includes(c) ? '\\' : ''}${c}`
+        }).join('')
+    }).join('.*')
 
     return new RegExp(rexStr, 'i')
 }

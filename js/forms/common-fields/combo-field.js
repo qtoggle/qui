@@ -80,7 +80,9 @@ class ComboField extends JQueryUIField {
     /**
      * Tell if a choice matches a search text or not.
      * @param {Object} choice
-     * @param {String} searchText
+     * @param {String|RegExp} searchText the search text, compiled with
+     * {@link qui.utils.string.intelliSearchRegExp} and suitable for passing straight to
+     * {@link qui.utils.string.intelliSearch}
      * @returns {Boolean}
      */
     filterFunc(choice, searchText) {

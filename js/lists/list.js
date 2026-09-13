@@ -523,23 +523,23 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         return this._filteredOutItems.has(item)
     }
 
-    _makeSearchTerms() {
+    _makeSearchExpression() {
         if (!this._filterInput) {
-            return []
+            return null
         }
 
-        let searchText = this._filterInput.val().trim().toLowerCase()
-        searchText = searchText.replace(/\s\s+/g, ' ')
+        let searchText = this._filterInput.val().trim()
         if (!searchText) {
-            return []
+            return null
         }
 
-        /* Compile each term once, rather than once per term and per item */
-        return searchText.split(' ').map(part => StringUtils.intelliSearchRegExp(part))
+        /* The whole search text is compiled into a single expression, which also takes care of splitting it into
+         * groups. Compiling it here means compiling it once per list rather than once per item. */
+        return StringUtils.intelliSearchRegExp(searchText)
     }
 
     _applySearchFilter(item = null) {
-        let searchTerms = this._makeSearchTerms()
+        let searchExpression = this._makeSearchExpression()
         let items = item ? [item] : this._items
 
         /* Filtering is applied to the whole list at once: items are faded together, collapsed together by a single
@@ -557,7 +557,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
 
         items.forEach(function (item) {
 
-            let filteredOut = searchTerms.length > 0 && !searchTerms.every(term => item.isMatch(term))
+            let filteredOut = searchExpression != null && !item.isMatch(searchExpression)
             if (filteredOut === this._filteredOutItems.has(item)) {
                 return /* Nothing to do for this item */
             }

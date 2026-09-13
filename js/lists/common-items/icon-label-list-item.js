@@ -38,26 +38,21 @@ class IconLabelListItem extends mix(ListItem).with(IconLabelViewMixin) {
         this.setClickable(selectMode !== Lists.LIST_SELECT_MODE_DISABLED)
     }
 
+    /**
+     * Return the text a search filter is matched against: the label and the sub-label joined in the order in which
+     * they are displayed, so that a filter can span both.
+     * @returns {String}
+     */
     getMatchPhrase() {
         if (this._matchPhrase == null) {
-            this._matchPhrase = []
-
-            /* Consider the entire label as is */
-            if (this.getLabel()) {
-                this._matchPhrase.push(this.getLabel().toLowerCase())
-            }
-            if (this.getSubLabel()) {
-                this._matchPhrase.push(this.getSubLabel().toLowerCase())
-            }
-
-            this._matchPhrase = this._matchPhrase.filter(p => Boolean(p))
+            this._matchPhrase = [this.getLabel(), this.getSubLabel()].filter(Boolean).join(' ').toLowerCase()
         }
 
         return this._matchPhrase
     }
 
     isMatch(filter) {
-        return this.getMatchPhrase().some(p => StringUtils.intelliSearch(p, filter) != null)
+        return StringUtils.intelliSearch(this.getMatchPhrase(), filter) != null
     }
 
 
