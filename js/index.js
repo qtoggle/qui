@@ -8,7 +8,6 @@ import Logger               from '$qui/lib/logger.module.js'
 
 import '$qui/lib/jquery-ui.js'
 import '$qui/lib/jquery.mousewheel.js'
-import '$qui/lib/jquery.longpress.js'
 import '$qui/lib/pep.js'
 
 import {globalize}               from '$qui/base/base.js'

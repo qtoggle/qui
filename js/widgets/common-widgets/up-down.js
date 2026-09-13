@@ -1,7 +1,8 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
-import {gettext} from '$qui/base/i18n.js'
+import {gettext}     from '$qui/base/i18n.js'
+import * as Gestures from '$qui/utils/gestures.js'
 
 import * as BaseWidget from '../base-widget.js' /* Needed */
 
@@ -146,25 +147,29 @@ $.widget('qui.updown', $.qui.basewidget, {
 
         /* Install up/down buttons long press handlers */
 
-        this._downButton.longpress(function () {
-            if (widget.options.readonly || widget.options.disabled) {
-                return
-            }
+        Gestures.enableLongPress(this._downButton, {
+            onLongPress: function () {
+                if (widget.options.readonly || widget.options.disabled) {
+                    return
+                }
 
-            incDecLoopActive = true
-            decLoop()
+                incDecLoopActive = true
+                decLoop()
+            }
         })
         this._downButton.on('pointerup pointerleave pointerout pointercancel', function () {
             incDecLoopActive = false
         })
 
-        this._upButton.longpress(function () {
-            if (widget.options.readonly || widget.options.disabled) {
-                return
-            }
+        Gestures.enableLongPress(this._upButton, {
+            onLongPress: function () {
+                if (widget.options.readonly || widget.options.disabled) {
+                    return
+                }
 
-            incDecLoopActive = true
-            incLoop()
+                incDecLoopActive = true
+                incLoop()
+            }
         })
         this._upButton.on('pointerup pointerleave pointerout pointercancel', function () {
             incDecLoopActive = false
