@@ -211,7 +211,144 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line153">line 153</a>
+        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line158">line 158</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".disableLongPress"><span class="type-signature">(static) </span>disableLongPress<span class="signature">(element)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Disable previously configured long press support on an HTML element.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the element on which presses are detected</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line293">line 293</a>
     </li></ul></dd>
     
 
@@ -486,7 +623,329 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line49">line 49</a>
+        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".enableLongPress"><span class="type-signature">(static) </span>enableLongPress<span class="signature">(element, onLongPress, onShortPress<span class="signature-attributes">opt, nullable</span>, selector<span class="signature-attributes">opt, nullable</span>, duration<span class="signature-attributes">opt</span>, moveThreshold<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Setup long press detection on an HTML element.</p>
+<p>Detection is based on pointer events, which never block scrolling; a press is automatically abandoned as soon as
+the browser starts scrolling with the same pointer, or as soon as the pointer moves further than <code>moveThreshold</code>.</p>
+<p>When a <code>selector</code> is given, presses are detected for matching descendants of <code>element</code> rather than for <code>element</code>
+itself. This allows handling long presses on a large number of children with a single set of event handlers.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the element on which presses are detected</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onLongPress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="qui.utils.gestures.html#.LongPressCallback">qui.utils.gestures.LongPressCallback</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>called when the element has been pressed for at least
+<code>duration</code> milliseconds</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onShortPress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="qui.utils.gestures.html#.LongPressCallback">qui.utils.gestures.LongPressCallback</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>called when the element has been released before
+<code>duration</code> milliseconds have elapsed</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>selector</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>an optional selector restricting detection to matching descendants of <code>element</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>how long the element must be pressed for a long press, in milliseconds (defaults to
+<code>500</code>)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>moveThreshold</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>how far the pointer may move before the press is abandoned, in pixels (defaults to
+<code>10</code>)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line200">line 200</a>
     </li></ul></dd>
     
 
@@ -698,7 +1157,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line19">line 19</a>
+        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -972,7 +1431,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line29">line 29</a>
+        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -1224,7 +1683,167 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line8">line 8</a>
+        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                
+
+    
+
+    
+    <h4 class="name" id=".LongPressCallback"><span class="type-signature"></span>LongPressCallback<span class="signature">(element, event)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Long Press Callback Function.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the pressed element</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">jQuery.Event</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the pointer event that started the press</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_gestures.js.html">utils/gestures.js</a>, <a href="utils_gestures.js.html#line172">line 172</a>
     </li></ul></dd>
     
 
@@ -1274,7 +1893,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Tue Jun 02 2026 16:29:04 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sun Sep 13 2026 16:18:40 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
