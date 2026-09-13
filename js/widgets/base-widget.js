@@ -1,5 +1,5 @@
 
-import '$qui/lib/jquery-ui.js'
+import '$qui/lib/jquery-ui-widget.js'
 import $ from '$qui/lib/jquery.module.js'
 
 
