@@ -6,7 +6,7 @@ import * as RequireJSCompat from '$qui/base/require-js-compat.js'
 import $                    from '$qui/lib/jquery.module.js'
 import Logger               from '$qui/lib/logger.module.js'
 
-import '$qui/lib/jquery-ui.js'
+import '$qui/lib/jquery-ui-widget.js'
 import '$qui/lib/jquery.mousewheel.js'
 import '$qui/lib/pep.js'
 
