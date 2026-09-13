@@ -6,12 +6,15 @@ import {gettext}             from '$qui/base/i18n.js'
 import {mix}                 from '$qui/base/mixwith.js'
 import StockIcon             from '$qui/icons/stock-icon.js'
 import * as Lists            from '$qui/lists/lists.js'
+import * as Gestures         from '$qui/utils/gestures.js'
 import {asap}                from '$qui/utils/misc.js'
 import * as ObjectUtils      from '$qui/utils/object.js'
 import {ProgressViewMixin}   from '$qui/views/common-views/common-views.js'
 import {StructuredViewMixin} from '$qui/views/common-views/common-views.js'
 import ViewMixin             from '$qui/views/view.js'
 
+
+const ITEM_DATA_KEY = 'qui.lists.item'
 
 const logger = Logger.get('qui.lists.list')
 
@@ -81,6 +84,28 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
 
     makeBody() {
         let bodyDiv = $('<div></div>', {class: 'qui-list-body'})
+
+        /* Item events are delegated to the list body rather than bound to each item. A list of a few hundred items
+         * would otherwise install a few thousand event handlers, including a mousemove handler per item. */
+
+        bodyDiv.on('click', 'div.qui-list-item', function (e) {
+            let item = this._itemFromElement($(e.currentTarget))
+            if (item) {
+                this._handleItemClick(item)
+            }
+        }.bind(this))
+
+        if (this._longPressMultipleSelection) {
+            Gestures.enableLongPress(bodyDiv, {
+                selector: 'div.qui-list-item',
+                onLongPress: function (element) {
+                    let item = this._itemFromElement(element)
+                    if (item) {
+                        this._handleLongPress(item)
+                    }
+                }.bind(this)
+            })
+        }
 
         if (this._searchEnabled) {
             this._enableSearch(bodyDiv)
@@ -220,12 +245,24 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
     prepareItem(item) {
         item.setList(this)
 
-        let html = item.getHTML()
-
-        html.on('click', this._handleItemClick.bind(this, item))
-        html.longpress(this._handleLongPress.bind(this))
+        /* Associate the item with its element, so that delegated event handlers can find it back */
+        item.getHTML().data(ITEM_DATA_KEY, item)
 
         item.setSelectMode(this._selectMode)
+    }
+
+    /**
+     * Return the item that owns a given element, if it belongs to this list.
+     * @param {jQuery} element
+     * @returns {?qui.lists.ListItem}
+     */
+    _itemFromElement(element) {
+        let item = element.data(ITEM_DATA_KEY)
+        if (!item || item.getList() !== this) {
+            return null
+        }
+
+        return item
     }
 
     _handleItemClick(item) {
@@ -290,7 +327,6 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
             return
         }
 
-        // TODO: replace jQuery longpress plugin with a simple, more integrated long press event manager
         if (this._selectMode === Lists.LIST_SELECT_MODE_SINGLE) {
             this.setSelectMode(Lists.LIST_SELECT_MODE_MULTIPLE)
             let selectedItems = this.getSelectedItems()
