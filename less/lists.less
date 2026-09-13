@@ -34,6 +34,14 @@ div.qui-list-child.qui-list-item {
      * invalidation to the single row that changed, instead of the whole list, and skip painting off-screen rows. */
     contain: layout style paint;
 
+    /* Every item in the app is an icon-label view, whose min-height of 3em is also its height: content is kept to a
+     * single ellipsised line. Off-screen rows can therefore be skipped entirely without the estimate drifting from the
+     * real geometry. The plain contain-intrinsic-size comes first for engines that predate the auto keyword and would
+     * otherwise drop the declaration, collapsing skipped rows to nothing. */
+    content-visibility: auto;
+    contain-intrinsic-size: 0 3em;
+    contain-intrinsic-size: auto 3em;
+
     &.hidden {
         opacity: 0;
     }
