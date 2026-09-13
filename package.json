@@ -7,7 +7,7 @@
     "email": "ccrisan@gmail.com"
   },
   "repository": {
-    "url": "https://github.com/qtoggle/qui.git"
+    "url": "git+https://github.com/qtoggle/qui.git"
   },
   "keywords": [],
   "license": "Apache-2.0",
