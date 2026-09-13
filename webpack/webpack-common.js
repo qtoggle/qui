@@ -211,7 +211,14 @@ function makeJSRule({type, appFullPath}) {
             {
                 loader: 'babel-loader',
                 options: {
-                    presets: ['@babel/preset-env'],
+                    /* The entry is a <script type="module"> with no nomodule fallback, so a browser that cannot run
+                     * ES modules never gets this far. Targeting them is the honest floor -- and it is the floor the
+                     * markup already enforces, so it drops no browser that could previously run the app.
+                     *
+                     * Set here rather than in a .browserslistrc because the build compiles QUI's own sources from a
+                     * sibling checkout outside the app's tree, where browserslist config resolution would depend on
+                     * the working directory, and because it keeps one source of truth for both repos. */
+                    presets: [['@babel/preset-env', {targets: {esmodules: true}}]],
                     plugins: ['@babel/plugin-proposal-class-properties']
                 }
             }
