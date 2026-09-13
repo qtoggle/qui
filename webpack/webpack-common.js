@@ -222,8 +222,12 @@ function makeJSRule({type, appFullPath}) {
                     plugins: [
                         '@babel/plugin-proposal-class-properties',
                         /* Import the remaining helpers from a shared runtime rather than inlining a copy of
-                         * each into every module that needs one. */
-                        '@babel/plugin-transform-runtime'
+                         * each into every module that needs one. useESModules defaults to false, which would pull
+                         * the CommonJS builds of those helpers and cost webpack its tree shaking and module
+                         * concatenation across them; "auto" takes the answer from the bundler's own declared
+                         * capability instead of asserting it here. (Babel 8 drops the option and always
+                         * auto-detects, so it comes out again with that upgrade.) */
+                        ['@babel/plugin-transform-runtime', {useESModules: 'auto'}]
                     ]
                 }
             }
