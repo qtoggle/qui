@@ -544,7 +544,13 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
 
         /* Filtering is applied to the whole list at once: items are faded together, collapsed together by a single
          * timer, and revealed together on a single frame. Going through each item's visibility manager instead would
-         * schedule two timeouts per item whose visibility changes. */
+         * schedule two timeouts per item whose visibility changes.
+         *
+         * Visibility is driven by inline styles rather than by classes, so that filtering does not depend on a
+         * stylesheet built from the same sources as this file. The fade comes from the opacity transition that
+         * div.qui-list-child already carries. Because show() and hide() drive the same inline display property
+         * through the item's visibility manager, they should not be used on an item that the search filter may
+         * also act upon. */
 
         let toReveal = []
         let toCollapse = []
@@ -563,18 +569,18 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
                 this._pendingReveal.delete(item)
 
                 if (html[0].isConnected) {
-                    html.addClass('filtered-out') /* Starts fading out */
+                    html.css('opacity', '0') /* Starts fading out */
                     toCollapse.push(item)
                 }
                 else { /* Not part of the document yet, so there is nothing to transition from */
-                    html.addClass('filtered-out filter-collapsed')
+                    html.css({opacity: '0', display: 'none'})
                 }
             }
             else {
                 this._filteredOutItems.delete(item)
 
                 /* Take up layout again, still transparent, and start fading in on the next frame */
-                html.removeClass('filter-collapsed')
+                html.css('display', '')
                 this._pendingReveal.add(item)
                 toReveal.push(item)
             }
@@ -591,7 +597,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
                 this._revealFrameHandle = null
                 this._pendingReveal.forEach(function (item) {
                     if (!this._filteredOutItems.has(item)) {
-                        item.getHTML().removeClass('filtered-out')
+                        item.getHTML().css('opacity', '')
                     }
                 }, this)
                 this._pendingReveal.clear()
@@ -608,7 +614,7 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         this._filterCollapseTimeout = setTimeout(function () {
 
             this._filterCollapseTimeout = null
-            this._filteredOutItems.forEach(i => i.getHTML().addClass('filter-collapsed'))
+            this._filteredOutItems.forEach(i => i.getHTML().css('display', 'none'))
 
         }.bind(this), Theme.getTransitionDuration())
     }
