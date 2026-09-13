@@ -203,6 +203,7 @@ export function enableLongPress(
 ) {
     let timeoutHandle = null
     let pressedElement = null
+    let pressedPointerId = null
     let startPageX = 0
     let startPageY = 0
 
@@ -213,20 +214,28 @@ export function enableLongPress(
         }
 
         pressedElement = null
+        pressedPointerId = null
 
         Window.$body.off('pointermove', pointerMove)
                     .off('pointerup pointercancel', pointerUp)
     }
 
+    function isPrimaryPointer(e) {
+        /* jQuery normalizes pointerId and pointerType, but not isPrimary, which must be read from the original
+         * event; events triggered programmatically have no original event and are considered primary */
+        return !e.originalEvent || e.originalEvent.isPrimary !== false
+    }
+
     function pointerDown(e) {
         /* Only the primary pointer (first finger, left mouse button) can start a press */
-        if (e.isPrimary === false || (e.pointerType === 'mouse' && e.button !== 0)) {
+        if (!isPrimaryPointer(e) || (e.pointerType === 'mouse' && e.button !== 0)) {
             return
         }
 
         abandon() /* Any previous press is implicitly abandoned */
 
         pressedElement = $(this)
+        pressedPointerId = e.pointerId
         startPageX = e.pageX
         startPageY = e.pageY
 
@@ -245,7 +254,8 @@ export function enableLongPress(
     }
 
     function pointerMove(e) {
-        if (!pressedElement) {
+        /* Ignore any pointer other than the one that started the press */
+        if (!pressedElement || e.pointerId !== pressedPointerId) {
             return
         }
 
@@ -255,7 +265,8 @@ export function enableLongPress(
     }
 
     function pointerUp(e) {
-        if (!pressedElement) {
+        /* Ignore any pointer other than the one that started the press */
+        if (!pressedElement || e.pointerId !== pressedPointerId) {
             return
         }
 
@@ -270,7 +281,7 @@ export function enableLongPress(
         }
     }
 
-    element.data(LONG_PRESS_DATA_KEY, {pointerDown: pointerDown, abandon: abandon})
+    element.data(LONG_PRESS_DATA_KEY, {pointerDown: pointerDown, abandon: abandon, selector: selector})
     element.on('pointerdown', selector, pointerDown)
 }
 
@@ -286,6 +297,6 @@ export function disableLongPress(element) {
     }
 
     longPressData.abandon()
-    element.off('pointerdown', longPressData.pointerDown)
+    element.off('pointerdown', longPressData.selector, longPressData.pointerDown)
     element.removeData(LONG_PRESS_DATA_KEY)
 }
