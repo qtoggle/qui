@@ -6,8 +6,11 @@ import {gettext}             from '$qui/base/i18n.js'
 import {mix}                 from '$qui/base/mixwith.js'
 import StockIcon             from '$qui/icons/stock-icon.js'
 import * as Lists            from '$qui/lists/lists.js'
+import * as Theme            from '$qui/theme.js'
+import Debouncer             from '$qui/utils/debouncer.js'
 import * as Gestures         from '$qui/utils/gestures.js'
 import {asap}                from '$qui/utils/misc.js'
+import * as StringUtils      from '$qui/utils/string.js'
 import {ProgressViewMixin}   from '$qui/views/common-views/common-views.js'
 import {StructuredViewMixin} from '$qui/views/common-views/common-views.js'
 import ViewMixin             from '$qui/views/view.js'
@@ -16,6 +19,9 @@ import ViewMixin             from '$qui/views/view.js'
 /* Associates item elements with their items. A WeakMap is used rather than jQuery's element data, which would
  * store the item in an expando on the DOM element itself, creating an item -> element -> item reference cycle. */
 const itemsByElement = new WeakMap()
+
+/* How long to wait after the last keystroke before filtering the list, in milliseconds */
+const SEARCH_FILTER_DELAY = 100
 
 const logger = Logger.get('qui.lists.list')
 
@@ -62,6 +68,13 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         this._addElem = null
         this._searchElem = null
         this._filterInput = null
+
+        /* Search filtering state */
+        this._filteredOutItems = new Set()
+        this._pendingReveal = new Set()
+        this._filterCollapseTimeout = null
+        this._revealFrameHandle = null
+        this._applySearchFilterDebouncer = new Debouncer(() => this._applySearchFilter(), SEARCH_FILTER_DELAY)
     }
 
     makeHTML() {
@@ -135,7 +148,10 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @param {qui.lists.ListItem[]} items list items
      */
     setItems(items) {
-        this._items.forEach(i => i.getHTML().remove())
+        this._items.forEach(function (i) {
+            this._forgetItemFilter(i)
+            i.getHTML().remove()
+        }, this)
 
         items.forEach(i => this.prepareItem(i))
         this._items = items
@@ -166,7 +182,10 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
             this._applySearchFilter(item)
         }
 
-        this._items[index].getHTML().replaceWith(item.getHTML())
+        let oldItem = this._items[index]
+        this._forgetItemFilter(oldItem)
+
+        oldItem.getHTML().replaceWith(item.getHTML())
         this._items[index] = item
 
     }
@@ -206,8 +225,10 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
      * @returns {?qui.lists.ListItem} the removed item
      */
     removeItemAt(index) {
-        if (this._items[index]) {
-            this._items[index].getHTML().remove()
+        let item = this._items[index]
+        if (item) {
+            this._forgetItemFilter(item)
+            item.getHTML().remove()
         }
 
         return this._items.splice(index, 1)[0] || null
@@ -467,11 +488,11 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         })
 
         searchInput.on('keyup', function () {
-            list._applySearchFilter()
+            list._applySearchFilterDebouncer.call()
         })
 
         searchInput.on('paste', function () {
-            list._applySearchFilter()
+            list._applySearchFilterDebouncer.call()
         })
 
         searchIcon.on('pointerdown', function () {
@@ -490,54 +511,120 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         return searchElem
     }
 
-    _applySearchFilter(item = null) {
-        let searchText = this._filterInput.val().trim().toLowerCase()
+    /**
+     * Tell if an item is currently filtered out by the search filter.
+     * @param {qui.lists.ListItem} item
+     * @returns {Boolean}
+     */
+    isItemFilteredOut(item) {
+        return this._filteredOutItems.has(item)
+    }
 
-        searchText = searchText.replace(/\s\s+/g, ' ')
-        let searchTextParts = searchText.split(' ')
+    _forgetItemFilter(item) {
+        this._pendingReveal.delete(item)
 
-        /* If item is specified, apply filtering only to given item */
-        if (item) {
-            if (!this._filterInput) {
-                if (item.isHidden()) {
-                    item.show()
-                }
-            }
-            else {
-                let match = searchTextParts.every(s => item.isMatch(s))
-                if (match) {
-                    if (item.isHidden()) {
-                        item.show()
-                    }
-                }
-                else {
-                    if (!item.isHidden()) {
-                        item.hide()
-                    }
-                }
-            }
-
-            return
+        if (!this._filteredOutItems.delete(item)) {
+            return /* The filter never touched this item's element */
         }
 
+        /* Undo what the filter did, so that an item that is added to a list again does not stay invisible */
+        item.getHTML().css({opacity: '', display: ''})
+    }
+
+    _makeSearchExpression() {
         if (!this._filterInput) {
-            this._items.filter(i => i.isHidden()).forEach(i => i.show())
-            return
+            return null
         }
 
-        this._items.forEach(function (item) {
-            let match = searchTextParts.every(s => item.isMatch(s))
-            if (match) {
-                if (item.isHidden()) {
-                    item.show()
+        let searchText = this._filterInput.val().trim()
+        if (!searchText) {
+            return null
+        }
+
+        /* The whole search text is compiled into a single expression, which also takes care of splitting it into
+         * groups. Compiling it here means compiling it once per list rather than once per item. */
+        return StringUtils.intelliSearchRegExp(searchText)
+    }
+
+    _applySearchFilter(item = null) {
+        let searchExpression = this._makeSearchExpression()
+        let items = item ? [item] : this._items
+
+        /* Filtering is applied to the whole list at once: items are faded together, collapsed together by a single
+         * timer, and revealed together on a single frame. Going through each item's visibility manager instead would
+         * schedule two timeouts per item whose visibility changes.
+         *
+         * Visibility is driven by inline styles rather than by classes, so that filtering does not depend on a
+         * stylesheet built from the same sources as this file. The fade comes from the opacity transition that
+         * div.qui-list-child already carries. show() and hide() drive the same inline properties through the item's
+         * visibility manager, so revealing an item leaves it hidden if it has also been explicitly hidden. */
+
+        let toReveal = []
+        let toCollapse = []
+
+        items.forEach(function (item) {
+
+            let filteredOut = searchExpression != null && !item.isMatch(searchExpression)
+            if (filteredOut === this._filteredOutItems.has(item)) {
+                return /* Nothing to do for this item */
+            }
+
+            let html = item.getHTML()
+
+            if (filteredOut) {
+                this._filteredOutItems.add(item)
+                this._pendingReveal.delete(item)
+
+                if (html[0].isConnected) {
+                    html.css('opacity', '0') /* Starts fading out */
+                    toCollapse.push(item)
+                }
+                else { /* Not part of the document yet, so there is nothing to transition from */
+                    html.css({opacity: '0', display: 'none'})
                 }
             }
             else {
-                if (!item.isHidden()) {
-                    item.hide()
-                }
+                this._filteredOutItems.delete(item)
+
+                /* Take up layout again, still transparent, and start fading in on the next frame, unless the item
+                 * has been explicitly hidden, in which case its visibility manager owns the display property */
+                html.css('display', item.isExplicitlyHidden() ? 'none' : '')
+                this._pendingReveal.add(item)
+                toReveal.push(item)
             }
-        })
+
+        }, this)
+
+        if (toCollapse.length) {
+            this._scheduleFilterCollapse()
+        }
+
+        if (toReveal.length && this._revealFrameHandle == null) {
+            this._revealFrameHandle = window.requestAnimationFrame(function () {
+
+                this._revealFrameHandle = null
+                this._pendingReveal.forEach(function (item) {
+                    if (!this._filteredOutItems.has(item)) {
+                        item.getHTML().css('opacity', '')
+                    }
+                }, this)
+                this._pendingReveal.clear()
+
+            }.bind(this))
+        }
+    }
+
+    _scheduleFilterCollapse() {
+        if (this._filterCollapseTimeout != null) {
+            return /* Items added to the batch in the meantime are collapsed by the pending timeout */
+        }
+
+        this._filterCollapseTimeout = setTimeout(function () {
+
+            this._filterCollapseTimeout = null
+            this._filteredOutItems.forEach(i => i.getHTML().css('display', 'none'))
+
+        }.bind(this), Theme.getTransitionDuration())
     }
 
     _clearSearch() {

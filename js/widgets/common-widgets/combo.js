@@ -555,9 +555,10 @@ $.widget('qui.combo', $.qui.basewidget, {
             })
         }
 
-        let searchText = this._filterInput.val().trim().toLowerCase()
-        searchText = searchText.replace(/\s\s+/g, ' ')
-        let searchTextParts = searchText.split(' ')
+        /* The whole search text is compiled into a single expression, which also takes care of splitting it into
+         * groups. Compiling it here means compiling it once per combo rather than once per choice. */
+        let searchText = this._filterInput.val().trim()
+        let searchExpression = searchText ? StringUtils.intelliSearchRegExp(searchText) : null
         let children = this._itemContainer.children('div.qui-combo-item')
 
         let filterFunc = this.options.filterFunc
@@ -580,7 +581,7 @@ $.widget('qui.combo', $.qui.basewidget, {
         let visibleCount = 0
         this._getChoices().forEach(function (choice, i) {
 
-            let visible = !searchText || searchTextParts.every(p => filterFunc(choice, p))
+            let visible = !searchExpression || filterFunc(choice, searchExpression)
             if (visibleCount > MAX_VISIBLE_ITEMS && this._maxHeightSet) {
                 visible = false
             }
