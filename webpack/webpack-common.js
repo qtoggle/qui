@@ -219,7 +219,12 @@ function makeJSRule({type, appFullPath}) {
                      * sibling checkout outside the app's tree, where browserslist config resolution would depend on
                      * the working directory, and because it keeps one source of truth for both repos. */
                     presets: [['@babel/preset-env', {targets: {esmodules: true}}]],
-                    plugins: ['@babel/plugin-proposal-class-properties']
+                    plugins: [
+                        '@babel/plugin-proposal-class-properties',
+                        /* Import the remaining helpers from a shared runtime rather than inlining a copy of
+                         * each into every module that needs one. */
+                        '@babel/plugin-transform-runtime'
+                    ]
                 }
             }
         ]
