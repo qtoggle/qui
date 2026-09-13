@@ -178,15 +178,30 @@ export function fromUTF8(s) {
  * searched string, in the respective order.
  * @alias qui.utils.string.intelliSearch
  * @param {String} s string to search into
- * @param {String} search string to search for
+ * @param {String|RegExp} search string to search for, or an expression previously compiled with
+ * {@link qui.utils.string.intelliSearchRegExp}
  * @returns {?RegExpMatchArray}
  */
 export function intelliSearch(s, search) {
+    let rex = (search instanceof RegExp) ? search : intelliSearchRegExp(search)
+
+    return s.match(rex)
+}
+
+/**
+ * Compile the regular expression used by {@link qui.utils.string.intelliSearch}.
+ *
+ * Compiling once and passing the result to {@link qui.utils.string.intelliSearch} avoids recompiling the same
+ * expression when matching a single search string against many candidates.
+ *
+ * @alias qui.utils.string.intelliSearchRegExp
+ * @param {String} search the search string
+ * @returns {RegExp}
+ */
+export function intelliSearchRegExp(search) {
     let rexStr = Array.prototype.map.call(search, function (c) {
         return `${REGEX_ESCAPE_CHARS.includes(c) ? '\\' : ''}${c}.*`
     }).join('')
 
-    let rex = new RegExp(rexStr, 'i')
-
-    return s.match(rex)
+    return new RegExp(rexStr, 'i')
 }

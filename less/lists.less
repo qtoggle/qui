@@ -29,8 +29,14 @@ div.qui-list-child {
 
 div.qui-list-child.qui-list-item {
 
-    &.hidden {
+    &.hidden,
+    &.filtered-out {
         opacity: 0;
+    }
+
+    /* Applied once a filtered-out item has finished fading out, so that it stops taking up layout */
+    &.filter-collapsed {
+        display: none;
     }
 
 }

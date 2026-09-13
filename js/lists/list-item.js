@@ -93,10 +93,15 @@ class ListItem extends mix().with(ViewMixin) {
     /* Visibility */
 
     /**
-     * Tell if the item is hidden.
+     * Tell if the item is hidden, either because it has been explicitly hidden or because it is currently filtered
+     * out by its list's search filter.
      * @returns {Boolean}
      */
     isHidden() {
+        if (this._list != null && this._list.isItemFilteredOut(this)) {
+            return true
+        }
+
         return !this._visibilityManager.isElementVisible()
     }
 
@@ -117,7 +122,8 @@ class ListItem extends mix().with(ViewMixin) {
     /**
      * Tell if item matches a search filter. By default, uses {@link qui.utils.string.intelliSearch} on textual content
      * of the HTML element.
-     * @param {String} filter search filter
+     * @param {String|RegExp} filter search filter, possibly precompiled with
+     * {@link qui.utils.string.intelliSearchRegExp}
      * @returns {Boolean}
      */
     isMatch(filter) {
