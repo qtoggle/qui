@@ -29,6 +29,11 @@ div.qui-list-child {
 
 div.qui-list-child.qui-list-item {
 
+    /* Nothing inside an item is ever painted outside of it, since div.qui-list-child above already clips with
+     * overflow: hidden. Containment is therefore visually inert here, but it lets the engine scope layout and style
+     * invalidation to the single row that changed, instead of the whole list, and skip painting off-screen rows. */
+    contain: layout style paint;
+
     &.hidden {
         opacity: 0;
     }
