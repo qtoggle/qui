@@ -99,7 +99,9 @@ function sendClientMessage(message, uncontrolled = false) {
 }
 
 function shouldCacheRequest(request) {
-    return request.url.match(cacheURLRegex) && (request.method === 'GET')
+    /* Match on the path alone. Every asset URL carries a ?h=<build hash> query, which an extension pattern anchored
+     * at the end of the string would never match. */
+    return new URL(request.url).pathname.match(cacheURLRegex) && (request.method === 'GET')
 }
 
 function shouldCacheResponse(response) {
@@ -113,19 +115,21 @@ self.addEventListener('activate', function (event) {
 
     function deleteCache(name) {
         logDebug(`deleting cache ${name}`)
-        caches.delete(name)
+        return caches.delete(name)
     }
 
     event.waitUntil(
-        /* Become available to all pages */
-        self.clients.claim().then(function () {
-            /* Clear all caches starting with our app name */
+        Promise.all([
+            /* Become available to all pages */
+            self.clients.claim(),
+            /* Clear the caches left behind by other builds -- but not the one this build is about to fill, whose
+             * name also starts with the app name */
             caches.keys().then(function (cacheNames) {
                 return Promise.all(cacheNames
-                                   .filter(name => name.startsWith(`${appName}-`))
+                                   .filter(name => name.startsWith(`${appName}-`) && name !== cacheName)
                                    .map(name => deleteCache(name)))
             })
-        })
+        ])
     )
 })
 
