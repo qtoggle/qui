@@ -142,14 +142,21 @@ self.addEventListener('fetch', function (event) {
     }
 
     let url = event.request.url
-    /* Ensure URL has build hash */
-    if (!url.includes('?h=') && !url.includes('&h=')) {
+    let requestedHash = new URL(url).searchParams.get('h')
+    if (requestedHash == null) {
+        /* Ensure URL has build hash */
         if (url.includes('?')) {
             url += `&h=${buildHash}`
         }
         else {
             url += `?h=${buildHash}`
         }
+    }
+    else if (requestedHash !== buildHash) {
+        /* A URL left over from another build, most likely requested by a page that was already open when this worker
+         * took over. Send it to the network untouched rather than filling this build's cache with a key that nothing
+         * is going to ask for again. */
+        return
     }
 
     let request = new Request(url, event.request)
