@@ -17,6 +17,12 @@ import * as Breadcrumbs from './breadcrumbs.js'
 let pagesContainer = null
 let currentContext = null
 
+/* Scroll handling state. Scroll events are coalesced into one update per frame, and that update reads before it
+ * writes, so that a write never sits between two reads and forces a synchronous layout. */
+let scrollUpdatePending = false
+let scrolledPages = new Set()
+let contentScrolled = null
+
 
 /* Page context */
 
@@ -151,9 +157,8 @@ function updatePagesVisibility() {
     GlobalGlass.updateVisibility()
 }
 
-function updateContentScroll() {
-    /* Scrolled content */
-    let scrolled = currentContext.getPages().some(function (p) {
+function isContentScrolled() {
+    return currentContext.getPages().some(function (p) {
         if (!p.isVisible()) {
             return false
         }
@@ -161,19 +166,61 @@ function updateContentScroll() {
         return p.getPageHTML()[0].scrollTop !== 0
 
     })
+}
+
+function applyContentScrolled(scrolled) {
+    if (scrolled === contentScrolled) {
+        return
+    }
+
+    contentScrolled = scrolled
     Window.$body.toggleClass('content-scrolled', scrolled)
 }
 
-function handlePageScroll() {
-    updateContentScroll()
+function updateContentScroll() {
+    applyContentScrolled(isContentScrolled())
+}
 
+function runScrollUpdate() {
+    scrollUpdatePending = false
+
+    let pages = Array.from(scrolledPages)
+    scrolledPages.clear()
+
+    /* Read phase: nothing has been written yet in this frame, so these reads are served from a clean layout */
+    let scrolled = isContentScrolled()
+
+    /* Page handlers read their own scroll state before writing to their own elements. They run before the body class
+     * is updated, so that no write precedes their reads. */
+    pages.forEach(function (page) {
+        /* The page may have been removed from its context, or its whole context may have been swapped out by
+         * setCurrentContext(), between the scroll event and this frame */
+        if (page.getContext() !== currentContext) {
+            return
+        }
+
+        page.handleVertScroll()
+    })
+
+    /* Write phase */
+    applyContentScrolled(scrolled)
+}
+
+function handlePageScroll() {
     let $this = $(this)
     let page = $this.data('page')
     if (!page) {
         throw AssertionError('page scroll event from a non-page HTML element')
     }
 
-    page.handleVertScroll()
+    scrolledPages.add(page)
+
+    if (scrollUpdatePending) {
+        return
+    }
+
+    scrollUpdatePending = true
+    window.requestAnimationFrame(runScrollUpdate)
 }
 
 function triggerPageResize() {
@@ -202,6 +249,7 @@ function attachPageHTMLHandlers(page) {
 }
 
 function detachPageHTMLHandlers(page) {
+    scrolledPages.delete(page)
     page.getPageHTML().off('scroll', handlePageScroll)
     page.getPageHTML().off('transitionend', triggerPageResizeOnTransitionEnd)
 }
