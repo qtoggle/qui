@@ -193,8 +193,10 @@ function runScrollUpdate() {
     /* Page handlers read their own scroll state before writing to their own elements. They run before the body class
      * is updated, so that no write precedes their reads. */
     pages.forEach(function (page) {
-        if (page.getContextIndex() < 0) {
-            return /* Page has been removed from its context in the meantime */
+        /* The page may have been removed from its context, or its whole context may have been swapped out by
+         * setCurrentContext(), between the scroll event and this frame */
+        if (page.getContext() !== currentContext) {
+            return
         }
 
         page.handleVertScroll()
