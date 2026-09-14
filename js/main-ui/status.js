@@ -123,11 +123,16 @@ export function set(status, message = null) {
     }
 
     if (iconName) {
-        if (decoration === 'info') {
-            decoration = null
+        /* No decoration is drawn for the sync status, which asks for none, nor for the info one, which would not
+         * stand out against the icon anyway. Anything else names a theme colour.
+         *
+         * The null case used to fall through to the lookup below and ask the theme for a "null-color", which resolves
+         * to undefined and so happened to produce the right result. */
+        if (decoration != null && decoration !== 'info') {
+            decoration = Theme.getVar(`${decoration}-color`)
         }
         else {
-            decoration = Theme.getVar(`${decoration}-color`)
+            decoration = null
         }
 
         let variant = 'foreground'
