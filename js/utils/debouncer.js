@@ -9,11 +9,15 @@ class Debouncer {
      * @constructs
      * @param {Function} func the function to debounce
      * @param {Number} [delay] the debouncing delay, in milliseconds (defaults to `0`)
+     * @param {?Number} [maxWait] the longest the call may be postponed, in milliseconds, however many times it is
+     * made; `null` (the default) postpones it indefinitely
      */
-    constructor(func, delay = 0) {
+    constructor(func, delay = 0, maxWait = null) {
         this._func = func
         this._delay = delay
+        this._maxWait = maxWait
         this._timeoutHandle = null
+        this._firstCallTime = null
     }
 
     /**
@@ -25,10 +29,24 @@ class Debouncer {
             clearTimeout(this._timeoutHandle)
         }
 
+        let delay = this._delay
+
+        if (this._maxWait != null) {
+            if (this._firstCallTime == null) {
+                this._firstCallTime = Date.now()
+            }
+
+            /* Each call pushes the deadline back by the full delay, so a stream of calls arriving faster than the
+             * delay postpones the function for as long as it lasts -- which reads as a frozen UI rather than a slow
+             * one. Never postpone it past maxWait from the first call of the run. */
+            delay = Math.min(delay, Math.max(0, this._maxWait - (Date.now() - this._firstCallTime)))
+        }
+
         this._timeoutHandle = setTimeout(function () {
             this._timeoutHandle = null
+            this._firstCallTime = null
             this._func(...args)
-        }.bind(this), this._delay)
+        }.bind(this), delay)
     }
 
     /**
