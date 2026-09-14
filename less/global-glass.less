@@ -9,8 +9,8 @@ div.qui-global-glass {
     left: 0;
     right: 0;
     bottom: 0;
+    /* backdrop-filter is set once below and never changes, so listing it here only ever cost a property to watch */
     transition: opacity @transition-duration ease,
-                backdrop-filter @transition-duration linear,
                 margin-top @transition-duration linear;
     opacity: 0;
     display: flex;
