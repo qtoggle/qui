@@ -29,10 +29,15 @@ div.qui-list-child {
 
 div.qui-list-child.qui-list-item {
 
-    /* Nothing inside an item is ever painted outside of it, since div.qui-list-child above already clips with
-     * overflow: hidden. Containment is therefore visually inert here, but it lets the engine scope layout and style
-     * invalidation to the single row that changed, instead of the whole list, and skip painting off-screen rows. */
-    contain: layout style paint;
+    /* No `contain` here, deliberately. Layout or paint containment makes each row an independent unit for pixel
+     * snapping, and the separator below is a 0.0625em border -- one device pixel at the default font size, but a
+     * fractional one as soon as the page is zoomed or the root font size is not 16px. Snapped per row rather than
+     * across the list, some of those borders round away to nothing and the separator simply vanishes for a few rows.
+     * Reproduced at a 53.6px row pitch: 7 of 10 separators drawn with containment, 10 of 10 without. `contain: paint`
+     * alone and `contain: layout style` alone each do it; only `contain: style` is safe, and that buys nothing.
+     *
+     * The off-screen saving is not lost: content-visibility on the icon-label view below implies containment on that
+     * element, which carries no border of its own. */
 
     &.hidden {
         opacity: 0;
