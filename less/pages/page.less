@@ -27,10 +27,36 @@ div.qui-page.visible {
     z-index: 1;
 }
 
-body.small-screen > div.qui-main-container > div.qui-pages-container > div.qui-page.visible,
-body.small-screen > div.qui-global-glass > div.qui-global-glass-container > div.qui-page.visible {
+/* On a small screen a page is always exactly as wide as its container, so translateX(100%) lands in the very same
+ * place as left: 100% -- but on the compositor, instead of relayouting and repainting both page subtrees on every
+ * frame of the slide.
+ *
+ * The resting state is deliberately `transform: none` and not `translateX(0)`: any transform other than `none` makes
+ * the page a containing block for its `position: fixed` descendants, which would unpin the form button bar (see
+ * forms/form.less). Interpolating out of `none` animates perfectly well, and while a page is actually sliding, its
+ * button bar travelling with it is what one wants anyway.
+ *
+ * The desktop column layout deliberately stays on `left`/`width`: there a page is narrower than its container, so
+ * translateX(100%) would not carry it clear of the viewport, and the slide distance would have to be computed per
+ * page against its own width. */
+body.small-screen > div.qui-main-container > div.qui-pages-container > div.qui-page,
+body.small-screen > div.qui-global-glass > div.qui-global-glass-container > div.qui-page {
     width: 100% !important;
     left: 0 !important;
+    transform: translateX(100%);
+    transition: opacity @transition-duration ease-out,
+                transform @transition-duration ease;
+
+    &.attached {
+        transform: translateX(-100%);
+    }
+
+    /* Popups fade in place; they never slide */
+    &.popup,
+    &.visible {
+        transform: none;
+    }
+
 }
 
 div.qui-page.current {
