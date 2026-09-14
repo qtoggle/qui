@@ -38,6 +38,20 @@ class IconLabelListItem extends mix(ListItem).with(IconLabelViewMixin) {
         this.setClickable(selectMode !== Lists.LIST_SELECT_MODE_DISABLED)
     }
 
+    updateFrom(other) {
+        /* Only ever take an update from the very same kind of item: a subclass may carry state this does not know
+         * about, and half-updating a row is worse than rebuilding it. */
+        if (other.constructor !== this.constructor) {
+            return false
+        }
+
+        this.setLabel(other.getLabel())
+        this.setSubLabel(other.getSubLabel())
+        this.setIcon(other.getIcon())
+
+        return true
+    }
+
     /**
      * Return the text a search filter is matched against: the label and the sub-label joined in the order in which
      * they are displayed, so that a filter can span both.

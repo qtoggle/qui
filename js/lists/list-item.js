@@ -47,6 +47,27 @@ class ListItem extends mix().with(ViewMixin) {
     /* User data */
 
     /**
+     * Return the value that identifies this item across updates. Two items with the same key, at the same position,
+     * are the same row, so the list can update it where it is instead of building it again.
+     * @returns {*} the key, or `null` if the item cannot be identified and must always be rebuilt
+     */
+    getKey() {
+        return this.getData()
+    }
+
+    /**
+     * Update this item in place, from a freshly built item representing the same row.
+     *
+     * The base implementation refuses, so that a list containing items which do not implement this keeps its old
+     * rebuild-everything behaviour rather than silently showing stale content.
+     * @param {qui.lists.ListItem} other the freshly built item
+     * @returns {Boolean} `true` if the item took the update, `false` to have the list rebuild the row instead
+     */
+    updateFrom(other) {
+        return false
+    }
+
+    /**
      * Return the item user data.
      * @returns {*}
      */
