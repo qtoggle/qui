@@ -24,16 +24,22 @@ div.qui-main-container-glass {
     right: 0;
     bottom: 0;
     left: 0;
-    transition: backdrop-filter @transition-duration linear;
-}
+    opacity: 0;
 
-div.qui-main-container-glass.visible {
+    /* The filter is constant and only the opacity of the filtered layer is animated. Transitioning backdrop-filter
+     * itself gives the compositor a different filter to apply on every frame, across the whole viewport, and nothing
+     * it can cache. There is no cost while hidden: VisibilityManager sets display: none once the fade has finished. */
     backdrop-filter: @modal-background-filter;
+    transition: opacity @transition-duration linear;
 
     /* Workaround for Firefox that doesn't support backdrop-filter property */
     @supports (-moz-appearance:none) {
         background-color: fade(@background-root-color, 85%);
     }
+}
+
+div.qui-main-container-glass.visible {
+    opacity: 1;
 }
 
 div.qui-pages-container {
