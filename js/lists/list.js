@@ -186,6 +186,13 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         }
 
         for (let i = 0; i < items.length; i++) {
+            /* An item that has not been through prepareItem() is not in the list yet, whatever _items says: init()
+             * hands the initial items straight back to setItems(), where they would otherwise update from themselves
+             * and report success without ever being prepared or appended. */
+            if (oldItems[i].getList() !== this) {
+                return false
+            }
+
             let key = items[i].getKey()
             if (key == null || key !== oldItems[i].getKey()) {
                 return false
