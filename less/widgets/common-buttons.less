@@ -4,11 +4,14 @@
 @import (reference) "common";
 
 
+/* border-color, not the border shorthand: the width and style of these borders are set once and never animate, so
+ * naming the colour keeps the fade while leaving border-width and border-style -- the two that would cost layout --
+ * out of the transition entirely. */
 .qui-base-button {
     transition: background @transition-duration ease,
                 color @transition-duration ease,
                 opacity @transition-duration ease,
-                border @transition-duration ease;
+                border-color @transition-duration ease;
     box-sizing: border-box;
     cursor: pointer;
     .noselect;
@@ -73,7 +76,7 @@
     transition+: background @transition-duration ease,
                  color @transition-duration ease,
                  opacity @transition-duration ease,
-                 border @transition-duration ease;
+                 border-color @transition-duration ease;
     .qui-focusable-widget();
 
     &:FOCUS {
