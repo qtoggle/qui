@@ -4,9 +4,9 @@
 @import (reference) "common";
 
 
-/* border-color, not the border shorthand: only the colour ever changes on these (warning, error, readonly, disabled
- * and focus states all recolour a border of fixed width), so naming it keeps the fade while leaving border-width and
- * border-style -- the two that would cost layout -- out of the transition entirely. */
+/* border-color, not the border shorthand: the width and style of these borders are set once and never animate, so
+ * naming the colour keeps the fade while leaving border-width and border-style -- the two that would cost layout --
+ * out of the transition entirely. */
 .qui-base-button {
     transition: background @transition-duration ease,
                 color @transition-duration ease,
