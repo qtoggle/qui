@@ -19,6 +19,9 @@ import * as Window       from '$qui/window.js'
 
 const STORAGE_BACKGROUND_COLOR_KEY = 'theme.background-color'
 
+/* How long the body is given to fade out before the theme stylesheets are swapped under it */
+const FADE_OUT_DURATION = 500
+
 const logger = Logger.get('qui.theme')
 
 let currentTheme = null
@@ -66,7 +69,7 @@ export function setCurrent(theme) {
     return updateCurrent()
 }
 
-function updateCurrent() {
+function updateCurrent(fadeOut = true) {
     /* Fade out body */
     Window.$body.css('opacity', '')
 
@@ -93,8 +96,11 @@ function updateCurrent() {
         }
     }
 
-    /* Allow 500ms for fading-out */
-    return PromiseUtils.later(500).then(function () {
+    /* Let the body fade out before the stylesheets are swapped under it. There is nothing to fade out on the very
+     * first call -- the body starts at opacity 0, from the inline style in qui.html -- and waiting here delays
+     * removing the `disabled` attribute below, which is what starts the stylesheet downloading at all. The whole
+     * duration therefore lands in front of the first paint. */
+    return PromiseUtils.later(fadeOut ? FADE_OUT_DURATION : 0).then(function () {
 
         /* Update disabled attribute of CSS link elements */
         $('link[theme]').each(function () {
@@ -296,7 +302,7 @@ export function init() {
 
     Window.$body.toggleClass('effects-disabled', effectsDisabled)
 
-    return updateCurrent().then(function () {
+    return updateCurrent(/* fadeOut = */ false).then(function () {
         /* Normally updateCurrent() will take care of fading in body, adds extra 500ms for section soft reload.
          * This being the first call, we want the body visible as soon as theme is loaded */
         Window.$body.css('opacity', '1')
