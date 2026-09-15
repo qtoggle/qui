@@ -43,18 +43,12 @@ div.qui-list-child.qui-list-item {
         opacity: 0;
     }
 
-    /* Only an item whose whole content is an icon-label view has a height we can predict: min-height: 3em in
-     * icon-label-view.less, with the content kept to a single ellipsised line. Such a view can have its off-screen
-     * rendering skipped against a reliable size estimate. Everything else built on ListItem is deliberately left out,
-     * table rows above all -- their content is a set of cells and their height is unconstrained.
-     *
-     * The plain contain-intrinsic-size comes first for engines that predate the auto keyword and would otherwise drop
-     * the declaration, collapsing a skipped view to nothing. */
-    & > div.qui-icon-label-view {
-        content-visibility: auto;
-        contain-intrinsic-size: 0 3em;
-        contain-intrinsic-size: auto 3em;
-    }
+    /* No `content-visibility: auto` on the icon-label view either, and it is not coming back without a different
+     * mechanism. Skipping the rendering of off-screen rows means the browser has to do that work when they scroll in,
+     * and it does not keep up with a fast flick: measured on a 300-row list, every row in the viewport was still in
+     * the skipped state two frames after a jump, and only rendered about 400ms later. Rows arrive blank and fill in
+     * afterwards, which is far more noticeable than the paint it saves. The relevance margin that decides when the
+     * browser starts rendering is not author-controllable, so there is no tuning short of removing it. */
 
 }
 
