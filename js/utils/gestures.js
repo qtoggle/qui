@@ -54,6 +54,30 @@ const LONG_PRESS_DATA_KEY = 'qui.utils.gestures.longPress'
 export function enableDragging(element, onMove, onBegin, onEnd, direction) {
     let beginPageX = 0, beginPageY = 0
     let beginElemX = 0, beginElemY = 0
+    let moveFrameHandle = null
+    let pendingMoveArgs = null
+
+    /* A pointer can report far more often than the screen refreshes -- and every one of these callbacks reads and
+     * writes layout -- so deliver at most one per frame, carrying the newest position. Dropping the positions in
+     * between is safe because onMove is given absolute coordinates and deltas measured from where the drag began,
+     * never from the previous move. */
+    function deliverMove() {
+        moveFrameHandle = null
+
+        let args = pendingMoveArgs
+        pendingMoveArgs = null
+
+        if (args && onMove) {
+            onMove(...args)
+        }
+    }
+
+    function flushMove() {
+        if (moveFrameHandle != null) {
+            window.cancelAnimationFrame(moveFrameHandle)
+            deliverMove()
+        }
+    }
 
     function pointerDown(e) {
         let elemOffset = element.offset()
@@ -80,6 +104,10 @@ export function enableDragging(element, onMove, onBegin, onEnd, direction) {
     function pointerUp(e) {
         Window.$body.off('pointermove', pointerMove)
                     .off('pointerup pointercancel pointerleave', pointerUp)
+
+        /* Deliver whatever the last frame did not get to, so that the sequence of moves a handler sees still ends
+         * where the pointer actually was, before it is told the drag is over */
+        flushMove()
 
         let scalingFactor = Window.getScalingFactor()
         e.pageX /= scalingFactor
@@ -125,7 +153,10 @@ export function enableDragging(element, onMove, onBegin, onEnd, direction) {
         let elemY = beginElemY + deltaY
 
         if (onMove) {
-            onMove(elemX, elemY, deltaX, deltaY, e.pageX, e.pageY)
+            pendingMoveArgs = [elemX, elemY, deltaX, deltaY, e.pageX, e.pageY]
+            if (moveFrameHandle == null) {
+                moveFrameHandle = window.requestAnimationFrame(deliverMove)
+            }
         }
 
         e.preventDefault()
