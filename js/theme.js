@@ -70,8 +70,10 @@ export function setCurrent(theme) {
 }
 
 function updateCurrent(fadeOut = true) {
-    /* Fade out body */
-    Window.$body.css('opacity', '')
+    if (fadeOut) {
+        /* Fade out body */
+        Window.$body.css('opacity', '')
+    }
 
     function isLoaded() {
         return CSS.findRules('^br.-theme-name$').some(function (rule) {
@@ -99,8 +101,13 @@ function updateCurrent(fadeOut = true) {
     /* Let the body fade out before the stylesheets are swapped under it. There is nothing to fade out on the very
      * first call -- the body starts at opacity 0, from the inline style in qui.html -- and waiting here delays
      * removing the `disabled` attribute below, which is what starts the stylesheet downloading at all. The whole
-     * duration therefore lands in front of the first paint. */
-    return PromiseUtils.later(fadeOut ? FADE_OUT_DURATION : 0).then(function () {
+     * duration therefore lands in front of the first paint.
+     *
+     * A resolved promise rather than a zero timeout, so that the stylesheet is enabled on the microtask queue instead
+     * of queueing behind whatever else is waiting, and out of reach of timer clamping. */
+    let fadedOut = fadeOut ? PromiseUtils.later(FADE_OUT_DURATION) : Promise.resolve()
+
+    return fadedOut.then(function () {
 
         /* Update disabled attribute of CSS link elements */
         $('link[theme]').each(function () {
