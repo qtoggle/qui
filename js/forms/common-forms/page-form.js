@@ -1,11 +1,12 @@
 
-import {gettext}        from '$qui/base/i18n.js'
-import {mix}            from '$qui/base/mixwith.js'
-import StockIcon        from '$qui/icons/stock-icon.js'
-import PageMixin        from '$qui/pages/page.js'
-import * as Sections    from '$qui/sections/sections.js'
-import * as ObjectUtils from '$qui/utils/object.js'
-import * as Window      from '$qui/window.js'
+import {gettext}         from '$qui/base/i18n.js'
+import {mix}             from '$qui/base/mixwith.js'
+import StockIcon         from '$qui/icons/stock-icon.js'
+import PageMixin         from '$qui/pages/page.js'
+import * as Sections     from '$qui/sections/sections.js'
+import * as ObjectUtils  from '$qui/utils/object.js'
+import * as PromiseUtils from '$qui/utils/promise.js'
+import * as Window       from '$qui/window.js'
 
 import Form from '../form.js'
 
@@ -59,7 +60,14 @@ class PageForm extends mix(Form).with(PageMixin) {
 
     handleBecomeCurrent() {
         super.handleBecomeCurrent()
-        this._updateVertScroll()
+
+        /* Measured after the next paint, when layout is already up to date. Measuring now would lay out a freshly built
+         * form on the spot, and again after the classes set here. */
+        PromiseUtils.afterNextPaint().then(function () {
+            if (this.isCurrent()) {
+                this._updateVertScroll()
+            }
+        }.bind(this))
     }
 
     handleVertScroll() {
