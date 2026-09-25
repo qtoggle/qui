@@ -59,6 +59,18 @@ body.small-screen > div.qui-global-glass > div.qui-global-glass-container > div.
 
 }
 
+/* On a large screen, pages fade in place instead of sliding, since animating left and width lays out every visible
+ * page on each frame. A page going away keeps its place until it has faded out; one coming in takes its place at once. */
+body:NOT(.small-screen) > div.qui-main-container > div.qui-pages-container > div.qui-page {
+    transition: opacity @transition-duration ease-out,
+                width 0s linear @transition-duration,
+                left 0s linear @transition-duration;
+
+    &.visible {
+        transition: opacity @transition-duration ease-out;
+    }
+}
+
 div.qui-page.current {
     z-index: 9;
 }
