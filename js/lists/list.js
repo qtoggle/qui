@@ -75,6 +75,9 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         this._filterCollapseTimeout = null
         this._revealFrameHandle = null
         this._applySearchFilterDebouncer = new Debouncer(() => this._applySearchFilter(), SEARCH_FILTER_DELAY)
+
+        /* Counts clicks, so that a rejected selection change does not undo the selection of a later click */
+        this._selectionClickCount = 0
     }
 
     makeHTML() {
@@ -370,24 +373,37 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
             return /* Selection unchanged */
         }
 
-        let promise = this.onSelectionChange(oldItems, newItems) || Promise.resolve()
-
-        promise.then(function () {
+        let setSelection = function (deselected, selected) {
             try {
-                removedItems.forEach(i => i.setSelected(false))
-                addedItems.forEach(i => i.setSelected(true))
+                deselected.forEach(i => i.setSelected(false))
+                selected.forEach(i => i.setSelected(true))
             }
             catch (e) {
                 logger.errorStack('setSelected failed', e)
             }
-        }).catch(function (e) {
+        }
+
+        /* Show the new selection first and let its fade finish before onSelectionChange(). That usually builds and
+         * pushes a whole page, which blocks the main thread and would otherwise hold back the tap feedback. */
+        setSelection(removedItems, addedItems)
+        let clickCount = ++this._selectionClickCount
+
+        new Promise(resolve => window.requestAnimationFrame(resolve)).then(function () {
+            return Theme.afterTransitionPromise()
+        }).then(function () {
+            return this.onSelectionChange(oldItems, newItems)
+        }.bind(this)).catch(function (e) {
+            if (clickCount === this._selectionClickCount) {
+                setSelection(addedItems, removedItems)
+            }
+
             if (e == null) {
                 logger.debug('selection change rejected')
             }
             else {
                 throw e
             }
-        })
+        }.bind(this))
     }
 
     _handleLongPress(item) {
