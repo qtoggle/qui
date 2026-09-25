@@ -75,6 +75,10 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
         this._filterCollapseTimeout = null
         this._revealFrameHandle = null
         this._applySearchFilterDebouncer = new Debouncer(() => this._applySearchFilter(), SEARCH_FILTER_DELAY)
+
+        /* Counts clicks, so that only the last of several quick clicks gets handled */
+        this._selectionClickCount = 0
+        this._selectionChangeFromItems = null
     }
 
     makeHTML() {
@@ -370,24 +374,54 @@ class List extends mix().with(ViewMixin, StructuredViewMixin, ProgressViewMixin)
             return /* Selection unchanged */
         }
 
-        let promise = this.onSelectionChange(oldItems, newItems) || Promise.resolve()
-
-        promise.then(function () {
+        let setSelection = function (deselected, selected) {
             try {
-                removedItems.forEach(i => i.setSelected(false))
-                addedItems.forEach(i => i.setSelected(true))
+                deselected.forEach(i => i.setSelected(false))
+                selected.forEach(i => i.setSelected(true))
             }
             catch (e) {
                 logger.errorStack('setSelected failed', e)
             }
-        }).catch(function (e) {
+        }
+
+        /* Show the new selection first and let its fade finish before onSelectionChange(). That usually builds and
+         * pushes a whole page, which blocks the main thread and would otherwise hold back the tap feedback. */
+        setSelection(removedItems, addedItems)
+
+        /* Quick clicks in a row make one change, from the selection before the first one to that of the last one, so
+         * that no page gets built for a selection that is already gone */
+        if (this._selectionChangeFromItems == null) {
+            this._selectionChangeFromItems = oldItems
+        }
+        let clickCount = ++this._selectionClickCount
+        let fromItems = null
+
+        new Promise(resolve => window.requestAnimationFrame(resolve)).then(function () {
+            return Theme.afterTransitionPromise()
+        }).then(function () {
+            if (clickCount !== this._selectionClickCount) {
+                return /* A later click took over */
+            }
+
+            fromItems = this._selectionChangeFromItems
+            this._selectionChangeFromItems = null
+            if (fromItems.length === newItems.length && fromItems.every(i => newItems.includes(i))) {
+                return /* Clicked back to where it started */
+            }
+
+            return this.onSelectionChange(fromItems, newItems)
+        }.bind(this)).catch(function (e) {
+            if (fromItems && clickCount === this._selectionClickCount) {
+                setSelection(newItems, fromItems)
+            }
+
             if (e == null) {
                 logger.debug('selection change rejected')
             }
             else {
                 throw e
             }
-        })
+        }.bind(this))
     }
 
     _handleLongPress(item) {
