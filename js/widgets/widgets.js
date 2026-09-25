@@ -29,6 +29,37 @@ function initButtons() {
     })
 }
 
+function initLongPress() {
+    /* A touch press held long enough to become a long press ends without a click, so the release looked like a
+     * tap that did nothing. Treat that release as a click, except in text fields, which use long press for editing. */
+    let longPressTarget = null
+
+    document.addEventListener('contextmenu', function (e) {
+        let editable = e.target.closest('input, textarea, select, [contenteditable]')
+        longPressTarget = (e.pointerType === 'touch' && !editable) ? e.target : null
+    }, {capture: true, passive: true})
+
+    document.addEventListener('pointerup', function (e) {
+        let target = longPressTarget
+        longPressTarget = null
+        if (!target || e.pointerType !== 'touch') {
+            return
+        }
+
+        /* Touch pointers stay captured by the pressed element, so check where the finger actually left */
+        if (!target.contains(document.elementFromPoint(e.clientX, e.clientY))) {
+            return
+        }
+
+        /* Let the release finish first, like a real click does */
+        setTimeout(() => target.click())
+    }, {capture: true, passive: true})
+
+    document.addEventListener('pointercancel', function () {
+        longPressTarget = null
+    }, {capture: true, passive: true})
+}
+
 /**
  * Create a caption made of an icon and a text.
  * @alias qui.widgets.makeIconTextCaption
@@ -54,4 +85,5 @@ export function makeIconTextCaption(icon, text) {
 
 export function init() {
     initButtons()
+    initLongPress()
 }
