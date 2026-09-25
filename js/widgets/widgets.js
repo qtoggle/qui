@@ -31,13 +31,17 @@ function initButtons() {
 
 function initLongPress() {
     /* A touch press held long enough to become a long press ends without a click, so the release looked like a
-     * tap that did nothing. Treat that release as a click, except in text fields, which use long press for editing. */
+     * tap that did nothing. Treat that release as a click, except in text fields and links, which have their own
+     * long-press menus. */
     let longPressTarget = null
 
     document.addEventListener('contextmenu', function (e) {
-        let editable = e.target.closest('input, textarea, select, [contenteditable]')
-        longPressTarget = (e.pointerType === 'touch' && !editable) ? e.target : null
-    }, {capture: true, passive: true})
+        let ownMenu = e.target.closest('input, textarea, select, [contenteditable], a[href]')
+        longPressTarget = (e.pointerType === 'touch' && !ownMenu) ? e.target : null
+        if (longPressTarget) {
+            e.preventDefault()
+        }
+    }, {capture: true})
 
     document.addEventListener('pointerup', function (e) {
         let target = longPressTarget
@@ -46,8 +50,13 @@ function initLongPress() {
             return
         }
 
-        /* Touch pointers stay captured by the pressed element, so check where the finger actually left */
-        if (!target.contains(document.elementFromPoint(e.clientX, e.clientY))) {
+        /* Touch pointers stay captured by the pressed element, so find where the finger actually left. Like a real
+         * click, the target is the closest element holding both the press and the release. */
+        let released = document.elementFromPoint(e.clientX, e.clientY)
+        while (target && !target.contains(released)) {
+            target = target.parentElement
+        }
+        if (!target || target === document.body || target === document.documentElement) {
             return
         }
 
