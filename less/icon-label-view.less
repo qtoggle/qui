@@ -57,38 +57,50 @@ div.qui-icon-label-view {
     &.qui-base-button {
         background: @background-color;
         color: @interactive-color;
+        transition: color @transition-duration ease,
+                    opacity @transition-duration ease;
 
-        /* The pressed shade is an overlay faded by opacity, which the compositor animates without repainting the row. A
-         * background transition repaints it on every frame, and slow devices feel that as tap lag. */
+        /* The selected fill and the pressed shade are overlays faded by opacity, which the compositor animates without
+         * repainting the row. Chrome sometimes shows a background transition's first frame again once it ends. */
         position: relative;
+        z-index: 0;
 
-        &::before {
+        /* Negative z-index keeps both overlays above the row's background but below its content */
+        &::before,
+        &::after {
             content: '';
             position: absolute;
             top: 0;
             right: 0;
             bottom: 0;
             left: 0;
-            background: @background-active-color;
             opacity: 0;
             transition: opacity @transition-duration ease;
             pointer-events: none;
         }
 
-        /* Keeps the icon and labels above the overlay */
-        & > * {
-            position: relative;
+        &::before {
+            background: @interactive-color;
+            z-index: -2;
         }
 
-        &.active::before {
+        &::after {
+            background: @background-active-color;
+            z-index: -1;
+        }
+
+        &.active::after {
             opacity: 1;
         }
 
         &.selected {
-            background: @interactive-color;
             color: @background-color;
 
             &::before {
+                opacity: 1;
+            }
+
+            &::after {
                 background: @interactive-active-color;
             }
 
