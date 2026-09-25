@@ -33,6 +33,21 @@ export function later(timeout, arg) {
 }
 
 /**
+ * Return a promise that resolves once the next frame has been painted, when reading element sizes is cheap because
+ * layout is already up to date.
+ * @alias qui.utils.promise.afterNextPaint
+ * @returns {Promise}
+ */
+export function afterNextPaint() {
+    /* A requestAnimationFrame() callback runs before that frame's layout; a timeout set from it runs after the paint */
+    return new Promise(function (resolve) {
+        window.requestAnimationFrame(function () {
+            setTimeout(resolve, 0)
+        })
+    })
+}
+
+/**
  * Run a promise with a timeout. If the promise is not fulfilled within the given timeout, the returned promise will be
  * rejected with {@link qui.base.errors.TimeoutError}
  * @alias qui.utils.promise.withTimeout
