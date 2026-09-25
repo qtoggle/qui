@@ -55,7 +55,9 @@ class IconLabelListItem extends mix(ListItem).with(IconLabelViewMixin) {
         }
 
         let icon = other.getIcon()
-        if (icon ? !icon.equals(this.getIcon()) : this.getIcon()) {
+        let currentIcon = this.getIcon()
+        let iconChanged = icon ? !icon.equals(currentIcon) : currentIcon != null
+        if (iconChanged) {
             this.setIcon(icon)
         }
 
