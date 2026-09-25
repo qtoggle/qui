@@ -1,4 +1,7 @@
 
+import * as ObjectUtils from '$qui/utils/object.js'
+
+
 const ICON_DATA_ATTR = '_icon'
 
 
@@ -47,6 +50,22 @@ class Icon {
         return {
             animation: this._animation
         }
+    }
+
+    /**
+     * Tell if another icon would render the same as this one.
+     * @param {?qui.icons.Icon} other
+     * @returns {Boolean}
+     */
+    equals(other) {
+        if (other === this) {
+            return true
+        }
+        if (!other || other.constructor !== this.constructor) {
+            return false
+        }
+
+        return ObjectUtils.deepEquals(this.toAttributes(), other.toAttributes())
     }
 
     /**

@@ -45,9 +45,21 @@ class IconLabelListItem extends mix(ListItem).with(IconLabelViewMixin) {
             return false
         }
 
-        this.setLabel(other.getLabel())
-        this.setSubLabel(other.getSubLabel())
-        this.setIcon(other.getIcon())
+        /* Updates arrive for every server event, mostly with nothing changed. Re-applying an icon rebuilds its elements
+         * with a fade and may sample its colors, so each part is only set when it differs. */
+        if (other.getLabel() !== this.getLabel()) {
+            this.setLabel(other.getLabel())
+        }
+        if (other.getSubLabel() !== this.getSubLabel()) {
+            this.setSubLabel(other.getSubLabel())
+        }
+
+        let icon = other.getIcon()
+        let currentIcon = this.getIcon()
+        let iconChanged = icon ? !icon.equals(currentIcon) : currentIcon != null
+        if (iconChanged) {
+            this.setIcon(icon)
+        }
 
         return true
     }
