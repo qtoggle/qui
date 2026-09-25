@@ -4,6 +4,7 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
+import Icon              from '$qui/icons/icon.js'
 import StockIcon         from '$qui/icons/stock-icon.js'
 import * as Icons        from '$qui/icons/icons.js'
 import * as Toast        from '$qui/messages/toast.js'
@@ -60,8 +61,13 @@ let lastMessage = null
  * @param {String} [message] an optional status message
  */
 export function set(status, message = null) {
+    update(status, message)
+}
+
+function update(status, message, forceIcon = false) {
     if (statusLockTimeoutHandle) {
-        pendingStatusParams = {status, message}
+        forceIcon = forceIcon || Boolean(pendingStatusParams && pendingStatusParams.forceIcon)
+        pendingStatusParams = {status, message, forceIcon}
         return
     }
 
@@ -78,7 +84,7 @@ export function set(status, message = null) {
 
             statusLockTimeoutHandle = null
             if (pendingStatusParams) {
-                set(pendingStatusParams.status, pendingStatusParams.message)
+                update(pendingStatusParams.status, pendingStatusParams.message, pendingStatusParams.forceIcon)
                 pendingStatusParams = null
             }
 
@@ -144,12 +150,19 @@ export function set(status, message = null) {
             variant = 'interactive'
         }
 
-        new StockIcon({
+        let icon = new StockIcon({
             name: iconName,
             decoration: decoration,
             variant: variant,
             animation: animation
-        }).applyTo(statusIndicator.find('.qui-icon'))
+        })
+
+        /* The status is set again after every server response, mostly unchanged, and rendering an icon rebuilds it.
+         * A theme change keeps the same icon attributes but not the colors they stand for, so it forces a render. */
+        let iconElement = statusIndicator.find('.qui-icon')
+        if (forceIcon || !icon.equals(Icon.getFromElement(iconElement))) {
+            icon.applyTo(iconElement)
+        }
     }
 
     if (message) {
@@ -183,7 +196,7 @@ export function init() {
     })
 
     Theme.changeSignal.connect(function () {
-        set(lastStatus, lastMessage)
+        update(lastStatus, lastMessage, /* forceIcon = */ true)
     })
 
     set(STATUS_OK)
