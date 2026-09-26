@@ -8,6 +8,14 @@ div.qui-list {
     background: @background-color;
 }
 
+/* A sticky child sticks inside its nearest ancestor that clips. `clip` clips like `hidden` without making a scroll
+ * container, so the search box sticks to the scrolling page instead; older browsers keep `hidden` and scroll it away. */
+div.qui-list.qui-structured-view,
+div.qui-list > div.qui-structured-view-body {
+    overflow: hidden;
+    overflow: clip;
+}
+
 
 /* Children */
 
@@ -54,6 +62,15 @@ div.qui-list-child.qui-list-item {
 
 
 /* Search */
+
+div.qui-list-child.qui-list-search {
+    /* Stays at the top of the page while the rows scroll under it */
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: @background-color;
+    border-bottom-color: @interactive-color;
+}
 
 div.qui-list-child.qui-list-search > div.qui-list-search-wrapper {
     position: relative;
