@@ -24,14 +24,14 @@ function getQueryArgument(name, def = null) {
     if (queryArguments == null) {
         let queryString = self.location.search.substring(1)
         queryArguments = new Map(queryString.split('&').map(function (keyValuePair) {
-            let splits = keyValuePair.split('=');
-            let key = decodeURIComponent(splits[0]);
-            let value = decodeURIComponent(splits[1]);
+            let splits = keyValuePair.split('=')
+            let key = decodeURIComponent(splits[0])
+            let value = decodeURIComponent(splits[1])
             if (value.indexOf(',') >= 0) {
-                value = value.split(',');
+                value = value.split(',')
             }
 
-            return [key, value];
+            return [key, value]
         }))
     }
 
