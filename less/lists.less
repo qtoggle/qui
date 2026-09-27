@@ -70,6 +70,30 @@ div.qui-list-child.qui-list-search {
     z-index: 1;
     background: @background-color;
     border-bottom-color: @interactive-color;
+
+    /* Casts the top bar's shadow on the rows while stuck; browsers without scroll-state queries just show none */
+    container-type: scroll-state;
+    overflow: visible;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: -0.0625em; /* Below the border, like the top bar's shadow */
+        left: 0;
+        z-index: -1;
+        box-shadow: 0 0.3125em 0.5em -0.3125em @bar-shadow-color;
+        opacity: 0;
+        transition: opacity @transition-duration ease;
+        pointer-events: none;
+    }
+}
+
+@container scroll-state(stuck: top) {
+    div.qui-list-child.qui-list-search::after {
+        opacity: 1;
+    }
 }
 
 div.qui-list-child.qui-list-search > div.qui-list-search-wrapper {
