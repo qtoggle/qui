@@ -66,6 +66,9 @@ div.qui-icon-label-view {
             background: @interactive-color;
             color: @background-color;
 
+            /* The icon picks its decoration ring color once, when drawn, so the ring follows selection through this */
+            --qui-icon-decoration-ring-color: @interactive-color;
+
             & > div.labels > div.sub-label {
                 color: @background-color;
                 background-color: fade(@interactive-active-color, 50%);

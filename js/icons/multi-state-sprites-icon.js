@@ -240,12 +240,12 @@ class MultiStateSpritesIcon extends Icon {
             let bgRGB = Colors.str2rgba(bgColor)
             let decoRGB = Colors.str2rgba(this._decoration)
             if (Colors.contrast(bgRGB, decoRGB) > 1.5) {
-                css['border-color'] = bgColor
+                /* The background found is a snapshot; a container whose look changes with its state (e.g. a selected
+                 * list row) sets the variable, so the ring follows it */
+                css['border-color'] = `var(--qui-icon-decoration-ring-color, ${bgColor})`
             }
             else {
-                this._findIconColor(element).then(function (color) {
-                    css['border-color'] = color
-                })
+                this._findIconColor(element).then(color => decorationDiv.css('border-color', color))
             }
 
             decorationDiv.css(css)
