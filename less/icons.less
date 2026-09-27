@@ -5,6 +5,10 @@
 .qui-icon {
     display: inline-block;
     position: relative;
+
+    /* Keeps the z-indexes of the state layers and the decoration inside the icon, so they cannot rise above a sticky
+     * header or an overlay that the icon scrolls under */
+    z-index: 0;
 }
 
 .qui-icon > div.qui-icon-normal,
