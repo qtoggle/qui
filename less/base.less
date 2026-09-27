@@ -73,6 +73,10 @@ body {
     overflow-x: hidden;
     transition: opacity @transition-duration linear;
     line-height: 1.15em;
+
+    /* A pixel-moving filter, even one that changes nothing, keeps Chrome from running background-color transitions on
+     * the compositor, which sometimes shows a transition's first frame again once it ends. */
+    filter: blur(0);
 }
 
 body.disable-transitions * {
