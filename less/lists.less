@@ -88,6 +88,12 @@ div.qui-list-child.qui-list-search {
         transition: opacity @transition-duration ease;
         pointer-events: none;
     }
+
+    /* The focused field fills with the interactive color, so a line of that color would merge with a selected row
+     * below it */
+    &:focus-within {
+        border-bottom-color: @border-color;
+    }
 }
 
 @container scroll-state(stuck: top) {
@@ -98,6 +104,7 @@ div.qui-list-child.qui-list-search {
 
 div.qui-list-child.qui-list-search > div.qui-list-search-wrapper {
     position: relative;
+    overflow: hidden; /* Clips the field's focus ring, now that the search box lets its shadow out */
 
     & > input[type=text] {
         width: 100%;
