@@ -113,23 +113,35 @@ $.widget('qui.progressdisk', $.qui.basewidget, {
         let iRadius = oRadius - thickness / 2
         let color = Theme.getColor(this.options.color)
 
-        this.element.width(width)
-        this.element.height(width)
-        this.element.css('line-height', width)
+        /* This runs on every value change, but the size only follows the radius option. jQuery's width() and height()
+         * each read the computed style, which came to about 400 ms while a 448-row list was being built. */
+        if (this._appliedWidth !== width) {
+            this._appliedWidth = width
 
-        this._svg.setAttribute('width', width)
-        this._svg.setAttribute('height', width)
-        this._svg.setAttribute('viewBox', `0 0 ${fWidth} ${fWidth}`)
+            this.element.width(width)
+            this.element.height(width)
+            this.element.css('line-height', width)
 
-        this._ring.setAttribute('cx', oRadius.toString())
-        this._ring.setAttribute('cy', oRadius.toString())
-        this._ring.setAttribute('rx', iRadius.toString())
-        this._ring.setAttribute('ry', iRadius.toString())
-        this._ring.setAttribute('stroke-width', thickness.toString())
-        this._ring.setAttribute('stroke', color)
+            this._svg.setAttribute('width', width)
+            this._svg.setAttribute('height', width)
+            this._svg.setAttribute('viewBox', `0 0 ${fWidth} ${fWidth}`)
 
-        this._cursor.setAttribute('stroke-width', thickness.toString())
-        this._cursor.setAttribute('stroke', color)
+            this._ring.setAttribute('cx', oRadius.toString())
+            this._ring.setAttribute('cy', oRadius.toString())
+            this._ring.setAttribute('rx', iRadius.toString())
+            this._ring.setAttribute('ry', iRadius.toString())
+            this._ring.setAttribute('stroke-width', thickness.toString())
+
+            this._cursor.setAttribute('stroke-width', thickness.toString())
+        }
+
+        /* The colour is still looked up every time, so a theme change lands on the next value. */
+        if (this._appliedColor !== color) {
+            this._appliedColor = color
+
+            this._ring.setAttribute('stroke', color)
+            this._cursor.setAttribute('stroke', color)
+        }
 
         if (this._curVal >= 0) {
             this._updateSVGPercent(iRadius, oRadius)
