@@ -161,8 +161,10 @@ class MultiStateSpritesIcon extends Icon {
 
         element.addClass('qui-icon')
 
-        /* Add new icon state elements */
-        let newElements = $()
+        /* Add new icon state elements. Built with plain DOM calls because this runs for every icon on screen, and
+         * jQuery's element, style and append helpers were about half of what renderTo cost on a 448-row list. */
+        let newElements = []
+        let parentElement = element[0]
         ObjectUtils.forEach(this._states, function (state, details) {
 
             let offsetX = details.offsetX
@@ -173,35 +175,33 @@ class MultiStateSpritesIcon extends Icon {
                 return
             }
 
-            let stateDiv = $('<div></div>', {class: `qui-icon-${state}`})
+            let stateDiv = document.createElement('div')
+            stateDiv.className = `qui-icon-${state}`
             /* If no existing elements, display the new element directly, w/o any effect; otherwise start hidden and
              * do a transition to visible */
             if (existingStateElements.length) {
-                stateDiv.addClass('qui-icon-hidden')
+                stateDiv.classList.add('qui-icon-hidden')
             }
 
-            let css = {
-                'background-image': `url("${this._url}")`,
-                'background-position': `${(-offsetX * size)}${this._unit} ${(-offsetY * size)}${this._unit}`
-            }
+            let style = stateDiv.style
+            style.backgroundImage = `url("${this._url}")`
+            style.backgroundPosition = `${(-offsetX * size)}${this._unit} ${(-offsetY * size)}${this._unit}`
             if (bgWidth && bgHeight) {
-                css['background-size'] = `${bgWidth} ${bgHeight}`
+                style.backgroundSize = `${bgWidth} ${bgHeight}`
             }
 
             if (details.filter) {
-                css['filter'] = details.filter
+                style.filter = details.filter
             }
 
-            stateDiv.css(css)
-
-            element.append(stateDiv)
-            newElements = newElements.add(stateDiv)
+            parentElement.appendChild(stateDiv)
+            newElements.push(stateDiv)
 
         }, this)
 
         if (existingStateElements.length) {
             asap(function () {
-                newElements.removeClass('qui-icon-hidden')
+                newElements.forEach(e => e.classList.remove('qui-icon-hidden'))
             })
         }
 
