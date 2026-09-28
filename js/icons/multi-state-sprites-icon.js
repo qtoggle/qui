@@ -245,6 +245,10 @@ class MultiStateSpritesIcon extends Icon {
         if (decorationDiv) {
             decorationDiv.style.background = this._decoration
 
+            /* The decoration element outlives a render, so a colour lookup can resolve after another icon has been
+             * applied to the same element. Each render stamps the element, and only the latest one may write. */
+            let renderToken = (decorationDiv._quiRenderToken = (decorationDiv._quiRenderToken || 0) + 1)
+
             let bgColor = this._findBgColor(element)
             let bgRGB = Colors.str2rgba(bgColor)
             let decoRGB = Colors.str2rgba(this._decoration)
@@ -252,9 +256,11 @@ class MultiStateSpritesIcon extends Icon {
                 decorationDiv.style.borderColor = bgColor
             }
             else {
-                /* The colour this resolves to goes nowhere, which is what happened before this change too: the
-                 * callback used to write into a style object that had already been applied. Fixed separately. */
-                this._findIconColor(element)
+                this._findIconColor(element).then(function (color) {
+                    if (decorationDiv._quiRenderToken === renderToken) {
+                        decorationDiv.style.borderColor = color
+                    }
+                })
             }
         }
     }
