@@ -20,13 +20,31 @@ function makeKeySortFunc(desc) {
 }
 
 /* The sort runs over element-key pairs, so the key function runs once per element instead of twice for every
- * comparison the sort makes. Sorting 448 items in random order took 6408 key extractions; this brings it to 448.
- * Each element carries its own key rather than the two being matched up in a Map, which would file 0 and -0 under
- * one entry and hand both elements the same key. */
+ * comparison the sort makes. Sorting 448 items in random order took 6408 key extractions; this brings it to 448. */
 function sortPairs(array, func, desc, thisArg, sortFunc) {
-    let pairs = array.map(e => ({element: e, key: func.call(thisArg, e)}))
+    /* Each element carries its own key instead of the two being matched up in a Map, which would file 0 and -0 under
+     * one entry. Undefined entries and holes are held back and restored at the end, as Array#sort leaves them. */
+    let length = array.length
+    let pairs = []
+    let undefinedCount = 0
+
+    array.forEach(function (e) {
+        if (e === undefined) {
+            undefinedCount++
+        }
+        else {
+            pairs.push({element: e, key: func.call(thisArg, e)})
+        }
+    })
+
     sortFunc(pairs, makeKeySortFunc(desc))
-    pairs.forEach((p, i) => (array[i] = p.element))
+
+    array.length = 0
+    pairs.forEach(p => array.push(p.element))
+    while (undefinedCount--) {
+        array.push(undefined)
+    }
+    array.length = length
 
     return array
 }
