@@ -40,28 +40,39 @@ const IconLabelViewMixin = Mixin((superclass = Object) => {
          * @returns {jQuery}
          */
         makeIconLabelContainer() {
-            let container = $('<div></div>', {class: 'qui-icon-label-view'})
+            /* Built with plain DOM calls: five elements per view, and jQuery's element and append helpers were about
+             * a fifth of what the hub's 448-row port list cost to build. The three elements kept as fields stay
+             * jQuery objects, because the icon and label setters work on them. */
+            let container = document.createElement('div')
+            container.className = 'qui-icon-label-view'
 
             if (this._clickable) {
-                container.addClass('qui-base-button')
+                container.classList.add('qui-base-button')
             }
 
-            this._iconElement = $('<div></div>', {class: 'qui-icon'})
+            let iconElement = document.createElement('div')
+            iconElement.className = 'qui-icon'
+            this._iconElement = $(iconElement)
             this._applyIcon(this._icon, this._iconElement)
-            container.append(this._iconElement)
+            container.appendChild(iconElement)
 
-            let labelsContainer = $('<div></div>', {class: 'labels'})
-            container.append(labelsContainer)
+            let labelsContainer = document.createElement('div')
+            labelsContainer.className = 'labels'
+            container.appendChild(labelsContainer)
 
-            this._labelElement = $('<div></div>', {class: 'label'})
+            let labelElement = document.createElement('div')
+            labelElement.className = 'label'
+            this._labelElement = $(labelElement)
             this.setLabel(this._label)
-            labelsContainer.append(this._labelElement)
+            labelsContainer.appendChild(labelElement)
 
-            this._subLabelElement = $('<div></div>', {class: 'sub-label'})
+            let subLabelElement = document.createElement('div')
+            subLabelElement.className = 'sub-label'
+            this._subLabelElement = $(subLabelElement)
             this.setSubLabel(this._subLabel)
-            labelsContainer.append(this._subLabelElement)
+            labelsContainer.appendChild(subLabelElement)
 
-            return container
+            return $(container)
         }
 
         /**
