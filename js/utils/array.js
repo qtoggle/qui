@@ -2,19 +2,10 @@
  * @namespace qui.utils.array
  */
 
-/* Keys are looked up rather than recomputed, so the key function runs once per element instead of twice for every
- * comparison the sort makes. Sorting 448 items in random order took 6408 key extractions; this brings it to 448. */
-function extractKeys(array, func, thisArg) {
-    let keys = new Map()
-    array.forEach(e => keys.set(e, func.call(thisArg, e)))
-
-    return keys
-}
-
-function makeKeySortFunc(keys, desc) {
-    return function (e1, e2) {
-        let k1 = keys.get(e1)
-        let k2 = keys.get(e2)
+function makeKeySortFunc(desc) {
+    return function (p1, p2) {
+        let k1 = p1.key
+        let k2 = p2.key
 
         if ((desc && k1 > k2) || (!desc && k1 < k2)) {
             return -1
@@ -26,6 +17,18 @@ function makeKeySortFunc(keys, desc) {
             return 0
         }
     }
+}
+
+/* The sort runs over element-key pairs, so the key function runs once per element instead of twice for every
+ * comparison the sort makes. Sorting 448 items in random order took 6408 key extractions; this brings it to 448.
+ * Each element carries its own key rather than the two being matched up in a Map, which would file 0 and -0 under
+ * one entry and hand both elements the same key. */
+function sortPairs(array, func, desc, thisArg, sortFunc) {
+    let pairs = array.map(e => ({element: e, key: func.call(thisArg, e)}))
+    sortFunc(pairs, makeKeySortFunc(desc))
+    pairs.forEach((p, i) => (array[i] = p.element))
+
+    return array
 }
 
 function merge(left, right, compareFunc) {
@@ -112,7 +115,7 @@ export function stableSort(array, compareFunc) {
  * @returns {Array} the array
  */
 export function sortKey(array, func, desc = false, thisArg = null) {
-    return array.sort(makeKeySortFunc(extractKeys(array, func, thisArg), desc))
+    return sortPairs(array, func, desc, thisArg, (pairs, compareFunc) => pairs.sort(compareFunc))
 }
 
 /**
@@ -126,7 +129,7 @@ export function sortKey(array, func, desc = false, thisArg = null) {
  * @returns {Array} the array
  */
 export function stableSortKey(array, func, desc = false, thisArg = null) {
-    return stableSort(array, makeKeySortFunc(extractKeys(array, func, thisArg), desc))
+    return sortPairs(array, func, desc, thisArg, stableSort)
 }
 
 /**
