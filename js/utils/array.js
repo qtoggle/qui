@@ -124,6 +124,9 @@ export function stableSort(array, compareFunc) {
 
 /**
  * Perform a sort on an array, *in place*, using a key extraction function.
+ *
+ * As with `Array#sort`, `undefined` entries and holes end up at the end of the array, in that order, and the key
+ * extraction function is not called for them. It is called once per remaining element.
  * @alias qui.utils.array.sortKey
  * @param {Array} array
  * @param {Function} func key extraction function; will be called with each element as parameter and is expected to
@@ -138,6 +141,9 @@ export function sortKey(array, func, desc = false, thisArg = null) {
 
 /**
  * Perform a stable sort on an array, *in place*, using a key extraction function.
+ *
+ * As with `Array#sort`, `undefined` entries and holes end up at the end of the array, in that order, and the key
+ * extraction function is not called for them. It is called once per remaining element.
  * @alias qui.utils.array.stableSortKey
  * @param {Array} array
  * @param {Function} func key extraction function; will be called with each element as parameter and is expected to
