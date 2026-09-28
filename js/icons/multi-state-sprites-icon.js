@@ -138,33 +138,40 @@ class MultiStateSpritesIcon extends Icon {
         let bgWidth = params.bgWidth
         let bgHeight = params.bgHeight
 
-        /* Find and remove existing icon state elements */
-        let existingStateElements = element.children().filter(function () {
-            return this.className.split(' ').some(function (c) {
-                return c.match(new RegExp('^qui-icon-[\\w\\-]+$')) && c !== 'qui-icon-decoration'
-            })
-        })
+        let iconElement = element[0]
 
-        let addedToDOM = element.parents('body').length
-        if (addedToDOM) {
+        /* Find and remove existing icon state elements */
+        let existingStateElements = []
+        for (let i = 0; i < iconElement.children.length; i++) {
+            let child = iconElement.children[i]
+            let isState = child.className.split(' ').some(function (c) {
+                return c !== 'qui-icon-decoration' && c.startsWith('qui-icon-') && c.length > 'qui-icon-'.length
+            })
+            if (isState) {
+                existingStateElements.push(child)
+            }
+        }
+
+        if (iconElement.isConnected) {
+            /* Only this branch fades the old elements out, and only it needs them as a jQuery object */
+            let oldElements = $(existingStateElements)
             asap(function () {
-                existingStateElements.addClass('qui-icon-hidden')
+                oldElements.addClass('qui-icon-hidden')
             })
             Theme.afterTransition(function () {
-                existingStateElements.remove()
-            }, existingStateElements)
+                oldElements.remove()
+            }, oldElements)
         }
         else {
-            existingStateElements.remove()
+            existingStateElements.forEach(e => e.remove())
             existingStateElements = []
         }
 
-        element.addClass('qui-icon')
+        iconElement.classList.add('qui-icon')
 
         /* Add new icon state elements. Built with plain DOM calls because this runs for every icon on screen, and
          * jQuery's element, style and append helpers were about half of what renderTo cost on a 448-row list. */
         let newElements = []
-        let parentElement = element[0]
         ObjectUtils.forEach(this._states, function (state, details) {
 
             let offsetX = details.offsetX
@@ -194,7 +201,7 @@ class MultiStateSpritesIcon extends Icon {
                 style.filter = details.filter
             }
 
-            parentElement.appendChild(stateDiv)
+            iconElement.appendChild(stateDiv)
             newElements.push(stateDiv)
 
         }, this)
@@ -212,19 +219,23 @@ class MultiStateSpritesIcon extends Icon {
             }
         }, this)
 
-        element.removeClass(this.constructor.KNOWN_STATES.map(s => `top-${s}`).join(' '))
-        element.addClass(`top-${topState}`)
+        iconElement.classList.remove(...this.constructor.KNOWN_STATES.map(s => `top-${s}`))
+        iconElement.classList.add(`top-${topState}`)
 
         /* Decoration */
 
-        let decorationDiv = element.children('div.qui-icon-decoration')
-        if (!decorationDiv.length) {
-            decorationDiv = null
+        let decorationDiv = null
+        for (let i = 0; i < iconElement.children.length; i++) {
+            if (iconElement.children[i].classList.contains('qui-icon-decoration')) {
+                decorationDiv = iconElement.children[i]
+                break
+            }
         }
 
         if (!decorationDiv && this._decoration) {
-            decorationDiv = $('<div></div>', {class: 'qui-icon-decoration'})
-            element.prepend(decorationDiv)
+            decorationDiv = document.createElement('div')
+            decorationDiv.className = 'qui-icon-decoration'
+            iconElement.insertBefore(decorationDiv, iconElement.firstChild)
         }
         else if (decorationDiv && !this._decoration) {
             decorationDiv.remove()
@@ -232,23 +243,19 @@ class MultiStateSpritesIcon extends Icon {
         }
 
         if (decorationDiv) {
-            let css = {
-                background: this._decoration
-            }
+            decorationDiv.style.background = this._decoration
 
             let bgColor = this._findBgColor(element)
             let bgRGB = Colors.str2rgba(bgColor)
             let decoRGB = Colors.str2rgba(this._decoration)
             if (Colors.contrast(bgRGB, decoRGB) > 1.5) {
-                css['border-color'] = bgColor
+                decorationDiv.style.borderColor = bgColor
             }
             else {
-                this._findIconColor(element).then(function (color) {
-                    css['border-color'] = color
-                })
+                /* The colour this resolves to goes nowhere, which is what happened before this change too: the
+                 * callback used to write into a style object that had already been applied. Fixed separately. */
+                this._findIconColor(element)
             }
-
-            decorationDiv.css(css)
         }
     }
 
