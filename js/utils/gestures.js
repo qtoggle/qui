@@ -4,6 +4,7 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
+import * as CSS    from '$qui/utils/css.js'
 import * as Window from '$qui/window.js'
 
 
@@ -44,6 +45,10 @@ const LONG_PRESS_DATA_KEY = 'qui.utils.gestures.longPress'
 
 /**
  * Setup an HTML element for dragging.
+ *
+ * All coordinates passed to the callbacks are CSS pixels, so they can be compared or combined with *em* units and CSS
+ * lengths directly. Use {@link qui.utils.css.unscalePx} on any `offset()` or `position()` value measured against them.
+ *
  * @alias qui.utils.gestures.enableDragging
  * @param {jQuery} element the dragged element
  * @param {qui.utils.gestures.DragMoveCallback} onMove
@@ -81,12 +86,11 @@ export function enableDragging(element, onMove, onBegin, onEnd, direction) {
 
     function pointerDown(e) {
         let elemOffset = element.offset()
-        beginElemX = elemOffset.left
-        beginElemY = elemOffset.top
+        beginElemX = CSS.unscalePx(elemOffset.left)
+        beginElemY = CSS.unscalePx(elemOffset.top)
 
-        let scalingFactor = Window.getScalingFactor()
-        e.pageX /= scalingFactor
-        e.pageY /= scalingFactor
+        e.pageX = CSS.unscalePx(e.pageX)
+        e.pageY = CSS.unscalePx(e.pageY)
 
         beginPageX = e.pageX
         beginPageY = e.pageY
@@ -109,9 +113,8 @@ export function enableDragging(element, onMove, onBegin, onEnd, direction) {
          * where the pointer actually was, before it is told the drag is over */
         flushMove()
 
-        let scalingFactor = Window.getScalingFactor()
-        e.pageX /= scalingFactor
-        e.pageY /= scalingFactor
+        e.pageX = CSS.unscalePx(e.pageX)
+        e.pageY = CSS.unscalePx(e.pageY)
 
         if (direction === 'x') { /* Constrain moving to horizontal axis */
             e.pageY = beginPageY
@@ -135,9 +138,8 @@ export function enableDragging(element, onMove, onBegin, onEnd, direction) {
     }
 
     function pointerMove(e) {
-        let scalingFactor = Window.getScalingFactor()
-        e.pageX /= scalingFactor
-        e.pageY /= scalingFactor
+        e.pageX = CSS.unscalePx(e.pageX)
+        e.pageY = CSS.unscalePx(e.pageY)
 
         if (direction === 'x') { /* Constrain moving to horizontal axis */
             e.pageY = beginPageY

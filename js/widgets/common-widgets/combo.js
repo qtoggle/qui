@@ -3,6 +3,7 @@ import $ from '$qui/lib/jquery.module.js'
 
 import {gettext}         from '$qui/base/i18n.js'
 import * as Theme        from '$qui/theme.js'
+import * as CSS          from '$qui/utils/css.js'
 import {asap}            from '$qui/utils/misc.js'
 import * as ObjectUtils  from '$qui/utils/object.js'
 import * as PromiseUtils from '$qui/utils/promise.js'
@@ -370,7 +371,7 @@ $.widget('qui.combo', $.qui.basewidget, {
         this._prevItemDiv = this._itemContainer.children('div.qui-combo-item.selected')
 
         if (this._prevItemDiv.length) {
-            let scrollTop = this._prevItemDiv.offset().top - this._itemContainer.offset().top +
+            let scrollTop = CSS.unscalePx(this._prevItemDiv.offset().top - this._itemContainer.offset().top) +
                             this._itemContainer.scrollTop()
             this._itemContainer.scrollTop(scrollTop)
         }
@@ -534,7 +535,7 @@ $.widget('qui.combo', $.qui.basewidget, {
         if (itemDiv) {
             itemDiv.addClass('selected')
             if (scroll) {
-                let scrollTop = itemDiv.offset().top - this._itemContainer.offset().top +
+                let scrollTop = CSS.unscalePx(itemDiv.offset().top - this._itemContainer.offset().top) +
                                 this._itemContainer.scrollTop()
                 this._itemContainer.scrollTop(scrollTop)
             }

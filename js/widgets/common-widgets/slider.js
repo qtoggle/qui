@@ -1,6 +1,7 @@
 
 import $ from '$qui/lib/jquery.module.js'
 
+import * as CSS      from '$qui/utils/css.js'
 import * as Gestures from '$qui/utils/gestures.js'
 
 import * as BaseWidget from '../base-widget.js' /* Needed */
@@ -68,8 +69,8 @@ $.widget('qui.slider', $.qui.basewidget, {
                     return
                 }
 
-                let offset = widget._bar.offset()
-                let pos = pageX - offset.left
+                let barLeft = CSS.unscalePx(widget._bar.offset().left)
+                let pos = pageX - barLeft
                 pos = pos / widget._getWidth()
                 pos = widget._bestPos(pos)
 
@@ -233,7 +234,9 @@ $.widget('qui.slider', $.qui.basewidget, {
     },
 
     _getPos: function () {
-        return this._cursor.position().left / this._getWidth()
+        /* Deduced from the current value, rather than measured: the cursor is placed with a percentage and a negative
+         * margin, which no measurement reads back cleanly under a scaling factor */
+        return this._valToPos(this._curVal)
     },
 
     _setPos: function (pos) {

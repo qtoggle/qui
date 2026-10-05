@@ -238,3 +238,18 @@ export function px2em(px, elem = Window.$body) {
 
     return width
 }
+
+/**
+ * Convert a length from visual pixels to CSS pixels.
+ *
+ * Pointer event coordinates and `getBoundingClientRect()` values (so also jQuery's `offset()` and `position()`) are
+ * visual pixels -- they include the scaling factor applied to the body. CSS lengths, *em* units, `offsetWidth` and
+ * jQuery's `width()` are CSS pixels. Mixing the two is only safe when the scaling factor is `1`.
+ *
+ * @alias qui.utils.css.unscalePx
+ * @param {Number} px
+ * @returns {Number}
+ */
+export function unscalePx(px) {
+    return px / Window.getScalingFactor()
+}
