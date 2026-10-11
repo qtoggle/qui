@@ -249,7 +249,10 @@ class MultiStateSpritesIcon extends Icon {
              * applied to the same element. Each render stamps the element, and only the latest one may write. */
             let renderToken = (decorationDiv._quiRenderToken = (decorationDiv._quiRenderToken || 0) + 1)
 
-            let bgColor = this._findBgColor(element)
+            /* The theme background rather than whatever happens to sit behind the icon: sampling the ancestors gave
+             * a different answer depending on whether the icon was attached when it rendered, so the border changed
+             * colour on the first in-place update and kept the selection highlight it picked up there. */
+            let bgColor = Theme.getVar('background-color')
             let bgRGB = Colors.str2rgba(bgColor)
             let decoRGB = Colors.str2rgba(this._decoration)
             if (Colors.contrast(bgRGB, decoRGB) > 1.5) {
@@ -263,31 +266,6 @@ class MultiStateSpritesIcon extends Icon {
                 })
             }
         }
-    }
-
-    _findBgColor(elem) {
-        /* Find the background color behind the icon */
-
-        /* Icons are usually rendered before their row is attached, and a detached element has no computed style, so
-         * up such a chain css() only ever reports the inline one. Reading that directly skips a getComputedStyle call
-         * per element, worth about 130 ms across a 448-row list. */
-        let attached = elem.length > 0 && elem[0].isConnected
-
-        let e = elem
-        let bgColor = null
-        while (e.length && e[0].tagName && (!bgColor || bgColor === 'rgba(0, 0, 0, 0)' ||
-                                             bgColor === 'transparent')) {
-
-            bgColor = attached ? e.css('background-color') : e[0].style.backgroundColor
-            e = e.parent()
-        }
-
-        if (!e.length || !e[0].tagName) {
-            /* Icon element not added yet to the DOM, or no element has a background color */
-            bgColor = Theme.getVar('background-color')
-        }
-
-        return bgColor
     }
 
     _findIconColor(elem) {
